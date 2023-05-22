@@ -1,0 +1,37 @@
+version: '3'
+services:
+    # ----- Private Certificate Authority Server -------------------------------
+    ca:
+        image: private-ca:0.0.1-remal
+        container_name: ca.hello.com
+        hostname: ca.hello.com
+        ports:
+            - "13012:22"   # SSH
+        environment:
+            - EASYRSA_REQ_CN=hello.com
+            - EASYRSA_REQ_COUNTRY=DK
+            - EASYRSA_REQ_PROVINCE=Region Hovedstaden
+            - EASYRSA_REQ_CITY=Copenhagen
+            - EASYRSA_REQ_ORG=Hello Softwares
+
+    # ----- LDAP directory service ---------------------------------------------
+    ds:
+        image: ds-7.3:0.0.1-remal
+        container_name: ds.hello.com
+        hostname: ds.hello.com
+        ports:
+            - "13022:22"   # SSH
+            - "13024:4444" # admin connector port
+            - "13026:636"  # LDAP over SSL
+        environment:
+            - CONFIG_BACKUP=true
+            - LDAP_BACKUP=true
+            - CONFIG_RESTORE_FROM=forgerock-ds-conf-2023-05-22_12.24.57.tar.gz
+            - LDAP_RESTORE_FROM=forgerock-ds-ldap-2023-05-22_12.24.50.tar.gz
+            - CA_HOST=ca.hello.com
+            - LDAP_USER_DN=uid=admin
+            - LDAP_USER_PASSWORD=password
+            - MONITOR_USER_PASSWORD=password
+            - IDENTITY_STORE_ADMIN_PASSWORD=password
+        volumes:
+            - $HOME/dev/workspace/java/remal/gombi/docker/forgerock/forgerock-ds/backup:/opt/opendj/backup
