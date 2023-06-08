@@ -35,6 +35,27 @@ function copy_from_remote_machine() {
 }
 
 # ------------------------------------------------------------------------------
+# This method generates a certificate for the server using the our Private
+# Certificate Authority infrastructure.
+#
+# Arguments
+#    arg 1:  the hostname for which the certificate is generated
+# ------------------------------------------------------------------------------
+function generate_certificate() {
+  local host_name
+  host_name="$1"
+
+  printf "%s | [INFO]  generating a server certificate...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG]         CA_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$CA_HOST"
+  printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
+  printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
+  printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$host_name"
+  sshpass -p "$SSH_PASSWORD" ssh \
+    -oStrictHostKeyChecking=no \
+    "$SSH_USER@$CA_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $host_name'"
+}
+
+# ------------------------------------------------------------------------------
 # Read value from a property file.
 #
 # Arguments
@@ -103,14 +124,13 @@ function script_runner() {
 # This runs at the background in order to does not block the execution.
 # ------------------------------------------------------------------------------
 function set_container_up_state() {
-  printf "%s | [INFO]  docker container is up and ready to serve incoming requests\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [INFO]  docker container is READY to serve incoming requests\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG] opening port %s...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$UP_SIGNAL_PORT"
 
   local marker_file
   marker_file="/tmp/first-startup.marker"
   touch "$marker_file"
-
-  nc -lk -v -p "$UP_SIGNAL_PORT" &
+  socat - tcp-listen:"$UP_SIGNAL_PORT",fork,reuseaddr &
 }
 
 # ------------------------------------------------------------------------------

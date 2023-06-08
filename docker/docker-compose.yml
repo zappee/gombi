@@ -24,14 +24,34 @@ services:
             - "13024:4444" # admin connector port
             - "13026:636"  # LDAP over SSL
         environment:
-            - CONFIG_BACKUP=true
-            - LDAP_BACKUP=true
-            - CONFIG_RESTORE_FROM=forgerock-ds-conf-2023-05-22_12.24.57.tar.gz
-            - LDAP_RESTORE_FROM=forgerock-ds-ldap-2023-05-22_12.24.50.tar.gz
             - CA_HOST=ca.hello.com
+            - CONFIG_BACKUP=true
+            - CONFIG_RESTORE_FROM=forgerock-ds-conf-2023-05-22_12.24.57.tar.gz
+            - LDAP_BACKUP=true
+            - LDAP_RESTORE_FROM=forgerock-ds-ldap-2023-05-22_12.24.50.tar.gz
             - LDAP_USER_DN=uid=admin
             - LDAP_USER_PASSWORD=password
             - MONITOR_USER_PASSWORD=password
-            - IDENTITY_STORE_ADMIN_PASSWORD=password
         volumes:
             - $HOME/dev/workspace/java/remal/gombi/docker/forgerock/forgerock-ds/backup:/opt/opendj/backup
+
+    # ----- Access Management service ------------------------------------------
+    forgerock-am:
+        image: am-7.3:0.0.1-remal
+        container_name: am.hello.com
+        hostname: am.hello.com
+        ports:
+            - "13032:22"   # SSH
+            - "13038:8080" # HTTP
+            - "13034:443"  # HTTPS
+            - "13036:50636"  # LDAP over SSL
+        environment:
+            - BACKUP_CONFIG=true
+            - BACKUP_CONFIG_FILE=forgerock-am-conf-2023-05-22_12.24.57.tar.gz
+            - CA_HOST=ca.hello.com
+            - DS_HOST=ds.hello.com
+            - DS_PORT=636
+            - DS_USER_DN=uid=admin
+            - DS_USER_PASSWORD=password
+        volumes:
+            - $HOME/dev/workspace/java/remal/gombi/docker/forgerock/forgerock-am/backup:/opt/openam/backup

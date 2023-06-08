@@ -11,6 +11,7 @@ ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
 EXPOSE 22/tcp
+EXPOSE 1331/tcp
 EXPOSE 8080/tcp
 
 # environment variables
@@ -104,3 +105,6 @@ RUN set -ux; \
    \
    printf "setting up environment variables...\n"; \
    printf "export %s=\"%s\"\n" "CATALINA_HOME" "$CATALINA_HOME" >> /etc/profile
+
+ONBUILD COPY container-scripts/init/* /docker.init/
+ONBUILD COPY container-scripts/startup/* /docker.startup/

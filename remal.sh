@@ -82,7 +82,7 @@ function docker_container_run {
 #  Show the running docker containers' details.
 # ------------------------------------------------------------------------------
 function docker_container_show {
-  printf "%b> running/Terminated Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf "%b> running/terminated Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
 
   local running_containers_number
   running_containers_number="$(docker ps -aq --filter "label=com.remal.image.vendor=Remal" | wc -l)"
@@ -177,28 +177,29 @@ function show_help() {
     printf "      REMAL_HOME: %s\n" ""
     printf "      WORKSPACE : %s\n\n" "$WORKSPACE"
     printf "   %bTasks%b:\n" "$STYLE_BOLD" "$STYLE_DEFAULT"
-    printf "      %bb:    build the Base image%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "      %bc:    show containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "      %bi:    show images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "      %bj:    build of all Java images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bj1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_JAVA_11" "$STYLE_DEFAULT"
-    printf "        %bj2:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_JAVA_17" "$STYLE_DEFAULT"
-    printf "      %bl:    show Docker containers' log%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "      %bp:    build %s image%b\n" "$COLOR_YELLOW" "$LABEL_PKI" "$STYLE_DEFAULT"
-    printf "      %br:    remove of all running Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %ba:    build the Master image%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bb:    build of all Base images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "        %bb1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_JAVA_11" "$STYLE_DEFAULT"
+    printf "        %bb2:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_JAVA_17" "$STYLE_DEFAULT"
+    printf "        %bb3:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
+    printf "      %bc:    build %s image%b\n" "$COLOR_YELLOW" "$LABEL_PKI" "$STYLE_DEFAULT"
+    printf "      %bd:    build forgerock images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_DS" "$STYLE_DEFAULT"
+    printf "        %bd2:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_AM" "$STYLE_DEFAULT"
+    printf "      ------------------------------------------------------------\n"
     printf "      %bs:    start the complete Docker stack%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %ba1:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_BASE" "$STYLE_DEFAULT"
-    printf "        %ba2:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_JAVA_11" "$STYLE_DEFAULT"
-    printf "        %ba3:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_JAVA_17" "$STYLE_DEFAULT"
-    printf "        %ba4:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
-    printf "        %ba5:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_PKI" "$STYLE_DEFAULT"
-    printf "        %ba6:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_DS" "$STYLE_DEFAULT"
-    printf "        %ba7:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_AM" "$STYLE_DEFAULT"
-    printf "      %bt:    build of all Tomcat images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bt1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
-    printf "      %bf:    build forgerock images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bf1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_DS" "$STYLE_DEFAULT"
-    printf "        %bf2:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_AM" "$STYLE_DEFAULT"
+    printf "        %bt1:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_BASE" "$STYLE_DEFAULT"
+    printf "        %bt2:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_JAVA_11" "$STYLE_DEFAULT"
+    printf "        %bt3:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_JAVA_17" "$STYLE_DEFAULT"
+    printf "        %bt4:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
+    printf "        %bt5:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_PKI" "$STYLE_DEFAULT"
+    printf "        %bt6:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_DS" "$STYLE_DEFAULT"
+    printf "        %bt7:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_AM" "$STYLE_DEFAULT"
+    printf "      ------------------------------------------------------------\n"
+    printf "      %bu:    show images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bv:    show containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bw:    show Docker containers' log%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bx:    remove of all running Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "\n"
     printf "Contact: arnold.somogyi@gmail.com\n"
     printf "Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved\n"
@@ -259,28 +260,31 @@ function is_task_invalid {
 show_help "$#"
 START=$(date +%s)
 
-if is_task_invalid "$COMMAND" "a"; then show_invalid_task_error; fi
-if match "$COMMAND" "a1"; then docker_container_run "$LABEL_BASE"     "base"; fi
-if match "$COMMAND" "a2"; then docker_container_run "$LABEL_JAVA_11"  "java/openjdk-11"; fi
-if match "$COMMAND" "a3"; then docker_container_run "$LABEL_JAVA_17"  "java/openjdk-17"; fi
-if match "$COMMAND" "a4"; then docker_container_run "$LABEL_TOMCAT_9" "tomcat/tomcat-9"; fi
-if match "$COMMAND" "a5"; then docker_container_run "$LABEL_PKI"      "pki/private-ca"; fi
-if match "$COMMAND" "a6"; then docker_container_run "$LABEL_DS"       "forgerock/forgerock-ds"; fi
-if match "$COMMAND" "a7"; then docker_container_run "$LABEL_AM"       "forgerock/forgerock-am"; fi
+# builder tasks
+# if is_task_invalid "$COMMAND" "a"; then show_invalid_task_error; fi
+if match "$COMMAND" "a1"; then docker_image_build   "$LABEL_BASE"     "base"; fi
+if match "$COMMAND" "b1"; then docker_image_build   "$LABEL_JAVA_11"  "java/openjdk-11"; fi
+if match "$COMMAND" "b2"; then docker_image_build   "$LABEL_JAVA_17"  "java/openjdk-17"; fi
+if match "$COMMAND" "b3"; then docker_image_build   "$LABEL_TOMCAT_9" "tomcat/tomcat-9"; fi
+if match "$COMMAND" "c";  then docker_image_build   "$LABEL_PKI"      "pki/private-ca"; fi
+if match "$COMMAND" "d1"; then docker_image_build   "$LABEL_DS"       "forgerock/forgerock-ds"; fi
+if match "$COMMAND" "d2"; then docker_image_build   "$LABEL_AM"       "forgerock/forgerock-am"; fi
 
-if match "$COMMAND" "b";  then docker_image_build   "$LABEL_BASE"     "base"; fi
-if match "$COMMAND" "j1"; then docker_image_build   "$LABEL_JAVA_11"  "java/openjdk-11"; fi
-if match "$COMMAND" "j2"; then docker_image_build   "$LABEL_JAVA_17"  "java/openjdk-17"; fi
-if match "$COMMAND" "p";  then docker_image_build   "$LABEL_PKI"      "pki/private-ca"; fi
-if match "$COMMAND" "t1"; then docker_image_build   "$LABEL_TOMCAT_9" "tomcat/tomcat-9"; fi
-if match "$COMMAND" "f1"; then docker_image_build   "$LABEL_DS"       "forgerock/forgerock-ds"; fi
-if match "$COMMAND" "f2"; then docker_image_build   "$LABEL_AM"       "forgerock/forgerock-am"; fi
+# docker runners
+if match "$COMMAND" "t1"; then docker_container_run "$LABEL_BASE"     "base"; fi
+if match "$COMMAND" "t2"; then docker_container_run "$LABEL_JAVA_11"  "java/openjdk-11"; fi
+if match "$COMMAND" "t3"; then docker_container_run "$LABEL_JAVA_17"  "java/openjdk-17"; fi
+if match "$COMMAND" "t4"; then docker_container_run "$LABEL_TOMCAT_9" "tomcat/tomcat-9"; fi
+if match "$COMMAND" "t5"; then docker_container_run "$LABEL_PKI"      "pki/private-ca"; fi
+if match "$COMMAND" "t6"; then docker_container_run "$LABEL_DS"       "forgerock/forgerock-ds"; fi
+if match "$COMMAND" "t7"; then docker_container_run "$LABEL_AM"       "forgerock/forgerock-am"; fi
 
-if match "$COMMAND" "c";  then docker_container_show; fi
-if match "$COMMAND" "i";  then docker_image_show; fi
-if match "$COMMAND" "r";  then docker_container_remove; fi
+# command executors
+if match "$COMMAND" "x";  then docker_container_remove; fi
+if match "$COMMAND" "u";  then docker_image_show; fi
+if match "$COMMAND" "v";  then docker_container_show; fi
 if match "$COMMAND" "s";  then docker_containers_run; fi
-if match "$COMMAND" "l";  then docker_container_logs; fi
+if match "$COMMAND" "w";  then docker_container_logs; fi
 
 show_execution_time "$START" "$#"
 printf "Bye!\n"

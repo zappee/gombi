@@ -5,12 +5,16 @@ This is a Remal Docker image for ForgeRock Directory Server, using [openjdk-17](
 
 ### 2) Ports used by the image
 
-| container port | description                                                       |
-|----------------|-------------------------------------------------------------------|
-| 22             | SSH                                                               |
-| 389            | LDAP                                                              |
-| 636            | LDAP over SSL (LDAPS)                                             |
-| 4444           | admin connector port, admin DN: `uid=admin`, password: `password` |
+| container port | description            |
+|----------------|------------------------|
+| 22             | SSH                    |
+| 389            | LDAP                   |
+| 636            | LDAP over SSL (LDAPS)  |
+| 4444           | admin connector port   |
+
+Directory Server admin user:
+* admin DN: `uid=admin`
+* password: `password`
 
 ## 3) Working with the Docker container
 ### 3.1) Preparation of your environment

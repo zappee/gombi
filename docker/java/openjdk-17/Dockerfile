@@ -10,6 +10,7 @@ ARG IMAGE_FROM=${IMAGE_FROM}
 FROM ${IMAGE_FROM}
 
 EXPOSE 22/tcp
+EXPOSE 1331/tcp
 
 # environment variables
 ENV IMAGE_NAME="openjdk-17" \

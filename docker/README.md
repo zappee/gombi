@@ -22,8 +22,6 @@ Perform the following tasks to prepare your environment to be ready to run the R
 #### 3.1.1) Install tools
 * Install Git client.
 * Install Docker and Docker-Compose.
-* Install Java JDK 17.
-* Install the Maven build automation tool.
 
 #### 3.1.2) Prepare FQDN
 Map hostnames to IP addresses in `/etc/hosts` file.
@@ -35,32 +33,43 @@ Map hostnames to IP addresses in `/etc/hosts` file.
 The LDAP server has some special requirements.
 Learn about how to prepare your environment to get it ready for Forgerock Directory Server, check [paragraph 3.1) of this document](forgerock/forgerock-ds/README.md#31-preparation-of-your-environment).
 
-### 3.2) Build
-Each image has a build script that is called `build.sh` and this script is always provided.
-This script can be used to build the Docker images individually.
-If you want to build the whole Remal Docker stack then it is recommended to use the `do.sh` script because it simplifies the processes.
+### 3.2) Build the images
+Each image has a build script that is called `build.sh`.
+This script can be used to build the particular Docker image.
+If you want to build the whole Remal Docker stack then it is recommended to use the `remal.sh` script because it simplifies the processes.
 The benefit of using the main script are the followings:
 * Not necessary to change between directories while building images.
 * Multiple images can be built in one shot.
 * The full image set can be built with one run.
 * It builds slim images using the `BUILD_TYPE="slim"`  build argument.
 
-The main build script executes a task or multiple tasks.
+The main build script can execute a task or multiple tasks.
 For example, the following command builds all the necessary images that you need to have for development and then show the build info:
 ~~~
-$ ./do.sh abi
+$ ./remal.sh abcdi
 ~~~
 
-Before to use the script, do not forget to set the `REMAL_HOME` environment variable. It must point to the root directory of this project.
+Before to use the script, do not forget to set the `REMAL_HOME` environment variable properly. It must point to the root directory of this project.
 The default value of the variable is set to the directory from where you are executing the build script.
 
 ### 3.3) Start the development environment
 Once the build is done you can start the servers locally and show the application logs by using the same script:
 ~~~
-s do.sh rl
+s remal.sh s
 ~~~
 
-### 3.4) Stop the development environment
+### 3.4) Setting Up Certificate Authorities (CA) in Firefox 
+How to get Firefox to trust all self signed certificates you use locally to serve your development sites over https and not complain about them?
+You can add the root CA to your web browser.
+The root CA locates in the CA server, the Docker container name is `ca.remal.com`.
+
+![step 1](../docs/pki/firefox-setting-up-ca-step-1.png)
+
+![step 2](../docs/pki/firefox-setting-up-ca-step-2.png)
+
+![step 3](../docs/pki/firefox-setting-up-ca-step-3.png)
+
+### 3.5) Stop the development environment
 Docker can back up the current configuration of the running servers before the whole environment will be stopped.
 By default, the `docker compose stop` command attempts to stop a container by sending a `SIGTERM` to the running containers.
 Then, it waits for a default timeout of 10 seconds. After the timeout, a `SIGKILL` is sent to the containers to forcefully kill it.
@@ -96,7 +105,7 @@ The Remal slim image build process will download the files on-the-fly from your 
 1. Download [Apache-Tomcat](https://tomcat.apache.org/download-10.cgi) and start it using `bin/catalina.sh run`.
 2. Create the following directory structure: `$CATALINA_HOME/webapps/docker-build`.
 3. Copy the files and install packages from the `bin/` folder of each image source code into the web server directory.
-4. Then start the build using the `slim` parameter, for example `./do.sh ab`
+4. Then start the build using the `slim` parameter, for example `./remal.sh ab`
 
 ## Annex 2) Troubleshooting
 **SSH**
