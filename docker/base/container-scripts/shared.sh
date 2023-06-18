@@ -1,15 +1,15 @@
 #!/bin/bash -ue
 # ******************************************************************************
-#  Shared, common bash functions.
+# Shared, common bash functions.
 #
-#  Since : April, 2023
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since : April, 2023
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 
 # ------------------------------------------------------------------------------
-#  Copy file(s) from a remote machine to localhost.
+# Copy file(s) from a remote machine to localhost.
 #
 # Arguments
 #    arg 1:  remote host
@@ -68,9 +68,9 @@ get_value() {
 }
 
 # ------------------------------------------------------------------------------
-#  Import a certificate into an existing keystore.
+# Import a certificate into an existing keystore.
 #
-#  Arguments
+# Arguments
 #    arg 1: alias name in the keystore
 #    arg 2: certificate to be imported
 #    arg 3: the keystore
@@ -94,7 +94,7 @@ function import_to_keystore() {
 }
 
 # ------------------------------------------------------------------------------
-#  Run an external bash script if it exists.
+# Run an external bash script if it exists.
 # ------------------------------------------------------------------------------
 function script_runner() {
   local script_file
@@ -134,7 +134,24 @@ function set_container_up_state() {
 }
 
 # ------------------------------------------------------------------------------
-#  This method is called when a SIGTERM signal appears.
+# Shows an ANSI test that indicates that the container has been started.
+# ------------------------------------------------------------------------------
+function show_ready_message() {
+  local fqdn
+  fqdn=$(hostname -f)
+
+  printf "%s | [DEBUG] container \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
+  printf "%s | [DEBUG]  _                  _                            _             _           _ \n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | |                | |                          | |           | |         | |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | |__   __ _ ___   | |__   ___  ___ _ __     ___| |_ __ _ _ __| |_ ___  __| |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | '_ \ / _\` / __|  | '_ \ / _ \/ _ \ '_ \   / __| __/ _\` | \'__| __/ _ \/ _\` |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | | | | (_| \__ \  | |_) |  __/  __/ | | |  \__ \ || (_| | |  | ||  __/ (_| |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] |_| |_|\__,_|___/  |_.__/ \___|\___|_| |_|  |___/\__\__,_|_|   \__\___|\__,_|\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "\n"
+}
+
+# ------------------------------------------------------------------------------
+# This method is called when a SIGTERM signal appears.
 # ------------------------------------------------------------------------------
 function shutdown_trap() {
   printf "%s | [INFO]  shutting down the container...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
