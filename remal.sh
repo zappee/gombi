@@ -177,8 +177,8 @@ function show_help() {
     printf "      REMAL_HOME: %s\n" ""
     printf "      WORKSPACE : %s\n\n" "$WORKSPACE"
     printf "   %bTasks%b:\n" "$STYLE_BOLD" "$STYLE_DEFAULT"
-    printf "      %ba:    build the Master image%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "      %bb:    build of all Base images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %ba:    build the Base image%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bb:    build of all core images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bb1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_JAVA_11" "$STYLE_DEFAULT"
     printf "        %bb2:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_JAVA_17" "$STYLE_DEFAULT"
     printf "        %bb3:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
@@ -260,6 +260,9 @@ function is_task_invalid {
 show_help "$#"
 START=$(date +%s)
 
+# command executors
+if match "$COMMAND" "x";  then docker_container_remove; fi
+
 # builder tasks
 # if is_task_invalid "$COMMAND" "a"; then show_invalid_task_error; fi
 if match "$COMMAND" "a1"; then docker_image_build   "$LABEL_BASE"     "base"; fi
@@ -280,7 +283,6 @@ if match "$COMMAND" "t6"; then docker_container_run "$LABEL_DS"       "forgerock
 if match "$COMMAND" "t7"; then docker_container_run "$LABEL_AM"       "forgerock/forgerock-am"; fi
 
 # command executors
-if match "$COMMAND" "x";  then docker_container_remove; fi
 if match "$COMMAND" "u";  then docker_image_show; fi
 if match "$COMMAND" "v";  then docker_container_show; fi
 if match "$COMMAND" "s";  then docker_containers_run; fi

@@ -1,11 +1,11 @@
 #!/bin/bash -ue
 # ******************************************************************************
-#  Bash environment configuration in Docker environment.
+# Bash environment configuration in Docker environment.
 #
-#  Since : May, 2023
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since : May, 2023
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"

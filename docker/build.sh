@@ -1,17 +1,17 @@
 #!/bin/bash -ue
 # ******************************************************************************
-#  Remal Docker image builder.
+# Remal Docker image builder.
 #
-#  Since : January, 2023
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since : January, 2023
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 #
-#  Usage:
-#     $ ./build.sh <image-source-dir>
+# Usage:
+#    $ ./build.sh <image-source-dir>
 #
-#     where the source-dir must point to the directory that holds the image
-#     source code
+#    where the source-dir must point to the directory that holds the image
+#    source code
 # ******************************************************************************
 if [ "$#" -ne 1 ]; then
   printf "[ERROR] Illegal number of parameters.\n"

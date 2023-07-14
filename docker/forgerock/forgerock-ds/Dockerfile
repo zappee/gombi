@@ -34,8 +34,7 @@ ENV IMAGE_NAME="ds-7.3" \
     LDAP_PORT=389 \
     LDAP_USER_DN="uid=admin" \
     LDAP_USER_PASSWORD="password" \
-    LDAPS_PORT=636 \
-    MONITOR_USER_PASSWORD=password
+    LDAPS_PORT=636
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \
