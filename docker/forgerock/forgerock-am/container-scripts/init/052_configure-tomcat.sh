@@ -52,7 +52,6 @@ printf "%s | [DEBUG] ===========================================================
 FQDN=$(hostname -f)
 KEYSTORE_HOME="/tmp"
 KEYSTORE_FILE="$FQDN.p12"
-KEYSTORE_PASSWORD="changeit"
 
 generate_certificate "$FQDN"
 copy_from_remote_machine "$CA_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$KEYSTORE_FILE" "$KEYSTORE_HOME"
