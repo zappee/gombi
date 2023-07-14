@@ -12,9 +12,9 @@ printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:
 printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 
 {
-  printf "export %s=\"%s\"\n" "LDAP_HOST" "$EXPOSED_HTTPS_PORT"
   printf "export %s=\"%s\"\n" "CA_HOST" "$CA_HOST"
-  printf "export %s=\"%s\"\n" "CONFIG_TOOL_HOME" "$AM_CONFIG_TOOL_HOME"
-  printf "export %s=\"%s\"\n" "AM_HOME" "$AM_HOME"
   printf "export %s=\"%s\"\n" "CATALINA_OPTS" "$CATALINA_OPTS"
+  printf "export %s=\"%s\"\n" "AM_HOME" "$AM_HOME"
+  printf "export %s=\"%s\"\n" "AM_CONFIG_TOOL_HOME" "$AM_CONFIG_TOOL_HOME"
+  printf "export %s=\"%s\"\n" "AM_CONFIG_TOOL" "$AM_CONFIG_TOOL"
 } >> /etc/profile

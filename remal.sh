@@ -145,7 +145,7 @@ function show_execution_time() {
   execution_time=$(($(date +%s) - start))
 
   if [ -n "$command" ]; then
-    printf "execution time: %s day %s\n" "$(($(date -d@$execution_time -u +%d)-1))" "$(date -d@$execution_time -u +%H\ hour\ %M\ min\ %S\ sec)"
+    printf "\nexecution time: %s day %s\n" "$(($(date -d@$execution_time -u +%d)-1))" "$(date -d@$execution_time -u +%H\ hour\ %M\ min\ %S\ sec)"
   fi
 }
 

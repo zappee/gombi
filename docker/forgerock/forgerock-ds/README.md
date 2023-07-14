@@ -67,9 +67,9 @@ fs.inotify.max_user_watches = 524288
   * The default timeout before Docker kills completely the container is 10 seconds.
     If the backup process runs longer, then you need to increase the Docker's shutdown timeout accordingly.
 
-    | Name, shorthand | Default | Description                           | Example                         |
-    |-----------------|---------|---------------------------------------|---------------------------------|
-    | --time , -t     | 10 | Seconds to wait for stop before killing it | `docker stop -t 60 <containerId>` |
+    | Name, shorthand | Default | Description                                | Example                           |
+    |-----------------|---------|--------------------------------------------|-----------------------------------|
+    | --time , -t     |  10     | Seconds to wait for stop before killing it | `docker stop -t 60 <containerId>` |
 
   Start the container:
   ~~~

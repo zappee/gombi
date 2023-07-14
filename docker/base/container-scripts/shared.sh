@@ -35,6 +35,33 @@ function copy_from_remote_machine() {
 }
 
 # ------------------------------------------------------------------------------
+# FQDN to an LDAP DN string.
+#
+# com ->                       dc=com
+# world.com ->                 dc=world,dc=com
+# hello.world.com ->           dc=hello,dc=world,dc=com
+# hello.beautiful.world.com -> dc=hello,dc=beautiful,dc=world,dc=com
+#
+# LDAP attributes
+#    - CN = Common Name
+#    - OU = Organizational Unit
+#    - DC = Domain Component
+#    - DN = Distinguished Name
+#
+# ${1//./ /} replaces all instances of '.' in '$1' with ' ' (a space). See
+# the "Parameter Expansion" section of the Bash man page for details.
+#
+# The sed expression s/[^ ]*/dc=&/g searches for all groups of non-space
+# characters and adds dc= in front of them (the & in the replacement means
+# "whatever we matched in the first part of the expression").
+#
+# The sed expression s/ /,/g replaces all spaces with ,
+# ------------------------------------------------------------------------------
+function fqdn_to_ldap_dn() {
+  sed -e 's/[^ ]*/dc=&/g' <<<"${1//./ }" -e 's/ /,/g'
+ }
+
+# ------------------------------------------------------------------------------
 # This method generates a certificate for the server using the our Private
 # Certificate Authority infrastructure.
 #

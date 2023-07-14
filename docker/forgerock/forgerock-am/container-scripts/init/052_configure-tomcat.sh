@@ -28,17 +28,17 @@ function tomcat_configuration() {
   xmlstarlet edit \
     --inplace \
     --append  /Server/Service/Connector    --type elem -n "Connector" \
-    --insert '/Server/Service/Connector[last()]' -t attr -n "port" -v "443" \
-    --insert '/Server/Service/Connector[@port='443']' -t attr -n "protocol" -v "org.apache.coyote.http11.Http11NioProtocol" \
-    --insert '/Server/Service/Connector[@port='443']' -t attr -n "maxThreads" -v "200" \
-    --insert '/Server/Service/Connector[@port='443']' -t attr -n "SSLEnabled" -v "true" \
-    --insert '/Server/Service/Connector[@port='443']' -t attr -n "scheme" -v "https" \
-    --insert '/Server/Service/Connector[@port='443']' -t attr -n "secure" -v "true" \
-    --insert '/Server/Service/Connector[@port='443']' -t attr -n "keystoreFile" -v "$keystore_file" \
-    --insert '/Server/Service/Connector[@port='443']' -t attr -n "keystoreType" -v "PKCS12" \
-    --insert '/Server/Service/Connector[@port='443']' -t attr -n "keystorePass" -v "$keystore_password" \
-    --insert '/Server/Service/Connector[@port='443']' -t attr -n "clientAuth" -v "false" \
-    --insert '/Server/Service/Connector[@port='443']' -t attr -n "sslProtocol" -v "TLS" \
+    --insert "/Server/Service/Connector[last()]" -t attr -n "port" -v "443" \
+    --insert "/Server/Service/Connector[@port='443']" -t attr -n "protocol" -v "org.apache.coyote.http11.Http11NioProtocol" \
+    --insert "/Server/Service/Connector[@port='443']" -t attr -n "maxThreads" -v "200" \
+    --insert "/Server/Service/Connector[@port='443']" -t attr -n "SSLEnabled" -v "true" \
+    --insert "/Server/Service/Connector[@port='443']" -t attr -n "scheme" -v "https" \
+    --insert "/Server/Service/Connector[@port='443']" -t attr -n "secure" -v "true" \
+    --insert "/Server/Service/Connector[@port='443']" -t attr -n "keystoreFile" -v "$keystore_file" \
+    --insert "/Server/Service/Connector[@port='443']" -t attr -n "keystoreType" -v "PKCS12" \
+    --insert "/Server/Service/Connector[@port='443']" -t attr -n "keystorePass" -v "$keystore_password" \
+    --insert "/Server/Service/Connector[@port='443']" -t attr -n "clientAuth" -v "false" \
+    --insert "/Server/Service/Connector[@port='443']" -t attr -n "sslProtocol" -v "TLS" \
     "$CATALINA_HOME/conf/server.xml"
 }
 

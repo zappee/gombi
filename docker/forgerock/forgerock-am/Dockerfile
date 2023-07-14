@@ -34,13 +34,9 @@ ENV IMAGE_NAME="am-7.3" \
     AM_DEFAULT_POLICY_AGENT_PASSWORD="password" \
     AM_CONFIG_STORE_HOST="ds.hello.com" \
     AM_CONFIG_STORE_PORT="636" \
-    AM_CONFIG_STORE_ROOT_SUFFIX="ou=am-config" \
-    AM_CONFIG_STORE_MANAGER_DN="uid=am-config,ou=admins,ou=am-config" \
     AM_CONFIG_STORE_MANAGER_PASSWD="password" \
     AM_USER_STORE_HOST="ds.hello.com" \
     AM_USER_STORE_PORT="636" \
-    AM_USER_STORE_SUFFIX="ou=identities" \
-    AM_USER_STORE_MANAGER_DN="uid=am-identity-bind-account,ou=admins,ou=identities" \
     AM_USER_STORE_MANAGER_PASSWD="password" \
     \
     CATALINA_OPTS="\
