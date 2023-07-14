@@ -1,0 +1,177 @@
+OpenAM configuration
+https://am.remal.com:13024/openam
+
+Step 1: Default user password
+    * default user:            amAdmin
+    * password:                password
+
+Step 2: Server settings
+    * server URL:              https://am.remal.com:13034
+    * cookie domain:           remal.com
+    * platform locale:         en_US
+    * configuration directory: /opt/openam/config
+
+Step 3: Configuration Data Store Settings
+    * data store:              External DS
+    * SSL/TLS enabled:         true
+	* host name:               ds.remal.com
+	* port:                    636
+	* encryption key:
+	* root suffix:             ou=am-config
+	* login ID:                uid=am-config,ou=admins,ou=am-config
+	* password:                password
+	* new deployment:          true
+
+Step 4: User Data Store Settings
+    * user data store type:    ForgeRock Directory Services (DS)
+    * SSL/TLS enabled:         true
+    * directory name:          ds.hello.com
+    * port:                    636
+    * root suffix:
+    * login ID:
+    * password:
+
+
+Tomcat config:
+https://deliciousbrains.com/ssl-certificate-authority-for-local-https-development/
+
+Open DJ certificate/keystore:
+https://backstage.forgerock.com/docs/ds/7.1/security-guide/key-management.html
+https://backstage.forgerock.com/knowledge/kb/article/a88166692
+https://backstage.forgerock.com/knowledge/kb/article/a82533000#wfOTyp
+
+Open DJ support request:
+https://backstage.forgerock.com/docs/ds/7.2/maintenance-guide/troubleshooting.html
+
+Open dj 7.3:
+https://backstage.forgerock.com/docs/ds/7.3/install-guide/setup-own-keys.html
+
+
+
+606MB	am-7.3:0.0.1-remal		    3 seconds ago	dda56479f348
+15.3MB	base:0.0.1-remal		    About a minute ago	013a67b7b9b4
+362MB	ds-7.3:0.0.1-remal		    36 seconds ago	778b40908bc6
+276MB	openjdk-11:0.0.1-remal		About a minute ago	8470c140b5a4
+310MB	openjdk-17:0.0.1-remal		About a minute ago	b64176d68c57
+310MB	private-ca:0.0.1-remal		47 seconds ago	618d3aee3536
+297MB	tomcat-9:0.0.1-remal		51 seconds ago	371d66310615
+
+
+
+
+
+
+    JAVA_OPTIONS="-server -Xms1024m -Xmx1024m -XX:+UseParallelGC -XX:MetaspaceSize=256m -XX:MaxMetaspaceSize=256m -Djavax.net.debug=all" \
+    FQDN="am.remal.com" \
+    KEYSTORE="remal.com.pkcs12" \
+    KEYSTORE_PASSWORD="changeit" \
+    LDAP_HOST="forgerock-ds" \
+    LDAP_SSH_CREDENTIALS="root:password" \
+    LDAP_SIGNAL_PORT=1331
+
+
+
+
+
+ds.hello.com
+636
+uid=admin
+password
+
+
+
+
+
+netcat -lk -p 12345 | while read line
+do
+    match=$(echo $line | grep -c 'Keep-Alive')
+    if [ $match -eq 1 ]; then
+        [start a command]
+    fi
+done
+
+
+
+
+
+
+
+
+# install forgerock access management
+RUN set -ux; \
+    printf "installing openldap-clients...\n"; \
+    apk add --no-cache openldap-clients; \
+    \
+    printf "generating a self sign certificate...\n"; \
+    keytool \
+        -genkey \
+        -alias "$FQDN" \
+        -storetype PKCS12 \
+        -keyalg RSA \
+        -validity 730 \
+        -keysize 2048 \
+        -storepass "$KEYSTORE_PASSWORD" \
+        -keystore "$CATALINA_HOME/conf/$KEYSTORE" \
+        -dname "CN=$FQDN" \
+        -ext "san=dns:$FQDN"; \
+    \
+    printf "configuring SSL connector of tomcat...\n"; \
+    xmlstarlet edit \
+        --inplace \
+        --append  /Server/Service/Connector    --type elem -n "Connector" \
+        --insert '/Server/Service/Connector[last()]' -t attr -n "port" -v "443" \
+        --insert '/Server/Service/Connector[@port='443']' -t attr -n "protocol" -v "org.apache.coyote.http11.Http11NioProtocol" \
+        --insert '/Server/Service/Connector[@port='443']' -t attr -n "maxThreads" -v "200" \
+        --insert '/Server/Service/Connector[@port='443']' -t attr -n "SSLEnabled" -v "true" \
+        --insert '/Server/Service/Connector[@port='443']' -t attr -n "scheme" -v "https" \
+        --insert '/Server/Service/Connector[@port='443']' -t attr -n "secure" -v "true" \
+        --insert '/Server/Service/Connector[@port='443']' -t attr -n "keystoreFile" -v "$CATALINA_HOME/conf/$KEYSTORE" \
+        --insert '/Server/Service/Connector[@port='443']' -t attr -n "keystoreType" -v "PKCS12" \
+        --insert '/Server/Service/Connector[@port='443']' -t attr -n "keystorePass" -v "$KEYSTORE_PASSWORD" \
+        --insert '/Server/Service/Connector[@port='443']' -t attr -n "clientAuth" -v "false" \
+        --insert '/Server/Service/Connector[@port='443']' -t attr -n "sslProtocol" -v "TLS" \
+        "$CATALINA_HOME/conf/server.xml"
+COPY container-scripts/* /
+
+
+
+
+
+
+
+
+
+
+
+
+    \
+    AM_HOME="/home/openam" \
+    //AM_HOST="will-be-updated-at-runtime" \
+    //AM_URL="https://am.example.com:1234" \
+    //AM_CONTEXT_ROOT="openam" \
+    //AM_CONFIG_HOME="/home/openam/" \
+    //AM_USER_LOCALE="en_US" \
+    //AM_SERVER_LOCALE="en_US" \
+    //AM_ENCRYPTION_KEY="changeit" \
+    AM_ADMIN_USER="amadmin" \
+    AM_ADMIN_PASSWORD="password" \
+    //AM_COOKIE_DOMAIN="hello.com" \
+    //AM_ACCEPT_LICENSES="yes" \
+    \
+    //AM_CONFIG_STORE="external" \
+    //AM_CONFIG_STORE_SSL="SSL" \
+    AM_CONFIG_STORE_HOST="ds.hello.com" \
+    AM_CONFIG_STORE_PORT="636" \
+    //AM_CONFIG_STORE_ADMIN_PORT="4444" \
+    //AM_DIRECTORY_JMX_PORT="1689" \
+    AM_CONFIG_STORE_ROOT_SUFFIX="ou=am-config" \
+    AM_CONFIG_STORE_DIRECTORY_MGR_DN="uid=am-config,ou=admins,ou=am-config" \
+    AM_CONFIG_STORE_DIRECTORY_MGR_PASSWD="password" \
+    \
+    //AM_USER_STORE_TYPE="LDAPv3ForOpenDS" \
+    //AM_USER_STORE_SSL="SSL" \
+    AM_USER_STORE_HOST="ds.hello.com" \
+    AM_USER_STORE_PORT="636" \
+    AM_USER_STORE_SUFFIX="ou=identities" \
+    AM_USER_STORE_MGR_DN="uid=am-identity-bind-account,ou=admins,ou=identities" \
+    AM_USER_STORE_PASSWD="password" \
