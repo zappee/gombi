@@ -1,15 +1,16 @@
 # ******************************************************************************
-#  Remal Base Docker image build file.
+# Remal Base Docker image build file.
 #
-#  Since : May, 2023
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since : May, 2023
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM=${IMAGE_FROM}
 FROM ${IMAGE_FROM}
 
 EXPOSE 22/tcp
+EXPOSE 1331/tcp
 
 # environment variables
 ENV IMAGE_NAME="base" \
@@ -28,8 +29,9 @@ LABEL "com.remal.image.vendor"="Remal" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
       "com.remal.image.author"="${IMAGE_AUTHOR}"
 
-# installing and settin up bash as a default shell
+# installing tools and settin up bash as a default shell
 RUN set -ux; \
+    apk add socat; \
     apk add --no-cache bash; \
     sed -i 's|/bin/ash|/bin/bash|' /etc/passwd; \
     printf "%s\n" "source ~/.bashrc" >> ~/.profile; \

@@ -1,15 +1,15 @@
 #!/bin/bash -ue
 # ******************************************************************************
-#  Shared, common bash functions.
+# Shared, common bash functions.
 #
-#  Since : April, 2023
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since : April, 2023
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 
 # ------------------------------------------------------------------------------
-#  Copy file(s) from a remote machine to localhost.
+# Copy file(s) from a remote machine to localhost.
 #
 # Arguments
 #    arg 1:  remote host
@@ -35,6 +35,54 @@ function copy_from_remote_machine() {
 }
 
 # ------------------------------------------------------------------------------
+# FQDN to an LDAP DN string.
+#
+# com ->                       dc=com
+# world.com ->                 dc=world,dc=com
+# hello.world.com ->           dc=hello,dc=world,dc=com
+# hello.beautiful.world.com -> dc=hello,dc=beautiful,dc=world,dc=com
+#
+# LDAP attributes
+#    - CN = Common Name
+#    - OU = Organizational Unit
+#    - DC = Domain Component
+#    - DN = Distinguished Name
+#
+# ${1//./ /} replaces all instances of '.' in '$1' with ' ' (a space). See
+# the "Parameter Expansion" section of the Bash man page for details.
+#
+# The sed expression s/[^ ]*/dc=&/g searches for all groups of non-space
+# characters and adds dc= in front of them (the & in the replacement means
+# "whatever we matched in the first part of the expression").
+#
+# The sed expression s/ /,/g replaces all spaces with ,
+# ------------------------------------------------------------------------------
+function fqdn_to_ldap_dn() {
+  sed -e 's/[^ ]*/dc=&/g' <<<"${1//./ }" -e 's/ /,/g'
+ }
+
+# ------------------------------------------------------------------------------
+# This method generates a certificate for the server using the our Private
+# Certificate Authority infrastructure.
+#
+# Arguments
+#    arg 1:  the hostname for which the certificate is generated
+# ------------------------------------------------------------------------------
+function generate_certificate() {
+  local host_name
+  host_name="$1"
+
+  printf "%s | [INFO]  generating a server certificate...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG]         CA_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$CA_HOST"
+  printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
+  printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
+  printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$host_name"
+  sshpass -p "$SSH_PASSWORD" ssh \
+    -oStrictHostKeyChecking=no \
+    "$SSH_USER@$CA_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $host_name'"
+}
+
+# ------------------------------------------------------------------------------
 # Read value from a property file.
 #
 # Arguments
@@ -47,9 +95,9 @@ get_value() {
 }
 
 # ------------------------------------------------------------------------------
-#  Import a certificate into an existing keystore.
+# Import a certificate into an existing keystore.
 #
-#  Arguments
+# Arguments
 #    arg 1: alias name in the keystore
 #    arg 2: certificate to be imported
 #    arg 3: the keystore
@@ -73,7 +121,7 @@ function import_to_keystore() {
 }
 
 # ------------------------------------------------------------------------------
-#  Run an external bash script if it exists.
+# Run an external bash script if it exists.
 # ------------------------------------------------------------------------------
 function script_runner() {
   local script_file
@@ -103,18 +151,33 @@ function script_runner() {
 # This runs at the background in order to does not block the execution.
 # ------------------------------------------------------------------------------
 function set_container_up_state() {
-  printf "%s | [INFO]  docker container is up and ready to serve incoming requests\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [INFO]  docker container is READY to serve incoming requests\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG] opening port %s...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$UP_SIGNAL_PORT"
 
   local marker_file
   marker_file="/tmp/first-startup.marker"
   touch "$marker_file"
-
-  nc -lk -v -p "$UP_SIGNAL_PORT" &
+  socat - tcp-listen:"$UP_SIGNAL_PORT",fork,reuseaddr &
 }
 
 # ------------------------------------------------------------------------------
-#  This method is called when a SIGTERM signal appears.
+# Shows an ANSI test that indicates that the container has been started.
+# ------------------------------------------------------------------------------
+function show_ready_message() {
+  local fqdn
+  fqdn=$(hostname -f)
+
+  printf "%s | [INFO]  container \"%s\" has been started\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
+  printf "%s | [DEBUG]  _                  _                            _             _           _ \n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | |                | |                          | |           | |         | |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | |__   __ _ ___   | |__   ___  ___ _ __     ___| |_ __ _ _ __| |_ ___  __| |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | '_ \ / _\` / __|  | '_ \ / _ \/ _ \ '_ \   / __| __/ _\` | \'__| __/ _ \/ _\` |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | | | | (_| \__ \  | |_) |  __/  __/ | | |  \__ \ || (_| | |  | ||  __/ (_| |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] |_| |_|\__,_|___/  |_.__/ \___|\___|_| |_|  |___/\__\__,_|_|   \__\___|\__,_|\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+}
+
+# ------------------------------------------------------------------------------
+# This method is called when a SIGTERM signal appears.
 # ------------------------------------------------------------------------------
 function shutdown_trap() {
   printf "%s | [INFO]  shutting down the container...\n" "$(date +"%Y-%b-%d %H:%M:%S")"

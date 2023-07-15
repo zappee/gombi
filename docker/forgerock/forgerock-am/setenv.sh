@@ -7,11 +7,11 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-IMAGE_NAME="openjdk-11"
+IMAGE_NAME="am-7.3"
 IMAGE_TAG="0.0.1-remal"
-IMAGE_DESCRIPTION="Remal OpenJDK 11 Docker image"
+IMAGE_DESCRIPTION="Remal ForgeRock Directory Server 7.3.0"
 IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
-IMAGE_FROM="base:0.0.1-remal"
+IMAGE_FROM="tomcat-9:0.0.1-remal"
 
-BUILD_TYPE="${1:-fat}"
-PUSH_IMAGE="${2:-false}"
+BUILD_TYPE=${1:-fat}
+PUSH_IMAGE=${2:-false}

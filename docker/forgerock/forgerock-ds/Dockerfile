@@ -14,6 +14,7 @@ EXPOSE 22/tcp
 EXPOSE 389/tcp
 EXPOSE 636/tcp
 EXPOSE 4444/tcp
+EXPOSE 1331/tcp
 
 # build time variables
 ARG DS_HOME="/opt/opendj"
@@ -24,15 +25,16 @@ ENV IMAGE_NAME="ds-7.3" \
     IMAGE_DESCRIPTION="Remal ForgeRock Directory Server 7.3.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
-    DS_HOME="$DS_HOME" \
-    DS_INSTALL_KIT="DS-7.3.0.zip" \
-    CA_HOST="ca.remal.com" \
     ADMIN_CONNECTOR_PORT=4444 \
+    CA_HOST="ca.remal.com" \
+    DS_HOST="ds.hello.com" \
+    DS_HOME="$DS_HOME" \
+    DEPLOYMENT_KEY_FILE="$DS_HOME/deployment-key.properties" \
+    DS_INSTALL_KIT="DS-7.3.0.zip" \
     LDAP_PORT=389 \
-    LDAPS_PORT=636 \
     LDAP_USER_DN="uid=admin" \
     LDAP_USER_PASSWORD="password" \
-    DEPLOYMENT_KEY_FILE="$DS_HOME/deployment-key.properties"
+    LDAPS_PORT=636
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \
@@ -58,5 +60,5 @@ RUN set -ux; \
 
 
 # final image
-COPY container-scripts/ds-functions.sh container-scripts/shutdown.sh /
 FROM base-$BUILD_TYPE AS final
+COPY container-scripts/ds-functions.sh container-scripts/shutdown.sh /

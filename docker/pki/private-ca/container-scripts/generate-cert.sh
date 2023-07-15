@@ -1,19 +1,19 @@
 #!/bin/bash
 # ******************************************************************************
-#  Remal Server certificate generator.
+# Remal Server certificate generator.
 #
-#  Since : March, 2023
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since : March, 2023
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Usage: gen-server-cert.sh [hostname]
-#     hostname: name of the host machine where the certificate will be used
+# Usage: gen-server-cert.sh [hostname]
+#    hostname: name of the host machine where the certificate will be used
 #
-#  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 source /shared.sh
 
 # ------------------------------------------------------------------------------
-#  Validates the start arguments of this script.
+# Validates the start arguments of this script.
 # ------------------------------------------------------------------------------
 function validate_arguments() {
   if [[ $# -ne 1 ]]; then
@@ -24,7 +24,7 @@ function validate_arguments() {
 }
 
 # ------------------------------------------------------------------------------
-#  Show the start arguments and the relevant environment values of this script.
+# Show the start arguments and the relevant environment values of this script.
 # ------------------------------------------------------------------------------
 function show_context() {
   printf "%s | [INFO ] generating a server certificate using easy-rsa...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
@@ -46,8 +46,8 @@ function show_context() {
 }
 
 # ------------------------------------------------------------------------------
-#  Step 1) Generates a server certificate request and a private key for the
-#  given host/domain.
+# Step 1) Generates a server certificate request and a private key for the
+# given host/domain.
 # ------------------------------------------------------------------------------
 function generate_cert_req_and_key() {
   printf "%s | [INFO ] generating a server certificate request and key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
@@ -67,7 +67,7 @@ function generate_cert_req_and_key() {
 }
 
 # ------------------------------------------------------------------------------
-#  Step 2) Signs the server certificate request.
+# Step 2) Signs the server certificate request.
 # ------------------------------------------------------------------------------
 function signing_cert_req() {
   local domain work_dir
@@ -86,7 +86,7 @@ function signing_cert_req() {
 }
 
 # ------------------------------------------------------------------------------
-#  Create a new PKCS#12 keystore and import the server certificate into it.
+# Create a new PKCS#12 keystore and import the server certificate into it.
 # ------------------------------------------------------------------------------
 function export_to_keystore() {
   local domain
@@ -102,7 +102,7 @@ function export_to_keystore() {
 }
 
 # ------------------------------------------------------------------------------
-#  Main program starts here.
+# Main program starts here.
 # ------------------------------------------------------------------------------
 validate_arguments "$@"
 show_context "$@"
