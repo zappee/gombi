@@ -27,7 +27,7 @@ Generate a Server Certificate for your server, i.e. Tomcat, Spring Boot, etc.:
 
 This diagram illustrates the general steps involved in a server obtaining a signed certificate from a Certificate Authority.
 
-![CSR flow](doc/csr-to-ca-flow.png)
+![CSR flow](../../../docs/pki/x509_overview-1.png)
 
 1. Setup you SSL config file or Private-CA environment
 2. Create your own CA
@@ -36,7 +36,7 @@ This diagram illustrates the general steps involved in a server obtaining a sign
 
 The next illustration shows generating a certificate using a private and a public key pair.
 
-![CSR flow](doc/x509_overview.gif)
+![CSR flow](../../../docs/pki/x509_overview-2.gif)
 
 You sign the certificate with the root certificate of a Certificate Authority (providing the public key through a certificate signing request .csr). Then you issue and export the signed certificate.
 

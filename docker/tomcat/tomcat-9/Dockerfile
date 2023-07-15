@@ -1,16 +1,17 @@
 # ******************************************************************************
-#  Remal Apache Tomcat Docker image build file.
+# Remal Apache Tomcat Docker image build file.
 #
-#  Since : January, 2023
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since : January, 2023
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM=${IMAGE_FROM}
 ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
 EXPOSE 22/tcp
+EXPOSE 1331/tcp
 EXPOSE 8080/tcp
 
 # environment variables
@@ -104,3 +105,6 @@ RUN set -ux; \
    \
    printf "setting up environment variables...\n"; \
    printf "export %s=\"%s\"\n" "CATALINA_HOME" "$CATALINA_HOME" >> /etc/profile
+
+ONBUILD COPY container-scripts/init/* /docker.init/
+ONBUILD COPY container-scripts/startup/* /docker.startup/

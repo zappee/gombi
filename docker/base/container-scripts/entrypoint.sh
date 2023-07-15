@@ -1,11 +1,11 @@
 #!/bin/bash -ue
 # ******************************************************************************
-#  Remal Docker entrypoint file.
+# Remal Docker entrypoint file.
 #
-#  Since : January, 2023
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since : January, 2023
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 source shared.sh
 trap "shutdown_trap; exit" SIGINT SIGTERM SIGHUP
@@ -18,10 +18,11 @@ if [ "$(is_first_startup)" == "true" ]; then
   /bin/run-parts --exit-on-error "/docker.init/"
 fi
 
-printf "%s | [DEBUG] executing the startup scripts if they are available...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+printf "%s | [DEBUG] executing the startup scripts...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 /bin/run-parts --exit-on-error "/docker.startup/"
 
 set_container_up_state
+show_ready_message
 
 # keep alive the container
 # the control must be in this script otherwise the 'trap' wont work

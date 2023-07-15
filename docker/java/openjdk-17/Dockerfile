@@ -1,15 +1,16 @@
 # ******************************************************************************
-#  Remal OpenJDK 17 Docker image build file.
+# Remal OpenJDK 17 Docker image build file.
 #
-#  Since : January, 2023
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since : January, 2023
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM=${IMAGE_FROM}
 FROM ${IMAGE_FROM}
 
 EXPOSE 22/tcp
+EXPOSE 1331/tcp
 
 # environment variables
 ENV IMAGE_NAME="openjdk-17" \

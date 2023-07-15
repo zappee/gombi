@@ -1,6 +1,6 @@
 #!/bin/bash -ue
 # ******************************************************************************
-# Bash environment configuration in Docker environment.
+# Start Apache Tomcat script.
 #
 # Since : May, 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -11,14 +11,10 @@ printf "%s | [DEBUG] -----------------------------------------------------------
 printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
 printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 
-{
-  printf "export %s=\"%s\"\n" "DS_HOME" "$DS_HOME"
-  printf "export %s=\"%s\"\n" "CA_HOST" "$CA_HOST"
-  printf "export %s=\"%s\"\n" "ADMIN_CONNECTOR_PORT" "$ADMIN_CONNECTOR_PORT"
-  printf "export %s=\"%s\"\n" "LDAP_PORT" "$LDAP_PORT"
-  printf "export %s=\"%s\"\n" "LDAPS_PORT" "$LDAPS_PORT"
-  printf "export %s=\"%s\"\n" "LDAP_USER_DN" "$LDAP_USER_DN"
-  printf "export %s=\"%s\"\n" "LDAP_USER_PASSWORD" "$LDAP_USER_PASSWORD"
-  printf "export %s=\"%s\"\n" "DEPLOYMENT_KEY_FILE" "$DEPLOYMENT_KEY_FILE"
-  printf "cd %s\n" "$DS_HOME"
-} >> /etc/profile
+# start tomcat
+printf "JAVA_OPTS=\"%s\"" "$JAVA_OPTIONS" > "$CATALINA_HOME/bin/setenv.sh"; \
+chmod +x "$CATALINA_HOME/bin/setenv.sh"
+"$CATALINA_HOME/bin/catalina.sh" start
+
+# pipe out the log to docker and wait for tomcat startup
+tail -F "$CATALINA_HOME/logs/catalina.out" & ( tail -f -n0 "$CATALINA_HOME/logs/catalina.out" & ) | grep -q "Server startup in"

@@ -1,6 +1,6 @@
 #!/bin/bash -ue
 # ******************************************************************************
-#  Bash environment configuration in Docker environment.
+#  ForgeRock Directory Server installation script.
 #
 #  Since : May, 2023
 #  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -9,24 +9,6 @@
 # ******************************************************************************
 source /shared.sh
 source /ds-functions.sh
-
-# ------------------------------------------------------------------------------
-# This method generates a certificate for the server using the our Private
-# Certificate Authority infrastructure.
-# ------------------------------------------------------------------------------
-function generate_certificate() {
-  local host_name
-  host_name=$(hostname)
-
-  printf "%s | [INFO]  generating a server certificate...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]         CA_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$CA_HOST"
-  printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
-  printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
-  printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$host_name"
-  sshpass -p "$SSH_PASSWORD" ssh \
-    -oStrictHostKeyChecking=no \
-    "$SSH_USER@$CA_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $host_name'"
-}
 
 # ------------------------------------------------------------------------------
 # Generates and saves a new ForgeRock Directory Server deployment-key.
@@ -73,6 +55,7 @@ function generate_ds_master_key() {
   deployment_key_password=$(get_value "$DEPLOYMENT_KEY_FILE" "PASSWORD")
 
   printf "%s | [INFO]  creating a new ForgeRock Directory Server master-key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG]                DS_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$DS_HOME"
   printf "%s | [DEBUG]                  alias: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$alias"
   printf "%s | [DEBUG]    deployment key file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$DEPLOYMENT_KEY_FILE"
   printf "%s | [DEBUG]         deployment key: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$deployment_key"
@@ -100,51 +83,64 @@ function install_ds() {
   truststore_file=$(readlink -f "$JAVA_HOME/lib/security/cacerts")
   truststore_password="changeit"
 
-  local fqdn
+  local fqdn domain
   fqdn=$(hostname -f)
+  domain=$(hostname -d)
 
   local keystore_file keystore_password
   keystore_file="/tmp/$fqdn.p12"
   keystore_password="changeit"
 
-  local profile
-  profile="am-identity-store"
+  local server_id domain_dn profile_config profile_store base_dn_config base_dn_store
+  server_id="master-ldap"
+  domain_dn=$(fqdn_to_ldap_dn "$domain")
+  ds_profile_config="am-config"
+  ds_profile_store="am-identity-store"
+  base_dn_config="ou=am-config,$domain_dn"
+  base_dn_store="ou=am-identity,$domain_dn"
 
-  printf "[INFO]  installing ForgeRock Directory Service...\n"
-  printf "[DEBUG]                         profile: \"%s\"\n" "$profile"
-  printf "[DEBUG]                       host-name: \"%s\"\n" "$fqdn"
-  printf "[DEBUG]                  deployment-key: \"%s\"\n" "$deployment_key"
-  printf "[DEBUG]         deployment-key password: \"%s\"\n" "$deployment_key_password"
-  printf "[DEBUG]                    ldap user DN: \"%s\"\n" "$LDAP_USER_DN"
-  printf "[DEBUG]              ldap user password: \"%s\"\n" "$LDAP_USER_PASSWORD"
-  printf "[DEBUG]           monitor user password: \"%s\"\n" "$MONITOR_USER_PASSWORD"
-  printf "[DEBUG]            admin connector port: \"%s\"\n" "$ADMIN_CONNECTOR_PORT"
-  printf "[DEBUG]                       LDAP port: \"%s\"\n" "$LDAP_PORT"
-  printf "[DEBUG]                      LDAPS port: \"%s\"\n" "$LDAPS_PORT"
-  printf "[DEBUG]   identity store admin password: \"%s\"\n" "$IDENTITY_STORE_ADMIN_PASSWORD"
-  printf "[DEBUG]                 truststore file: \"%s\"\n" "$truststore_file"
-  printf "[DEBUG]             truststore password: \"%s\"\n" "$truststore_password"
-  printf "[DEBUG]                   keystore file: \"%s\"\n" "$keystore_file"
-  printf "[DEBUG]               keystore password: \"%s\"\n" "$keystore_password"
+  printf "%s | [INFO]  installing ForgeRock Directory Service (DS)...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG]                       FQDN: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
+  printf "%s | [DEBUG]                     domain: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain"
+  printf "%s | [DEBUG]                  domain DN: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain_dn"
+  printf "%s | [DEBUG]                    DS_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$DS_HOME"
+  printf "%s | [DEBUG]                  server-id: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$server_id"
+  printf "%s | [DEBUG]                DS profiles: \"%s\", \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$ds_profile_config" "$ds_profile_store"
+  printf "%s | [DEBUG]                    base DN: \"%s\", \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$base_dn_config" "$base_dn_store"
+  printf "%s | [DEBUG]             deployment-key: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$deployment_key"
+  printf "%s | [DEBUG]    deployment-key password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$deployment_key_password"
+  printf "%s | [DEBUG]               ldap user DN: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$LDAP_USER_DN"
+  printf "%s | [DEBUG]         ldap user password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$LDAP_USER_PASSWORD"
+  printf "%s | [DEBUG]       admin connector port: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$ADMIN_CONNECTOR_PORT"
+  printf "%s | [DEBUG]                  LDAP port: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$LDAP_PORT"
+  printf "%s | [DEBUG]                 LDAPS port: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$LDAPS_PORT"
+  printf "%s | [DEBUG]            truststore file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$truststore_file"
+  printf "%s | [DEBUG]        truststore password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$truststore_password"
+  printf "%s | [DEBUG]              keystore file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$keystore_file"
+  printf "%s | [DEBUG]          keystore password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$keystore_password"
+  printf "%s | [INFO ] setting up directory-server\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 
   cd "$DS_HOME"
-
-  printf "[INFO ] setting up directory-server\n"
   ./setup \
-    --profile "$profile" \
-    --serverId "$profile" \
+    --serverId "$server_id" \
+    --profile "$ds_profile_config" \
+    --profile "$ds_profile_store" \
     --deploymentId "$deployment_key" \
     --deploymentIdPassword "$deployment_key_password" \
     --rootUserDN "$LDAP_USER_DN" \
     --rootUserPassword "$LDAP_USER_PASSWORD" \
-    --monitorUserPassword "$MONITOR_USER_PASSWORD" \
     --hostname "$fqdn" \
     --adminConnectorPort "$ADMIN_CONNECTOR_PORT" \
     --ldapPort "$LDAP_PORT" \
     --enableStartTls \
     --ldapsPort "$LDAPS_PORT" \
-    --set am-identity-store/amIdentityStoreAdminPassword:"$LDAP_USER_PASSWORD" \
     --acceptLicense \
+    --set am-config/backendName:"$ds_profile_config" \
+    --set am-config/baseDn:"$base_dn_config" \
+    --set am-config/amConfigAdminPassword:"$LDAP_USER_PASSWORD" \
+    --set am-identity-store/backendName:"$ds_profile_store" \
+    --set am-identity-store/baseDn:"$base_dn_store" \
+    --set am-identity-store/amIdentityStoreAdminPassword:"$LDAP_USER_PASSWORD" \
     --usePkcs12KeyStore "$keystore_file" \
     --keyStorePassword "$keystore_password" \
     --certNickname "$fqdn" \
@@ -158,12 +154,13 @@ function install_ds() {
 printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
 printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+
+FQDN=$(hostname -f)
 KEYSTORE_HOME="/tmp"
-KEYSTORE_FILE=$(hostname -f).p12
+KEYSTORE_FILE="$FQDN.p12"
 KEYSTORE_PASSWORD="changeit"
 
-wait_for_container "$CA_HOST"
-generate_certificate
+generate_certificate "$FQDN"
 copy_from_remote_machine "$CA_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$KEYSTORE_FILE" "$KEYSTORE_HOME"
 generate_ds_deployment_key
 generate_ds_master_key "$KEYSTORE_HOME/$KEYSTORE_FILE" "$KEYSTORE_PASSWORD"
