@@ -1,0 +1,72 @@
+@startuml
+skinparam rectangle<<image>> {
+	roundCorner 25
+}
+sprite $remalBaseImage jar:archimate/business-process
+sprite $remalServiceImage jar:archimate/application-service
+sprite $3rdPartyImage jar:archimate/application-component
+
+rectangle "alpine" as alpine <<$3rdPartyImage>><<image>> #Physical
+rectangle "base" as base <<$remalBaseImage>><<image>> #Application
+rectangle "OpenJDK-11" as java11 <<$remalServiceImage>><<image>> #Application
+rectangle "OpenJDK-17" as java17 <<$remalServiceImage>><<image>> #Application
+rectangle "Apache Tomcat 9" as tomcat9 <<$remalServiceImage>><<image>> #Application
+rectangle "Private Certificate Authority" as pki <<$remalServiceImage>><<image>> #Business
+rectangle "Directory Server" as ds <<$remalServiceImage>><<image>> #Business
+rectangle "Directory Server" as ds <<$remalServiceImage>><<image>> #Business
+
+alpine *-down-> base
+base *-down-> java11
+base *-down-> java17
+java11 *-down-> tomcat9
+java17 *-down-> pki
+java17 *-down-> ds
+
+HC *-down- NAS
+HC *-down- V
+HC *-down- I
+HC *-down- P
+
+CI -right->> NAS
+NAS -right->> V
+V -right->> I
+I -right->> P
+
+rectangle "Scanning" as scanning <<$aService>><<behavior>> #Application
+rectangle "Customer admnistration" as customerAdministration <<$aService>><<behavior>> #Application
+rectangle "Claims admnistration" as claimsAdministration <<$aService>><<behavior>> #Application
+rectangle Printing <<$aService>><<behavior>> #Application
+rectangle Payment <<$aService>><<behavior>> #Application
+
+scanning -up-> CI
+customerAdministration  -up-> CI
+claimsAdministration -up-> NAS
+claimsAdministration -up-> V
+claimsAdministration -up-> I
+Payment -up-> P
+
+Printing -up-> V
+Printing -up-> P
+
+rectangle "Document\nManagement\nSystem" as DMS <<$aComponent>> #Application
+rectangle "General\nCRM\nSystem" as CRM <<$aComponent>>  #Application
+rectangle "Home & Away\nPolicy\nAdministration" as HAPA <<$aComponent>> #Application
+rectangle "Home & Away\nFinancial\nAdministration" as HFPA <<$aComponent>>  #Application
+
+DMS .up.|> scanning
+DMS .up.|> Printing
+CRM .up.|> customerAdministration
+HAPA .up.|> claimsAdministration
+HFPA .up.|> Payment
+
+legend left
+Example from the "Archisurance case study" (OpenGroup).
+See
+====
+<$bProcess> :business process
+====
+<$aService> : application service
+====
+<$aComponent> : application component
+endlegend
+@enduml

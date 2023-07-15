@@ -1,17 +1,21 @@
 # Guide for Remal Docker Images 
 
 ## 1) Overview
-This document provides information about Remal Docker Images available in this project.
-For more details, check the specific documentation.
+This is an integrated development framework running in Docker containers.
+The environment provides the following services:
+- Private Certificate Authority infrastructure: issue server certificates (PKI)
+- Directory Service: store user data (LDAP)
+- Access Management infrastructure: OAUTH2, etc.
+- Secured Vault: Service Self Registration, Application Configurations, etc.
 
-## 2) Image versioning
-Subsequent releases of the same image must be assigned numerical identifiers consisting of three numbers separated by periods.
+The framework provides the following base Docker images:
+- OpenJDK 11 and 17 base Docker images
+- Apache Tomcat 9 base image
 
-The versioning of the Remal Docker images is the following: `remal-<image>:x:y:z`
+## 2) Image hierarchy
 
-* The first number, called the major number, is increased when there are significant improvements or changes in functionality.
-* The second number, called the minor number, is incremented when there are minor feature changes or notable fixes. For example, `remal-openjdk-11:0.2.0` indicates that minor changes were made to the earlier version, `remal-openjdk-11:0.1.0`.
-* The third number, if it exists, is called the revision number and is added or increased when minor bugs are eliminated. The 7 in `remal-openjdk-11:0.2.7` shows that bug fixes were made to the previous version.
+## 3) Development Environment Startup Flow
+
 
 ## 3) Development environment
 You can start the complete Docker stack on your machine if your machine has enough CPU and memory.
@@ -72,6 +76,15 @@ $ docker-compose stop --timeout 120
 
 ## 5) License and Copyright
 Copyright (c) 2020-2023 Remal Software, Arnold Somogyi. All rights reserved.
+
+## 2) Annex 1) Image versioning
+Subsequent releases of the same image must be assigned numerical identifiers consisting of three numbers separated by periods.
+
+The versioning of the Remal Docker images is the following: `remal-<image>:x:y:z`
+
+* The first number, called the major number, is increased when there are significant improvements or changes in functionality.
+* The second number, called the minor number, is incremented when there are minor feature changes or notable fixes. For example, `remal-openjdk-11:0.2.0` indicates that minor changes were made to the earlier version, `remal-openjdk-11:0.1.0`.
+* The third number, if it exists, is called the revision number and is added or increased when minor bugs are eliminated. The 7 in `remal-openjdk-11:0.2.7` shows that bug fixes were made to the previous version.
 
 ## Annex 1) Build slim Docker images
 Does the Docker Image size matter?
