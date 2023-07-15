@@ -45,7 +45,6 @@ services:
             - "13034:443"  # HTTPS
             - "13036:50636"  # LDAP over SSL
         environment:
-            - EXPOSED_HTTPS_PORT=13034
             - CA_HOST=ca.hello.com
             - AM_CONFIG_STORE_HOST=ds.hello.com
             - AM_USER_STORE_HOST=ds.hello.com

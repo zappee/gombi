@@ -10,10 +10,9 @@
 printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
 printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-printf "%s | [INFO]  starting Apache Tomcat...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 
 # start tomcat
-printf "JAVA_OPTS=\"%s\"" "$JAVA_OPTIONS" > "$CATALINA_HOME/bin/setenv.sh"
+printf "JAVA_OPTS=\"%s\"" "$JAVA_OPTIONS" > "$CATALINA_HOME/bin/setenv.sh"; \
 chmod +x "$CATALINA_HOME/bin/setenv.sh"
 "$CATALINA_HOME/bin/catalina.sh" start
 

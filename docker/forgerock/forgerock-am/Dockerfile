@@ -21,7 +21,6 @@ ENV IMAGE_NAME="am-7.3" \
     IMAGE_DESCRIPTION="Remal ForgeRock Access Management Server 7.3.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
-    EXPOSED_HTTPS_PORT=443 \
     CA_HOST="ca.remal.com" \
     \
     AM_INSTALL_KIT="AM-7.3.0.war" \

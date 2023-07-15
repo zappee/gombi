@@ -18,7 +18,7 @@ if [ "$(is_first_startup)" == "true" ]; then
   /bin/run-parts --exit-on-error "/docker.init/"
 fi
 
-printf "%s | [DEBUG] executing the startup scripts if they are available...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+printf "%s | [DEBUG] executing the startup scripts...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 /bin/run-parts --exit-on-error "/docker.startup/"
 
 set_container_up_state
