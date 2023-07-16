@@ -20,6 +20,11 @@ Access Management admin user:
 
 ## 3) Troubleshooting
 * Turn on SSL debug log: `-Djavax.net.debug=all`
+* Monitoring the network traffic
+    ~~~~
+    $ tcpdump --interface any -f "not port 22"
+    $ tcpdump --interface any -f "not port 22 and not port 636
+    ~~~~
 
 ## 4) License and Copyright
 Copyright (c) 2020-2024 Remal Software, Arnold Somogyi. All rights reserved.

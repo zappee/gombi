@@ -1,21 +1,6 @@
 # Guide for Remal Docker Images 
 
 ## 1) Overview
-This is an integrated development framework running in Docker containers.
-The environment provides the following services:
-- Private Certificate Authority infrastructure: issue server certificates (PKI)
-- Directory Service: store user data (LDAP)
-- Access Management infrastructure: OAUTH2, etc.
-- Secured Vault: Service Self Registration, Application Configurations, etc.
-
-The framework provides the following base Docker images:
-- OpenJDK 11 and 17 base Docker images
-- Apache Tomcat 9 base image
-
-## 2) Image hierarchy
-
-## 3) Development Environment Startup Flow
-
 
 ## 3) Development environment
 You can start the complete Docker stack on your machine if your machine has enough CPU and memory.
@@ -29,8 +14,6 @@ Perform the following tasks to prepare your environment to be ready to run the R
 
 #### 3.1.2) Prepare FQDN
 Map hostnames to IP addresses in `/etc/hosts` file.
-  * `127.0.0.1   ca.remal.com`
-  * `127.0.0.1   ds.remal.com`
   * `127.0.0.1   am.remal.com`
 
 #### 3.1.3) Prepare the environment for Forgerock Directory Server (LDAP)
@@ -67,11 +50,11 @@ How to get Firefox to trust all self signed certificates you use locally to serv
 You can add the root CA to your web browser.
 The root CA locates in the CA server, the Docker container name is `ca.remal.com`.
 
-![step 1](../docs/pki/firefox-setting-up-ca-step-1.png)
+![step 1](pki/docs/firefox-setting-up-ca-step-1.png)
 
-![step 2](../docs/pki/firefox-setting-up-ca-step-2.png)
+![step 2](pki/docs/firefox-setting-up-ca-step-2.png)
 
-![step 3](../docs/pki/firefox-setting-up-ca-step-3.png)
+![step 3](pki/docs/firefox-setting-up-ca-step-3.png)
 
 ### 3.5) Stop the development environment
 Docker can back up the current configuration of the running servers before the whole environment will be stopped.
@@ -177,24 +160,3 @@ alias rmi='docker volume rm $(docker volume ls -qf dangling=true) ; docker rmi $
   $ ssh -p <ssh-port> root@localhost
   ~~~
   Use `password` as a password.
-
-
-
-
-
-
-
-
-tcpdump --interface any -f "not port 22"
-
-tcpdump --interface any -f "not port 22 and not port 636
-
-
-shared values:
-
-value                push            pull
-base_dn_config       DS container    AM container
-base_dn_store
-
-
-<a href="https://trackgit.com"><img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" /></a>
