@@ -68,7 +68,7 @@ Details:
 * password of the `root` user is set to `password`
 * installed and configured `easy-rsa`
 * `head.sh` and `tail.sh` bash scripts that can be used in the child containers to execute custom commands
-* `shutdown.sh` bash script that is executed automatically before the container shuts down
+* `shutdown-actions.sh` bash script that is executed automatically before the container shuts down
 
 ## 3) Ports used by the image
 

@@ -107,7 +107,7 @@ function backup_ds_config() {
   ignore_previous_state="$1"
   run_before_backup=$(get_server_state)
   timestamp="$(date "+%Y-%m-%d_%H.%M.%S")"
-  backup_file="$DS_HOME/backup/forgerock-ds-conf-$timestamp.tar.gz"
+  backup_file="$DS_HOME/backup/ds-config_$timestamp.tar.gz"
 
   printf "%s | [INFO]  backing up ForgeRock Directory Server configuration...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   if [ "$run_before_backup" == "true" ]; then
@@ -123,8 +123,11 @@ function backup_ds_config() {
 
 # ------------------------------------------------------------------------------
 # Backup LDAP data.
+# Arguments
+#    arg 1:  backend name, for example: 'am-config', 'am-identity-store',
+#            'schema' or 'tasks'
 # ------------------------------------------------------------------------------
-function backup_ds_ldap() {
+function backup_ds_data() {
   printf "%s | [INFO]  backing up ForgeRock Directory Server LDAP database...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 
   local run_before_backup
@@ -141,11 +144,14 @@ function backup_ds_ldap() {
   keystore_file="/tmp/$fqdn.p12"
   keystore_password="changeit"
 
-  local timestamp backup_file
+  local backend_name timestamp backup_file
+  backend_name="$1"
   timestamp="$(date "+%Y-%m-%d_%H.%M.%S")"
-  backup_file="$DS_HOME/backup/forgerock-ds-ldap-$timestamp.tar.gz"
+  backup_file="${DS_HOME}/backup/ds-ldap_${backend_name}_${timestamp}.tar.gz"
+  
 
   printf "%s | [DEBUG]   directory service home: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$DS_HOME"
+  printf "%s | [DEBUG]             backend name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$backend_name"
   printf "%s | [DEBUG]              backup file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$backup_file"
   printf "%s | [DEBUG]             ldap user DN: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$LDAP_USER_DN"
   printf "%s | [DEBUG]       ldap user password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$LDAP_USER_PASSWORD"
@@ -160,7 +166,7 @@ function backup_ds_ldap() {
     --port "$ADMIN_CONNECTOR_PORT" \
     --bindDN "$LDAP_USER_DN" \
     --bindPassword "$LDAP_USER_PASSWORD" \
-    --backendName amIdentityStore \
+    --backendName "$backend_name" \
     --backupLocation "$DS_HOME/bak" \
     --no-prompt \
     --usePkcs12KeyStore "$keystore_file" \

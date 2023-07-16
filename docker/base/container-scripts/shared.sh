@@ -202,7 +202,7 @@ function show_ready_message() {
 # ------------------------------------------------------------------------------
 function shutdown_trap() {
   printf "%s | [INFO]  shutting down the container...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  script_runner "/shutdown.sh"
+  script_runner "/shutdown-actions.sh"
 }
 
 # ------------------------------------------------------------------------------

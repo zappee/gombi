@@ -90,3 +90,4 @@ RUN set -ux; \
 
 # final image
 FROM base-$BUILD_TYPE AS final
+COPY container-scripts/shutdown-actions.sh /

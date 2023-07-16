@@ -13,7 +13,7 @@ This image is an official Remal Docker image, used as a base image of the subseq
 * `OpenJDK 11`
 * `OpenSSH` tool
 * `head.sh` and `tail.sh` bash scripts that can be used in the child containers to execute custom commands
-* `shutdown.sh` bash script that is executed automatically before the container shuts down
+* `shutdown-actions.sh` bash script that is executed automatically before the container shuts down
 
 ## 3) Ports used by the image
 

@@ -1,16 +1,16 @@
 #!/bin/bash -ue
 # ******************************************************************************
-# Back up the ForgeRock Directory Server.
+# Back up the ForgeRock Access Management Server configuration files.
 #
-# Since : January, 2023
+# Since : July, 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-source /ds-functions.sh
+source /shared.sh
 
 # ------------------------------------------------------------------------------
 # Main program starts here.
 # ------------------------------------------------------------------------------
-if [ "$LDAP_BACKUP" == "true" ]; then backup_ds_ldap; fi
-if [ "$CONFIG_BACKUP" == "true" ]; then backup_ds_config true; fi
+log_start "$0"
+log_end "$0"

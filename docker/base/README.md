@@ -13,7 +13,7 @@ This image is an official Remal Docker image, used as a base image of the subseq
 * added bash aliases: `ll` and `ls`
 * bash scripts under the `/docker.init` directory are executed only once during the first container startup
 * bash scripts under the `/docker.startup` directory are executed always when the container starts
-* `shutdown.sh` bash script that is executed automatically before the container shuts down completely if the `docker stop --timeout 60` is used
+* `shutdown-actions.sh` bash script that is executed automatically before the container shuts down completely if the `docker stop --timeout 60` is used
 
 ## 3) Ports used by the image
 

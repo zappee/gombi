@@ -18,6 +18,8 @@ log_start "$0"
   printf "export %s=\"%s\"\n" "LDAP_USER_DN" "$LDAP_USER_DN"
   printf "export %s=\"%s\"\n" "LDAP_USER_PASSWORD" "$LDAP_USER_PASSWORD"
   printf "export %s=\"%s\"\n" "DEPLOYMENT_KEY_FILE" "$DEPLOYMENT_KEY_FILE"
+  printf "export %s=\"%s\"\n" "LDAP_BACKUP" "$LDAP_BACKUP"
+  printf "export %s=\"%s\"\n" "CONFIG_BACKUP" "$CONFIG_BACKUP"
   printf "cd %s\n" "$DS_HOME"
 } >> /etc/profile
 log_end "$0"

@@ -61,4 +61,4 @@ RUN set -ux; \
 
 # final image
 FROM base-$BUILD_TYPE AS final
-COPY container-scripts/ds-functions.sh container-scripts/shutdown.sh /
+COPY container-scripts/ds-functions.sh container-scripts/shutdown-actions.sh /
