@@ -91,7 +91,7 @@ function install_ds() {
   keystore_file="/tmp/$fqdn.p12"
   keystore_password="changeit"
 
-  local server_id domain_dn profile_config profile_store base_dn_config base_dn_store
+  local server_id domain_dn ds_profile_config ds_profile_store base_dn_config base_dn_store
   server_id="master-ldap"
   domain_dn=$(fqdn_to_ldap_dn "$domain")
   ds_profile_config="am-config"
