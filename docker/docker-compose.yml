@@ -32,7 +32,7 @@ services:
             - LDAP_USER_DN=uid=admin
             - LDAP_USER_PASSWORD=password
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi/docker/forgerock/forgerock-ds/backup:/opt/opendj/backup
+            - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/opendj/backup
 
     # ----- Access Management service ------------------------------------------
     forgerock-am:
@@ -49,4 +49,4 @@ services:
             - AM_CONFIG_STORE_HOST=ds.hello.com
             - AM_USER_STORE_HOST=ds.hello.com
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi/docker/forgerock/forgerock-am/backup:/home/openam/backup
+            - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/openam/backup

@@ -16,3 +16,6 @@ target/**
 
 # CVS
 **/.cvsignore
+
+# container backups
+backups/**
