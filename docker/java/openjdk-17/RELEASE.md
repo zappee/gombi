@@ -6,5 +6,3 @@ All notable changes to this project will be documented in this file.
 #### Added
 * base image: Remal `base` Docker image
 * install `open-jdk 17`
-
-<a href="https://trackgit.com"><img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" /></a>
