@@ -54,5 +54,5 @@ KEYSTORE_HOME="/tmp"
 KEYSTORE_FILE="$FQDN.p12"
 
 generate_certificate "$FQDN"
-copy_from_remote_machine "$CA_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$KEYSTORE_FILE" "$KEYSTORE_HOME"
+copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$KEYSTORE_FILE" "$KEYSTORE_HOME"
 tomcat_configuration "$FQDN"

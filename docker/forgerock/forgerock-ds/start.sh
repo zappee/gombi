@@ -12,7 +12,7 @@ docker run \
   --name "$IMAGE_NAME.remal.com" \
   --hostname "$IMAGE_NAME.remal.com" \
   --detach \
-  --env CA_HOST=ca.hello.com \
+  --env PKI_HOST=pki.hello.com \
   --env DS_HOST=ds.hello.com \
   --env CONFIG_BACKUP=true \
   --env CONFIG_RESTORE_FROM=forgerock-ds-conf-2023-05-22_12.24.57.tar.gz \

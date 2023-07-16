@@ -1,10 +1,10 @@
 version: '3'
 services:
     # ----- Private Certificate Authority Server -------------------------------
-    ca:
+    pki:
         image: private-ca:0.0.1-remal
-        container_name: ca.hello.com
-        hostname: ca.hello.com
+        container_name: pki.hello.com
+        hostname: pki.hello.com
         ports:
             - "13012:22"   # SSH
         environment:
@@ -24,7 +24,7 @@ services:
             - "13024:4444" # admin connector port
             - "13026:636"  # LDAP over SSL
         environment:
-            - CA_HOST=ca.hello.com
+            - PKI_HOST=pki.hello.com
             - CONFIG_BACKUP=true
             - CONFIG_RESTORE_FROM=forgerock-ds-conf-2023-05-22_12.24.57.tar.gz
             - LDAP_BACKUP=true
@@ -45,7 +45,7 @@ services:
             - "13034:443"  # HTTPS
             - "13036:50636"  # LDAP over SSL
         environment:
-            - CA_HOST=ca.hello.com
+            - PKI_HOST=pki.hello.com
             - AM_CONFIG_STORE_HOST=ds.hello.com
             - AM_USER_STORE_HOST=ds.hello.com
         volumes:

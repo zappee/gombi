@@ -16,6 +16,6 @@ source /shared.sh
 printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
 printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-wait_for_container "$CA_HOST"
+wait_for_container "$PKI_HOST"
 wait_for_container "$AM_CONFIG_STORE_HOST"
 wait_for_container "$AM_USER_STORE_HOST"

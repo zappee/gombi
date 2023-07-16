@@ -178,4 +178,23 @@ alias rmi='docker volume rm $(docker volume ls -qf dangling=true) ; docker rmi $
   ~~~
   Use `password` as a password.
 
+
+
+
+
+
+
+
+tcpdump --interface any -f "not port 22"
+
+tcpdump --interface any -f "not port 22 and not port 636
+
+
+shared values:
+
+value                push            pull
+base_dn_config       DS container    AM container
+base_dn_store
+
+
 <a href="https://trackgit.com"><img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" /></a>

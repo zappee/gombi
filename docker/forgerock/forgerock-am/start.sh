@@ -12,7 +12,7 @@ docker run \
   --name "$IMAGE_NAME.remal.com" \
   --hostname "$IMAGE_NAME.remal.com" \
   --detach \
-  --env CA_HOST=ca.hello.com \
+  --env PKI_HOST=pki.hello.com \
   --env DS_HOST=ds.remal.com \
   --env DS_PORT=636 \
   --env DS_USER_DN=uid=admin \

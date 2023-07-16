@@ -13,7 +13,7 @@ printf "%s | [DEBUG] ===========================================================
 
 {
   printf "export %s=\"%s\"\n" "DS_HOME" "$DS_HOME"
-  printf "export %s=\"%s\"\n" "CA_HOST" "$CA_HOST"
+  printf "export %s=\"%s\"\n" "PKI_HOST" "$PKI_HOST"
   printf "export %s=\"%s\"\n" "ADMIN_CONNECTOR_PORT" "$ADMIN_CONNECTOR_PORT"
   printf "export %s=\"%s\"\n" "LDAP_PORT" "$LDAP_PORT"
   printf "export %s=\"%s\"\n" "LDAPS_PORT" "$LDAPS_PORT"

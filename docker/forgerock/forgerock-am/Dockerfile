@@ -21,7 +21,7 @@ ENV IMAGE_NAME="am-7.3" \
     IMAGE_DESCRIPTION="Remal ForgeRock Access Management Server 7.3.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
-    CA_HOST="ca.remal.com" \
+    PKI_HOST="ca.remal.com" \
     \
     AM_INSTALL_KIT="AM-7.3.0.war" \
     AM_CONFIG_TOOL_INSTALL_KIT="AM-SSOConfiguratorTools-5.1.3.18.zip" \

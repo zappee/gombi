@@ -26,7 +26,7 @@ ENV IMAGE_NAME="ds-7.3" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     ADMIN_CONNECTOR_PORT=4444 \
-    CA_HOST="ca.remal.com" \
+    PKI_HOST="ca.remal.com" \
     DS_HOST="ds.hello.com" \
     DS_HOME="$DS_HOME" \
     DEPLOYMENT_KEY_FILE="$DS_HOME/deployment-key.properties" \

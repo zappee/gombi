@@ -161,7 +161,7 @@ KEYSTORE_FILE="$FQDN.p12"
 KEYSTORE_PASSWORD="changeit"
 
 generate_certificate "$FQDN"
-copy_from_remote_machine "$CA_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$KEYSTORE_FILE" "$KEYSTORE_HOME"
+copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$KEYSTORE_FILE" "$KEYSTORE_HOME"
 generate_ds_deployment_key
 generate_ds_master_key "$KEYSTORE_HOME/$KEYSTORE_FILE" "$KEYSTORE_PASSWORD"
 install_ds
