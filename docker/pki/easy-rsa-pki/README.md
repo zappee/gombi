@@ -85,6 +85,8 @@ where
 * `domain`: the host or domain name of the server for what the certificate will be generated
 * `keystore-home`: the path of the certificate on the remote host where the certificate will be copied, optional parameter
 
+If the `keystore-home` is not set then the new server certificate will not be copied to the remote host, but it is available under the `/pki` directory of this machine.
+
 Example:
 ~~~
 $ $EASYRSA_HOME/generate-cert.sh tomcat /tmp
