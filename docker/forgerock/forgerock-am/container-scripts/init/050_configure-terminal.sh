@@ -7,10 +7,8 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
-printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-
+source /shared.sh
+log_start "$0"
 {
   printf "export %s=\"%s\"\n" "PKI_HOST" "$PKI_HOST"
   printf "export %s=\"%s\"\n" "CATALINA_OPTS" "$CATALINA_OPTS"
@@ -18,3 +16,4 @@ printf "%s | [DEBUG] ===========================================================
   printf "export %s=\"%s\"\n" "AM_CONFIG_TOOL_HOME" "$AM_CONFIG_TOOL_HOME"
   printf "export %s=\"%s\"\n" "AM_CONFIG_TOOL" "$AM_CONFIG_TOOL"
 } >> /etc/profile
+log_end "$0"

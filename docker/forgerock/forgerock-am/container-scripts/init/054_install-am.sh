@@ -136,9 +136,8 @@ function prepare_am_config_file() {
 # ------------------------------------------------------------------------------
 # Main program starts here.
 # ------------------------------------------------------------------------------
-printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
-printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+log_start "$0"
 AM_CONFIG_FILE="$AM_CONFIG_TOOL_HOME/config.properties"
 prepare_am_config_file
 install_am
+log_end "$0"

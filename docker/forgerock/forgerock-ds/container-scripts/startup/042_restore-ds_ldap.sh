@@ -7,12 +7,12 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
+source /shared.sh
 source /ds-functions.sh
 
 # ------------------------------------------------------------------------------
 # Main program starts here.
 # ------------------------------------------------------------------------------
-printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
-printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+log_start "$0"
 if [ -n "$LDAP_RESTORE_FROM" ]; then restart_ds_ldap; fi
+log_end "$0"

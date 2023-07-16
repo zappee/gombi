@@ -269,7 +269,7 @@ if match "$COMMAND" "a1"; then docker_image_build   "$LABEL_BASE"     "base"; fi
 if match "$COMMAND" "b1"; then docker_image_build   "$LABEL_JAVA_11"  "java/openjdk-11"; fi
 if match "$COMMAND" "b2"; then docker_image_build   "$LABEL_JAVA_17"  "java/openjdk-17"; fi
 if match "$COMMAND" "b3"; then docker_image_build   "$LABEL_TOMCAT_9" "tomcat/tomcat-9"; fi
-if match "$COMMAND" "c";  then docker_image_build   "$LABEL_PKI"      "pki/private-ca"; fi
+if match "$COMMAND" "c";  then docker_image_build   "$LABEL_PKI"      "pki/easy-rsa-pki"; fi
 if match "$COMMAND" "d1"; then docker_image_build   "$LABEL_DS"       "forgerock/forgerock-ds"; fi
 if match "$COMMAND" "d2"; then docker_image_build   "$LABEL_AM"       "forgerock/forgerock-am"; fi
 
@@ -278,7 +278,7 @@ if match "$COMMAND" "t1"; then docker_container_run "$LABEL_BASE"     "base"; fi
 if match "$COMMAND" "t2"; then docker_container_run "$LABEL_JAVA_11"  "java/openjdk-11"; fi
 if match "$COMMAND" "t3"; then docker_container_run "$LABEL_JAVA_17"  "java/openjdk-17"; fi
 if match "$COMMAND" "t4"; then docker_container_run "$LABEL_TOMCAT_9" "tomcat/tomcat-9"; fi
-if match "$COMMAND" "t5"; then docker_container_run "$LABEL_PKI"      "pki/private-ca"; fi
+if match "$COMMAND" "t5"; then docker_container_run "$LABEL_PKI"      "pki/easy-rsa-pki"; fi
 if match "$COMMAND" "t6"; then docker_container_run "$LABEL_DS"       "forgerock/forgerock-ds"; fi
 if match "$COMMAND" "t7"; then docker_container_run "$LABEL_AM"       "forgerock/forgerock-am"; fi
 

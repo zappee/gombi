@@ -7,10 +7,8 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
-printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-
+source /shared.sh
+log_start "$0"
 cd "$EASYRSA_HOME"
 
 # installing easy-rsa
@@ -43,3 +41,4 @@ printf "%s | [INFO ] generating the root CA key and certificate...\n" "$(date +"
 # generating a server certificate for this server
 printf "%s | [INFO ] generating a server certificate request and key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 ./generate-cert.sh "$(hostname)"
+log_end "$0"

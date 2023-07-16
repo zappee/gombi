@@ -151,10 +151,7 @@ function install_ds() {
 # ------------------------------------------------------------------------------
 #  Main program starts here.
 # ------------------------------------------------------------------------------
-printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
-printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-
+log_start "$0"
 FQDN=$(hostname -f)
 KEYSTORE_HOME="/tmp"
 KEYSTORE_FILE="$FQDN.p12"
@@ -165,3 +162,4 @@ copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/
 generate_ds_deployment_key
 generate_ds_master_key "$KEYSTORE_HOME/$KEYSTORE_FILE" "$KEYSTORE_PASSWORD"
 install_ds
+log_end "$0"

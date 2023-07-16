@@ -121,6 +121,28 @@ function import_to_keystore() {
 }
 
 # ------------------------------------------------------------------------------
+# Log the execution of a bash script.
+#
+# Arguments
+#    arg 1: path to the bash script
+# ------------------------------------------------------------------------------
+log_start() {
+  local script_file="$1"
+  printf "%s | [DEBUG] ===== executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
+}
+
+# ------------------------------------------------------------------------------
+# Log the execution of a bash script.
+#
+# Arguments
+#    arg 1: path to the bash script
+# ------------------------------------------------------------------------------
+log_end() {
+  local script_file="$1"
+  printf "%s | [DEBUG] ----- end of the \"%s\" script\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
+}
+
+# ------------------------------------------------------------------------------
 # Run an external bash script if it exists.
 # ------------------------------------------------------------------------------
 function script_runner() {
@@ -130,13 +152,12 @@ function script_runner() {
   local start elapsed
   if [ -f "$script_file" ]; then
     start=$(date +%s)
-    printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-    printf "%s | [INFO]  executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
-    printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+    log_start "$script_file"
     "$script_file"
     elapsed=$(($(date +%s) - start))
     printf "%s | [INFO]  end of the \"%s\" script\n" "$script_file" "$(date +"%Y-%b-%d %H:%M:%S")"
     printf "%s | [INFO]  execution time: %s\n" "$(date -d@$elapsed -u +%H\ hour\ %M\ day\ %S\ sec)" "$(date +"%Y-%b-%d %H:%M:%S")"
+    log_end "$0"
   else
     printf "%s | [WARN]  script \"%s\" not exist, ignoring it\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
   fi

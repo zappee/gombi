@@ -45,10 +45,7 @@ function tomcat_configuration() {
 # ------------------------------------------------------------------------------
 # Main program starts here.
 # ------------------------------------------------------------------------------
-printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
-printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-
+log_start "$0"
 FQDN=$(hostname -f)
 KEYSTORE_HOME="/tmp"
 KEYSTORE_FILE="$FQDN.p12"
@@ -56,3 +53,4 @@ KEYSTORE_FILE="$FQDN.p12"
 generate_certificate "$FQDN"
 copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$KEYSTORE_FILE" "$KEYSTORE_HOME"
 tomcat_configuration "$FQDN"
+log_end "$0"
