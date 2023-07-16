@@ -3,10 +3,12 @@
 ## 1) Overview
 This is an integrated development framework running in Docker containers.
 The environment provides the following services:
-- Private Certificate Authority infrastructure: issue server certificates (PKI)
-- Directory Service: store user data (LDAP)
-- Access Management infrastructure: OAUTH2, etc.
-- Secured Vault: Service Self Registration, Application Configurations, etc.
+- **Private Certificate Authority infrastructure**: PKI
+- **Directory Service**: LDAP
+- **Access Management infrastructure**: authentication, authorization, OAUTH2, etc.
+- **Vault Service**: identity-based secret and encryption management system to store key/values
+- **Distributed event streaming platform**: high-performance data pipelines, streaming analytics and data integration
+- A software **platform to search, analyze and visualize the machine-generated data** and events gathered from the websites, applications, sensors, devices etc.
 
 The framework provides the following base Docker images:
 - OpenJDK 11 and 17 base Docker images
@@ -21,10 +23,10 @@ The framework provides the following base Docker images:
   * [OpenJDK-17](docker/java/openjdk-17)
   * [Apache Tomcat 9](docker/tomcat/tomcat-9)
 * Service Docker Images:
-  * Private Certificate Authority (CA) Infrastructure: [OpenVPN easy-rsa (simple shell based CA utility)]()
+  * Private Certificate Authority (CA) Infrastructure: [OpenVPN easy-rsa (simple shell based CA utility)](docker/pki/easy-rsa-pki)
   * Vault Service: [HashiCorp Vault](docker/vault/hcp-vault)
   * Directory Service (LDAP): [ForgeRock Directory Server](docker/forgerock/forgerock-ds)
-  * Access Management (LDAP): [ForgeRock Access Management](docker/forgerock/forgerock-am)
+  * Access Management (authentication, authorization): [ForgeRock Access Management](docker/forgerock/forgerock-am)
 
 ## 3) Deployment 
 For more details, check [this](docker/README.md).
