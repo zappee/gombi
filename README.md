@@ -31,7 +31,7 @@ The framework provides the following base Docker images:
 ## 3) Deployment 
 For more details, check [this](docker/README.md).
 
-## 4) Demo application
+## 4) Demo Web application
 
 ## 5) License and Copyright
 Copyright (c) 2020-2023 Remal Software, Arnold Somogyi. All rights reserved.
