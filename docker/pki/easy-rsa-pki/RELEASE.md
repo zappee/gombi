@@ -6,5 +6,4 @@ All notable changes to this project will be documented in this file.
 #### Added
 * install and configure `easy-rsa`
 * generate a private CA certificate
-
-<a href="https://trackgit.com"><img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" /></a>
+* bash script (`generate-cert.sh`) to generate server certificates
