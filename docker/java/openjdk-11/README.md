@@ -4,7 +4,7 @@
 This image is an official Remal Docker image, used as a base image of the subsequent docker images.
 
 ## 2) Image details
-* based on the latest (Remal Base)[../../base] image
+* based on the latest [Remal Base](../../base) image
 * `bash` and `sh`, bash is the default
 * customized bash prompt that shows the container name and version
 * bash aliases: `ll` and `ls`
