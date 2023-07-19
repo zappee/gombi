@@ -1,7 +1,7 @@
 # Remal Image: ForgeRock Directory Server
 
 ### 1) Overview
-This is a Remal Docker image for ForgeRock Directory Server, using [openjdk-17](../../tomcat/openjdk-17/README.md) as a base image.
+This is a Remal Docker image for ForgeRock Directory Server, using [openjdk-17](../../java/openjdk-17) as a base image.
 
 ### 2) Ports used by the image
 
@@ -109,3 +109,7 @@ Configuration of a new LDAP connection:
 
 ## 5) License and Copyright
 Copyright (c) 2020-2024 Remal Software, Arnold Somogyi. All rights reserved.
+
+<a href="https://trackgit.com">
+  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
+</a>

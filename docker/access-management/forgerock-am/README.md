@@ -64,3 +64,7 @@ Open the AM web console in a web browser: [https://am.hello.com:13024/openam](ht
   * root suffix: `ou=am-identity,dc=hello,dc=com`
   * login ID: `uid=am-identity-bind-account,ou=admins,ou=am-identity,dc=hello,dc=com`
   * password: `password`
+
+<a href="https://trackgit.com">
+  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
+</a>

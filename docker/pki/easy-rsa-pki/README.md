@@ -94,3 +94,7 @@ $ $EASYRSA_HOME/generate-cert.sh tomcat /tmp
 
 ## 6) License and Copyright
 Copyright (c) 2020-2023 Remal Software, Arnold Somogyi. All rights reserved.
+
+<a href="https://trackgit.com">
+  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
+</a>

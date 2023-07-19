@@ -11,3 +11,7 @@ Images and its versions in this release:
 * private-ca:0.0.1-remal
 * ds-7.3:0.0.1-remal
 * am-7.3:0.0.1-remal
+
+<a href="https://trackgit.com">
+  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
+</a>
