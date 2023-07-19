@@ -62,7 +62,7 @@ fs.inotify.max_user_watches = 524288
 * **Backup:**
   * Set up a volume that points to the `/opt/opendj/backup` directory in the container.
   * The backup process will create the backup files into this directory.
-  * Then set the `CONFIG_BACKUP` and/or `LDAP_BACKUP` variables to `true`.
+  * Then set the `DS_CONFIG_BACKUP` and/or `LDAP_BACKUP` variables to `true`.
   * This setting instructs the container to execute the backup task before the container stops completely.
   * The default timeout before Docker kills completely the container is 10 seconds.
     If the backup process runs longer, then you need to increase the Docker's shutdown timeout accordingly.
@@ -75,7 +75,7 @@ fs.inotify.max_user_watches = 524288
   ~~~
   $ docker run \
       ...
-      --env CONFIG_BACKUP=true \
+      --env DS_CONFIG_BACKUP=true \
       --env LDAP_BACKUP=true \
       --volume "$HOME/dev/workspace/java/remal/gombi/docker/forgerock/forgerock-ds/backup:/opt/opendj/backup" \
   ~~~

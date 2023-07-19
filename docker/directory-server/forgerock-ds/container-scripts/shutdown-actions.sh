@@ -14,9 +14,6 @@ source /ds-functions.sh
 # Main program starts here.
 # ------------------------------------------------------------------------------
 log_start "$0"
-if [ "$LDAP_BACKUP" == "true" ]; then
-  backup_ds_data "am-config";
-  backup_ds_data "am-identity-store";
-fi
-if [ "$CONFIG_BACKUP" == "true" ]; then backup_ds_config true; fi
+if [ "$AM_IDENTITY_STORE_BACKUP" == "true" ]; then backup_ds_data "$AM_IDENTITY_STORE_NAME"; fi
+if [ "$DS_CONFIG_BACKUP" == "true" ]; then backup_ds_config; fi
 log_end "$0"

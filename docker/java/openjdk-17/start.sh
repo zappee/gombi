@@ -7,7 +7,7 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-source setenv.sh
+source ./setenv.sh
 docker run \
   --name "$IMAGE_NAME.remal.com" \
   --hostname "$IMAGE_NAME.remal.com" \

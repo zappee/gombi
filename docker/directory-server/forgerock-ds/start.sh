@@ -7,19 +7,18 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-source setenv.sh
+source ./setenv.sh
 docker run \
   --name "$IMAGE_NAME.remal.com" \
   --hostname "$IMAGE_NAME.remal.com" \
   --detach \
   --env PKI_HOST=pki.hello.com \
-  --env DS_HOST=ds.hello.com \
-  --env CONFIG_BACKUP=true \
-  --env CONFIG_RESTORE_FROM=forgerock-ds-conf-2023-05-22_12.24.57.tar.gz \
-  --env LDAP_BACKUP=true \
-  --env LDAP_RESTORE_FROM=forgerock-ds-ldap-2023-05-22_12.24.50.tar.gz \
+  --env DS_CONFIG_BACKUP=true \
+  --env DS_CONFIG_RESTORE_FROM=latest \
+  --env AM_IDENTITY_STORE_BACKUP=true \
+  --env AM_IDENTITY_STORE_RESTORE_FROM=latest \
   --publish 13022:22 \
   --publish 13036:636 \
   --publish 13044:4444 \
-  --volume "$HOME/dev/workspace/java/remal/gombi/docker/forgerock/forgerock-ds/backup:/opt/opendj/backup" \
+  --volume "$HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/opendj/backup" \
   "$IMAGE_NAME":"$IMAGE_TAG"

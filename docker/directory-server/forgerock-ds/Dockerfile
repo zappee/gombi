@@ -25,6 +25,8 @@ ENV IMAGE_NAME="ds-7.3" \
     IMAGE_DESCRIPTION="Remal ForgeRock Directory Server 7.3.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
+    AM_IDENTITY_STORE_NAME="am-identity-store" \
+    \
     ADMIN_CONNECTOR_PORT=4444 \
     PKI_HOST="ca.remal.com" \
     DS_HOST="ds.hello.com" \

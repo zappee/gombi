@@ -25,12 +25,10 @@ services:
             - "13026:636"  # LDAP over SSL
         environment:
             - PKI_HOST=pki.hello.com
-            - CONFIG_BACKUP=true
-            - CONFIG_RESTORE_FROM=forgerock-ds-conf-2023-05-22_12.24.57.tar.gz
-            - LDAP_BACKUP=true
-            - LDAP_RESTORE_FROM=forgerock-ds-ldap-2023-05-22_12.24.50.tar.gz
-            - LDAP_USER_DN=uid=admin
-            - LDAP_USER_PASSWORD=password
+            - DS_CONFIG_BACKUP=true
+            - DS_CONFIG_RESTORE_FROM=latest
+            - AM_IDENTITY_STORE_BACKUP=true
+            - AM_IDENTITY_STORE_RESTORE_FROM=latest
         volumes:
             - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/opendj/backup
 

@@ -8,7 +8,6 @@
 #  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 source /shared.sh
-source /ds-functions.sh
 
 # ------------------------------------------------------------------------------
 # Generates and saves a new ForgeRock Directory Server deployment-key.

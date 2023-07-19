@@ -83,6 +83,20 @@ function generate_certificate() {
 }
 
 # ------------------------------------------------------------------------------
+# Get the latest file that fits to the given pattern.
+#
+# Arguments
+#    arg 1:  directory to check
+#    arg 2:  filename pattern
+# ------------------------------------------------------------------------------
+get_latest_file() {
+  local directory pattern
+  directory="$1"
+  pattern="$2"
+  printf "%s" "$(find "$directory" -name "$pattern" -type f -exec ls -t {} + | head -1)"
+}
+
+# ------------------------------------------------------------------------------
 # Read value from a property file.
 #
 # Arguments

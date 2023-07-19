@@ -25,8 +25,8 @@ The framework provides the following base Docker images:
 * Service Docker Images:
   * Private Certificate Authority (CA) Infrastructure: [OpenVPN easy-rsa (simple shell based CA utility)](docker/pki/easy-rsa-pki)
   * Vault Service: [HashiCorp Vault](docker/vault/hcp-vault)
-  * Directory Service (LDAP): [ForgeRock Directory Server](docker/forgerock/forgerock-ds)
-  * Access Management (authentication, authorization): [ForgeRock Access Management](docker/forgerock/forgerock-am)
+  * Directory Service (LDAP): [ForgeRock Directory Server](docker/directory-server/forgerock-ds)
+  * Access Management (authentication, authorization): [ForgeRock Access Management](docker/access-management/forgerock-am)
 
 ## 3) Deployment 
 For more details, check [this](docker/README.md).
