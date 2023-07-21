@@ -29,6 +29,8 @@ services:
             - DS_CONFIG_RESTORE_FROM=latest
             - AM_IDENTITY_STORE_BACKUP=true
             - AM_IDENTITY_STORE_RESTORE_FROM=latest
+            - AM_CONFIG_STORE_BACKUP=true
+            - AM_CONFIG_STORE_RESTORE_FROM=latest
         volumes:
             - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/opendj/backup
 
@@ -46,5 +48,7 @@ services:
             - PKI_HOST=pki.hello.com
             - AM_CONFIG_STORE_HOST=ds.hello.com
             - AM_USER_STORE_HOST=ds.hello.com
+            - AM_CONFIG_BACKUP=true
+            - AM_CONFIG_RESTORE_FROM=latest
         volumes:
             - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/openam/backup

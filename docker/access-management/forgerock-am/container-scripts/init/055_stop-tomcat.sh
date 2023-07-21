@@ -8,7 +8,8 @@
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 source /shared.sh
+source /tomcat-functions.sh
+
 log_start "$0"
-printf "%s | [INFO]  stopping Apache Tomcat...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-"$CATALINA_HOME/bin/catalina.sh" stop 15
+stop_tomcat
 log_end "$0"

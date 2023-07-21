@@ -17,6 +17,8 @@ docker run \
   --env DS_CONFIG_RESTORE_FROM=latest \
   --env AM_IDENTITY_STORE_BACKUP=true \
   --env AM_IDENTITY_STORE_RESTORE_FROM=latest \
+  --env AM_CONFIG_STORE_BACKUP=true \
+  --env AM_CONFIG_STORE_RESTORE_FROM=latest \
   --publish 13022:22 \
   --publish 13036:636 \
   --publish 13044:4444 \

@@ -15,5 +15,6 @@ log_start "$0"
   printf "export %s=\"%s\"\n" "AM_HOME" "$AM_HOME"
   printf "export %s=\"%s\"\n" "AM_CONFIG_TOOL_HOME" "$AM_CONFIG_TOOL_HOME"
   printf "export %s=\"%s\"\n" "AM_CONFIG_TOOL" "$AM_CONFIG_TOOL"
+  printf "cd %s\n" "$AM_HOME"
 } >> /etc/profile
 log_end "$0"

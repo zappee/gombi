@@ -106,5 +106,6 @@ RUN set -ux; \
    printf "setting up environment variables...\n"; \
    printf "export %s=\"%s\"\n" "CATALINA_HOME" "$CATALINA_HOME" >> /etc/profile
 
+COPY container-scripts/tomcat-functions.sh /
 ONBUILD COPY container-scripts/init/* /docker.init/
 ONBUILD COPY container-scripts/startup/* /docker.startup/

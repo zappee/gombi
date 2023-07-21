@@ -15,7 +15,7 @@ function backup_ds_config() {
   local is_running timestamp backup_file
   is_running=$(get_ds_server_state)
   timestamp="$(date "+%Y-%m-%d_%H.%M.%S")"
-  backup_file="$DS_HOME/backup/ds-config_$timestamp.tar.gz"
+  backup_file="$DS_HOME/backup/ds-config-files_$timestamp.tar.gz"
 
   printf "%s | [INFO]  backing up ForgeRock Directory Server configuration...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   if [ "$is_running" == "true" ]; then
@@ -26,7 +26,6 @@ function backup_ds_config() {
 
   printf "%s | [DEBUG] server configuration backup file: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$backup_file"
   printf "%s | [INFO]  configuration files has been backed up\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  restore_ds_server_state "$is_running"
 }
 
 # ------------------------------------------------------------------------------
@@ -43,7 +42,7 @@ function backup_ds_data() {
   is_running=$(get_ds_server_state)
   fqdn=$(hostname -f)
   timestamp="$(date "+%Y-%m-%d_%H.%M.%S")"
-  backup_file="${DS_HOME}/backup/${backend_name}_${timestamp}.tar.gz"
+  backup_file="${DS_HOME}/backup/${backend_name}-ldap_${timestamp}.tar.gz"
 
   # the keystore can bu used as a truststore because it contains the CA certificate too
   local keystore_file keystore_password
@@ -81,7 +80,6 @@ function backup_ds_data() {
 
   tar -czvf "$backup_file" --directory="$DS_HOME" bak/
   printf "%s | [INFO]  LDAP database has been backed up\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  restore_ds_server_state "$is_running"
 }
 
 # ------------------------------------------------------------------------------
@@ -115,7 +113,7 @@ function restore_ds_config() {
   
   if [[ "latest" == "${1,,}" ]]; then
     printf "%s | [INFO]  restoring server configuration from the latest backup...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-    backup_file=$(get_latest_file "$DS_HOME/backup" "ds-config_????-??-??_??.??.??.tar.gz")
+    backup_file=$(get_latest_file "$DS_HOME/backup" "ds-config-files_????-??-??_??.??.??.tar.gz")
   else
     printf "%s | [INFO]  restoring server configuration from a specific backup...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
     backup_file="$DS_HOME/backup/$1"
@@ -151,7 +149,7 @@ function restore_ds_data() {
   
   if [[ "latest" == "${backup_from,,}" ]]; then
     printf "%s | [INFO]  restoring the LDAP database from the latest backup...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-    backup_file=$(get_latest_file "$DS_HOME/backup" "${backend_name}_????-??-??_??.??.??.tar.gz")
+    backup_file=$(get_latest_file "$DS_HOME/backup" "${backend_name}-ldap_????-??-??_??.??.??.tar.gz")
   else
     printf "%s | [INFO]  restoring the LDAP database from a specific backup...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
     backup_file="$DS_HOME/backup/$backup_from"
@@ -186,24 +184,6 @@ function restore_ds_data() {
     printf "%s | [INFO]  LDAP database has been restored\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   else
     printf "%s | [WARN]  the provided backup file does not exist: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$backup_file"
-  fi
-}
-
-# ------------------------------------------------------------------------------
-# Restore the server state. If the server was stopped before the backup process
-# then this function will stop the server.
-#
-# Arguments
-#    arg 1:  server state before the backup process, true: server was running
-# ------------------------------------------------------------------------------
-function restore_ds_server_state() {
-  local server_state
-  server_state="$1"
-
-  if [ "$server_state" == "true" ]; then
-    start_ds
-  else
-    stop_ds
   fi
 }
 

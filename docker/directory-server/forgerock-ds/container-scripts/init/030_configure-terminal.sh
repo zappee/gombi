@@ -20,6 +20,7 @@ log_start "$0"
   printf "export %s=\"%s\"\n" "DEPLOYMENT_KEY_FILE" "$DEPLOYMENT_KEY_FILE"
   printf "export %s=\"%s\"\n" "DS_CONFIG_BACKUP" "$DS_CONFIG_BACKUP"
   printf "export %s=\"%s\"\n" "AM_IDENTITY_STORE_BACKUP" "$AM_IDENTITY_STORE_BACKUP"
+  printf "export %s=\"%s\"\n" "AM_CONFIG_STORE_BACKUP" "$AM_CONFIG_STORE_BACKUP"
   printf "cd %s\n" "$DS_HOME"
 } >> /etc/profile
 log_end "$0"

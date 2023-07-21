@@ -8,14 +8,8 @@
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 source /shared.sh
+source /tomcat-functions.sh
+
 log_start "$0"
-printf "%s | [INFO]  starting Apache Tomcat...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-
-# start tomcat
-printf "JAVA_OPTS=\"%s\"" "$JAVA_OPTIONS" > "$CATALINA_HOME/bin/setenv.sh"
-chmod +x "$CATALINA_HOME/bin/setenv.sh"
-"$CATALINA_HOME/bin/catalina.sh" start
-
-# pipe out the log to docker and wait for tomcat startup
-tail -F "$CATALINA_HOME/logs/catalina.out" & ( tail -f -n0 "$CATALINA_HOME/logs/catalina.out" & ) | grep -q "Server startup in"
+start_tomcat
 log_end "$0"
