@@ -45,7 +45,7 @@ function prepare_am_config_file() {
   am_url="https://$fqdn"
   am_user_locale="en_US"
   am_server_locale="en_US"
-  am_encryption_key=""
+  am_encryption_key="w@APsye%&&DDZszeqPWha47qMTwhQicd%C*"
   accept_licenses="true"
 
   local am_config_store_type am_config_store_ssl

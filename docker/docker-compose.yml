@@ -12,7 +12,7 @@ services:
             - EASYRSA_REQ_COUNTRY=DK
             - EASYRSA_REQ_PROVINCE=Region Hovedstaden
             - EASYRSA_REQ_CITY=Copenhagen
-            - EASYRSA_REQ_ORG=Hello Softwares
+            - EASYRSA_REQ_ORG=Hello Software
 
     # ----- LDAP directory service ---------------------------------------------
     ds:
@@ -25,12 +25,13 @@ services:
             - "13026:636"  # LDAP over SSL
         environment:
             - PKI_HOST=pki.hello.com
-            - DS_CONFIG_BACKUP=true
-            - DS_CONFIG_RESTORE_FROM=latest
-            - AM_IDENTITY_STORE_BACKUP=true
-            - AM_IDENTITY_STORE_RESTORE_FROM=latest
-            - AM_CONFIG_STORE_BACKUP=true
-            - AM_CONFIG_STORE_RESTORE_FROM=latest
+            - NEW_DS_DEPLOYMENT_KEY=false
+            - DS_CONFIG_BACKUP=false
+            - DS_CONFIG_RESTORE_FROM=xlatest
+            - AM_IDENTITY_STORE_BACKUP=false
+            - AM_IDENTITY_STORE_RESTORE_FROM=xlatest
+            - AM_CONFIG_STORE_BACKUP=false
+            - AM_CONFIG_STORE_RESTORE_FROM=xlatest
         volumes:
             - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/opendj/backup
 
@@ -48,7 +49,7 @@ services:
             - PKI_HOST=pki.hello.com
             - AM_CONFIG_STORE_HOST=ds.hello.com
             - AM_USER_STORE_HOST=ds.hello.com
-            - AM_CONFIG_BACKUP=true
-            - AM_CONFIG_RESTORE_FROM=latest
+            - AM_CONFIG_BACKUP=false
+            - AM_CONFIG_RESTORE_FROM=xlatest
         volumes:
             - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/openam/backup

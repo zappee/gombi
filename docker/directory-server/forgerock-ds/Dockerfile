@@ -28,6 +28,15 @@ ENV IMAGE_NAME="ds-7.3" \
     AM_IDENTITY_STORE_NAME="am-identity-store" \
     AM_CONFIG_STORE_NAME="am-config" \
     \
+    NEW_DS_DEPLOYMENT_KEY="false" \
+    \
+    DS_CONFIG_BACKUP="true" \
+    DS_CONFIG_RESTORE_FROM="latest" \
+    AM_IDENTITY_STORE_BACKUP="true" \
+    AM_IDENTITY_STORE_RESTORE_FROM="latest" \
+    AM_CONFIG_STORE_BACKUP="true" \
+    AM_CONFIG_STORE_RESTORE_FROM="latest" \
+    \
     ADMIN_CONNECTOR_PORT=4444 \
     PKI_HOST="ca.remal.com" \
     DS_HOST="ds.hello.com" \
@@ -65,3 +74,4 @@ RUN set -ux; \
 # final image
 FROM base-$BUILD_TYPE AS final
 COPY container-scripts/ds-functions.sh container-scripts/shutdown-actions.sh /
+COPY config/deployment-key.properties "$DS_HOME/"

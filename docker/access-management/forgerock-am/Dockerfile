@@ -23,6 +23,9 @@ ENV IMAGE_NAME="am-7.3" \
     \
     PKI_HOST="ca.remal.com" \
     \
+    AM_CONFIG_BACKUP="true" \
+    AM_CONFIG_RESTORE_FROM="latest" \
+    \
     AM_INSTALL_KIT="AM-7.3.0.war" \
     AM_CONFIG_TOOL_INSTALL_KIT="AM-SSOConfiguratorTools-5.1.3.18.zip" \
     AM_CONFIG_TOOL="openam-configurator-tool-14.1.3.18.jar" \

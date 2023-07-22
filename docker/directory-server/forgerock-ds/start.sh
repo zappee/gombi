@@ -13,6 +13,7 @@ docker run \
   --hostname "$IMAGE_NAME.remal.com" \
   --detach \
   --env PKI_HOST=pki.hello.com \
+  --env NEW_DEPLOYMENT_KEY=true \
   --env DS_CONFIG_BACKUP=true \
   --env DS_CONFIG_RESTORE_FROM=latest \
   --env AM_IDENTITY_STORE_BACKUP=true \

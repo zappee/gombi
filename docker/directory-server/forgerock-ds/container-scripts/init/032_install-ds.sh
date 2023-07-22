@@ -64,8 +64,8 @@ function generate_ds_master_key() {
 
   "$DS_HOME/bin/dskeymgr" export-master-key-pair \
     --alias "$alias" \
-    --deploymentKey "$deployment_key" \
-    --deploymentKeyPassword "$deployment_key_password" \
+    --deploymentId "$deployment_key" \
+    --deploymentIdPassword "$deployment_key_password" \
     --keyStoreFile "$keystore_file" \
     --keyStorePassword "$keystore_password"
 }
@@ -158,7 +158,7 @@ KEYSTORE_PASSWORD="changeit"
 
 generate_certificate "$FQDN"
 copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$KEYSTORE_FILE" "$KEYSTORE_HOME"
-generate_ds_deployment_key
+if [ "$NEW_DS_DEPLOYMENT_KEY" == "true" ]; then generate_ds_deployment_key; fi
 generate_ds_master_key "$KEYSTORE_HOME/$KEYSTORE_FILE" "$KEYSTORE_PASSWORD"
 install_ds
 log_end "$0"
