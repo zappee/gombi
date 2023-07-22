@@ -9,7 +9,7 @@
 # ******************************************************************************
 IMAGE_NAME="private-ca"
 IMAGE_TAG="0.0.1-remal"
-IMAGE_DESCRIPTION="Remal Private Certificate Authority server"
+IMAGE_DESCRIPTION="Private Certificate Authority server"
 IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 IMAGE_FROM="openjdk-17:0.0.1-remal"
 

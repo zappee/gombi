@@ -19,13 +19,14 @@ WORKSPACE="${REMAL_HOME:-$(pwd)}"
 BUILD_TYPE="slim"
 COMMAND="${1:-}"
 
-LABEL_AM="Access Management (AM)"
 LABEL_BASE="Base"
-LABEL_DS="Directory Server (DS)"
 LABEL_JAVA_11="OpenJDK 11 (Java)"
 LABEL_JAVA_17="OpenJDK 17 (Java)"
 LABEL_PKI="PKI Private Certificate Authority (CA)"
 LABEL_TOMCAT_9="Apache Tomcat 9 (Tomcat)"
+LABEL_FORGEROCK_DS="ForGerock Directory Server"
+LABEL_FORGEROCK_AM="ForGerock Access Management"
+LABEL_HCP_VAULT="HashiCorp Vault"
 
 COLOR_GREEN="\e[38;5;118m"
 COLOR_YELLOW="\e[38;5;226m"
@@ -183,9 +184,12 @@ function show_help() {
     printf "        %bb2:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_JAVA_17" "$STYLE_DEFAULT"
     printf "        %bb3:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
     printf "      %bc:    build %s image%b\n" "$COLOR_YELLOW" "$LABEL_PKI" "$STYLE_DEFAULT"
-    printf "      %bd:    build forgerock images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_DS" "$STYLE_DEFAULT"
-    printf "        %bd2:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_AM" "$STYLE_DEFAULT"
+    printf "      %bd:    build Directory Server images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_DS" "$STYLE_DEFAULT"
+    printf "      %be:    build Access Management images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "        %be1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_AM" "$STYLE_DEFAULT"
+    printf "      %bf:    build Vault Server images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "        %bf1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_HCP_VAULT" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bs:    start the complete Docker stack%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bt1:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_BASE" "$STYLE_DEFAULT"
@@ -193,8 +197,9 @@ function show_help() {
     printf "        %bt3:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_JAVA_17" "$STYLE_DEFAULT"
     printf "        %bt4:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
     printf "        %bt5:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_PKI" "$STYLE_DEFAULT"
-    printf "        %bt6:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_DS" "$STYLE_DEFAULT"
-    printf "        %bt7:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_AM" "$STYLE_DEFAULT"
+    printf "        %bt6:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_DS" "$STYLE_DEFAULT"
+    printf "        %bt7:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_AM" "$STYLE_DEFAULT"
+    printf "        %bt8:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_HCP_VAULT" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bu:    show images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "      %bv:    show containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
@@ -265,22 +270,24 @@ if match "$COMMAND" "x";  then docker_container_remove; fi
 
 # builder tasks
 # if is_task_invalid "$COMMAND" "a"; then show_invalid_task_error; fi
-if match "$COMMAND" "a1"; then docker_image_build   "$LABEL_BASE"     "base"; fi
-if match "$COMMAND" "b1"; then docker_image_build   "$LABEL_JAVA_11"  "java/openjdk-11"; fi
-if match "$COMMAND" "b2"; then docker_image_build   "$LABEL_JAVA_17"  "java/openjdk-17"; fi
-if match "$COMMAND" "b3"; then docker_image_build   "$LABEL_TOMCAT_9" "tomcat/tomcat-9"; fi
-if match "$COMMAND" "c";  then docker_image_build   "$LABEL_PKI"      "pki/easy-rsa-pki"; fi
-if match "$COMMAND" "d1"; then docker_image_build   "$LABEL_DS"       "directory-server/forgerock-ds"; fi
-if match "$COMMAND" "d2"; then docker_image_build   "$LABEL_AM"       "access-management/forgerock-am"; fi
+if match "$COMMAND" "a1"; then docker_image_build   "$LABEL_BASE"         "base"; fi
+if match "$COMMAND" "b1"; then docker_image_build   "$LABEL_JAVA_11"      "java/openjdk-11"; fi
+if match "$COMMAND" "b2"; then docker_image_build   "$LABEL_JAVA_17"      "java/openjdk-17"; fi
+if match "$COMMAND" "b3"; then docker_image_build   "$LABEL_TOMCAT_9"     "tomcat/tomcat-9"; fi
+if match "$COMMAND" "c";  then docker_image_build   "$LABEL_PKI"          "pki/easy-rsa-pki"; fi
+if match "$COMMAND" "d1"; then docker_image_build   "$LABEL_FORGEROCK_DS" "directory-server/forgerock-ds"; fi
+if match "$COMMAND" "e1"; then docker_image_build   "$LABEL_FORGEROCK_AM" "access-management/forgerock-am"; fi
+if match "$COMMAND" "f1"; then docker_image_build   "$LABEL_HCP_VAULT"    "vault/hcp-vault"; fi
 
 # docker runners
-if match "$COMMAND" "t1"; then docker_container_run "$LABEL_BASE"     "base"; fi
-if match "$COMMAND" "t2"; then docker_container_run "$LABEL_JAVA_11"  "java/openjdk-11"; fi
-if match "$COMMAND" "t3"; then docker_container_run "$LABEL_JAVA_17"  "java/openjdk-17"; fi
-if match "$COMMAND" "t4"; then docker_container_run "$LABEL_TOMCAT_9" "tomcat/tomcat-9"; fi
-if match "$COMMAND" "t5"; then docker_container_run "$LABEL_PKI"      "pki/easy-rsa-pki"; fi
-if match "$COMMAND" "t6"; then docker_container_run "$LABEL_DS"       "forgerock/forgerock-ds"; fi
-if match "$COMMAND" "t7"; then docker_container_run "$LABEL_AM"       "forgerock/forgerock-am"; fi
+if match "$COMMAND" "t1"; then docker_container_run "$LABEL_BASE"         "base"; fi
+if match "$COMMAND" "t2"; then docker_container_run "$LABEL_JAVA_11"      "java/openjdk-11"; fi
+if match "$COMMAND" "t3"; then docker_container_run "$LABEL_JAVA_17"      "java/openjdk-17"; fi
+if match "$COMMAND" "t4"; then docker_container_run "$LABEL_TOMCAT_9"     "tomcat/tomcat-9"; fi
+if match "$COMMAND" "t5"; then docker_container_run "$LABEL_PKI"          "pki/easy-rsa-pki"; fi
+if match "$COMMAND" "t6"; then docker_container_run "$LABEL_FORGEROCK_DS" "forgerock/forgerock-ds"; fi
+if match "$COMMAND" "t7"; then docker_container_run "$LABEL_FORGEROCK_AM" "forgerock/forgerock-am"; fi
+if match "$COMMAND" "t8"; then docker_container_run "$LABEL_HCP_VAULT"    "vault/hcp-vault"; fi
 
 # command executors
 if match "$COMMAND" "u";  then docker_image_show; fi

@@ -16,7 +16,7 @@ EXPOSE 1331/tcp
 # environment variables
 ENV IMAGE_NAME="private-ca" \
     IMAGE_TAG="0.0.1-remal" \
-    IMAGE_DESCRIPTION="Remal Private Certificate Authority server" \
+    IMAGE_DESCRIPTION="Private Certificate Authority server" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     EASYRSA_HOME="/opt/easy-rsa" \

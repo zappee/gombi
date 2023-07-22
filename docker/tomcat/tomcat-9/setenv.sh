@@ -9,7 +9,7 @@
 # ******************************************************************************
 IMAGE_NAME="tomcat-9"
 IMAGE_TAG="0.0.1-remal"
-IMAGE_DESCRIPTION="Remal Apache Tomcat 9 Docker image"
+IMAGE_DESCRIPTION="Apache Tomcat 9 Docker image"
 IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 IMAGE_FROM="openjdk-11:0.0.1-remal"
 

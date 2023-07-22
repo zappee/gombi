@@ -9,7 +9,7 @@
 # ******************************************************************************
 IMAGE_NAME="ds-7.3"
 IMAGE_TAG="0.0.1-remal"
-IMAGE_DESCRIPTION="Remal ForgeRock Directory Server 7.3.0"
+IMAGE_DESCRIPTION="ForgeRock Directory Server 7.3.0"
 IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 IMAGE_FROM="openjdk-17:0.0.1-remal"
 

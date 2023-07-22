@@ -22,7 +22,7 @@ ARG DS_HOME="/opt/opendj"
 # environment variables
 ENV IMAGE_NAME="ds-7.3" \
     IMAGE_TAG="0.0.1-remal" \
-    IMAGE_DESCRIPTION="Remal ForgeRock Directory Server 7.3.0" \
+    IMAGE_DESCRIPTION="ForgeRock Directory Server 7.3.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     AM_IDENTITY_STORE_NAME="am-identity-store" \
@@ -38,7 +38,7 @@ ENV IMAGE_NAME="ds-7.3" \
     AM_CONFIG_STORE_RESTORE_FROM="latest" \
     \
     ADMIN_CONNECTOR_PORT=4444 \
-    PKI_HOST="ca.remal.com" \
+    PKI_HOST="pki.remal.com" \
     DS_HOST="ds.hello.com" \
     DS_HOME="$DS_HOME" \
     DEPLOYMENT_KEY_FILE="$DS_HOME/deployment-key.properties" \

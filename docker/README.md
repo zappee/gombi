@@ -48,7 +48,7 @@ s remal.sh s
 ### 3.4) Setting Up Certificate Authorities (CA) in Firefox 
 How to get Firefox to trust all self signed certificates you use locally to serve your development sites over https and not complain about them?
 You can add the root CA to your web browser.
-The root CA locates in the CA server, the Docker container name is `ca.remal.com`.
+The root CA locates in the CA server, the Docker container name is `pki.remal.com`.
 
 ![step 1](pki/docs/firefox-setting-up-ca-step-1.png)
 
@@ -114,7 +114,7 @@ The Remal slim image build process will download the files on-the-fly from your 
 
 * Connect to a container from another container using Docker network and run a command:
   ~~~
-  sshpass -p password ssh -oStrictHostKeyChecking=no root@ca.remal.com "ls -all"
+  sshpass -p password ssh -oStrictHostKeyChecking=no root@pki.remal.com "ls -all"
   ~~~
 
 **Network**

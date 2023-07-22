@@ -18,10 +18,10 @@ EXPOSE 1331/tcp
 # environment variables
 ENV IMAGE_NAME="am-7.3" \
     IMAGE_TAG="0.0.1-remal" \
-    IMAGE_DESCRIPTION="Remal ForgeRock Access Management Server 7.3.0" \
+    IMAGE_DESCRIPTION="ForgeRock Access Management Server 7.3.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
-    PKI_HOST="ca.remal.com" \
+    PKI_HOST="pki.remal.com" \
     \
     AM_CONFIG_BACKUP="true" \
     AM_CONFIG_RESTORE_FROM="latest" \
