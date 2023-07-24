@@ -9,9 +9,15 @@
 # ******************************************************************************
 source /shared.sh
 log_start "$0"
+
+FQDN=$(hostname -f)
 {
   printf "export %s=\"%s\"\n" "PKI_HOST" "$PKI_HOST"
-  printf "export %s=\"%s\"\n" "AM_HOME" "$VAULT_HOME"
-  printf "cd %s\n" "$VAULT_HOME"
+  printf "export %s=\"%s\"\n" "VAULT_CONFIG_FILE" "$VAULT_CONFIG_FILE"
+  printf "export %s=\"%s\"\n" "VAULT_API_PORT" "$VAULT_API_PORT"
+  printf "export %s=\"%s\"\n" "VAULT_ADDR" "https://$FQDN:$VAULT_API_PORT"
+  printf "export %s=\"%s\"\n" "KEYSTORE_HOME" "$KEYSTORE_HOME"
+  printf "export %s=\"%s\"\n" "VAULT_CACERT" "$KEYSTORE_HOME/ca.pem"
 } >> /etc/profile
+
 log_end "$0"

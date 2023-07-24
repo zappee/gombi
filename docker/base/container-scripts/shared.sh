@@ -248,3 +248,27 @@ wait_for_container() {
   done
   printf "%s | [INFO]  the \"%s\" container is up and running\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain"
 }
+
+# ------------------------------------------------------------------------------
+# Wait until a given content appears in a file. Once the content appears the
+# function exits and cleans up itself (kills the tail).
+#
+# WARNING: This method only scans  new contents in the file and the previous
+#          lines are completely ignored!
+#
+# Arguments
+#    arg 1: the file to be monitored
+#    arg 1: the expected content
+# ------------------------------------------------------------------------------
+wait_until_text_found() {
+  local file_to_monitor text
+  file_to_monitor="$1"
+  text="$2"
+
+  printf "%s | [DEBUG] monitoring the \"%s\" file and waiting until \"%s\" text appears...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_monitor" "$text"
+  tail -n0 -F "$file_to_monitor" 2>/dev/null | while read -r LOGLINE
+  do
+    [[ "${LOGLINE}" == *"$text"* ]] && pkill -P $$ tail
+  done
+  printf "%s | [DEBUG] expected content appeared, let's continue\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+}

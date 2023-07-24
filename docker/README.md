@@ -14,7 +14,8 @@ Perform the following tasks to prepare your environment to be ready to run the R
 
 #### 3.1.2) Prepare FQDN
 Map hostnames to IP addresses in `/etc/hosts` file.
-  * `127.0.0.1   am.remal.com`
+  * `127.0.0.1   am.hello.com`
+  * `127.0.0.1   vault.hello.com`
 
 #### 3.1.3) Prepare the environment for Forgerock Directory Server (LDAP)
 The LDAP server has some special requirements.

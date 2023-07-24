@@ -11,6 +11,7 @@ ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
 EXPOSE 22/tcp
+EXPOSE 8200/tcp
 
 # environment variables
 ENV IMAGE_NAME="vault-1.14" \
@@ -19,7 +20,12 @@ ENV IMAGE_NAME="vault-1.14" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     PKI_HOST="pki.remal.com" \
-    VAULT_HOME="/opt/hcp-vault"
+    KEYSTORE_HOME="/tmp" \
+    \
+    VAULT_CONFIG_FILE="/etc/vault.hcl" \
+    VAULT_FILE_STORE="/opt/vault/data" \
+    VAULT_API_PORT="8200" \
+    VAULT_LOG_LEVEL="info"
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \
@@ -27,6 +33,10 @@ LABEL "com.remal.image.vendor"="Remal" \
       "com.remal.image.version"="${IMAGE_TAG}" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
       "com.remal.image.author"="${IMAGE_AUTHOR}"
+
+# installing tools
+RUN set -ux; \
+    apk add --no-cache openssl
 
 
 # fat image
@@ -39,3 +49,5 @@ FROM base AS base-slim
 
 # final image
 FROM base-$BUILD_TYPE AS final
+COPY config/vault.hcl "$VAULT_CONFIG_FILE"
+COPY container-scripts/vault-functions.sh /

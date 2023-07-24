@@ -1,17 +1,18 @@
 #!/bin/bash -ue
 # ******************************************************************************
-# Environment file to define variables used during the Docker image build.
+# HashiCorp Vault startup script.
 #
 # Since : July, 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-IMAGE_NAME="vault-1.14"
-IMAGE_TAG="0.0.1-remal"
-IMAGE_DESCRIPTION="HashiCorp Vault 1.14"
-IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
-IMAGE_FROM="base:0.0.1-remal"
+source /shared.sh
+source /vault-functions.sh
 
-BUILD_TYPE=${1:-fat}
-PUSH_IMAGE=${2:-false}
+# ------------------------------------------------------------------------------
+# Main program starts here.
+# ------------------------------------------------------------------------------
+log_start "$0"
+start_vault
+log_end "$0"

@@ -42,7 +42,7 @@ function show_context() {
   printf "%s | [DEBUG]       EASYRSA_KEY_SIZE: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$EASYRSA_KEY_SIZE"
   printf "%s | [DEBUG]           EASYRSA_PASS: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$EASYRSA_PASS"
   printf "%s | [DEBUG] arguments of the \"%s\" script:\n" "$(date +"%Y-%b-%d %H:%M:%S")" "${0##*/}"
-  printf "%s | [DEBUG]   hostname: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$1"
+  printf "%s | [DEBUG]               hostname: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$1"
 }
 
 # ------------------------------------------------------------------------------

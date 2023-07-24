@@ -14,4 +14,5 @@ docker run \
   --detach \
   --env PKI_HOST=pki.hello.com \
   --publish 13042:22 \
+  --publish 13048:8200 \
   "$IMAGE_NAME":"$IMAGE_TAG"

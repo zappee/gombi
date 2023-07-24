@@ -53,3 +53,14 @@ services:
             - AM_CONFIG_RESTORE_FROM=xlatest
         volumes:
             - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/openam/backup
+
+    # ----- Vault service ------------------------------------------------------
+    vault:
+        image: vault-1.14:0.0.1-remal
+        container_name: vault.hello.com
+        hostname: vault.hello.com
+        ports:
+            - "13042:22"   # SSH
+            - "13048:8200" # vault listening
+        environment:
+            - PKI_HOST=pki.hello.com
