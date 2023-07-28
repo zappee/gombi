@@ -10,6 +10,28 @@
 source /shared.sh
 
 # ----------------------------------------------------------------------------
+# Get the root token value.
+# ------------------------------------------------------------------------------
+function get_vault_root_token() {
+  local root_token
+  root_token=$(grep "Initial Root Token" /var/log/vault-tokens.txt |  awk '{ print $4 }')
+  printf "%s" "$root_token"
+}
+
+# ----------------------------------------------------------------------------
+# Get the root token value.
+#
+#  Arguments:
+#     arg 1: the number of the key to retrieve
+# ------------------------------------------------------------------------------
+function get_vault_unseal_key() {
+  local key_id key
+  key_id="$1"
+  key=$(grep "Unseal Key $key_id" /var/log/vault-tokens.txt |  awk '{ print $4 }')
+  printf "%s" "$key"
+}
+
+# ----------------------------------------------------------------------------
 # Start HashiCorp Vault.
 # ------------------------------------------------------------------------------
 function start_vault() {

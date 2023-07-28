@@ -3,7 +3,7 @@
  */
 
 storage "file" {
-        path = "${PATH_TO_FILE_STORE}"
+        path = "${VAULT_FILE_STORE}"
 }
 
 listener "tcp" {

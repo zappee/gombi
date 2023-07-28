@@ -68,7 +68,7 @@ function prepare_vault_config_file() {
   sed -i "s|\${SERVER_CERT_FILE}|$server_cert_file|g" "$VAULT_CONFIG_FILE"
   sed -i "s|\${SERVER_KEY_FILE}|$server_key_file|g" "$VAULT_CONFIG_FILE"
   sed -i "s|\${CA_CERT_FILE}|$ca_cert_file|g" "$VAULT_CONFIG_FILE"
-  sed -i "s|\${PATH_TO_FILE_STORE}|$VAULT_FILE_STORE|g" "$VAULT_CONFIG_FILE"
+  sed -i "s|\${VAULT_FILE_STORE}|$VAULT_FILE_STORE|g" "$VAULT_CONFIG_FILE"
   sed -i "s|\${LOG_LEVEL}|$VAULT_LOG_LEVEL|g" "$VAULT_CONFIG_FILE"
 }
 
@@ -82,10 +82,27 @@ function initialize_vault() {
   init_log="/var/log/vault-tokens.txt"
 
   start_vault
+  
   printf "%s | [INFO]  initializing HashiCorp Vault...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   vault operator init -key-shares=3 -key-threshold=2 > "$init_log"
-  printf "%s | [WARN]  Take note of these values and store them securely:\n" "$(date +"%Y-%b-%d %H:%M:%S")" 
+  printf "%s | [WARN]  take note of these values and store them securely:\n" "$(date +"%Y-%b-%d %H:%M:%S")" 
   cat "$init_log"
+  
+  local unseal_key_1 unseal_key_2 root_token
+  unseal_key_1=$(get_vault_unseal_key "1")
+  unseal_key_2=$(get_vault_unseal_key "2")
+  root_token=$(get_vault_root_token)
+  
+  printf "%s | [INFO]  initializing the Key-Value secrets engine...\n" "$(date +"%Y-%b-%d %H:%M:%S")" 
+  printf "%s | [DEBUG]    VAULT_CACERT: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_CACERT"
+  printf "%s | [DEBUG]      VAULT_ADDR: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_ADDR"
+  printf "%s | [DEBUG]    unseal key 1: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$unseal_key_1"
+  printf "%s | [DEBUG]    unseal key 2: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$unseal_key_2"
+  printf "%s | [DEBUG]      root token: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$root_token"
+  vault operator unseal "$unseal_key_1"
+  vault operator unseal "$unseal_key_2"
+  VAULT_TOKEN="$root_token" vault secrets enable -version=2 kv
+  
   stop_vault
 }
 
