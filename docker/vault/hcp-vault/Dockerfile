@@ -23,6 +23,7 @@ ENV IMAGE_NAME="vault-1.14" \
     KEYSTORE_HOME="/tmp" \
     \
     VAULT_CONFIG_FILE="/etc/vault.hcl" \
+    VAULT_INIT_LOG="/var/log/vault-tokens.txt" \
     VAULT_FILE_STORE="/opt/vault/data" \
     VAULT_API_PORT="8200" \
     VAULT_LOG_LEVEL="info"

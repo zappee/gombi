@@ -14,7 +14,7 @@ source /shared.sh
 # ------------------------------------------------------------------------------
 function get_vault_root_token() {
   local root_token
-  root_token=$(grep "Initial Root Token" /var/log/vault-tokens.txt |  awk '{ print $4 }')
+  root_token=$(grep "Initial Root Token" "$VAULT_INIT_LOG" |  awk '{ print $4 }')
   printf "%s" "$root_token"
 }
 
@@ -27,7 +27,7 @@ function get_vault_root_token() {
 function get_vault_unseal_key() {
   local key_id key
   key_id="$1"
-  key=$(grep "Unseal Key $key_id" /var/log/vault-tokens.txt |  awk '{ print $4 }')
+  key=$(grep "Unseal Key $key_id" "$VAULT_INIT_LOG" |  awk '{ print $4 }')
   printf "%s" "$key"
 }
 
@@ -35,22 +35,23 @@ function get_vault_unseal_key() {
 # Start HashiCorp Vault.
 # ------------------------------------------------------------------------------
 function start_vault() {
+  printf "%s | [INFO]  starting HashiCorp Vault...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  
   local fqdn vault_log vault_address vault_cacert
   fqdn=$(hostname -f)
   vault_log="/var/log/vault.log"
-  vault_address="https://$fqdn:$VAULT_API_PORT"
   vault_cacert="$KEYSTORE_HOME/ca.pem"
+  vault_address="https://$fqdn:$VAULT_API_PORT"
 
-  printf "%s | [INFO]  starting HashiCorp Vault...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]             fqdn: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
-  printf "%s | [DEBUG]      config file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_CONFIG_FILE"
-  printf "%s | [DEBUG]         log file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$vault_log"
-  printf "%s | [DEBUG]         api port: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_API_PORT"
-  printf "%s | [DEBUG]    vault address: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$vault_address"
-  printf "%s | [DEBUG]     vault cacert: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$vault_cacert"
+  printf "%s | [DEBUG]                 fqdn: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
+  printf "%s | [DEBUG]    VAULT_CONFIG_FILE: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_CONFIG_FILE"
+  printf "%s | [DEBUG]             log file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$vault_log"
+  printf "%s | [DEBUG]       VAULT_API_PORT: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_API_PORT"
+  printf "%s | [DEBUG]         VAULT_CACERT: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$vault_cacert"
+  printf "%s | [DEBUG]           VAULT_ADDR: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$vault_address"
   
-  export VAULT_ADDR="$vault_address"
   export VAULT_CACERT="$vault_cacert"
+  export VAULT_ADDR="$vault_address"
   vault server -config="$VAULT_CONFIG_FILE" 2>&1 | tee "$vault_log" &
   
   while ! nc -w 5 -z "localhost" "$VAULT_API_PORT" 2>/dev/null; do

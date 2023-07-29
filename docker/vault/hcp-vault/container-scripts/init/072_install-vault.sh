@@ -53,7 +53,7 @@ function prepare_vault_config_file() {
   server_key_file="$KEYSTORE_HOME/$FQDN.key.pem"
   ca_cert_file="$KEYSTORE_HOME/ca.pem"
 
-  printf "%s | [INFO]  configuring HashiCorp Vault...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [INFO]  preparing HashiCorp Vault config file...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG]                   config file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_CONFIG_FILE"
   printf "%s | [DEBUG]                listening host: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$listening_host"
   printf "%s | [DEBUG]                      api port: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_API_PORT"
@@ -78,23 +78,23 @@ function prepare_vault_config_file() {
 # Supported log levels: trace, debug, info, warn, and error
 # ------------------------------------------------------------------------------
 function initialize_vault() {
-  local init_log
-  init_log="/var/log/vault-tokens.txt"
-
-  start_vault
-  
   printf "%s | [INFO]  initializing HashiCorp Vault...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  vault operator init -key-shares=3 -key-threshold=2 > "$init_log"
+  vault operator init -key-shares=3 -key-threshold=2 > "$VAULT_INIT_LOG"
   printf "%s | [WARN]  take note of these values and store them securely:\n" "$(date +"%Y-%b-%d %H:%M:%S")" 
-  cat "$init_log"
+  cat "$VAULT_INIT_LOG"
+}
+
+# ----------------------------------------------------------------------------
+# Initialize HashiCorp Vault key-value secret engine.
+# ------------------------------------------------------------------------------
+function initializing_kv_engine() {
+  printf "%s | [INFO]  initializing the Key-Value secrets engine...\n" "$(date +"%Y-%b-%d %H:%M:%S")" 
   
   local unseal_key_1 unseal_key_2 root_token
   unseal_key_1=$(get_vault_unseal_key "1")
   unseal_key_2=$(get_vault_unseal_key "2")
   root_token=$(get_vault_root_token)
   
-  printf "%s | [INFO]  initializing the Key-Value secrets engine...\n" "$(date +"%Y-%b-%d %H:%M:%S")" 
-  printf "%s | [DEBUG]    VAULT_CACERT: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_CACERT"
   printf "%s | [DEBUG]      VAULT_ADDR: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_ADDR"
   printf "%s | [DEBUG]    unseal key 1: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$unseal_key_1"
   printf "%s | [DEBUG]    unseal key 2: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$unseal_key_2"
@@ -102,8 +102,6 @@ function initialize_vault() {
   vault operator unseal "$unseal_key_1"
   vault operator unseal "$unseal_key_2"
   VAULT_TOKEN="$root_token" vault secrets enable -version=2 kv
-  
-  stop_vault
 }
 
 # ------------------------------------------------------------------------------
@@ -120,6 +118,9 @@ copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/
 install_vault
 prepare_vault_environment
 prepare_vault_config_file
-initialize_vault
-
+start_vault 
+  initialize_vault
+  initializing_kv_engine
+stop_vault
+  
 log_end "$0"
