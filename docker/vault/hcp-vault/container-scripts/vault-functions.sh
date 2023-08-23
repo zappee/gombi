@@ -1,6 +1,6 @@
 #!/bin/bash -ue
 # ******************************************************************************
-# Functions that helps to manage ForgeRock Directory Server.
+# Functions that helps to manage HashiCorp Vault.
 #
 # Since : January, 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>

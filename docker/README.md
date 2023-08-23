@@ -161,6 +161,8 @@ alias rmi='docker volume rm $(docker volume ls -qf dangling=true) ; docker rmi $
   $ ssh -p <ssh-port> root@localhost
   ~~~
   Use `password` as a password.
+  
+  Example: `sshpass -p password ssh -oStrictHostKeyChecking=no root@vault.hello.com -p 13042`
 
 <a href="https://trackgit.com">
   <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />

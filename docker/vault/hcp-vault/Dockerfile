@@ -35,10 +35,6 @@ LABEL "com.remal.image.vendor"="Remal" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
       "com.remal.image.author"="${IMAGE_AUTHOR}"
 
-# installing tools
-RUN set -ux; \
-    apk add --no-cache openssl
-
 
 # fat image
 FROM base AS base-fat
@@ -51,4 +47,4 @@ FROM base AS base-slim
 # final image
 FROM base-$BUILD_TYPE AS final
 COPY config/vault.hcl "$VAULT_CONFIG_FILE"
-COPY container-scripts/vault-functions.sh /
+COPY container-scripts/vault-functions.sh  container-scripts/get-value.sh container-scripts/set-value.sh /
