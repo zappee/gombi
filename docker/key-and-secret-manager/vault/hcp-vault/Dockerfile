@@ -22,6 +22,7 @@ ENV IMAGE_NAME="vault-1.14" \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     \
+    VAULT_INSTALL_KIT="vault_1.15.0_linux_386.zip" \
     VAULT_CONFIG_FILE="/etc/vault.hcl" \
     VAULT_INIT_LOG="/var/log/vault-tokens.txt" \
     VAULT_FILE_STORE="/opt/vault/data" \
@@ -35,13 +36,26 @@ LABEL "com.remal.image.vendor"="Remal" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
       "com.remal.image.author"="${IMAGE_AUTHOR}"
 
+# install openssl
+RUN set -ux; \
+    apk add --no-cache openssl
+
 
 # fat image
 FROM base AS base-fat
+COPY "bin/$VAULT_INSTALL_KIT" "/tmp/"
+RUN set -ux; \
+    unzip "/tmp/$VAULT_INSTALL_KIT" -d "/usr/local/bin/"; \
+    rm "/tmp/$VAULT_INSTALL_KIT"
 
 
 # slim image
 FROM base AS base-slim
+RUN set -ux; \
+    hostIp="$(ip route | awk '/default/ { print $3 }')"; \
+    wget -O "/tmp/$VAULT_INSTALL_KIT" http://$hostIp:8080/docker-build/$VAULT_INSTALL_KIT; \
+    unzip "/tmp/$VAULT_INSTALL_KIT" -d "/usr/local/bin/"; \
+    rm "/tmp/$VAULT_INSTALL_KIT"
 
 
 # final image

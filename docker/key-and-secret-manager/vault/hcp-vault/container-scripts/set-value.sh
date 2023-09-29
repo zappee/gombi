@@ -49,7 +49,7 @@ FULL_PATH="${1//.///}"
 VAULT_FIELD="$(basename "$FULL_PATH")"
 VAULT_PATH="$(dirname "$FULL_PATH")"
 
-if [ $VAULT_PATH = "." ]; then printf "%s | [ERROR] path can't be blank\n" "$(date +"%Y-%b-%d %H:%M:%S")"; exit 1; fi
+if [ $VAULT_PATH = "." ]; then printf "%s | [ERROR] path can't be blank, must contain at least one dot (.) character\n" "$(date +"%Y-%b-%d %H:%M:%S")"; exit 1; fi
  
 if is_debug "$@"; then printf "%s | [DEBUG] setting a value to Vault...\n" "$(date +"%Y-%b-%d %H:%M:%S")"; fi
 if is_debug "$@"; then printf "%s | [DEBUG]            key=\"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$1"; fi

@@ -53,7 +53,7 @@ function start_vault() {
   export VAULT_CACERT="$vault_cacert"
   export VAULT_ADDR="$vault_address"
   vault server -config="$VAULT_CONFIG_FILE" 2>&1 | tee "$vault_log" &
-  
+
   while ! nc -w 5 -z "localhost" "$VAULT_API_PORT" 2>/dev/null; do
     sleep 0.5
   done
@@ -68,4 +68,22 @@ function stop_vault() {
   printf "%s | [INFO]  stoppling HashiCorp Vault...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   /bin/bash -c '/usr/bin/killall -q vault; exit 0'
   printf "%s | [INFO]  HashiCorp Vault has been stopped\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+}
+
+
+# ----------------------------------------------------------------------------
+# Unseal Vault.
+#
+# Vault starts in a sealed state. It cannot perform operations until it is
+# unsealed.
+#
+#  Arguments:
+#     arg 1: unseal key
+# ------------------------------------------------------------------------------
+function unseal_vault() {
+  local unseal_key
+  unseal_key="$1"
+
+  printf "%s | [INFO]  unsealing HashiCorp Vault using \"%s\" as an unseal key...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$unseal_key"
+  vault operator unseal "$unseal_key"
 }

@@ -14,5 +14,9 @@ source /vault-functions.sh
 # Main program starts here.
 # ------------------------------------------------------------------------------
 log_start "$0"
+
 start_vault
+unseal_vault "$(get_vault_unseal_key "1")"
+unseal_vault "$(get_vault_unseal_key "2")"
+
 log_end "$0"

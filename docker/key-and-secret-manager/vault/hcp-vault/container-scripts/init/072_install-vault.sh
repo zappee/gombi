@@ -11,16 +11,6 @@ source /shared.sh
 source /vault-functions.sh
 
 # ----------------------------------------------------------------------------
-# HashiCorp Vault installation.
-# ------------------------------------------------------------------------------
-function install_vault() {
-  printf "%s | [INFO]  installing HashiCorp Vault...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  apk add --repository https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-  apk add --no-cache vault libcap
-  setcap cap_ipc_lock= /usr/sbin/vault
-}
-
-# ----------------------------------------------------------------------------
 # HashiCorp Vault environment preparation.
 # ------------------------------------------------------------------------------
 function prepare_vault_environment() {
@@ -34,7 +24,6 @@ function prepare_vault_environment() {
   openssl pkcs8 -in "$KEYSTORE_HOME/$FQDN.key" -passin pass:changeit -out "$KEYSTORE_HOME/$FQDN.key.pem" -outform PEM
   openssl x509 -in "$KEYSTORE_HOME/$CA_CERTIFICATE_FILENAME.crt" -out "$KEYSTORE_HOME/$CA_CERTIFICATE_FILENAME.pem" -outform PEM
 
-  chown root:vault "$KEYSTORE_HOME/$FQDN.key.pem"
   chmod 0644 "$KEYSTORE_HOME/$CA_CERTIFICATE_FILENAME.pem" "$KEYSTORE_HOME/$FQDN.pem"
   chmod 0640 "$KEYSTORE_HOME/$FQDN.key.pem"
 }
@@ -90,17 +79,17 @@ function initialize_vault() {
 function initializing_kv_engine() {
   printf "%s | [INFO]  initializing the Key-Value secrets engine...\n" "$(date +"%Y-%b-%d %H:%M:%S")" 
   
-  local unseal_key_1 unseal_key_2 root_token
+  local root_token unseal_key_1 unseal_key_2
+  root_token=$(get_vault_root_token)
   unseal_key_1=$(get_vault_unseal_key "1")
   unseal_key_2=$(get_vault_unseal_key "2")
-  root_token=$(get_vault_root_token)
-  
+
   printf "%s | [DEBUG]      VAULT_ADDR: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_ADDR"
   printf "%s | [DEBUG]    unseal key 1: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$unseal_key_1"
   printf "%s | [DEBUG]    unseal key 2: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$unseal_key_2"
   printf "%s | [DEBUG]      root token: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$root_token"
-  vault operator unseal "$unseal_key_1"
-  vault operator unseal "$unseal_key_2"
+  unseal_vault "$unseal_key_1"
+  unseal_vault "$unseal_key_2"
   VAULT_TOKEN="$root_token" vault secrets enable -version=2 kv
 }
 
@@ -115,7 +104,6 @@ generate_certificate "$FQDN"
 copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$FQDN.key" "$KEYSTORE_HOME"
 copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/issued/$FQDN.crt" "$KEYSTORE_HOME"
 copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/$CA_CERTIFICATE_FILENAME.crt" "$KEYSTORE_HOME"
-install_vault
 prepare_vault_environment
 prepare_vault_config_file
 start_vault 
