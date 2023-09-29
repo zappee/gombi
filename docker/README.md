@@ -51,11 +51,11 @@ How to get Firefox to trust all self signed certificates you use locally to serv
 You can add the root CA to your web browser.
 The root CA locates in the CA server, the Docker container name is `pki.remal.com`.
 
-![step 1](pki/docs/firefox-setting-up-ca-step-1.png)
+![step 1](key-and-secret-manager%20/pki/docs/firefox-setting-up-ca-step-1.png)
 
-![step 2](pki/docs/firefox-setting-up-ca-step-2.png)
+![step 2](key-and-secret-manager%20/pki/docs/firefox-setting-up-ca-step-2.png)
 
-![step 3](pki/docs/firefox-setting-up-ca-step-3.png)
+![step 3](key-and-secret-manager%20/pki/docs/firefox-setting-up-ca-step-3.png)
 
 ### 3.5) Stop the development environment
 Docker can back up the current configuration of the running servers before the whole environment will be stopped.
