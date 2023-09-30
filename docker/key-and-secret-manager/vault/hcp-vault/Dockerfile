@@ -27,7 +27,9 @@ ENV IMAGE_NAME="vault-1.14" \
     VAULT_INIT_LOG="/var/log/vault-tokens.txt" \
     VAULT_FILE_STORE="/opt/vault/data" \
     VAULT_API_PORT="8200" \
-    VAULT_LOG_LEVEL="info"
+    VAULT_LOG_LEVEL="info" \
+    VAULT_LOG="/var/log/vault.log" \
+    VAULT_AUDIT_LOG="/var/log/vault-audit.log"
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \

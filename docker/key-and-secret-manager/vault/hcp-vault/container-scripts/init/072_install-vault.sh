@@ -64,6 +64,21 @@ function prepare_vault_config_file() {
 # ----------------------------------------------------------------------------
 # HashiCorp Vault configuration.
 #
+# Initializing the audit log.
+# ------------------------------------------------------------------------------
+function initialize_audit_log() {
+  printf "%s | [INFO]  initializing audit log for HashiCorp Vault, logfile: \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_AUDIT_LOG"
+
+  local root_token
+  root_token=$(get_vault_root_token)
+
+  printf "%s | [DEBUG]      root token: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$root_token"
+  VAULT_TOKEN="$root_token" vault audit enable file file_path="$VAULT_AUDIT_LOG"
+}
+
+# ----------------------------------------------------------------------------
+# HashiCorp Vault configuration.
+#
 # Supported log levels: trace, debug, info, warn, and error
 # ------------------------------------------------------------------------------
 function initialize_vault() {
@@ -109,6 +124,7 @@ prepare_vault_config_file
 start_vault 
   initialize_vault
   initializing_kv_engine
+  initialize_audit_log
 stop_vault
   
 log_end "$0"

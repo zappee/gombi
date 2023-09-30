@@ -32,27 +32,40 @@ function get_vault_unseal_key() {
 }
 
 # ----------------------------------------------------------------------------
+# Show the audit log.
+# ------------------------------------------------------------------------------
+function show_audit_log() {
+  VAULT_AUDIT_LOG="${VAULT_AUDIT_LOG:-saysomethingrandom}"
+  printf "%s | [INFO]  showing the  HashiCorp Vault audit log...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_AUDIT_LOG"
+
+  kill "$(ps aux | grep "[^]]$VAULT_AUDIT_LOG" | awk '{print $1}')" || true
+  tail -F "$VAULT_AUDIT_LOG" &
+}
+
+# ----------------------------------------------------------------------------
 # Start HashiCorp Vault.
 # ------------------------------------------------------------------------------
 function start_vault() {
   printf "%s | [INFO]  starting HashiCorp Vault...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   
-  local fqdn vault_log vault_address vault_cacert
+  local fqdn vault_address vault_cacert
   fqdn=$(hostname -f)
-  vault_log="/var/log/vault.log"
   vault_cacert="$KEYSTORE_HOME/ca.pem"
   vault_address="https://$fqdn:$VAULT_API_PORT"
 
   printf "%s | [DEBUG]                 fqdn: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
   printf "%s | [DEBUG]    VAULT_CONFIG_FILE: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_CONFIG_FILE"
-  printf "%s | [DEBUG]             log file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$vault_log"
+  printf "%s | [DEBUG]            VAULT_LOG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_LOG"
+  printf "%s | [DEBUG]      VAULT_AUDIT_LOG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_AUDIT_LOG"
   printf "%s | [DEBUG]       VAULT_API_PORT: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_API_PORT"
   printf "%s | [DEBUG]         VAULT_CACERT: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$vault_cacert"
   printf "%s | [DEBUG]           VAULT_ADDR: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$vault_address"
   
   export VAULT_CACERT="$vault_cacert"
   export VAULT_ADDR="$vault_address"
-  vault server -config="$VAULT_CONFIG_FILE" 2>&1 | tee "$vault_log" &
+  vault server -config="$VAULT_CONFIG_FILE" 2>&1 | tee "$VAULT_LOG" &
+
+  show_audit_log
 
   while ! nc -w 5 -z "localhost" "$VAULT_API_PORT" 2>/dev/null; do
     sleep 0.5
