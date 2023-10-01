@@ -7,10 +7,8 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-printf "%s | [DEBUG] executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$0"
-printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-
+source /shared.sh
+log_start "$0"
 {
   printf "%s\n" "alias ll='ls -alF'"
   printf "%s\n" "alias ls='ls --color=auto'"
@@ -26,3 +24,4 @@ printf "%s | [DEBUG] ===========================================================
   printf "export %s=\"%s\"\n" "SSH_PASSWORD" "$SSH_PASSWORD"
   printf "export %s=\"%s\"\n" "UP_SIGNAL_PORT" "$UP_SIGNAL_PORT"
 } >> /etc/profile
+log_end "$0"

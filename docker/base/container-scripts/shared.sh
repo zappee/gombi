@@ -73,13 +73,27 @@ function generate_certificate() {
   host_name="$1"
 
   printf "%s | [INFO]  generating a server certificate...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]         CA_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$CA_HOST"
+  printf "%s | [DEBUG]        PKI_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PKI_HOST"
   printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
   printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
   printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$host_name"
   sshpass -p "$SSH_PASSWORD" ssh \
     -oStrictHostKeyChecking=no \
-    "$SSH_USER@$CA_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $host_name'"
+    "$SSH_USER@$PKI_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $host_name'"
+}
+
+# ------------------------------------------------------------------------------
+# Get the latest file that fits to the given pattern.
+#
+# Arguments
+#    arg 1:  directory to check
+#    arg 2:  filename pattern
+# ------------------------------------------------------------------------------
+get_latest_file() {
+  local directory pattern
+  directory="$1"
+  pattern="$2"
+  printf "%s" "$(find "$directory" -name "$pattern" -type f -exec ls -t {} + | head -1)"
 }
 
 # ------------------------------------------------------------------------------
@@ -121,6 +135,28 @@ function import_to_keystore() {
 }
 
 # ------------------------------------------------------------------------------
+# Log the execution of a bash script.
+#
+# Arguments
+#    arg 1: path to the bash script
+# ------------------------------------------------------------------------------
+log_start() {
+  local script_file="$1"
+  printf "%s | [DEBUG] ===== executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
+}
+
+# ------------------------------------------------------------------------------
+# Log the execution of a bash script.
+#
+# Arguments
+#    arg 1: path to the bash script
+# ------------------------------------------------------------------------------
+log_end() {
+  local script_file="$1"
+  printf "%s | [DEBUG] ----- end of the \"%s\" script\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
+}
+
+# ------------------------------------------------------------------------------
 # Run an external bash script if it exists.
 # ------------------------------------------------------------------------------
 function script_runner() {
@@ -130,13 +166,12 @@ function script_runner() {
   local start elapsed
   if [ -f "$script_file" ]; then
     start=$(date +%s)
-    printf "%s | [DEBUG] -----------------------------------------------------------\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-    printf "%s | [INFO]  executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
-    printf "%s | [DEBUG] ===========================================================\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+    log_start "$script_file"
     "$script_file"
     elapsed=$(($(date +%s) - start))
     printf "%s | [INFO]  end of the \"%s\" script\n" "$script_file" "$(date +"%Y-%b-%d %H:%M:%S")"
     printf "%s | [INFO]  execution time: %s\n" "$(date -d@$elapsed -u +%H\ hour\ %M\ day\ %S\ sec)" "$(date +"%Y-%b-%d %H:%M:%S")"
+    log_end "$0"
   else
     printf "%s | [WARN]  script \"%s\" not exist, ignoring it\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
   fi
@@ -174,6 +209,7 @@ function show_ready_message() {
   printf "%s | [DEBUG] | '_ \ / _\` / __|  | '_ \ / _ \/ _ \ '_ \   / __| __/ _\` | \'__| __/ _ \/ _\` |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG] | | | | (_| \__ \  | |_) |  __/  __/ | | |  \__ \ || (_| | |  | ||  __/ (_| |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG] |_| |_|\__,_|___/  |_.__/ \___|\___|_| |_|  |___/\__\__,_|_|   \__\___|\__,_|\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] © 2023 Remal Softwares. All rights reserved.\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }
 
 # ------------------------------------------------------------------------------
@@ -181,7 +217,7 @@ function show_ready_message() {
 # ------------------------------------------------------------------------------
 function shutdown_trap() {
   printf "%s | [INFO]  shutting down the container...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  script_runner "/shutdown.sh"
+  script_runner "/shutdown-actions.sh"
 }
 
 # ------------------------------------------------------------------------------
@@ -212,4 +248,28 @@ wait_for_container() {
     sleep 0.5
   done
   printf "%s | [INFO]  the \"%s\" container is up and running\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain"
+}
+
+# ------------------------------------------------------------------------------
+# Wait until a given content appears in a file. Once the content appears the
+# function exits and cleans up itself (kills the tail).
+#
+# WARNING: This method only scans  new contents in the file and the previous
+#          lines are completely ignored!
+#
+# Arguments
+#    arg 1: the file to be monitored
+#    arg 1: the expected content
+# ------------------------------------------------------------------------------
+wait_until_text_found() {
+  local file_to_monitor text
+  file_to_monitor="$1"
+  text="$2"
+
+  printf "%s | [DEBUG] monitoring the \"%s\" file and waiting until \"%s\" text appears...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_monitor" "$text"
+  tail -n0 -F "$file_to_monitor" 2>/dev/null | while read -r LOGLINE
+  do
+    [[ "${LOGLINE}" == *"$text"* ]] && pkill -P $$ tail
+  done
+  printf "%s | [DEBUG] expected content appeared, let's continue\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }

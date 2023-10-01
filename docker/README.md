@@ -1,17 +1,6 @@
 # Guide for Remal Docker Images 
 
 ## 1) Overview
-This document provides information about Remal Docker Images available in this project.
-For more details, check the specific documentation.
-
-## 2) Image versioning
-Subsequent releases of the same image must be assigned numerical identifiers consisting of three numbers separated by periods.
-
-The versioning of the Remal Docker images is the following: `remal-<image>:x:y:z`
-
-* The first number, called the major number, is increased when there are significant improvements or changes in functionality.
-* The second number, called the minor number, is incremented when there are minor feature changes or notable fixes. For example, `remal-openjdk-11:0.2.0` indicates that minor changes were made to the earlier version, `remal-openjdk-11:0.1.0`.
-* The third number, if it exists, is called the revision number and is added or increased when minor bugs are eliminated. The 7 in `remal-openjdk-11:0.2.7` shows that bug fixes were made to the previous version.
 
 ## 3) Development environment
 You can start the complete Docker stack on your machine if your machine has enough CPU and memory.
@@ -25,13 +14,12 @@ Perform the following tasks to prepare your environment to be ready to run the R
 
 #### 3.1.2) Prepare FQDN
 Map hostnames to IP addresses in `/etc/hosts` file.
-  * `127.0.0.1   ca.remal.com`
-  * `127.0.0.1   ds.remal.com`
-  * `127.0.0.1   am.remal.com`
+  * `127.0.0.1   am.hello.com`
+  * `127.0.0.1   vault.hello.com`
 
 #### 3.1.3) Prepare the environment for Forgerock Directory Server (LDAP)
 The LDAP server has some special requirements.
-Learn about how to prepare your environment to get it ready for Forgerock Directory Server, check [paragraph 3.1) of this document](forgerock/forgerock-ds/README.md#31-preparation-of-your-environment).
+Learn about how to prepare your environment to get it ready for Forgerock Directory Server, check [paragraph 3.1) of this document](directory-server/forgerock-ds/README.md#31-preparation-of-your-environment).
 
 ### 3.2) Build the images
 Each image has a build script that is called `build.sh`.
@@ -61,13 +49,13 @@ s remal.sh s
 ### 3.4) Setting Up Certificate Authorities (CA) in Firefox 
 How to get Firefox to trust all self signed certificates you use locally to serve your development sites over https and not complain about them?
 You can add the root CA to your web browser.
-The root CA locates in the CA server, the Docker container name is `ca.remal.com`.
+The root CA locates in the CA server, the Docker container name is `pki.remal.com`.
 
-![step 1](../docs/pki/firefox-setting-up-ca-step-1.png)
+![step 1](key-and-secret-manager%20/pki/docs/firefox-setting-up-ca-step-1.png)
 
-![step 2](../docs/pki/firefox-setting-up-ca-step-2.png)
+![step 2](key-and-secret-manager%20/pki/docs/firefox-setting-up-ca-step-2.png)
 
-![step 3](../docs/pki/firefox-setting-up-ca-step-3.png)
+![step 3](key-and-secret-manager%20/pki/docs/firefox-setting-up-ca-step-3.png)
 
 ### 3.5) Stop the development environment
 Docker can back up the current configuration of the running servers before the whole environment will be stopped.
@@ -81,6 +69,15 @@ $ docker-compose stop --timeout 120
 
 ## 5) License and Copyright
 Copyright (c) 2020-2023 Remal Software, Arnold Somogyi. All rights reserved.
+
+## 2) Annex 1) Image versioning
+Subsequent releases of the same image must be assigned numerical identifiers consisting of three numbers separated by periods.
+
+The versioning of the Remal Docker images is the following: `remal-<image>:x:y:z`
+
+* The first number, called the major number, is increased when there are significant improvements or changes in functionality.
+* The second number, called the minor number, is incremented when there are minor feature changes or notable fixes. For example, `remal-openjdk-11:0.2.0` indicates that minor changes were made to the earlier version, `remal-openjdk-11:0.1.0`.
+* The third number, if it exists, is called the revision number and is added or increased when minor bugs are eliminated. The 7 in `remal-openjdk-11:0.2.7` shows that bug fixes were made to the previous version.
 
 ## Annex 1) Build slim Docker images
 Does the Docker Image size matter?
@@ -118,7 +115,7 @@ The Remal slim image build process will download the files on-the-fly from your 
 
 * Connect to a container from another container using Docker network and run a command:
   ~~~
-  sshpass -p password ssh -oStrictHostKeyChecking=no root@ca.remal.com "ls -all"
+  sshpass -p password ssh -oStrictHostKeyChecking=no root@pki.remal.com "ls -all"
   ~~~
 
 **Network**
@@ -164,5 +161,9 @@ alias rmi='docker volume rm $(docker volume ls -qf dangling=true) ; docker rmi $
   $ ssh -p <ssh-port> root@localhost
   ~~~
   Use `password` as a password.
+  
+  Example: `sshpass -p password ssh -oStrictHostKeyChecking=no root@vault.hello.com -p 13042`
 
-<a href="https://trackgit.com"><img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" /></a>
+<a href="https://trackgit.com">
+  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
+</a>

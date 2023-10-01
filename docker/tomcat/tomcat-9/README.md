@@ -4,7 +4,7 @@
 This image is an official Remal Docker image, used as a base image of the subsequent docker images.
 
 ## 2) Image details
-* based on the latest [openjdk-11](../openjdk-11/README.md) Remal image
+* based on the latest [openjdk-11](../../java/openjdk-11) Remal image
 * Apache Tomcat 9, listening on port `8080`
 * web console user: `admin`/`password`
 * tomcat log improvement to track access to resources better, [(pattern attribute info)](https://tomcat.apache.org/tomcat-9.0-doc/config/valve.html#Access_Log_Valve) 
@@ -54,4 +54,6 @@ Sample log:
 [07/Feb/2023:22:28:29 +0000], 172.17.0.1, -, "GET /bg-nav.png HTTP/1.1", 200, 1401, "http://localhost:13080/tomcat.css", "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0", 2, 1
 ~~~
 
-<a href="https://trackgit.com"><img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" /></a>
+<a href="https://trackgit.com">
+  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
+</a>

@@ -17,7 +17,7 @@ EXPOSE 8080/tcp
 # environment variables
 ENV IMAGE_NAME="tomcat-9" \
     IMAGE_TAG="0.0.1-remal" \
-    IMAGE_DESCRIPTION="Remal Apache Tomcat 9 Docker image" \
+    IMAGE_DESCRIPTION="Apache Tomcat 9 Docker image" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     CATALINA_HOME="/opt/tomcat" \
@@ -106,5 +106,6 @@ RUN set -ux; \
    printf "setting up environment variables...\n"; \
    printf "export %s=\"%s\"\n" "CATALINA_HOME" "$CATALINA_HOME" >> /etc/profile
 
+COPY container-scripts/tomcat-functions.sh /
 ONBUILD COPY container-scripts/init/* /docker.init/
 ONBUILD COPY container-scripts/startup/* /docker.startup/

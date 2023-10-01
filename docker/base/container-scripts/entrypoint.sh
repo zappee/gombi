@@ -7,7 +7,7 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-source shared.sh
+source /shared.sh
 trap "shutdown_trap; exit" SIGINT SIGTERM SIGHUP
 
 printf "%s | [INFO ] starting OpenSSH Daemon as a background process...\n" "$(date +"%Y-%b-%d %H:%M:%S")"

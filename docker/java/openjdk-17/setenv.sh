@@ -9,7 +9,7 @@
 # ******************************************************************************
 IMAGE_NAME="openjdk-17"
 IMAGE_TAG="0.0.1-remal"
-IMAGE_DESCRIPTION="Remal OpenJDK 17 Docker image"
+IMAGE_DESCRIPTION="OpenJDK 17 Docker image"
 IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 IMAGE_FROM="base:0.0.1-remal"
 
