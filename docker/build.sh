@@ -25,10 +25,10 @@ IMAGE_SRC=$SCRIPT_PATH/${1##*docker/}
 printf "Script home: %s\n" "$SCRIPT_PATH"
 printf "Source code: %s\n" "$IMAGE_SRC"
 
-source "$IMAGE_SRC/setenv.sh" "slim" "false"
+source "$IMAGE_SRC/setenv.sh" "slim" "false" "remal.com"
 printf "Build type:  %s\n" "$BUILD_TYPE"
 printf "Base image:  %s\n" "$IMAGE_FROM"
-printf "Image image:  %s\n\n" "$IMAGE_NAME:$IMAGE_TAG"
+printf "Image image: %s\n\n" "$IMAGE_NAME:$IMAGE_TAG"
 
 docker build \
   --no-cache \

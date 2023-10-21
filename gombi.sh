@@ -104,7 +104,7 @@ function docker_container_show {
 function docker_containers_run {
   printf "%b> starting the Remal Docker stack...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
   cd "$WORKSPACE/docker"
-  docker-compose up
+  docker-compose --env-file=.env.remal.com up
   cd "$WORKSPACE"
 }
 
@@ -201,8 +201,8 @@ function show_help() {
     printf "        %bt8:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_AM" "$STYLE_DEFAULT"
     printf "        %bt9:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_HCP_VAULT" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
-    printf "      %bu:    show Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "      %bv:    show Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bu:    list Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bv:    list Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "      %bw:    show Remal Docker containers' log%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "      %bx:    remove of all Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "\n"

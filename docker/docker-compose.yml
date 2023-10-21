@@ -2,23 +2,23 @@ version: '3'
 services:
     # ----- Private Certificate Authority Server -------------------------------
     pki:
-        image: private-ca:0.0.1-remal
-        container_name: pki
-        hostname: pki.hello.com
+        image: remal-private-ca:0.0.1
+        container_name: pki.${DOMAIN_NAME}
+        hostname: pki..${DOMAIN_NAME}
         ports:
             - "13012:22"   # SSH
         environment:
-            - EASYRSA_REQ_CN=hello.com
-            - EASYRSA_REQ_COUNTRY=DK
-            - EASYRSA_REQ_PROVINCE=Region Hovedstaden
-            - EASYRSA_REQ_CITY=Copenhagen
-            - EASYRSA_REQ_ORG=Hello Software
+            - EASYRSA_REQ_CN=${DOMAIN_NAME}
+            - EASYRSA_REQ_COUNTRY=${EASYRSA_REQ_COUNTRY}
+            - EASYRSA_REQ_PROVINCE=${EASYRSA_REQ_PROVINCE}
+            - EASYRSA_REQ_CITY=${EASYRSA_REQ_CITY}
+            - EASYRSA_REQ_ORG=${EASYRSA_REQ_ORG}
 
     # ----- LDAP directory service ---------------------------------------------
     ds:
-        image: ds-7.3:0.0.1-remal
-        container_name: ds
-        hostname: ds.hello.com
+        image: remal-ds-7.3:0.0.1
+        container_name: ds.${DOMAIN_NAME}
+        hostname: ds.${DOMAIN_NAME}
         depends_on:
             - pki
         ports:
@@ -26,7 +26,7 @@ services:
             - "13034:4444" # admin connector port
             - "13036:636"  # LDAP over SSL
         environment:
-            - PKI_HOST=pki.hello.com
+            - PKI_HOST=pki.${DOMAIN_NAME}
             - NEW_DS_DEPLOYMENT_KEY=false
             - DS_CONFIG_BACKUP=false
             - DS_CONFIG_RESTORE_FROM=xlatest
@@ -39,9 +39,9 @@ services:
 
     # ----- Access Management service ------------------------------------------
     forgerock-am:
-        image: am-7.3:0.0.1-remal
-        container_name: am
-        hostname: am.hello.com
+        image: remal-am-7.3:0.0.1
+        container_name: am.${DOMAIN_NAME}
+        hostname: am.${DOMAIN_NAME}
         depends_on:
             - pki
         ports:
@@ -49,9 +49,9 @@ services:
             - "13048:8080" # HTTP
             - "13044:443"  # HTTPS
         environment:
-            - PKI_HOST=pki.hello.com
-            - AM_CONFIG_STORE_HOST=ds.hello.com
-            - AM_USER_STORE_HOST=ds.hello.com
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - AM_CONFIG_STORE_HOST=ds.${DOMAIN_NAME}
+            - AM_USER_STORE_HOST=ds.${DOMAIN_NAME}
             - AM_CONFIG_BACKUP=false
             - AM_CONFIG_RESTORE_FROM=xlatest
         volumes:
@@ -59,13 +59,13 @@ services:
 
     # ----- Vault service ------------------------------------------------------
     vault:
-        image: vault-1.14:0.0.1-remal
-        container_name: vault
-        hostname: vault.hello.com
+        image: remal-vault-1.14:0.0.1
+        container_name: vault.${DOMAIN_NAME}
+        hostname: vault.${DOMAIN_NAME}
         depends_on:
             - pki
         ports:
             - "13052:22"   # SSH
             - "13058:8200" # vault listening
         environment:
-            - PKI_HOST=pki.hello.com
+            - PKI_HOST=pki.${DOMAIN_NAME}
