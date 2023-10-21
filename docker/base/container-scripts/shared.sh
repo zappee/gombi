@@ -193,6 +193,7 @@ function set_container_up_state() {
   marker_file="/tmp/first-startup.marker"
   touch "$marker_file"
   socat - tcp-listen:"$UP_SIGNAL_PORT",fork,reuseaddr &
+  show_ready_message
 }
 
 # ------------------------------------------------------------------------------

@@ -104,7 +104,45 @@ The Remal slim image build process will download the files on-the-fly from your 
 3. Copy the files and install packages from the `bin/` folder of each image source code into the web server directory.
 4. Then start the build using the `slim` parameter, for example `./remal.sh ab`
 
-## Annex 2) Troubleshooting
+## Annex 2) `init` and `startup` script naming convention
+The files under the `init` and `startup` directories must be unique ans the filenames must start with a number prefix, for example `010_start-tomcat.sh`
+The prefix determines the execution order of the scripts.
+If the filenames are not unique then during the Docker image build the files can be overridden accidentally.
+
+There are four different kind of Remal images:
+* `Base` image: used as a parent image, contains common functions and tools
+* `Core`: Runtime environments like Java
+* `Infrastructure`: servers like Active Directory, Tomcat, Database
+* `Application`: application and REST services
+
+File prefix ranges:
+
+| image type     | range       |
+|----------------|-------------|
+| Application    | 5000 - 9999 |
+| Infrastructure | 3000 - 4999 |
+| Core           | 2000 - 2999 |
+| Base           | 1000 - 1999 |
+
+
+Images and its types:
+
+| image         | type      | range |
+|---------------|-----------|-------|
+| user-service  | 4000x     |   |
+| consul-16.2   | 3900x     |   |
+| vault-1.14    | 3800x     |   |
+| am-7.3        | 3700x     |   |
+| ds-7.3        | 3600x     |   |
+| private-ca    | 3500      |   |
+| tomcat-9      | 2500-2599 |   |
+| openjdk-17    | Core      |   |
+| openjdk-11    | Core      |   |
+| base          | Base      |   |
+
+
+
+## Annex 3) Troubleshooting
 **SSH**
 * Get rid of the `REMOTE HOST IDENTIFICATION HAS CHANGED` warning that appears while connecting to a container using SSH.
   
@@ -126,7 +164,7 @@ The Remal slim image build process will download the files on-the-fly from your 
 **PKI**
 * Lists entries in a keystore: `keytool -list -v -keystore <keystore-file> -storepass <changeit>`
 
-## Annex 3) Useful bash aliases
+## Annex 4) Useful bash aliases
 ~~~
 alias li="docker image ls | (sed -u 1q; sort -n -k1)"
 alias lir='docker image ls *remal* | sort'
@@ -136,7 +174,7 @@ alias rmc='if [[ $(docker container ls -a -q) ]]; then docker rm --force $(docke
 alias rmi='docker volume rm $(docker volume ls -qf dangling=true) ; docker rmi $(docker image ls -qf dangling=true)'
 ~~~
 
-## Annex 4) Docker commands
+## Annex 5) Docker commands
 * Deploying a broken image:
   ~~~
   $ docker run --name <id> <image-name>:<version> tail -f /dev/null

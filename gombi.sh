@@ -27,6 +27,8 @@ LABEL_TOMCAT_9="Apache Tomcat 9 (Tomcat)"
 LABEL_FORGEROCK_DS="ForGerock Directory Server"
 LABEL_FORGEROCK_AM="ForGerock Access Management"
 LABEL_HCP_VAULT="HashiCorp Vault"
+LABEL_HCP_CONSUL="HashiCorp Consul"
+LABEL_REMAL_HELLO_WORLD="Hello World"
 
 COLOR_GREEN="\e[38;5;118m"
 COLOR_YELLOW="\e[38;5;226m"
@@ -178,18 +180,19 @@ function show_help() {
     printf "      REMAL_HOME: %s\n" ""
     printf "      WORKSPACE : %s\n\n" "$WORKSPACE"
     printf "   %bTasks%b:\n" "$STYLE_BOLD" "$STYLE_DEFAULT"
-    printf "      %ba:    build the Base image%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "      %bb:    build of all core images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %ba:    build the %bBase%b image%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bb:    build of all %bCore%b images%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bb1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_JAVA_11" "$STYLE_DEFAULT"
     printf "        %bb2:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_JAVA_17" "$STYLE_DEFAULT"
-    printf "        %bb3:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
-    printf "      %bc:    build %s image%b\n" "$COLOR_YELLOW" "$LABEL_PKI" "$STYLE_DEFAULT"
-    printf "      %bd:    build Directory Server images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_DS" "$STYLE_DEFAULT"
-    printf "      %be:    build Access Management images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %be1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_AM" "$STYLE_DEFAULT"
-    printf "      %bf:    build Hashicorp Vault Server images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bf1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_HCP_VAULT" "$STYLE_DEFAULT"
+    printf "      %bc:    build of all %bInfrastructure%b imagse%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "        %bc1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_PKI" "$STYLE_DEFAULT"
+    printf "        %bc2:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
+    printf "        %bc3:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_DS" "$STYLE_DEFAULT"
+    printf "        %bc4:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_AM" "$STYLE_DEFAULT"
+    printf "        %bc5:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_HCP_VAULT" "$STYLE_DEFAULT"
+    printf "        %bc5:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_HCP_CONSUL" "$STYLE_DEFAULT"
+    printf "      %bd:    build of all %bApplication%b imagse%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_REMAL_HELLO_WORLD" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bs:    start the complete Docker stack%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bt1:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_BASE" "$STYLE_DEFAULT"
@@ -270,14 +273,16 @@ if match "$COMMAND" "x";  then docker_container_remove; fi
 
 # builder tasks
 # if is_task_invalid "$COMMAND" "a"; then show_invalid_task_error; fi
-if match "$COMMAND" "a1"; then docker_image_build   "$LABEL_BASE"         "base"; fi
-if match "$COMMAND" "b1"; then docker_image_build   "$LABEL_JAVA_11"      "java/openjdk-11"; fi
-if match "$COMMAND" "b2"; then docker_image_build   "$LABEL_JAVA_17"      "java/openjdk-17"; fi
-if match "$COMMAND" "b3"; then docker_image_build   "$LABEL_TOMCAT_9"     "tomcat/tomcat-9"; fi
-if match "$COMMAND" "c";  then docker_image_build   "$LABEL_PKI"          "secret-management/easy-rsa-pki"; fi
-if match "$COMMAND" "d1"; then docker_image_build   "$LABEL_FORGEROCK_DS" "directory-server/forgerock-ds"; fi
-if match "$COMMAND" "e1"; then docker_image_build   "$LABEL_FORGEROCK_AM" "access-management/forgerock-am"; fi
-if match "$COMMAND" "f1"; then docker_image_build   "$LABEL_HCP_VAULT"    "secret-management/hcp-vault"; fi
+if match "$COMMAND" "a";  then docker_image_build   "$LABEL_BASE"              "base"; fi
+if match "$COMMAND" "b1"; then docker_image_build   "$LABEL_JAVA_11"           "java/openjdk-11"; fi
+if match "$COMMAND" "b2"; then docker_image_build   "$LABEL_JAVA_17"           "java/openjdk-17"; fi
+if match "$COMMAND" "c1"; then docker_image_build   "$LABEL_PKI"               "secret-management/easy-rsa-pki"; fi
+if match "$COMMAND" "c2"; then docker_image_build   "$LABEL_TOMCAT_9"          "tomcat/tomcat-9"; fi
+if match "$COMMAND" "c3"; then docker_image_build   "$LABEL_FORGEROCK_DS"      "directory-server/forgerock-ds"; fi
+if match "$COMMAND" "c4"; then docker_image_build   "$LABEL_FORGEROCK_AM"      "access-management/forgerock-am"; fi
+if match "$COMMAND" "c5"; then docker_image_build   "$LABEL_HCP_VAULT"         "secret-management/hcp-vault"; fi
+if match "$COMMAND" "c6"; then docker_image_build   "$LABEL_HCP_CONSUL"        "secret-management/hcp-consul"; fi
+if match "$COMMAND" "d1"; then docker_image_build   "$LABEL_REMAL_HELLO_WORLD" "secret-management/hcp-consul"; fi
 
 # docker runners
 if match "$COMMAND" "t1"; then docker_container_run "$LABEL_BASE"         "base"; fi

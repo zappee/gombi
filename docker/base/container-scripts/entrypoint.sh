@@ -22,7 +22,6 @@ printf "%s | [DEBUG] executing the startup scripts...\n" "$(date +"%Y-%b-%d %H:%
 /bin/run-parts --exit-on-error "/docker.startup/"
 
 set_container_up_state
-show_ready_message
 
 # keep alive the container
 # the control must be in this script otherwise the 'trap' wont work

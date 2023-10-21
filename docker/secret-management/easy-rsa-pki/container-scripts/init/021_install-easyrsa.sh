@@ -11,9 +11,15 @@ source /shared.sh
 log_start "$0"
 cd "$EASYRSA_HOME"
 
+echo "11111111"
+sleep 10
+
 # installing easy-rsa
 printf "%s | [INFO ] initializing easy-rsa...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 ./easyrsa init-pki
+
+echo "2222222"
+sleep 10
 
 VARS="$EASYRSA_HOME/pki/vars"
 cp pki/vars.example "$VARS"
@@ -30,6 +36,9 @@ cp pki/vars.example "$VARS"
   printf "set_var EASYRSA_KEY_SIZE \"%s\"\n" "$EASYRSA_KEY_SIZE"
 } >> "$VARS"
 
+echo "333333"
+sleep 10
+
 # generating the CA certificate
 printf "%s | [INFO ] generating the root CA key and certificate...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 ./easyrsa \
@@ -38,7 +47,13 @@ printf "%s | [INFO ] generating the root CA key and certificate...\n" "$(date +"
     --passout="pass:$EASYRSA_PASS" \
     build-ca
 
+echo "4444444"
+sleep 10
+
 # generating a server certificate for this server
 printf "%s | [INFO ] generating a server certificate request and key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 ./generate-cert.sh "$(hostname)"
 log_end "$0"
+
+echo "555555"
+sleep 10
