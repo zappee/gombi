@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Gombi Docker Hosts</title>
+    <style>
+        body { font-family: sans-serif; }
+        table { padding: 5px; }
+        .title { color: #A569BD; text-transform: uppercase; font-weight: bold; font-size: x-large; line-height: 3; }
+        .header { color: #D2B4DE; text-transform: lowercase; font-size: small; }
+        .col-margin { margin-left: 5px; margin-right: 5px; }
+        .image-base { background-color: #FFFDE7; }
+        .image-core { background-color: #FFF9C4; }
+        .image-infra { background-color: #FFF59D; }
+        .image-app { background-color: #FFF176; }
+        .content { color: black; font-size: small; white-space: nowrap; }
+        .command { font-style: italic; }
+        .port-host { color: #8BC34A; font-weight: bold; }
+        .port-docker { color: #E91E63; }
+        .port-info { color: #E91E63; }
+    </style>
+</head>
+<body>
+    <table style="width:80%">
+        <caption class="title">Remal Docker Containers</caption>
+        <tr class="header">
+            <th>Container name</th>
+            <th>Description</th>
+            <th>Ports</th>
+            <th>Commands</th>
+        </tr>
+        <!-- User service -->
+        <tr class="content image-app">
+            <td><span class="col-margin">user-service</span></td>
+            <td><span class="col-margin">Remal user rest api</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="port-host">13112</td>
+                        <td>:</td>
+                        <td class="port-docker">22</td>
+                        <td class="port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host">13113</td>
+                        <td>:</td>
+                        <td class="port-docker">443</td>
+                        <td class="port-info">(HTTPS)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">1331</td>
+                        <td class="port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="command"><span class="col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@vuser-service.hello.com -p 13112</span></td>
+        </tr>
+        <!-- HashiCorp Consul -->
+        <tr class="content image-infra">
+            <td><span class="col-margin">consul-16.2</span></td>
+            <td>
+                <span class="col-margin">HashiCorp Consul</span>
+                <br>
+                <span class="col-margin">Tool for managing your infrastructure's services and configs.</span>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="port-host">13062</td>
+                        <td>:</td>
+                        <td class="port-docker">22</td>
+                        <td class="port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">1331</td>
+                        <td class="port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="command"><span class="col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@vault-1.14.hello.com -p 13052</span></td>
+        </tr>
+        <!-- HashiCorp Vault -->
+        <tr class="content image-infra">
+            <td><span class="col-margin">vault-1.14</span></td>
+            <td>
+                <span class="col-margin">HashiCorp Vault</span>
+                <br>
+                <span class="col-margin">Identity-based secrets and encryption management system.</span>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="port-host">13052</td>
+                        <td>:</td>
+                        <td class="port-docker">22</td>
+                        <td class="port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host">13058</td>
+                        <td>:</td>
+                        <td class="port-docker">8200</td>
+                        <td class="port-info">(vault listening port)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">1331</td>
+                        <td class="port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="command"><span class="col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@vault-1.14.hello.com -p 13052</span></td>
+        </tr>
+        <!-- ForgeRock Access Management -->
+        <tr class="content image-infra">
+            <td><span class="col-margin">am-7.3</span></td>
+            <td><span class="col-margin">ForgeRock Access Management</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="port-host">13042</td>
+                        <td>:</td>
+                        <td class="port-docker">22</td>
+                        <td class="port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host">13048</td>
+                        <td>:</td>
+                        <td class="port-docker">8080</td>
+                        <td class="port-info">(HTTP)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host">13044</td>
+                        <td>:</td>
+                        <td class="port-docker">443</td>
+                        <td class="port-info">(HTTPS)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">1331</td>
+                        <td class="port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="command"><span class="col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@am-7.3.hello.com -p 13042</span></td>
+        </tr>
+        <!-- ForgeRock Directory Server -->
+        <tr class="content image-infra">
+            <td><span class="col-margin">ds-7.3</span></td>
+            <td><span class="col-margin">ForgeRock Directory Server</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="port-host">13012</td>
+                        <td>:</td>
+                        <td class="port-docker">22</td>
+                        <td class="port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">389</td>
+                        <td class="port-info">(LDAP)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host">13036</td>
+                        <td>:</td>
+                        <td class="port-docker">636</td>
+                        <td class="port-info">(LDAPS)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host">13034</td>
+                        <td>:</td>
+                        <td class="port-docker">444</td>
+                        <td class="port-info">(embedded administration connector)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">1331</td>
+                        <td class="port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="command"><span class="col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@ds-7.3.hello.com -p 13012</span></td>
+        </tr>
+        <!-- PKI server -->
+        <tr class="content image-infra">
+            <td><span class="col-margin">private-ca</span></td>
+            <td><span class="col-margin">private Certificate Authority server</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="port-host">13012</td>
+                        <td>:</td>
+                        <td class="port-docker">22</td>
+                        <td class="port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">1331</td>
+                        <td class="port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="command"><span class="col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@private-ca.hello.com -p 13012</span></td>
+        </tr>
+        <!-- Apache-Tomcat 9 -->
+        <tr class="content image-core">
+            <td><span class="col-margin">tomcat-9</span></td>
+            <td><span class="col-margin">Apache-Tomcat 9</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="port-host">13022</td>
+                        <td>:</td>
+                        <td class="port-docker">22</td>
+                        <td class="port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">1331</td>
+                        <td class="port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="command"><span class="col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@vault.hello.com -p 13022</span></td>
+        </tr>
+        <!-- OpenJDK 11 -->
+        <tr class="content image-core">
+            <td><span class="col-margin">openjdk-11</span></td>
+            <td><span class="col-margin">OpenJDK 11 base image</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="port-host">13022</td>
+                        <td>:</td>
+                        <td class="port-docker">22</td>
+                        <td class="port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">1331</td>
+                        <td class="port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="command"><span class="col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@openjdk-11.hello.com -p 13022</span></td>
+        </tr>
+        <!-- OpenJDK 17 -->
+        <tr class="content image-core">
+            <td><span class="col-margin">openjdk-17</span></td>
+            <td><span class="col-margin">OpenJDK 17 base image</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="port-host">13022</td>
+                        <td>:</td>
+                        <td class="port-docker">22</td>
+                        <td class="port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">1331</td>
+                        <td class="port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="command"><span class="col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@openjdk-17.hello.com -p 13022</span></td>
+        </tr>
+        <!-- base -->
+        <tr class="content image-base">
+            <td><span class="col-margin">base</span></td>
+            <td><span class="col-margin">Remal Base Docker image</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="port-host">13022</td>
+                        <td>:</td>
+                        <td class="port-docker">22</td>
+                        <td class="port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="port-host"></td>
+                        <td>:</td>
+                        <td class="port-docker">1331</td>
+                        <td class="port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="command"><span class="col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@basebase.hello.com -p 13022</span></td>
+        </tr>
+    </table>
+</body>
+</html>

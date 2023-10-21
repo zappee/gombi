@@ -64,7 +64,7 @@ LABEL "com.remal.image.vendor"="Remal" \
 FROM base AS base-fat
 COPY "bin/$AM_INSTALL_KIT" "$CATALINA_HOME/webapps/openam/$AM_CONTEXT_ROOT.war"
 COPY "bin/$AM_CONFIG_TOOL_INSTALL_KIT" "$AM_CONFIG_TOOL_HOME/"
-RUN set -ux; \
+RUN set -uxe; \
     cd "$CATALINA_HOME/webapps/$AM_CONTEXT_ROOT"; \
     jar -xvf "$AM_CONTEXT_ROOT.war"; \
     rm "$CATALINA_HOME/webapps/openam/$AM_CONTEXT_ROOT.war"; \
@@ -76,7 +76,7 @@ RUN set -ux; \
 
 # slim image
 FROM base AS base-slim
-RUN set -ux; \
+RUN set -uxe; \
     hostIp="$(ip route | awk '/default/ { print $3 }')"; \
     mkdir -p "$CATALINA_HOME/webapps/$AM_CONTEXT_ROOT"; \
     wget -O "$CATALINA_HOME/webapps/openam/$AM_CONTEXT_ROOT.war" http://$hostIp:8080/docker-build/$AM_INSTALL_KIT; \

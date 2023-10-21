@@ -12,6 +12,7 @@ IMAGE_TAG="0.0.1-remal"
 IMAGE_DESCRIPTION="Remal Base Docker image"
 IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 IMAGE_FROM="alpine:3.17.3"
+DOMAIN_NAME="hello.com"
 
 BUILD_TYPE="${1:-fat}"
 PUSH_IMAGE="${2:-false}"

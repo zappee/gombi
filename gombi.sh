@@ -188,23 +188,23 @@ function show_help() {
     printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_DS" "$STYLE_DEFAULT"
     printf "      %be:    build Access Management images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %be1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_AM" "$STYLE_DEFAULT"
-    printf "      %bf:    build Vault Server images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bf:    build Hashicorp Vault Server images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bf1:   build %s image%b\n" "$COLOR_GREEN" "$LABEL_HCP_VAULT" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bs:    start the complete Docker stack%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bt1:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_BASE" "$STYLE_DEFAULT"
-    printf "        %bt2:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_JAVA_11" "$STYLE_DEFAULT"
-    printf "        %bt3:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_JAVA_17" "$STYLE_DEFAULT"
-    printf "        %bt4:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
-    printf "        %bt5:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_PKI" "$STYLE_DEFAULT"
-    printf "        %bt6:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_DS" "$STYLE_DEFAULT"
-    printf "        %bt7:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_AM" "$STYLE_DEFAULT"
-    printf "        %bt8:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_HCP_VAULT" "$STYLE_DEFAULT"
+    printf "        %bt3:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_JAVA_11" "$STYLE_DEFAULT"
+    printf "        %bt4:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_JAVA_17" "$STYLE_DEFAULT"
+    printf "        %bt5:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_TOMCAT_9" "$STYLE_DEFAULT"
+    printf "        %bt6:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_PKI" "$STYLE_DEFAULT"
+    printf "        %bt7:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_DS" "$STYLE_DEFAULT"
+    printf "        %bt8:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_FORGEROCK_AM" "$STYLE_DEFAULT"
+    printf "        %bt9:   start %s container%b\n" "$COLOR_GREEN" "$LABEL_HCP_VAULT" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
-    printf "      %bu:    show images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "      %bv:    show containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "      %bw:    show Docker containers' log%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "      %bx:    remove of all running Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bu:    show Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bv:    show Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bw:    show Remal Docker containers' log%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bx:    remove of all Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "\n"
     printf "Contact: arnold.somogyi@gmail.com\n"
     printf "Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved\n"
@@ -274,20 +274,20 @@ if match "$COMMAND" "a1"; then docker_image_build   "$LABEL_BASE"         "base"
 if match "$COMMAND" "b1"; then docker_image_build   "$LABEL_JAVA_11"      "java/openjdk-11"; fi
 if match "$COMMAND" "b2"; then docker_image_build   "$LABEL_JAVA_17"      "java/openjdk-17"; fi
 if match "$COMMAND" "b3"; then docker_image_build   "$LABEL_TOMCAT_9"     "tomcat/tomcat-9"; fi
-if match "$COMMAND" "c";  then docker_image_build   "$LABEL_PKI"          "key-and-secret-manager/pki/easy-rsa-pki"; fi
+if match "$COMMAND" "c";  then docker_image_build   "$LABEL_PKI"          "secret-management/easy-rsa-pki"; fi
 if match "$COMMAND" "d1"; then docker_image_build   "$LABEL_FORGEROCK_DS" "directory-server/forgerock-ds"; fi
 if match "$COMMAND" "e1"; then docker_image_build   "$LABEL_FORGEROCK_AM" "access-management/forgerock-am"; fi
-if match "$COMMAND" "f1"; then docker_image_build   "$LABEL_HCP_VAULT"    "key-and-secret-manager/vault/hcp-vault"; fi
+if match "$COMMAND" "f1"; then docker_image_build   "$LABEL_HCP_VAULT"    "secret-management/hcp-vault"; fi
 
 # docker runners
 if match "$COMMAND" "t1"; then docker_container_run "$LABEL_BASE"         "base"; fi
-if match "$COMMAND" "t2"; then docker_container_run "$LABEL_JAVA_11"      "java/openjdk-11"; fi
-if match "$COMMAND" "t3"; then docker_container_run "$LABEL_JAVA_17"      "java/openjdk-17"; fi
-if match "$COMMAND" "t4"; then docker_container_run "$LABEL_TOMCAT_9"     "tomcat/tomcat-9"; fi
-if match "$COMMAND" "t5"; then docker_container_run "$LABEL_PKI"          "key-and-secret-manager/pki/easy-rsa-pki"; fi
-if match "$COMMAND" "t6"; then docker_container_run "$LABEL_FORGEROCK_DS" "forgerock/forgerock-ds"; fi
-if match "$COMMAND" "t7"; then docker_container_run "$LABEL_FORGEROCK_AM" "forgerock/forgerock-am"; fi
-if match "$COMMAND" "t8"; then docker_container_run "$LABEL_HCP_VAULT"    "key-and-secret-manager/vault/hcp-vault"; fi
+if match "$COMMAND" "t3"; then docker_container_run "$LABEL_JAVA_11"      "java/openjdk-11"; fi
+if match "$COMMAND" "t4"; then docker_container_run "$LABEL_JAVA_17"      "java/openjdk-17"; fi
+if match "$COMMAND" "t5"; then docker_container_run "$LABEL_TOMCAT_9"     "tomcat/tomcat-9"; fi
+if match "$COMMAND" "t6"; then docker_container_run "$LABEL_PKI"          "secret-management/easy-rsa-pki"; fi
+if match "$COMMAND" "t7"; then docker_container_run "$LABEL_FORGEROCK_DS" "forgerock/forgerock-ds"; fi
+if match "$COMMAND" "t8"; then docker_container_run "$LABEL_FORGEROCK_AM" "forgerock/forgerock-am"; fi
+if match "$COMMAND" "t9"; then docker_container_run "$LABEL_HCP_VAULT"    "secret-management/hcp-vault"; fi
 
 # command executors
 if match "$COMMAND" "u";  then docker_image_show; fi

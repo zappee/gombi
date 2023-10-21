@@ -12,6 +12,7 @@ IMAGE_TAG="0.0.1-remal"
 IMAGE_DESCRIPTION="OpenJDK 11 Docker image"
 IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 IMAGE_FROM="base:0.0.1-remal"
+DOMAIN_NAME="hello.com"
 
 BUILD_TYPE="${1:-fat}"
 PUSH_IMAGE="${2:-false}"

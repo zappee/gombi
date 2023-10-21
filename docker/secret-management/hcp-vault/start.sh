@@ -9,8 +9,8 @@
 # ******************************************************************************
 source ./setenv.sh
 docker run \
-  --name "$IMAGE_NAME.remal.com" \
-  --hostname "$IMAGE_NAME.remal.com" \
+  --name "$IMAGE_NAME.$DOMAIN_NAME" \
+  --hostname "$IMAGE_NAME.$DOMAIN_NAME" \
   --detach \
   --env PKI_HOST=pki.hello.com \
   --publish 13042:22 \

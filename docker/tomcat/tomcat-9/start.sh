@@ -9,8 +9,8 @@
 # ******************************************************************************
 source ./setenv.sh
 docker run \
-  --name "$IMAGE_NAME.remal.com" \
-  --hostname "$IMAGE_NAME.remal.com" \
+  --name "$IMAGE_NAME.$DOMAIN_NAME" \
+  --hostname "$IMAGE_NAME.$DOMAIN_NAME" \
   --detach \
   --env JAVA_OPTIONS="-Xms512m -Xmx512m -XX:+UseParallelGC" \
   --publish 13022:22 \

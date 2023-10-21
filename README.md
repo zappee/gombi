@@ -23,8 +23,8 @@ The framework provides the following base Docker images:
   * [OpenJDK-17](docker/java/openjdk-17)
   * [Apache Tomcat 9](docker/tomcat/tomcat-9)
 * Service Docker Images:
-  * Private Certificate Authority (CA) Infrastructure: [OpenVPN easy-rsa (simple shell based CA utility)](docker/key-and-secret-manager/pki/easy-rsa-pki)
-  * Vault Service: [HashiCorp Vault](docker/key-and-secret-manager/vault/hcp-vault)
+  * Private Certificate Authority (CA) Infrastructure: [OpenVPN easy-rsa (simple shell based CA utility)](docker/secret-management/easy-rsa-pki)
+  * Vault Service: [HashiCorp Vault](docker/secret-management/hcp-vault)
   * Directory Service (LDAP): [ForgeRock Directory Server](docker/directory-server/forgerock-ds)
   * Access Management (authentication, authorization): [ForgeRock Access Management](docker/access-management/forgerock-am)
 

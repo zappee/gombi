@@ -40,7 +40,7 @@ LABEL "com.remal.image.vendor"="Remal" \
 # fat image
 FROM base AS base-fat
 COPY "bin/$TOMCAT_INSTALL_KIT" "/tmp/"
-RUN set -ux; \
+RUN set -uxe; \
     printf "building fat image\n"; \
     mkdir -p "$CATALINA_HOME"; \
     tar -xvf "/tmp/$TOMCAT_INSTALL_KIT" --strip-components=1 -C "$CATALINA_HOME"; \
@@ -49,7 +49,7 @@ RUN set -ux; \
 
 # slim image
 FROM base AS base-slim
-RUN set -ux; \
+RUN set -uxe; \
     printf "building slim image\n"; \
     hostIp="$(ip route | awk '/default/ { print $3 }')"; \
     wget -O "/tmp/$TOMCAT_INSTALL_KIT" http://$hostIp:8080/docker-build/$TOMCAT_INSTALL_KIT; \
@@ -62,7 +62,7 @@ RUN set -ux; \
 
 # final image
 FROM base-$BUILD_TYPE AS final
-RUN set -ux; \
+RUN set -uxe; \
     printf "configuring the JVM...\n"; \
     printf "JAVA_OPTS=\"%s\"\n" "$JAVA_OPTIONS" > "$CATALINA_HOME/bin/setenv.sh"; \
     chmod +x "$CATALINA_HOME/bin/setenv.sh"; \

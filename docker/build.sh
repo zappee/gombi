@@ -27,7 +27,8 @@ printf "Source code: %s\n" "$IMAGE_SRC"
 
 source "$IMAGE_SRC/setenv.sh" "slim" "false"
 printf "Build type:  %s\n" "$BUILD_TYPE"
-printf "Base image:  %s\n\n" "$IMAGE_FROM"
+printf "Base image:  %s\n" "$IMAGE_FROM"
+printf "Image image:  %s\n\n" "$IMAGE_NAME:$IMAGE_TAG"
 
 docker build \
   --no-cache \
