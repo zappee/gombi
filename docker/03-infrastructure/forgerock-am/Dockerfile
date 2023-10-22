@@ -39,18 +39,7 @@ ENV IMAGE_NAME="am-7.3" \
     AM_CONFIG_STORE_MANAGER_PASSWD="password" \
     AM_USER_STORE_HOST="ds.hello.com" \
     AM_USER_STORE_PORT="636" \
-    AM_USER_STORE_MANAGER_PASSWD="password" \
-    \
-    CATALINA_OPTS="\
-        $CATALINA_OPTS \
-        -Djavax.net.ssl.trustStore=/tmp/am.hello.com.p12 \
-        -Djavax.net.ssl.trustStorePassword=changeit \
-        -Djavax.net.ssl.trustStoreType=PKCS12 \
-        -Xms1024m \
-        -Xmx1024m \
-        -XX:+UseParallelGC \
-        -XX:MetaspaceSize=256m \
-        -XX:MaxMetaspaceSize=256m"
+    AM_USER_STORE_MANAGER_PASSWD="password"
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \
