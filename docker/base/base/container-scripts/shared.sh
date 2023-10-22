@@ -182,7 +182,7 @@ function show_ready_message() {
   local fqdn
   fqdn=$(hostname -f)
 
-  printf "%s | [INFO]  container \"%s\" has been started\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
+  printf "%s | [INFO]  container %s has been started\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
   printf "%s | [DEBUG]  _                  _                            _             _           _ \n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG] | |                | |                          | |           | |         | |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG] | |__   __ _ ___   | |__   ___  ___ _ __     ___| |_ __ _ _ __| |_ ___  __| |\n" "$(date +"%Y-%b-%d %H:%M:%S")"

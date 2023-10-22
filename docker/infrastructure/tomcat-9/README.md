@@ -4,7 +4,7 @@
 This image is an official Remal Docker image, used as a base image of the subsequent docker images.
 
 ## 2) Image details
-* based on the latest [openjdk-11](../../02-core/openjdk-11) Remal image
+* based on the latest [openjdk-11](../../core/openjdk-11) Remal image
 * Apache Tomcat 9, listening on port `8080`
 * web console user: `admin`/`password`
 * tomcat log improvement to track access to resources better, [(pattern attribute info)](https://tomcat.apache.org/tomcat-9.0-doc/config/valve.html#Access_Log_Valve) 

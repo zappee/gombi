@@ -1,7 +1,7 @@
 # Remal Image: ForgeRock Directory Server
 
 ### 1) Overview
-This is a Remal Docker image for ForgeRock Directory Server, using [openjdk-17](../../02-core/openjdk-17) as a base image.
+This is a Remal Docker image for ForgeRock Directory Server, using [openjdk-17](../../core/openjdk-17) as a base image.
 
 ### 2) Ports used by the image
 

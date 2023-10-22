@@ -1,10 +1,11 @@
 ' ******************************************************************************
-' UML ArchiMate diagram that shows the Docker container hierarchy used by Remal.
+' UML PlantUML/ArchiMate diagram that shows the Docker container hierarchy used
+' by Remal.
 '
 ' Color alias names:
 '    https://plantuml-documentation.readthedocs.io/en/latest/formatting/color-names.html
 '
-' Since : July, 2023
+' Since : Jul, 2023
 ' Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 '
 ' Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
@@ -22,14 +23,15 @@ sprite $remalBaseImage jar:archimate/actor
 sprite $remalServiceImage jar:archimate/interface
 
 rectangle "alpine" as alpine <<$3rdPartyImage>><<image>> #Pink
-rectangle "base" as base <<$remalBaseImage>><<image>> #PowderBlue
+rectangle "remal-base" as base <<$remalBaseImage>><<image>> #PowderBlue
 rectangle "OpenJDK-11" as java11 <<$remalBaseImage>><<image>> #PowderBlue
 rectangle "OpenJDK-17" as java17 <<$remalBaseImage>><<image>> #PowderBlue
 rectangle "Apache Tomcat 9" as tomcat9 <<$remalBaseImage>><<image>> #PowderBlue
-rectangle "Private Certificate\nAuthority Infrastructure" as ca <<$remalServiceImage>><<image>> #PaleGreen
-rectangle "Directory Service" as ds <<$remalServiceImage>><<image>> #PaleGreen
-rectangle "Access Management" as am <<$remalServiceImage>><<image>> #PaleGreen
-rectangle "Secured Vault" as vault <<$remalServiceImage>><<image>> #PaleGreen
+rectangle "Private Certificate Authority" as ca <<$remalServiceImage>><<image>> #PaleGreen
+rectangle "ForgeRock Directory Services" as ds <<$remalServiceImage>><<image>> #PaleGreen
+rectangle "ForgeRock OpenAM" as am <<$remalServiceImage>><<image>> #PaleGreen
+rectangle "Hashicorp Vault" as vault <<$remalServiceImage>><<image>> #PaleGreen
+rectangle "Hashicorp Consul" as consul <<$remalServiceImage>><<image>> #PaleGreen
 
 alpine *-down-> base
 base *-down-> java11
@@ -39,4 +41,5 @@ java17 *-down-> ca
 java17 *-down-> ds
 tomcat9 *-down-> am
 base *-down-> vault
+base *-down-> consul
 @enduml

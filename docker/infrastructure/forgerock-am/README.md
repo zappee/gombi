@@ -1,7 +1,7 @@
 # Remal Image: ForgeRock Access Management
 
 ### 1) Overview
-This is a Remal Docker image for ForgeRock Access Management , using [openjdk-11](../../02-core/openjdk-11) as a base image.
+This is a Remal Docker image for ForgeRock Access Management , using [openjdk-11](../../core/openjdk-11) as a base image.
 
 ### 2) Ports used by the image
 

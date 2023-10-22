@@ -18,7 +18,7 @@ services:
             - EASYRSA_REQ_CITY=Copenhagen
             - EASYRSA_REQ_ORG=Hello Software
 
-    # ----- Vault service ------------------------------------------------------
+    # ----- Hashirorp Vault service --------------------------------------------
     vault:
         image: remal-vault-1.14:0.0.1
         container_name: vault

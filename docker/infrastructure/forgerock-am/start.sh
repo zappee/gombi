@@ -12,7 +12,7 @@ docker run \
   --name "$IMAGE_NAME.$DOMAIN_NAME" \
   --hostname "$IMAGE_NAME.$DOMAIN_NAME" \
   --detach \
-  --env PKI_HOST=pki.hello.com \
+  --env PKI_HOST="pki.$DOMAIN_NAME" \
   --env DS_HOST="ds.$DOMAIN_NAME" \
   --env DS_PORT=636 \
   --env DS_USER_DN=uid=admin \

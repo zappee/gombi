@@ -14,7 +14,7 @@ services:
             - EASYRSA_REQ_CITY=${EASYRSA_REQ_CITY}
             - EASYRSA_REQ_ORG=${EASYRSA_REQ_ORG}
 
-    # ----- LDAP directory service ---------------------------------------------
+    # ----- LDAP Directory Server ----------------------------------------------
     ds:
         image: remal-ds-7.3:0.0.1
         container_name: ds.${DOMAIN_NAME}
@@ -37,7 +37,7 @@ services:
         volumes:
             - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/opendj/backup
 
-    # ----- Access Management service ------------------------------------------
+    # ----- Access Management Server -------------------------------------------
     forgerock-am:
         image: remal-am-7.3:0.0.1
         container_name: am.${DOMAIN_NAME}
@@ -57,7 +57,7 @@ services:
         volumes:
             - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/openam/backup
 
-    # ----- Vault service ------------------------------------------------------
+    # ----- Hashicorp Vault ----------------------------------------------------
     vault:
         image: remal-vault-1.14:0.0.1
         container_name: vault.${DOMAIN_NAME}
@@ -67,5 +67,17 @@ services:
         ports:
             - "13052:22"   # SSH
             - "13058:8200" # vault listening
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+
+    # ----- Hashicorp Consul ---------------------------------------------------
+    consul:
+        image: remal-consul-1.16:0.0.1
+        container_name: consul.${DOMAIN_NAME}
+        hostname: consul.${DOMAIN_NAME}
+        depends_on:
+            - pki
+        ports:
+            - "13062:22"   # SSH
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}

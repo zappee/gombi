@@ -19,16 +19,16 @@ WORKSPACE="${REMAL_HOME:-$(pwd)}"
 BUILD_TYPE="slim"
 COMMAND="${1:-}"
 
-LABEL_BASE="Base;01-base/base"
-LABEL_JAVA_11="OpenJDK 11 (Java);02-core/openjdk-11"
-LABEL_JAVA_17="OpenJDK 17 (Java);02-core/openjdk-17"
-LABEL_PKI="PKI Private Certificate Authority (CA);03-infrastructure/easy-rsa-pki"
-LABEL_TOMCAT_9="Apache Tomcat 9 (Tomcat);03-infrastructure/tomcat-9"
-LABEL_FORGEROCK_DS="ForGerock Directory Server;03-infrastructure/forgerock-ds"
-LABEL_FORGEROCK_AM="ForGerock Access Management;03-infrastructure/forgerock-am"
-LABEL_HCP_VAULT="HashiCorp Vault;03-infrastructure/hcp-vault"
-LABEL_HCP_CONSUL="HashiCorp Consul;03-infrastructure/hcp-consul"
-LABEL_REMAL_HELLO_WORLD="Hello World;04-application/hello-world"
+LABEL_BASE="Base;base/base"
+LABEL_JAVA_11="OpenJDK 11 (Java);core/openjdk-11"
+LABEL_JAVA_17="OpenJDK 17 (Java);core/openjdk-17"
+LABEL_PKI="PKI Private Certificate Authority (CA);infrastructure/easy-rsa-pki"
+LABEL_TOMCAT_9="Apache Tomcat 9 (Tomcat);infrastructure/tomcat-9"
+LABEL_FORGEROCK_DS="ForGerock Directory Server;infrastructure/forgerock-ds"
+LABEL_FORGEROCK_AM="ForGerock Access Management;infrastructure/forgerock-am"
+LABEL_HCP_VAULT="HashiCorp Vault;infrastructure/hcp-vault"
+LABEL_HCP_CONSUL="HashiCorp Consul;infrastructure/hcp-consul"
+LABEL_REMAL_HELLO_WORLD="Hello World;application/hello-world"
 
 COLOR_GREEN="\e[38;5;118m"
 COLOR_YELLOW="\e[38;5;226m"
@@ -224,14 +224,15 @@ function show_help() {
     printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_REMAL_HELLO_WORLD")" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bs:    start the complete Docker stack%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bt1:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_BASE")" "$STYLE_DEFAULT"
-    printf "        %bt3:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_11")" "$STYLE_DEFAULT"
-    printf "        %bt4:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_17")" "$STYLE_DEFAULT"
-    printf "        %bt5:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PKI")" "$STYLE_DEFAULT"
-    printf "        %bt6:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_TOMCAT_9")" "$STYLE_DEFAULT"
-    printf "        %bt7:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_DS")" "$STYLE_DEFAULT"
-    printf "        %bt8:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_AM")" "$STYLE_DEFAULT"
-    printf "        %bt9:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
+    printf "        %bi1:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_BASE")" "$STYLE_DEFAULT"
+    printf "        %bi2:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_11")" "$STYLE_DEFAULT"
+    printf "        %bi3:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_17")" "$STYLE_DEFAULT"
+    printf "        %bi4:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PKI")" "$STYLE_DEFAULT"
+    printf "        %bi5:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_TOMCAT_9")" "$STYLE_DEFAULT"
+    printf "        %bi6:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_DS")" "$STYLE_DEFAULT"
+    printf "        %bi7:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_AM")" "$STYLE_DEFAULT"
+    printf "        %bi8:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
+    printf "        %bi9:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL")" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bu:    list Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "      %bv:    list Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
@@ -311,18 +312,19 @@ if match "$COMMAND" "c2"; then docker_image_build "$(get_name "$LABEL_TOMCAT_9")
 if match "$COMMAND" "c3"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_DS")" "$(get_path "$LABEL_FORGEROCK_DS")"; fi
 if match "$COMMAND" "c4"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
 if match "$COMMAND" "c5"; then docker_image_build "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
-#if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
+if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
 #if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_REMAL_HELLO_WORLD")" "$(get_path "$LABEL_REMAL_HELLO_WORLD")"; fi
 
 # docker runners
-if match "$COMMAND" "t1"; then docker_container_run "$(get_name "$LABEL_BASE")" "$(get_path "$LABEL_BASE")"; fi
-if match "$COMMAND" "t3"; then docker_container_run "$(get_name "$LABEL_JAVA_11")" "$(get_path "$LABEL_JAVA_11")"; fi
-if match "$COMMAND" "t4"; then docker_container_run "$(get_name "$LABEL_JAVA_17")" "$(get_path "$LABEL_JAVA_17")"; fi
-if match "$COMMAND" "t5"; then docker_container_run "$(get_name "$LABEL_PKI")" "$(get_path "$LABEL_PKI")"; fi
-if match "$COMMAND" "t6"; then docker_container_run "$(get_name "$LABEL_TOMCAT_9")" "$(get_path "$LABEL_TOMCAT_9")"; fi
-if match "$COMMAND" "t7"; then docker_container_run "$(get_name "$LABEL_FORGEROCK_DS")" "$(get_path "$LABEL_FORGEROCK_DS")"; fi
-if match "$COMMAND" "t8"; then docker_container_run "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
-if match "$COMMAND" "t9"; then docker_container_run "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
+if match "$COMMAND" "i1"; then docker_container_run "$(get_name "$LABEL_BASE")" "$(get_path "$LABEL_BASE")"; fi
+if match "$COMMAND" "i2"; then docker_container_run "$(get_name "$LABEL_JAVA_11")" "$(get_path "$LABEL_JAVA_11")"; fi
+if match "$COMMAND" "i3"; then docker_container_run "$(get_name "$LABEL_JAVA_17")" "$(get_path "$LABEL_JAVA_17")"; fi
+if match "$COMMAND" "i4"; then docker_container_run "$(get_name "$LABEL_PKI")" "$(get_path "$LABEL_PKI")"; fi
+if match "$COMMAND" "i5"; then docker_container_run "$(get_name "$LABEL_TOMCAT_9")" "$(get_path "$LABEL_TOMCAT_9")"; fi
+if match "$COMMAND" "i6"; then docker_container_run "$(get_name "$LABEL_FORGEROCK_DS")" "$(get_path "$LABEL_FORGEROCK_DS")"; fi
+if match "$COMMAND" "i7"; then docker_container_run "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
+if match "$COMMAND" "i8"; then docker_container_run "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
+if match "$COMMAND" "i9"; then docker_container_run "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
 
 # command executors
 if match "$COMMAND" "u";  then docker_image_show; fi

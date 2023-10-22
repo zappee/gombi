@@ -12,7 +12,7 @@ docker run \
   --name "$IMAGE_NAME.$DOMAIN_NAME" \
   --hostname "$IMAGE_NAME.$DOMAIN_NAME" \
   --detach \
-  --env PKI_HOST=pki.hello.com \
+  --env PKI_HOST="pki.$DOMAIN_NAME" \
   --env NEW_DEPLOYMENT_KEY=true \
   --env DS_CONFIG_BACKUP=true \
   --env DS_CONFIG_RESTORE_FROM=latest \
