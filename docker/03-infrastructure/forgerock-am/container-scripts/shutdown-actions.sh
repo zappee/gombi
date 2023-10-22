@@ -8,6 +8,7 @@
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 . /shared.sh
+. /tomcat-functions.sh
 
 # ------------------------------------------------------------------------------
 # Backup the ForgeRock Access Management Server configuration files.
@@ -28,16 +29,6 @@ function backup_am_config() {
 
   printf "%s | [DEBUG] server configuration backup file: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$backup_file"
   printf "%s | [INFO]  configuration files has been backed up\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-}
-
-# ------------------------------------------------------------------------------
-# Stop Apache Tomcat server.
-# ------------------------------------------------------------------------------
-function stop_tomcat() {
-  printf "%s | [INFO]  stopping Apache Tomcat...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  "$CATALINA_HOME/bin/catalina.sh" stop 15
-  tail -F "$CATALINA_HOME/logs/catalina.out" & ( tail -f -n0 "$CATALINA_HOME/logs/catalina.out" & ) | grep -q "Destroying ProtocolHandler"
-  printf "%s | [INFO]  Apache Tomcat has been stopped\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }
 
 # ------------------------------------------------------------------------------

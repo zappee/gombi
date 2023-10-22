@@ -157,27 +157,6 @@ log_end() {
 }
 
 # ------------------------------------------------------------------------------
-# Run an external bash script if it exists.
-# ------------------------------------------------------------------------------
-function script_runner() {
-  local script_file
-  script_file="$1"
-
-  local start elapsed
-  if [ -f "$script_file" ]; then
-    start=$(date +%s)
-    log_start "$script_file"
-    "$script_file"
-    elapsed=$(($(date +%s) - start))
-    printf "%s | [INFO]  end of the \"%s\" script\n" "$script_file" "$(date +"%Y-%b-%d %H:%M:%S")"
-    printf "%s | [INFO]  execution time: %s\n" "$(date -d@$elapsed -u +%H\ hour\ %M\ day\ %S\ sec)" "$(date +"%Y-%b-%d %H:%M:%S")"
-    log_end "$0"
-  else
-    printf "%s | [WARN]  script \"%s\" not exist, ignoring it\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
-  fi
-}
-
-# ------------------------------------------------------------------------------
 # Set the container state to "ready" by opening a port.
 # This indicates that the container and all services in the container is up and
 # ready to server incoming requests. Containers running in the same docker
@@ -218,7 +197,22 @@ function show_ready_message() {
 # ------------------------------------------------------------------------------
 function shutdown_trap() {
   printf "%s | [INFO]  shutting down the container...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  script_runner "/shutdown-actions.sh"
+
+  local script_file
+  script_file="/shutdown-actions.sh"
+
+  if [ -f "$script_file" ]; then
+    local start elapsed
+    start=$(date +%s)
+
+    log_start "$script_file"
+    . /shutdown-actions.sh
+    elapsed=$(($(date +%s) - start))
+    printf "%s | [INFO]  execution time: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$(date -d@$elapsed -u +%H\ hour\ %M\ day\ %S\ sec)"
+    log_end "$script_file"
+  else
+    printf "%s | [WARN]  script \"%s\" not exist, ignoring it\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
+  fi
 }
 
 # ------------------------------------------------------------------------------
