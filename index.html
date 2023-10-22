@@ -6,9 +6,9 @@
     <style>
         body { font-family: sans-serif; }
         table { padding: 5px; }
-        .title { color: #A569BD; text-transform: uppercase; font-weight: bold; font-size: x-large; line-height: 3; text-align: center; }
+        .title { color: #9C27B0; text-transform: uppercase; font-weight: bold; font-size: x-large; line-height: 3; text-align: center; }
 
-        .imagelist-header { color: #D2B4DE; text-transform: lowercase; font-size: small; }
+        .imagelist-header { color: #BA68C8; text-transform: lowercase; font-size: small; margin-top: 20px; }
         .imagelist-col-margin { margin-left: 5px; margin-right: 5px; }
         .imagelist-base { background-color: #FFFDE7; }
         .imagelist-core { background-color: #FFF9C4; }
@@ -20,32 +20,48 @@
         .imagelist-port-docker { color: #E91E63; }
         .imagelist-port-info { color: #E91E63; }
 
-        * { box-sizing: border-box; }
-        .infobox-column { float: left; width: 33.33%; padding: 10px; }
-        .infobox-row:after { content: ""; display: table; clear: both; }
-        .infobox-label { font-size: small; }
-        .infobox-code { font-size: large; font-family: monospace; }
+        .infobox-table { border-collapse: collapse; width:100%; border: 1px solid; }
+        .infobox-row-separator { border-bottom: 1px solid #ddd; height: 25px; }
+        .infobox-label { font-size: small; font-weight: bold; }
+        .infobox-code { font-size: large; font-family: monospace; font-style: italic; }
     </style>
 </head>
 <body>
     <h1 class="title">Remal Docker Containers</h1>
 
-    <div class="infobox-row">
-        <div class="infobox-column">
-            <span class="infobox-label">Build Docker images: </span>
-            <span class="infobox-code">./gombi.sh abcdefu</span>
-        </div>
-        <div class="infobox-column">
-            <span class="infobox-label">List Remal images: </span>
-            <span class="infobox-code">./gombi.sh u</span>
-        </div>
-        <div class="infobox-column">
-            <span class="infobox-label">Remove Remal containers: </span>
-            <span class="infobox-code">./gombi.sh x</span>
-        </div>
-    </div>
 
-    <table style="width:80%">
+    <table class="infobox-table">
+        <tr class="infobox-row-separator">
+            <td class="infobox-label">Build Docker images:</td>
+            <td class="infobox-code">./gombi.sh abcdefu</td>
+            <td class="infobox-label">List Remal images:</td>
+            <td class="infobox-code">./gombi.sh u</td>
+            <td class="infobox-label">Remove Remal containers:</td>
+            <td class="infobox-code">./gombi.sh x</td>
+        </tr>
+        <tr class="infobox-row-separator">
+            <td class="infobox-label">Start Docker stack:</td>
+            <td class="infobox-code">./gombi.sh s</td>
+            <td class="infobox-label">Stop Docker stack:</td>
+            <td class="infobox-code">docker-compose stop --timeout 120</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="infobox-row-separator">
+            <td class="infobox-label">Open terminal:</td>
+            <td colspan="5" class="infobox-code">sshpass -p password ssh -oStrictHostKeyChecking=no root@localhost -p &lt;port&gt;</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <table style="width:100%; margin-top: 25px;">
         <tr class="imagelist-header">
             <th>Container name</th>
             <th>Description</th>
@@ -78,7 +94,7 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="image-table-col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@vuser-service.hello.com -p 13112</span></td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
         </tr>
         <!-- HashiCorp Consul -->
         <tr class="imagelist-content imagelist-infra">
@@ -104,7 +120,7 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="image-table-col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@vault-1.14.hello.com -p 13052</span></td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
         </tr>
         <!-- HashiCorp Vault -->
         <tr class="imagelist-content imagelist-infra">
@@ -136,7 +152,7 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="image-table-col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@vault-1.14.hello.com -p 13052</span></td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"><a href="https://localhost:13058" target="_blank">https://localhost:13058</a></span></td>
         </tr>
         <!-- ForgeRock Access Management -->
         <tr class="imagelist-content imagelist-infra">
@@ -170,7 +186,14 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="image-table-col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@am-7.3.hello.com -p 13042</span></td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin">Tomcat: <a href="https://am.remal.com:13044" target="_blank">https://am.remal.com:13044</a></span>
+                <br>
+                <span class="imagelist-col-margin">
+                    AM: <a href="https://am.remal.com:13044/openam" target="_blank">https://am.remal.com:13044/openam</a>
+                    (amadmin/password)
+                </span>
+            </td>
         </tr>
         <!-- ForgeRock Directory Server -->
         <tr class="imagelist-content imagelist-infra">
@@ -210,7 +233,7 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="image-table-col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@ds-7.3.hello.com -p 13012</span></td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
         </tr>
         <!-- PKI server -->
         <tr class="imagelist-content imagelist-infra">
@@ -232,7 +255,7 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="image-table-col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@private-ca.hello.com -p 13012</span></td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
         </tr>
         <!-- Apache-Tomcat 9 -->
         <tr class="imagelist-content imagelist-core">
@@ -254,7 +277,12 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="image-table-col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@vault.hello.com -p 13022</span></td>
+            <td class="imagelist-command imagelist-col-margin">
+                <span class="imagelist-col-margin">
+                    Tomcat: <a href="http://localhost:13080" target="_blank">http://localhost:13080</a>
+                    (admin/password)
+                </span>
+            </td>
         </tr>
         <!-- OpenJDK 11 -->
         <tr class="imagelist-content imagelist-core">
@@ -276,7 +304,7 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="image-table-col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@openjdk-11.hello.com -p 13022</span></td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
         </tr>
         <!-- OpenJDK 17 -->
         <tr class="imagelist-content imagelist-core">
@@ -298,7 +326,7 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="image-table-col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@openjdk-17.hello.com -p 13022</span></td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
         </tr>
         <!-- base -->
         <tr class="imagelist-content imagelist-base">
@@ -320,7 +348,7 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="image-table-col-margin">shpass -p password ssh -oStrictHostKeyChecking=no root@basebase.hello.com -p 13022</span></td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
         </tr>
     </table>
 </body>
