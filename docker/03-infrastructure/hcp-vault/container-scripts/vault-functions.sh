@@ -32,13 +32,13 @@ function get_vault_unseal_key() {
 }
 
 # ----------------------------------------------------------------------------
-# Show the audit log.
+# Pipe out the audit log do Docker log.
 # ------------------------------------------------------------------------------
 function show_audit_log() {
   VAULT_AUDIT_LOG="${VAULT_AUDIT_LOG:-saysomethingrandom}"
   printf "%s | [INFO]  showing the  HashiCorp Vault audit log...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_AUDIT_LOG"
 
-  kill "$(ps aux | grep "[^]]$VAULT_AUDIT_LOG" | awk '{print $1}')" || true
+  kill "$(ps aux | grep "[^]]$VAULT_AUDIT_LOG" | awk '{print $1}')" 2>/dev/null || true
   tail -F "$VAULT_AUDIT_LOG" &
 }
 
