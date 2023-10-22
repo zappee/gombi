@@ -22,13 +22,13 @@ fi
 SCRIPT=$(realpath "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT")
 IMAGE_SRC=$SCRIPT_PATH/${1##*docker/}
-printf "Script home: %s\n" "$SCRIPT_PATH"
-printf "Source code: %s\n" "$IMAGE_SRC"
-
 . "$IMAGE_SRC/setenv.sh" "slim" "false" "remal.com"
-printf "Build type:  %s\n" "$BUILD_TYPE"
-printf "Base image:  %s\n" "$IMAGE_FROM"
-printf "Image image: %s\n\n" "$IMAGE_NAME:$IMAGE_TAG"
+
+printf "script home: %s\n" "$SCRIPT_PATH"
+printf "source code: %s\n" "$IMAGE_SRC"
+printf "build type:  %s\n" "$BUILD_TYPE"
+printf "base image:  %s\n" "$IMAGE_FROM"
+printf "image image: %s\n\n" "$IMAGE_NAME:$IMAGE_TAG"
 
 docker build \
   --no-cache \
@@ -49,3 +49,10 @@ if [ "$PUSH_IMAGE" = true ] ; then
   printf "pushing the image to the registry...\n"
   docker push "$IMAGE_NAME":"$IMAGE_TAG"
 fi
+
+printf "Image has been built successfully. Details:\n"
+printf "   - script home: %s\n" "$SCRIPT_PATH"
+printf "   - source code: %s\n" "$IMAGE_SRC"
+printf "   - build type:  %s\n" "$BUILD_TYPE"
+printf "   - base image:  %s\n" "$IMAGE_FROM"
+printf "   - image image: %s\n\n" "$IMAGE_NAME:$IMAGE_TAG"
