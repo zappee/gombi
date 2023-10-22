@@ -63,10 +63,6 @@ RUN set -uxe; \
 # final image
 FROM base-$BUILD_TYPE AS final
 RUN set -uxe; \
-    printf "configuring the JVM...\n"; \
-    printf "JAVA_OPTS=\"%s\"\n" "$JAVA_OPTIONS" > "$CATALINA_HOME/bin/setenv.sh"; \
-    chmod +x "$CATALINA_HOME/bin/setenv.sh"; \
-    \
     printf "installing XMLStarlet...\n"; \
     apk add --no-cache xmlstarlet; \
     \

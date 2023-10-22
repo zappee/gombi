@@ -11,7 +11,6 @@
 log_start "$0"
 {
   printf "export %s=\"%s\"\n" "PKI_HOST" "$PKI_HOST"
-  printf "export %s=\"%s\"\n" "CATALINA_OPTS" "$CATALINA_OPTS"
   printf "export %s=\"%s\"\n" "AM_HOME" "$AM_HOME"
   printf "export %s=\"%s\"\n" "AM_CONFIG_TOOL_HOME" "$AM_CONFIG_TOOL_HOME"
   printf "export %s=\"%s\"\n" "AM_CONFIG_TOOL" "$AM_CONFIG_TOOL"
