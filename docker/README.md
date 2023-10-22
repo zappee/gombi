@@ -19,7 +19,7 @@ Map hostnames to IP addresses in `/etc/hosts` file.
 
 #### 3.1.3) Prepare the environment for Forgerock Directory Server (LDAP)
 The LDAP server has some special requirements.
-Learn about how to prepare your environment to get it ready for Forgerock Directory Server, check [paragraph 3.1) of this document](directory-server/forgerock-ds/README.md#31-preparation-of-your-environment).
+Learn about how to prepare your environment to get it ready for Forgerock Directory Server, check [paragraph 3.1) of this document](03-infrastructure/forgerock-ds/README.md#31-preparation-of-your-environment).
 
 ### 3.2) Build the images
 Each image has a build script that is called `build.sh`.
@@ -51,11 +51,11 @@ How to get Firefox to trust all self signed certificates you use locally to serv
 You can add the root CA to your web browser.
 The root CA locates in the CA server, the Docker container name is `pki.remal.com`.
 
-![step 1](secret-management/easy-rsa-pki/docs/firefox-setting-up-ca-step-1.png)
+![step 1](03-infrastructure/easy-rsa-pki/docs/firefox-setting-up-ca-step-1.png)
 
-![step 2](secret-management/easy-rsa-pki/docs/firefox-setting-up-ca-step-2.png)
+![step 2](03-infrastructure/easy-rsa-pki/docs/firefox-setting-up-ca-step-2.png)
 
-![step 3](secret-management/easy-rsa-pki/docs/firefox-setting-up-ca-step-3.png)
+![step 3](03-infrastructure/easy-rsa-pki/docs/firefox-setting-up-ca-step-3.png)
 
 ### 3.5) Stop the development environment
 Docker can back up the current configuration of the running servers before the whole environment will be stopped.
@@ -127,20 +127,18 @@ File prefix ranges:
 
 Images and its types:
 
-| image         | type      | range |
-|---------------|-----------|-------|
-| user-service  | 4000x     |   |
-| consul-16.2   | 3900x     |   |
-| vault-1.14    | 3800x     |   |
-| am-7.3        | 3700x     |   |
-| ds-7.3        | 3600x     |   |
-| private-ca    | 3500      |   |
-| tomcat-9      | 2500-2599 |   |
-| openjdk-17    | Core      |   |
-| openjdk-11    | Core      |   |
-| base          | Base      |   |
-
-
+| image        | type           | range         |
+|--------------|----------------|---------------|
+| hello-world  | Application    | 40100 - 40199 |
+| consul-16.2  | Infrastructure | 30600 - 30699 |
+| vault-1.14   | Infrastructure | 30500 - 30599 |
+| am-7.3       | Infrastructure | 30400 - 30499 |
+| ds-7.3       | Infrastructure | 30300 - 30399 |
+| tomcat-9     | Infrastructure | 30200 - 30299 |
+| private-ca   | Infrastructure | 30100 - 30199 |
+| openjdk-17   | Core           | 20200 - 20299 |
+| openjdk-11   | Core           | 20100 - 20199 |
+| base         | Base           | 10000 - 19999 |
 
 ## Annex 3) Troubleshooting
 **SSH**
