@@ -1,0 +1,42 @@
+[
+  {
+    "targets": [ "10.178.146.33:9100"],
+    "labels": {
+      "env": "amazon-ec2",
+      "job": "linux"
+    }
+  },
+  {
+    "targets": [ "10.178.146.33:4110" ],
+    "labels": {
+      "env": "amazon-ec2",
+      "group": "docker-wl",
+      "job": "eucr-weblogic-admin-server"
+    }
+  },
+  {
+    "targets": [ "10.178.146.33:4111" ],
+    "labels": {
+      "env": "amazon-ec2",
+      "group": "docker-wl",
+      "job": "eucr-weblogic-managed-server-1"
+    }
+  },
+  {
+    "targets": [ "10.178.146.33:4210" ],
+    "labels": {
+      "env": "amazon-ec2",
+      "group": "docker-wl",
+      "job": "eutl-weblogic-admin-server"
+    }
+  },
+  {
+    "targets": [ "10.178.146.33:4211" ],
+    "labels": {
+      "env": "amazon-ec2",
+      "group": "docker-wl",
+      "job": "eutl-weblogic-managed-server-1"
+    }
+  }
+]
+
