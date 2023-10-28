@@ -7,6 +7,7 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
+. /shared.sh
 
 # ------------------------------------------------------------------------------
 # Get a value from a properties file.
@@ -44,7 +45,8 @@ function start_tomcat() {
   printf "%s | [DEBUG]    CATALINA_OPTS: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "${CATALINA_OPTS:-}"
 
   "$CATALINA_HOME/bin/catalina.sh" start
-  tail -F "$CATALINA_HOME/logs/catalina.out" & ( tail -f -n0 "$CATALINA_HOME/logs/catalina.out" & ) | grep -q "Server startup in"
+  tail -F "$CATALINA_HOME/logs/catalina.out" &
+  wait_until_text_found "$CATALINA_HOME/logs/catalina.out" "Server startup in"
   printf "%s | [INFO]  Apache Tomcat has been started...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }
 
@@ -54,6 +56,6 @@ function start_tomcat() {
 function stop_tomcat() {
   printf "%s | [INFO]  stopping Apache Tomcat...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   "$CATALINA_HOME/bin/catalina.sh" stop 15
-  tail -F "$CATALINA_HOME/logs/catalina.out" & ( tail -f -n0 "$CATALINA_HOME/logs/catalina.out" & ) | grep -q "Destroying ProtocolHandler"
+  wait_until_text_found "$CATALINA_HOME/logs/catalina.out" "Destroying ProtocolHandler"
   printf "%s | [INFO]  Apache Tomcat has been stopped\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }

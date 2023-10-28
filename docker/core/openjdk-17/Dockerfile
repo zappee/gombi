@@ -28,7 +28,7 @@ LABEL "com.remal.image.vendor"="Remal" \
       "com.remal.image.author"="${IMAGE_AUTHOR}"
 
 # install openssl and openjdk
-RUN set -uxe; \
+RUN set -ue; \
     apk add --no-cache openssl; \
 	apk add --no-cache java-cacerts openjdk17-jdk; \
 	java -version; \

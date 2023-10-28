@@ -40,7 +40,7 @@ LABEL "com.remal.image.vendor"="Remal" \
 # fat image
 FROM base AS base-fat
 COPY "bin/$TOMCAT_INSTALL_KIT" "/tmp/"
-RUN set -uxe; \
+RUN set -ue; \
     printf "building fat image\n"; \
     mkdir -p "$CATALINA_HOME"; \
     tar -xvf "/tmp/$TOMCAT_INSTALL_KIT" --strip-components=1 -C "$CATALINA_HOME"; \
@@ -49,7 +49,7 @@ RUN set -uxe; \
 
 # slim image
 FROM base AS base-slim
-RUN set -uxe; \
+RUN set -ue; \
     printf "building slim image\n"; \
     hostIp="$(ip route | awk '/default/ { print $3 }')"; \
     wget -O "/tmp/$TOMCAT_INSTALL_KIT" http://$hostIp:8080/docker-build/$TOMCAT_INSTALL_KIT; \
@@ -62,7 +62,7 @@ RUN set -uxe; \
 
 # final image
 FROM base-$BUILD_TYPE AS final
-RUN set -uxe; \
+RUN set -ue; \
     printf "installing XMLStarlet...\n"; \
     apk add --no-cache xmlstarlet; \
     \

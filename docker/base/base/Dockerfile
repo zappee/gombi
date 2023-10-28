@@ -30,15 +30,16 @@ LABEL "com.remal.image.vendor"="Remal" \
       "com.remal.image.author"="${IMAGE_AUTHOR}"
 
 # installing tools and settin up bash as a default shell
-RUN set -uxe; \
-    apk add socat; \
+RUN set -ue; \
+    apk add --no-cache socat; \
     apk add --no-cache bash; \
+    apk add --no-cache bash coreutils; \
     sed -i 's|/bin/ash|/bin/bash|' /etc/passwd; \
     printf "%s\n" "source ~/.bashrc" >> ~/.profile; \
     printf "%s\n\n" "Welcome to Remal docker container!" > /etc/motd
 
 # installing and configuring ssh-server that will listen on port 22
-RUN set -uxe; \
+RUN set -ue; \
     apk add --no-cache sshpass; \
     apk add --no-cache openssh; \
     printf "PasswordAuthentication yes\n" >> /etc/ssh/sshd_config; \
@@ -47,7 +48,7 @@ RUN set -uxe; \
     ssh-keygen -A
 
 # configuring first-boot and startup script executors
-RUN set -uxe; \
+RUN set -ue; \
     mkdir /docker.init; \
     mkdir /docker.startup
 COPY container-scripts/init/* /docker.init/

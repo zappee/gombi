@@ -1,4 +1,4 @@
-#!/bin/sh -ue
+#!/bin/bash -ue
 # ******************************************************************************
 # ForgeRock Access Management Docker container deployer file.
 #

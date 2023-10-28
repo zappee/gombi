@@ -64,7 +64,7 @@ RUN unzip "/tmp/$DS_INSTALL_KIT" -d "/opt/"
 
 # slim image
 FROM base AS base-slim
-RUN set -uxe; \
+RUN set -ue; \
     hostIp="$(ip route | awk '/default/ { print $3 }')"; \
     wget -O "/tmp/$DS_INSTALL_KIT" http://$hostIp:8080/docker-build/$DS_INSTALL_KIT; \
     unzip "/tmp/$DS_INSTALL_KIT" -d "/opt/"; \

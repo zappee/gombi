@@ -257,14 +257,13 @@ wait_for_container() {
 #    arg 1: the expected content
 # ------------------------------------------------------------------------------
 wait_until_text_found() {
-  local file_to_monitor text
+  local file_to_monitor required_string pid
   file_to_monitor="$1"
-  text="$2"
+  required_string="$2"
+  pid="$$"
 
-  printf "%s | [DEBUG] monitoring the \"%s\" file and waiting until \"%s\" text appears...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_monitor" "$text"
-  tail -n0 -F "$file_to_monitor" 2>/dev/null | while read -r LOGLINE
-  do
-    [[ "${LOGLINE}" == *"$text"* ]] && pkill -P $$ tail
-  done
-  printf "%s | [DEBUG] expected content appeared, let's continue\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] monitoring the \"%s\" file and waiting until \"%s\" text appears...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_monitor" "$required_string"
+  printf "%s | [DEBUG] own PID: \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$pid"
+  grep -q "$required_string" <(tail -n0 --pid "$pid" -f "$file_to_monitor")
+  printf "%s | [DEBUG] expected content \"%s\" appeared, let's continue\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$required_string"
 }

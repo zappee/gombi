@@ -34,14 +34,14 @@ LABEL "com.remal.image.vendor"="Remal" \
 # fat image
 FROM base AS base-fat
 COPY "bin/$CONSUL_INSTALL_KIT" "/tmp/"
-RUN set -uxe; \
+RUN set -ue; \
     unzip "/tmp/$CONSUL_INSTALL_KIT" -d "/usr/local/bin/"; \
     rm "/tmp/$CONSUL_INSTALL_KIT"
 
 
 # slim image
 FROM base AS base-slim
-RUN set -uxe; \
+RUN set -ue; \
     hostIp="$(ip route | awk '/default/ { print $3 }')"; \
     wget -O "/tmp/$CONSUL_INSTALL_KIT" http://$hostIp:8080/docker-build/$CONSUL_INSTALL_KIT; \
     unzip "/tmp/$CONSUL_INSTALL_KIT" -d "/usr/local/bin/"; \

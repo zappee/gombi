@@ -39,21 +39,21 @@ LABEL "com.remal.image.vendor"="Remal" \
       "com.remal.image.author"="${IMAGE_AUTHOR}"
 
 # install openssl
-RUN set -uxe; \
+RUN set -ue; \
     apk add --no-cache openssl
 
 
 # fat image
 FROM base AS base-fat
 COPY "bin/$VAULT_INSTALL_KIT" "/tmp/"
-RUN set -uxe; \
+RUN set -ue; \
     unzip "/tmp/$VAULT_INSTALL_KIT" -d "/usr/local/bin/"; \
     rm "/tmp/$VAULT_INSTALL_KIT"
 
 
 # slim image
 FROM base AS base-slim
-RUN set -uxe; \
+RUN set -ue; \
     hostIp="$(ip route | awk '/default/ { print $3 }')"; \
     wget -O "/tmp/$VAULT_INSTALL_KIT" http://$hostIp:8080/docker-build/$VAULT_INSTALL_KIT; \
     unzip "/tmp/$VAULT_INSTALL_KIT" -d "/usr/local/bin/"; \

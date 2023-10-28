@@ -45,7 +45,7 @@ LABEL "com.remal.image.vendor"="Remal" \
 # fat image
 FROM base AS base-fat
 COPY "bin/$EASYRSA_INSTALL_KIT" "/tmp/"
-RUN set -uxe; \
+RUN set -ue; \
     printf "building fat image\n"; \
     mkdir -p "$EASYRSA_HOME"; \
     tar -xvf "/tmp/$EASYRSA_INSTALL_KIT" --strip-components=1 -C "$EASYRSA_HOME"; \
@@ -54,7 +54,7 @@ RUN set -uxe; \
 
 # slim image
 FROM base AS base-slim
-RUN set -uxe; \
+RUN set -ue; \
     printf "building slim image\n"; \
     hostIp="$(ip route | awk '/default/ { print $3 }')"; \
     wget -O "/tmp/$EASYRSA_INSTALL_KIT" http://$hostIp:8080/docker-build/$EASYRSA_INSTALL_KIT; \
