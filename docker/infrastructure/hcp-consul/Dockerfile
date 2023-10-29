@@ -11,6 +11,7 @@ ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
 EXPOSE 22/tcp
+EXPOSE 8500/tcp
 
 # environment variables
 ENV IMAGE_NAME="consul-1.16" \

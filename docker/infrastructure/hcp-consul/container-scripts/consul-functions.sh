@@ -21,7 +21,7 @@ function start_consul() {
   printf "%s | [DEBUG]    data directory: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$data_dir"
   printf "%s | [DEBUG]    node name:       \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$node_name"
 
-  consul agent -server -bootstrap -bind=127.0.0.1 -data-dir "$data_dir" -node="$node_name" -ui &
+  consul agent -server -bootstrap -bind=127.0.0.1 -data-dir "$data_dir" -node="$node_name" -ui -client=0.0.0.0 &
 
   while [ "$(consul members 2>/dev/null | awk "/$node_name/ && /alive/" | wc -l)" -ne 1 ]; do
     sleep 0.5
