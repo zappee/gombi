@@ -21,7 +21,8 @@ ENV IMAGE_NAME="consul-1.16" \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     \
-    CONSUL_INSTALL_KIT="consul_1.16.2_linux_386.zip"
+    CONSUL_INSTALL_KIT="consul_1.16.2_linux_386.zip" \
+    CONSUL_NODE_NAME="agent-one"
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \
@@ -50,3 +51,4 @@ RUN set -ue; \
 
 # final image
 FROM base-$BUILD_TYPE AS final
+COPY container-scripts/consul-functions.sh /

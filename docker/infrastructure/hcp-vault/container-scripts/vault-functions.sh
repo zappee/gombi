@@ -83,7 +83,6 @@ function stop_vault() {
   printf "%s | [INFO]  HashiCorp Vault has been stopped\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }
 
-
 # ----------------------------------------------------------------------------
 # Unseal Vault.
 #

@@ -63,4 +63,4 @@ RUN set -ue; \
 # final image
 FROM base-$BUILD_TYPE AS final
 COPY config/vault.hcl "$VAULT_CONFIG_FILE"
-COPY container-scripts/vault-functions.sh  container-scripts/get-value.sh container-scripts/set-value.sh /
+COPY container-scripts/vault-functions.sh container-scripts/get-value.sh container-scripts/set-value.sh /
