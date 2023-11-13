@@ -48,7 +48,7 @@ function copy_from_remote_machine() {
 #    - DC = Domain Component
 #    - DN = Distinguished Name
 #
-# ${1//./ /} replaces all instances of '.' in '$1' with ' ' (a space). See
+# ${1//./ /} replaces all occurrence of '.' in '$1' with ' ' (a space). See
 # the "Parameter Expansion" section of the Bash man page for details.
 #
 # The sed expression s/[^ ]*/dc=&/g searches for all groups of non-space

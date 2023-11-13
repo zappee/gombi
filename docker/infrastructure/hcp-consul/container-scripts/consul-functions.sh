@@ -13,17 +13,35 @@
 # Start HashiCorp Consul.
 # ------------------------------------------------------------------------------
 function start_consul() {
-  local node_name data_dir
-  node_name="$CONSUL_NODE_NAME"
-  data_dir="/tmp/consul"
+  local template_config_file config_file
+  template_config_file="$CONSUL_CONFIG_TEMPLATE_DIR/consul-template.json"
+  config_file="$CONSUL_CONFIG_DIR/consul.json"
 
   printf "%s | [INFO]  starting HashiCorp Consul...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]    data directory: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$data_dir"
-  printf "%s | [DEBUG]    node name:       \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$node_name"
+  printf "%s | [DEBUG]    consul data directory:   \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$CONSUL_DATA_DIR"
+  printf "%s | [DEBUG]    consul config directory: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$CONSUL_CONFIG_DIR"
+  printf "%s | [DEBUG]    consul node name:        \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$CONSUL_NODE_NAME"
+  printf "%s | [DEBUG]    consul config template:  \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$template_config_file"
+  printf "%s | [DEBUG]    consul config file:      \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$config_file"
+  printf "%s | [DEBUG]    keystore home:           \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$KEYSTORE_HOME"
 
-  consul agent -server -bootstrap -bind=127.0.0.1 -data-dir "$data_dir" -node="$node_name" -ui -client=0.0.0.0 &
+  mkdir -p "$CONSUL_CONFIG_DIR"
+  cp -f "$template_config_file" "$config_file"
+  sed -i "s|\${CONSUL_DATA_DIR}|$CONSUL_DATA_DIR|g" "$config_file"
+  sed -i "s|\${CONSUL_NODE_NAME}|$CONSUL_NODE_NAME|g" "$config_file"
+  sed -i "s|\${KEYSTORE_HOME}|$KEYSTORE_HOME|g" "$config_file"
 
-  while [ "$(consul members 2>/dev/null | awk "/$node_name/ && /alive/" | wc -l)" -ne 1 ]; do
+  #consul agent -config-dir "$CONSUL_CONFIG_DIR"
+  # result:
+  # ==> Failed to load cert/key pair: tls: failed to parse private key
+
+  # consul agent -server -bootstrap -bind=127.0.0.1 -data-dir "$CONSUL_DATA_DIR" -node="$CONSUL_NODE_NAME" -ui &
+
+# config file
+#   "enable_syslog": true,
+
+  while [ "$(consul members 2>/dev/null | awk "/$CONSUL_NODE_NAME/ && /alive/" | wc -l)" -ne 1 ]; do
+    echo "consul is not running, waiting..."
     sleep 0.5
   done
 

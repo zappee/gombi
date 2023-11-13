@@ -11,7 +11,7 @@ ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
 EXPOSE 22/tcp
-EXPOSE 8500/tcp
+EXPOSE 8501/tcp
 
 # environment variables
 ENV IMAGE_NAME="consul-1.16" \
@@ -23,7 +23,10 @@ ENV IMAGE_NAME="consul-1.16" \
     KEYSTORE_HOME="/tmp" \
     \
     CONSUL_INSTALL_KIT="consul_1.16.2_linux_386.zip" \
-    CONSUL_NODE_NAME="agent-one"
+    CONSUL_NODE_NAME="agent-one" \
+    CONSUL_CONFIG_DIR="/tmp/consul-config" \
+    CONSUL_CONFIG_TEMPLATE_DIR="/tmp/consul-config-template" \
+    CONSUL_DATA_DIR="/tmp/consul-data"
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \
@@ -53,3 +56,8 @@ RUN set -ue; \
 # final image
 FROM base-$BUILD_TYPE AS final
 COPY container-scripts/consul-functions.sh /
+COPY config/consul-template.json "$CONSUL_CONFIG_TEMPLATE_DIR/"
+RUN set -ue; \
+    mkdir -p "$CONSUL_DATA_DIR"; \
+    mkdir -p "$CONSUL_CONFIG_DIR"; \
+    mkdir -p "$CONSUL_CONFIG_TEMPLATE_DIR"
