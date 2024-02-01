@@ -14,18 +14,18 @@ EXPOSE 22/tcp
 EXPOSE 8501/tcp
 
 # environment variables
-ENV IMAGE_NAME="consul-1.16" \
+ENV IMAGE_NAME="consul-1.17" \
     IMAGE_TAG="0.0.1-remal" \
-    IMAGE_DESCRIPTION="HashiCorp Consul 1.16.2" \
+    IMAGE_DESCRIPTION="HashiCorp Consul 1.17.2" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     \
-    CONSUL_INSTALL_KIT="consul_1.16.2_linux_386.zip" \
+    CONSUL_INSTALL_KIT="consul_1.17.2_linux_386.zip" \
     CONSUL_NODE_NAME="agent-one" \
-    CONSUL_CONFIG_DIR="/tmp/consul-config" \
     CONSUL_CONFIG_TEMPLATE_DIR="/tmp/consul-config-template" \
+    CONSUL_CONFIG_DIR="/tmp/consul-config" \
     CONSUL_DATA_DIR="/tmp/consul-data"
 
 # set image metadata

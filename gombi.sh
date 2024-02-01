@@ -17,6 +17,7 @@
 # ******************************************************************************
 WORKSPACE="${REMAL_HOME:-$(pwd)}"
 BUILD_TYPE="slim"
+ENVIRONMENT_FILE=".env.hello.com"
 COMMAND="${1:-}"
 
 LABEL_BASE="Base;base/base"
@@ -110,7 +111,7 @@ function docker_container_show {
 function docker_containers_run {
   printf "%b> starting the Remal Docker stack...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
   cd "$WORKSPACE/docker"
-  docker-compose --env-file=.env.remal.com up
+  docker-compose --env-file="$ENVIRONMENT_FILE" up
   cd "$WORKSPACE"
 }
 

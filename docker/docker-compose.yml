@@ -72,13 +72,13 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul-1.16:0.0.1
+        image: remal-consul-1.17:0.0.1
         container_name: consul.${DOMAIN_NAME}
         hostname: consul.${DOMAIN_NAME}
         depends_on:
             - pki
         ports:
             - "13062:22"   # SSH
-            - "13065:8501" # Consul UI HTTPS
+            - "13063:8501" # Consul UI HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}

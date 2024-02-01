@@ -35,7 +35,36 @@ function start_consul() {
   # result:
   # ==> Failed to load cert/key pair: tls: failed to parse private key
 
-  # consul agent -server -bootstrap -bind=127.0.0.1 -data-dir "$CONSUL_DATA_DIR" -node="$CONSUL_NODE_NAME" -ui &
+  # consul \
+  #   agent \
+  #   -server \
+  #   -ui \
+  #   -bootstrap \
+  ####   -advertise=127.0.0.1 \
+  #   -bind=127.0.0.1 \
+  #   -node="$CONSUL_NODE_NAME" \
+  #   -config-dir="$CONSUL_CONFIG_DIR" \
+  #   -data-dir="$CONSUL_DATA_DIR" \
+  #   &
+
+  # openssl pkey -in consul.remal.com.key -out plain.key
+
+
+#2024-Feb-01 17:09:21 | [INFO]  decrypting private key...
+#2024-Feb-01 17:09:21 | [DEBUG]        SSH_USER: "root"
+#2024-Feb-01 17:09:21 | [DEBUG]    SSH_PASSWORD: "password"
+#2024-Feb-01 17:09:21 | [DEBUG]        PKI_HOST: "pki.hello.com"
+#2024-Feb-01 17:09:21 | [DEBUG]       host_name: "consul.hello.com"
+#Enter pass phrase for /opt/easy-rsa/pki/private/consul.hello.com.key:
+#Enter pass phrase for /opt/easy-rsa/pki/private/consul.hello.com.key:
+#Enter pass phrase for /opt/easy-rsa/pki/private/consul.hello.com.key:
+#Could not read key from /opt/easy-rsa/pki/private/consul.hello.com.key
+#483B5A07B57F0000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:crypto/store/store_result.c:151:
+#483B5A07B57F0000:error:1400006B:UI routines:UI_process:processing error:crypto/ui/ui_lib.c:548:while reading strings
+#483B5A07B57F0000:error:07880028:common libcrypto routines:do_ui_passphrase:UI lib:crypto/passphrase.c:187:
+#483B5A07B57F0000:error:1C80009F:Provider routines:epki2pki_decode:unable to get passphrase:providers/implementations/encode_decode/decode_epki2pki.c:96:
+#run-parts: /docker.init/30602_generate-server-cert.sh: exit status 1
+
 
 # config file
 #   "enable_syslog": true,

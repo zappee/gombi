@@ -1,15 +1,15 @@
 {
+  "bootstrap": true,
   "server": true,
-  "bootstrap_expect": 1,
+  "log_level": "debug",
+  "datacenter": "dc1",
+  "encrypt": "f502FprfDugOXiWqZUJpyAwgeXH+6qs6VNFjPxX8TgU=",
   "bind_addr": "0.0.0.0",
-  "data_dir": "${CONSUL_DATA_DIR}",
+  "client_addr": "0.0.0.0",
   "node_name": "${CONSUL_NODE_NAME}",
-  "log_level": "INFO",
-  "enable_debug": true,
+  "data_dir": "${CONSUL_DATA_DIR}",
   "leave_on_terminate": false,
   "skip_leave_on_interrupt": true,
-  "encrypt": "f502FprfDugOXiWqZUJpyAwgeXH+6qs6VNFjPxX8TgU=",
-  "client_addr": "0.0.0.0",
   "ui_config": {
     "enabled": true
   },
@@ -22,13 +22,11 @@
   },
   "tls": {
     "defaults": {
-      "key_file": "${KEYSTORE_HOME}/consul.remal.com.key",
+      "key_file": "${KEYSTORE_HOME}/consul.remal.com.plain-key",
       "cert_file": "${KEYSTORE_HOME}/consul.remal.com.crt",
       "ca_file": "${KEYSTORE_HOME}/ca.crt",
       "verify_incoming": true,
-      "verify_outgoing": true
-    },
-    "internal_rpc": {
+      "verify_outgoing": true,
       "verify_server_hostname": true
     }
   }

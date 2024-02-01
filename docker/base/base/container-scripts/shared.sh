@@ -35,6 +35,28 @@ function copy_from_remote_machine() {
 }
 
 # ------------------------------------------------------------------------------
+# Decrypt the encrypted private key.
+#
+# Arguments
+#    arg 1:  the hostname of the machine that determine which private key will
+#            be decrypted
+# ------------------------------------------------------------------------------
+function decrypt_private_key() {
+  local host_name
+  host_name="$1"
+
+  printf "%s | [INFO]  decrypting private key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
+  printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
+  printf "%s | [DEBUG]        PKI_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PKI_HOST"
+  printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$host_name"
+  sshpass -p "$SSH_PASSWORD" \
+    ssh \
+      -oStrictHostKeyChecking=no \
+      "$SSH_USER@$PKI_HOST" "bash -lc 'openssl pkey -in /opt/easy-rsa/pki/private/$host_name.key -out /opt/easy-rsa/pki/private/$host_name.plain-key'"
+}
+
+# ------------------------------------------------------------------------------
 # FQDN to an LDAP DN string.
 #
 # com ->                       dc=com
@@ -77,9 +99,10 @@ function generate_certificate() {
   printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
   printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
   printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$host_name"
-  sshpass -p "$SSH_PASSWORD" ssh \
-    -oStrictHostKeyChecking=no \
-    "$SSH_USER@$PKI_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $host_name'"
+  sshpass -p "$SSH_PASSWORD" \
+    ssh \
+      -oStrictHostKeyChecking=no \
+      "$SSH_USER@$PKI_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $host_name'"
 }
 
 # ------------------------------------------------------------------------------
