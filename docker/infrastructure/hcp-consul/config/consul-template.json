@@ -22,8 +22,8 @@
   },
   "tls": {
     "defaults": {
-      "key_file": "${KEYSTORE_HOME}/consul.remal.com.plain-key",
-      "cert_file": "${KEYSTORE_HOME}/consul.remal.com.crt",
+      "key_file": "${KEYSTORE_HOME}/${FQDN}.plain-key",
+      "cert_file": "${KEYSTORE_HOME}/${FQDN}.crt",
       "ca_file": "${KEYSTORE_HOME}/ca.crt",
       "verify_incoming": true,
       "verify_outgoing": true,

@@ -42,18 +42,20 @@ function copy_from_remote_machine() {
 #            be decrypted
 # ------------------------------------------------------------------------------
 function decrypt_private_key() {
-  local host_name
+  local host_name keystore_pass
   host_name="$1"
+  keystore_pass="changeit"
 
   printf "%s | [INFO]  decrypting private key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
   printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
   printf "%s | [DEBUG]        PKI_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PKI_HOST"
   printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$host_name"
+  printf "%s | [DEBUG]   keystore_pass: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$keystore_pass"
   sshpass -p "$SSH_PASSWORD" \
     ssh \
       -oStrictHostKeyChecking=no \
-      "$SSH_USER@$PKI_HOST" "bash -lc 'openssl pkey -in /opt/easy-rsa/pki/private/$host_name.key -out /opt/easy-rsa/pki/private/$host_name.plain-key'"
+      "$SSH_USER@$PKI_HOST" "bash -lc 'openssl pkey -in /opt/easy-rsa/pki/private/$host_name.key -out /opt/easy-rsa/pki/private/$host_name.plain-key --passin pass:$keystore_pass'"
 }
 
 # ------------------------------------------------------------------------------
