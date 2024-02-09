@@ -4,7 +4,7 @@ services:
     pki:
         image: remal-private-ca:0.0.1
         container_name: pki.${DOMAIN_NAME}
-        hostname: pki..${DOMAIN_NAME}
+        hostname: pki.${DOMAIN_NAME}
         ports:
             - "13012:22"   # SSH
         environment:
