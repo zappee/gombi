@@ -7,14 +7,8 @@
   "bind_addr": "0.0.0.0",
   "client_addr": "0.0.0.0",
   "node_name": "${CONSUL_NODE_NAME}",
-
-  
-  
   "server_name": "${FQDN}",
-  "domaim": "${FQDN}",
-
-
-  
+  "domain": "${FQDN}",
   "data_dir": "${CONSUL_DATA_DIR}",
   "leave_on_terminate": false,
   "skip_leave_on_interrupt": true,
@@ -35,7 +29,7 @@
       "ca_file": "${KEYSTORE_HOME}/ca.crt",
       "verify_incoming": true,
       "verify_outgoing": true,
-      "verify_server_hostname": true
+      "verify_server_hostname": false
     }
   }
 }
