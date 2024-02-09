@@ -7,6 +7,14 @@
   "bind_addr": "0.0.0.0",
   "client_addr": "0.0.0.0",
   "node_name": "${CONSUL_NODE_NAME}",
+
+  
+  
+  "server_name": "${FQDN}",
+  "domaim": "${FQDN}",
+
+
+  
   "data_dir": "${CONSUL_DATA_DIR}",
   "leave_on_terminate": false,
   "skip_leave_on_interrupt": true,
