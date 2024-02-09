@@ -16,7 +16,7 @@ printf "%s | [INFO ] initializing easy-rsa...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 ./easyrsa init-pki
 
 VARS="$EASYRSA_HOME/pki/vars"
-cp pki/vars.example "$VARS"
+cp vars.example "$VARS"
 {
   printf "set_var EASYRSA_REQ_CN \"%s\"\n" "$EASYRSA_REQ_CN"
   printf "set_var EASYRSA_REQ_COUNTRY \"%s\"\n" "$EASYRSA_REQ_COUNTRY"
@@ -39,6 +39,5 @@ printf "%s | [INFO ] generating the root CA key and certificate...\n" "$(date +"
     build-ca
 
 # generating a server certificate for this server
-printf "%s | [INFO ] generating a server certificate request and key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 ./generate-cert.sh "$(hostname)"
 log_end "$0"

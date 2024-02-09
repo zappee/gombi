@@ -92,6 +92,11 @@ Example:
 $ $EASYRSA_HOME/generate-cert.sh tomcat /tmp
 ~~~
 
+## 5) Certificate info
+~~~
+openssl x509 -in /opt/easy-rsa/pki/private/consul.hello.com.p12 -text -noout
+~~~
+
 ## 6) License and Copyright
 Copyright (c) 2020-2023 Remal Software, Arnold Somogyi. All rights reserved.
 

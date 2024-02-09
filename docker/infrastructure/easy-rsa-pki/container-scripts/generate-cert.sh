@@ -16,9 +16,9 @@
 # Validates the start arguments of this script.
 # ------------------------------------------------------------------------------
 function validate_arguments() {
-  if [[ $# -ne 1 ]]; then
+  if [[ $# -gt 2 ]]; then
     printf "%s | [ERROR] Illegal number of parameters!\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-    printf "%s | [ERROR] Usage: %s [hostname]\n\n" "$(date +"%Y-%b-%d %H:%M:%S")" "${0##*/}"
+    printf "%s | [ERROR] Usage: %s hostname [san]\n\n" "$(date +"%Y-%b-%d %H:%M:%S")" "${0##*/}"
     exit 1
   fi
 }
@@ -43,6 +43,7 @@ function show_context() {
   printf "%s | [DEBUG]           EASYRSA_PASS: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$EASYRSA_PASS"
   printf "%s | [DEBUG] arguments of the \"%s\" script:\n" "$(date +"%Y-%b-%d %H:%M:%S")" "${0##*/}"
   printf "%s | [DEBUG]               hostname: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$1"
+  printf "%s | [DEBUG]                    san: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "${2:-}"
 }
 
 # ------------------------------------------------------------------------------
@@ -50,18 +51,36 @@ function show_context() {
 # given host/domain.
 # ------------------------------------------------------------------------------
 function generate_cert_req_and_key() {
-  printf "%s | [INFO ] generating a server certificate request and key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-
-  local domain work_dir
+  local domain san work_dir
   domain="$1"
+  san="${2:-}"
   work_dir=${PWD}
 
+  printf "%s | [INFO ] generating a server certificate request and key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG]    EASYRSA_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$EASYRSA_HOME"
+  printf "%s | [DEBUG]    EASYRSA_PASS: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$EASYRSA_PASS"
+  printf "%s | [DEBUG]          domain: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain"
+  printf "%s | [DEBUG]             san: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$san"
+  printf "%s | [DEBUG]        work_dir: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$work_dir"
+
   cd "$EASYRSA_HOME" || { println "invalid path: %s" "$EASYRSA_HOME"; exit 1; }
-  ./easyrsa \
-    --batch \
-    --passout="pass:$EASYRSA_PASS" \
-    --req-cn="$domain" \
-    gen-req "$domain"
+
+  if [[ -z "${san-}"  ]]; then
+    printf "%s | [DEBUG] server certificate request without SAN\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+    ./easyrsa \
+      --batch \
+      --passout="pass:$EASYRSA_PASS" \
+      --req-cn="$domain" \
+      gen-req "$domain"
+  else
+    printf "%s | [DEBUG] server certificate request with SAN: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$san"
+    ./easyrsa \
+      --batch \
+      --passout="pass:$EASYRSA_PASS" \
+      --req-cn="$domain" \
+      --subject-alt-name="$san" \
+      gen-req "$domain"
+  fi
 
   cd "$work_dir" || { println "invalid path: %s" "$work_dir"; exit 1; }
 }
@@ -106,7 +125,7 @@ function export_to_keystore() {
 # ------------------------------------------------------------------------------
 validate_arguments "$@"
 show_context "$@"
-generate_cert_req_and_key "$1"
+generate_cert_req_and_key "$@"
 signing_cert_req "$1"
 export_to_keystore "$1"
 import_to_keystore "ca-cert" "$EASYRSA_HOME/pki/ca.crt" "$EASYRSA_HOME/pki/private/$1.p12" "$EASYRSA_PASS"
