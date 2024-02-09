@@ -91,20 +91,24 @@ function fqdn_to_ldap_dn() {
 #
 # Arguments
 #    arg 1:  the hostname for which the certificate is generated
+#    arg 2:  generate a certificate with SAN
+#            e.g. "DNS:consul.hello.com,DNS:server.consul.hello.com"
 # ------------------------------------------------------------------------------
 function generate_certificate() {
-  local host_name
+  local host_name san
   host_name="$1"
+  san="${2:-}"
 
   printf "%s | [INFO]  generating a server certificate...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG]        PKI_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PKI_HOST"
   printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
   printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
   printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$host_name"
+  printf "%s | [DEBUG]             san: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$san"
   sshpass -p "$SSH_PASSWORD" \
     ssh \
       -oStrictHostKeyChecking=no \
-      "$SSH_USER@$PKI_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $host_name'"
+      "$SSH_USER@$PKI_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $host_name $san'"
 }
 
 # ------------------------------------------------------------------------------
