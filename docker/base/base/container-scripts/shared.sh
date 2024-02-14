@@ -55,7 +55,7 @@ function decrypt_private_key() {
   sshpass -p "$SSH_PASSWORD" \
     ssh \
       -oStrictHostKeyChecking=no \
-      "$SSH_USER@$PKI_HOST" "bash -lc 'openssl pkey -in /opt/easy-rsa/pki/private/$host_name.key -out /opt/easy-rsa/pki/private/$host_name.plain-key --passin pass:$keystore_pass'"
+      "$SSH_USER@$PKI_HOST" "bash -lc 'openssl pkey -in /opt/easy-rsa/pki/private/$host_name.key -out /opt/easy-rsa/pki/private/$host_name.pem --passin pass:$keystore_pass'"
 }
 
 # ------------------------------------------------------------------------------

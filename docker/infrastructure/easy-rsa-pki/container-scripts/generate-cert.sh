@@ -99,7 +99,7 @@ function signing_cert_req() {
     --batch \
     --passin="pass:$EASYRSA_PASS" \
     sign-req \
-    server \
+    serverClient \
     "$domain"
   cd "$work_dir" || { println "invalid path: %s" "$work_dir"; exit 1; }
 }
