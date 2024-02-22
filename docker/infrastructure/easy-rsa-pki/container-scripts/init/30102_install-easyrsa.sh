@@ -39,5 +39,5 @@ printf "%s | [INFO ] generating the root CA key and certificate...\n" "$(date +"
     build-ca
 
 # generating a server certificate for this server
-./generate-cert.sh "$(hostname)"
+./generate-cert.sh "server" "$(hostname)"
 log_end "$0"

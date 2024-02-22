@@ -50,7 +50,7 @@ FQDN=$(hostname -f)
 KEYSTORE_HOME="/tmp"
 KEYSTORE_FILE="$FQDN.p12"
 
-generate_certificate "$FQDN"
+generate_certificate "server" "$FQDN"
 copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$KEYSTORE_FILE" "$KEYSTORE_HOME"
 tomcat_configuration "$FQDN"
 log_end "$0"

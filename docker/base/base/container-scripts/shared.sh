@@ -90,25 +90,28 @@ function fqdn_to_ldap_dn() {
 # Certificate Authority infrastructure.
 #
 # Arguments
-#    arg 1:  the hostname for which the certificate is generated
-#    arg 2:  generate a certificate with SAN
-#            e.g. "DNS:consul.hello.com,DNS:server.consul.hello.com"
+#    arg 1:  certificate type: server, client, serverClient
+#    arg 2:  domain for which the certificate is generated
+#    arg 3:  generate the certificate with SAN
+#            e.g. "DNS:pki.hello.com,DNS:pki.dc1.hello.com"
 # ------------------------------------------------------------------------------
 function generate_certificate() {
-  local host_name san
-  host_name="$1"
-  san="${2:-}"
+  local cert_type domain san
+  cert_type="$1"
+  domain="$2"
+  san="${3:-}"
 
   printf "%s | [INFO]  generating a server certificate...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG]        PKI_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PKI_HOST"
   printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
   printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
-  printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$host_name"
+  printf "%s | [DEBUG]       cert_type: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$cert_type"
+  printf "%s | [DEBUG]          domain: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain"
   printf "%s | [DEBUG]             san: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$san"
   sshpass -p "$SSH_PASSWORD" \
     ssh \
       -oStrictHostKeyChecking=no \
-      "$SSH_USER@$PKI_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $host_name $san'"
+      "$SSH_USER@$PKI_HOST" "bash -lc '/opt/easy-rsa/generate-cert.sh $cert_type $domain $san'"
 }
 
 # ------------------------------------------------------------------------------

@@ -156,7 +156,7 @@ KEYSTORE_HOME="/tmp"
 KEYSTORE_FILE="$FQDN.p12"
 KEYSTORE_PASSWORD="changeit"
 
-generate_certificate "$FQDN"
+generate_certificate "server" "$FQDN"
 copy_from_remote_machine "$PKI_HOST" "$SSH_USER" "$SSH_PASSWORD" "/opt/easy-rsa/pki/private/$KEYSTORE_FILE" "$KEYSTORE_HOME"
 if [ "$NEW_DS_DEPLOYMENT_KEY" == "true" ]; then generate_ds_deployment_key; fi
 generate_ds_master_key "$KEYSTORE_HOME/$KEYSTORE_FILE" "$KEYSTORE_PASSWORD"
