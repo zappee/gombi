@@ -22,7 +22,7 @@ ENV IMAGE_NAME="consul-1.17" \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     \
-    CONSUL_INSTALL_KIT="consul_1.17.2_linux_386.zip" \
+    CONSUL_INSTALL_KIT="consul_1.17.3_linux_386.zip" \
     CONSUL_NODE_NAME="agent-one" \
     CONSUL_CONFIG_TEMPLATE_DIR="/tmp/consul-config-template" \
     CONSUL_CONFIG_DIR="/tmp/consul-config" \
