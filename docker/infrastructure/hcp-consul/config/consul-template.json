@@ -2,13 +2,13 @@
   "bootstrap": true,
   "server": true,
   "log_level": "debug",
-  "datacenter": "dc1",
+  "datacenter": "consule",
   "encrypt": "f502FprfDugOXiWqZUJpyAwgeXH+6qs6VNFjPxX8TgU=",
   "bind_addr": "0.0.0.0",
   "client_addr": "0.0.0.0",
   "node_name": "${CONSUL_NODE_NAME}",
   "server_name": "${FQDN}",
-  "domain": "${FQDN}",
+  "domain": "${DOMAIN}",
   "data_dir": "${CONSUL_DATA_DIR}",
   "leave_on_terminate": false,
   "skip_leave_on_interrupt": true,
@@ -16,11 +16,9 @@
     "enabled": true
   },
   "addresses": {
-    "http": "0.0.0.0",
     "https": "0.0.0.0"
   },
   "ports": {
-    "http": 8500,
     "https": 8501
   },
   "tls": {
@@ -28,9 +26,9 @@
       "key_file": "${KEYSTORE_HOME}/${FQDN}.pem",
       "cert_file": "${KEYSTORE_HOME}/${FQDN}.crt",
       "ca_file": "${KEYSTORE_HOME}/ca.crt",
-      "verify_incoming": true,
+      "verify_incoming": false,
       "verify_outgoing": true,
-      "verify_server_hostname": true
+      "verify_server_hostname": false
     }
   }
 }
