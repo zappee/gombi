@@ -2,11 +2,6 @@
 # ******************************************************************************
 # Remal Docker Image build file.
 #
-# Since : January, 2023
-# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
-#
-# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
-#
 # Usage:
 #    1) Set the REMAL_HOME environment variable.
 #       It must point to the project directory. If the variable is not set then
@@ -14,6 +9,11 @@
 #       Example: export REMAL_HOME="$HOME/Java/gombi"
 #
 #   2) Run the script using ./remal.sh
+#
+# Since : January, 2023
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+#
+# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 WORKSPACE="${REMAL_HOME:-$(pwd)}"
 BUILD_TYPE="slim"
