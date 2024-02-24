@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Gombi Docker Hosts</title>
+    <style>
+        body { font-family: sans-serif; }
+        table { padding: 5px; }
+        .title { color: #9C27B0; text-transform: uppercase; font-weight: bold; font-size: x-large; line-height: 3; text-align: center; }
+
+        .imagelist-header { color: #BA68C8; text-transform: lowercase; font-size: small; margin-top: 20px; }
+        .imagelist-col-margin { margin-left: 5px; margin-right: 5px; }
+        .imagelist-base { background-color: #FFFDE7; }
+        .imagelist-core { background-color: #FFF9C4; }
+        .imagelist-infra { background-color: #FFF59D; }
+        .imagelist-app { background-color: #FFF176; }
+        .imagelist-content { color: black; font-size: small; white-space: nowrap; }
+        .imagelist-command { font-style: italic; }
+        .imagelist-port-host { color: #8BC34A; font-weight: bold; }
+        .imagelist-port-docker { color: #E91E63; }
+        .imagelist-port-info { color: #E91E63; }
+
+        .infobox-table { border-collapse: collapse; width:100%; border: 1px solid; }
+        .infobox-row-separator { border-bottom: 1px solid #ddd; height: 25px; }
+        .infobox-label { font-size: small; font-weight: bold; }
+        .infobox-code { font-size: large; font-family: monospace; font-style: italic; }
+    </style>
+</head>
+<body>
+    <h1 class="title">Remal Docker Containers</h1>
+
+
+    <table class="infobox-table">
+        <tr class="infobox-row-separator">
+            <td class="infobox-label">Build Docker images:</td>
+            <td class="infobox-code">./gombi.sh abcdefu</td>
+            <td class="infobox-label">List Remal images:</td>
+            <td class="infobox-code">./gombi.sh u</td>
+            <td class="infobox-label">Remove Remal containers:</td>
+            <td class="infobox-code">./gombi.sh x</td>
+        </tr>
+        <tr class="infobox-row-separator">
+            <td class="infobox-label">Start Docker stack:</td>
+            <td class="infobox-code">./gombi.sh s</td>
+            <td class="infobox-label">Stop Docker stack:</td>
+            <td class="infobox-code">docker-compose stop --timeout 120</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="infobox-row-separator">
+            <td class="infobox-label">Open terminal:</td>
+            <td colspan="5" class="infobox-code">sshpass -p password ssh -oStrictHostKeyChecking=no root@localhost -p &lt;port&gt;</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <table style="width:100%; margin-top: 25px;">
+        <tr class="imagelist-header">
+            <th>Container name</th>
+            <th>Description</th>
+            <th>Ports</th>
+            <th>Commands</th>
+        </tr>
+        <!-- User service -->
+        <tr class="imagelist-content imagelist-app">
+            <td><span class="imagelist-col-margin">user-service</span></td>
+            <td><span class="imagelist-col-margin">Remal user rest api</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13112</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13113</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">443</td>
+                        <td class="imagelist-port-info">(HTTPS)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+        <!-- HashiCorp Consul -->
+        <tr class="imagelist-content imagelist-infra">
+            <td><span class="imagelist-col-margin">consul-16.2</span></td>
+            <td>
+                <span class="imagelist-col-margin">HashiCorp Consul</span>
+                <br>
+                <span class="imagelist-col-margin">Tool for managing your infrastructure's services and configs.</span>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13062</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13063</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">8501</td>
+                        <td class="imagelist-port-info">(HTTPS web UI)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin"><a href="https://localhost:13063" target="_blank">https://localhost:13063</a></span>
+            </td>
+        </tr>
+        <!-- HashiCorp Vault -->
+        <tr class="imagelist-content imagelist-infra">
+            <td><span class="imagelist-col-margin">vault-1.14</span></td>
+            <td>
+                <span class="imagelist-col-margin">HashiCorp Vault</span>
+                <br>
+                <span class="imagelist-col-margin">Identity-based secrets and encryption management system.</span>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13052</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13058</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">8200</td>
+                        <td class="imagelist-port-info">(HTTP web UI)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin"><a href="https://localhost:13058" target="_blank">https://localhost:13058</a></span>
+            </td>
+        </tr>
+        <!-- ForgeRock Access Management -->
+        <tr class="imagelist-content imagelist-infra">
+            <td><span class="imagelist-col-margin">am-7.3</span></td>
+            <td><span class="imagelist-col-margin">ForgeRock Access Management</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13042</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13048</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">8080</td>
+                        <td class="imagelist-port-info">(HTTP)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13044</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">443</td>
+                        <td class="imagelist-port-info">(HTTPS)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin">
+                    AM: <a href="https://am.hello.com:13044/openam" target="_blank">https://am.hello.com:13044/openam</a>
+                    (amadmin/password)
+                </span>
+                <br>
+                <span class="imagelist-col-margin">Tomcat: <a href="https://localhost:13044" target="_blank">https://localhost:13044</a></span>
+            </td>
+        </tr>
+        <!-- ForgeRock Directory Server -->
+        <tr class="imagelist-content imagelist-infra">
+            <td><span class="imagelist-col-margin">ds-7.3</span></td>
+            <td><span class="imagelist-col-margin">ForgeRock Directory Server</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13012</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">389</td>
+                        <td class="imagelist-port-info">(LDAP)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13036</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">636</td>
+                        <td class="imagelist-port-info">(LDAPS)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13034</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">444</td>
+                        <td class="imagelist-port-info">(embedded administration connector)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin">Apache Directory Studio configuration:</span>
+                <ul>
+                    <li>connection: localhost:13036</li>
+                    <li>encryption: use SSL encryption</li>
+                    <li>authentication: used="uid=admin", password="password"</li>
+                </ul>
+            </td>
+        </tr>
+        <!-- PKI server -->
+        <tr class="imagelist-content imagelist-infra">
+            <td><span class="imagelist-col-margin">private-ca</span></td>
+            <td><span class="imagelist-col-margin">private Certificate Authority server</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13012</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+        <!-- Apache-Tomcat 9 -->
+        <tr class="imagelist-content imagelist-core">
+            <td><span class="imagelist-col-margin">tomcat-9</span></td>
+            <td><span class="imagelist-col-margin">Apache-Tomcat 9</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13022</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command imagelist-col-margin">
+                <span class="imagelist-col-margin">
+                    <a href="http://localhost:13080" target="_blank">http://localhost:13080</a>
+                    (admin/password)
+                </span>
+            </td>
+        </tr>
+        <!-- OpenJDK 11 -->
+        <tr class="imagelist-content imagelist-core">
+            <td><span class="imagelist-col-margin">openjdk-11</span></td>
+            <td><span class="imagelist-col-margin">OpenJDK 11 base image</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13022</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+        <!-- OpenJDK 17 -->
+        <tr class="imagelist-content imagelist-core">
+            <td><span class="imagelist-col-margin">openjdk-17</span></td>
+            <td><span class="imagelist-col-margin">OpenJDK 17 base image</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13022</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+        <!-- base -->
+        <tr class="imagelist-content imagelist-base">
+            <td><span class="imagelist-col-margin">base</span></td>
+            <td><span class="imagelist-col-margin">Remal Base Docker image</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13022</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -18,15 +18,15 @@ The framework provides the following base Docker images:
 
 ## 2) Components of the environment
 * Base Docker Images:
-  * [Remal Base](docker/base)
-  * [OpenJDK-11](docker/java/openjdk-11)
-  * [OpenJDK-17](docker/java/openjdk-17)
-  * [Apache Tomcat 9](docker/tomcat/tomcat-9)
+  * [Remal Base](docker/base/base)
+  * [OpenJDK-11](docker/core/openjdk-11)
+  * [OpenJDK-17](docker/core/openjdk-17)
+  * [Apache Tomcat 9](docker/infrastructure/tomcat-9)
 * Service Docker Images:
-  * Private Certificate Authority (CA) Infrastructure: [OpenVPN easy-rsa (simple shell based CA utility)](docker/key-and-secret-manager/pki/easy-rsa-pki)
-  * Vault Service: [HashiCorp Vault](docker/key-and-secret-manager/vault/hcp-vault)
-  * Directory Service (LDAP): [ForgeRock Directory Server](docker/directory-server/forgerock-ds)
-  * Access Management (authentication, authorization): [ForgeRock Access Management](docker/access-management/forgerock-am)
+  * Private Certificate Authority (CA) Infrastructure: [OpenVPN easy-rsa (simple shell based CA utility)](docker/infrastructure/easy-rsa-pki)
+  * Vault Service: [HashiCorp Vault](docker/infrastructure/hcp-vault)
+  * Directory Service (LDAP): [ForgeRock Directory Server](docker/infrastructure/forgerock-ds)
+  * Access Management (authentication, authorization): [ForgeRock Access Management](docker/infrastructure/forgerock-am)
 
 ## 3) Deployment 
 For more details, check [this](docker/README.md).

@@ -1,42 +1,76 @@
 ' ******************************************************************************
-' UML ArchiMate diagram that shows the Docker container hierarchy used by Remal.
+' UML PlantUML diagram that shows the Remal Docker container hierarchy.
 '
-' Color alias names:
-'    https://plantuml-documentation.readthedocs.io/en/latest/formatting/color-names.html
-'
-' Since : July, 2023
+' Since : Jul, 2023
 ' Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 '
-' Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+' Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 ' ******************************************************************************
 @startuml
-title
-    **Docker container hierarchy used by Remal**
-end title
 
-skinparam rectangle<<image>> {
-	roundCorner 25
-}
-sprite $3rdPartyImage jar:archimate/meaning
-sprite $remalBaseImage jar:archimate/actor
-sprite $remalServiceImage jar:archimate/interface
+<style>
+  .STYLE_EXTERNAL {
+    RoundCorner 20
+    LineThickness 2
+    LineColor DarkRed
+    BackgroundColor Salmon
+  }
+  .STYLE_BASE {
+    RoundCorner 20
+    LineThickness 2
+    LineColor Green
+    BackgroundColor GreenYellow
+  }
+  .STYLE_CORE {
+    RoundCorner 20
+    LineThickness 2
+    LineColor Chocolate
+    BackgroundColor Gold
+  }
+  .STYLE_INFRA {
+    RoundCorner 20
+    LineThickness 2
+    LineColor SteelBlue
+    BackgroundColor Turquoise
+  }
+  .STYLE_APP {
+    RoundCorner 20
+    LineThickness 2
+    LineColor Purple
+    BackgroundColor HotPink
+  }
+</style>
 
-rectangle "alpine" as alpine <<$3rdPartyImage>><<image>> #Pink
-rectangle "base" as base <<$remalBaseImage>><<image>> #PowderBlue
-rectangle "OpenJDK-11" as java11 <<$remalBaseImage>><<image>> #PowderBlue
-rectangle "OpenJDK-17" as java17 <<$remalBaseImage>><<image>> #PowderBlue
-rectangle "Apache Tomcat 9" as tomcat9 <<$remalBaseImage>><<image>> #PowderBlue
-rectangle "Private Certificate\nAuthority Infrastructure" as ca <<$remalServiceImage>><<image>> #PaleGreen
-rectangle "Directory Service" as ds <<$remalServiceImage>><<image>> #PaleGreen
-rectangle "Access Management" as am <<$remalServiceImage>><<image>> #PaleGreen
-rectangle "Secured Vault" as vault <<$remalServiceImage>><<image>> #PaleGreen
+title **Docker container hierarchy used by Remal**
 
-alpine *-down-> base
-base *-down-> java11
-base *-down-> java17
-java11 *-down-> tomcat9
-java17 *-down-> ca
-java17 *-down-> ds
-tomcat9 *-down-> am
-base *-down-> vault
+sprite $JAR_EXTERNAL jar:archimate/meaning
+sprite $JAR_BASE     jar:archimate/goal
+sprite $JAR_CORE     jar:archimate/interaction
+sprite $JAR_INFRA    jar:archimate/network
+sprite $JAR_APP      jar:archimate/physical-equipment
+
+rectangle "alpine"                       as alpine  <<$JAR_EXTERNAL>> <<STYLE_EXTERNAL>>
+rectangle "remal-base"                   as base    <<$JAR_BASE>>     <<STYLE_BASE>>
+rectangle "OpenJDK-11"                   as java11  <<$JAR_CORE>>     <<STYLE_CORE>>
+rectangle "OpenJDK-17"                   as java17  <<$JAR_CORE>>     <<STYLE_CORE>>
+rectangle "Private PKI"                  as pki     <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Apache Tomcat 9"              as tomcat9 <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "ForgeRock Directory Services" as ds      <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "ForgeRock Access Management"  as am      <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Hashicorp Vault"              as vault   <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Hashicorp Consul"             as consul  <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Hashicorp Consul"             as consul  <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Xxxxx Yyyy"                   as xxx     <<$JAR_APP>>      <<STYLE_APP>>
+
+alpine  --> base
+base    --> java11
+base    --> java17
+base    --> pki
+java11  --> tomcat9
+java17  --> ds
+tomcat9 --> am
+base    --> vault
+base    --> consul
+java17     --> xxx
+
 @enduml
