@@ -39,23 +39,23 @@ if [[ ! $key =~ ^[Yy]$ ]]; then
   exit 1
 fi
 
-printf "copying %s to the docker project directory...\n" "$FORGEROCK_DS"
+printf "1) copying %s to the docker project directory...\n" "$FORGEROCK_DS"
 cp "$REMAL_BINARY_HOME/$FORGEROCK_DS" "$PROJECT_HOME/docker/infrastructure/forgerock-ds/bin/"
 
-printf "copying %s to the docker project directory...\n" "$FORGEROCK_AM"
+printf "2) copying %s to the docker project directory...\n" "$FORGEROCK_AM"
 cp "$REMAL_BINARY_HOME/$FORGEROCK_AM" "$PROJECT_HOME/docker/infrastructure/forgerock-am/bin/"
 
-printf "copying %s to the docker project directory...\n" "$FORGEROCK_AM_SSO_CONFIGURATOR"
+printf "3) copying %s to the docker project directory...\n" "$FORGEROCK_AM_SSO_CONFIGURATOR"
 cp "$REMAL_BINARY_HOME/$FORGEROCK_AM_SSO_CONFIGURATOR" "$PROJECT_HOME/docker/infrastructure/forgerock-am/bin/"
 
-printf "copying %s to the docker project directory...\n" "$APACHE_TOMCAT"
+printf "4) copying %s to the docker project directory...\n" "$APACHE_TOMCAT"
 cp "$REMAL_BINARY_HOME/$APACHE_TOMCAT" "$PROJECT_HOME/docker/infrastructure/tomcat-9/bin/"
 
-printf "copying %s to the docker project directory...\n" "$OPENVPN_EASYRSA"
+printf "5) copying %s to the docker project directory...\n" "$OPENVPN_EASYRSA"
 cp "$REMAL_BINARY_HOME/$OPENVPN_EASYRSA" "$PROJECT_HOME/docker/infrastructure/easy-rsa-pki/bin/"
 
-printf "copying %s to the docker project directory...\n" "$HASHICORP_CONSUL"
+printf "6) copying %s to the docker project directory...\n" "$HASHICORP_CONSUL"
 cp "$REMAL_BINARY_HOME/$HASHICORP_CONSUL" "$PROJECT_HOME/docker/infrastructure/hcp-consul/bin/"
 
-printf "copying %s to the docker project directory...\n" "$HASHICORP_VAULT"
+printf "7) copying %s to the docker project directory...\n" "$HASHICORP_VAULT"
 cp "$REMAL_BINARY_HOME/$HASHICORP_VAULT" "$PROJECT_HOME/docker/infrastructure/hcp-vault/bin/"
