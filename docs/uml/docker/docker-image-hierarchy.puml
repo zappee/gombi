@@ -65,7 +65,7 @@ rectangle "Xxxxx Yyyy"                   as xxx     <<$JAR_APP>>      <<STYLE_AP
 alpine  --> base
 base    --> java11
 base    --> java17
-base    --> pki
+java17    --> pki
 java11  --> tomcat9
 java17  --> ds
 tomcat9 --> am
