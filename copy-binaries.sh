@@ -14,8 +14,8 @@
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-REMAL_BINARY_HOME="$HOME/applications/apache-tomcat/webapps/docker-build/"
-PROJECT_HOME="$HOME/Java/gombi"
+REMAL_BINARY_HOME="$HOME/dev/applications/apache-tomcat/webapps/docker-build/"
+PROJECT_HOME="$HOME/dev/workspace/java/remal/gombi"
 
 FORGEROCK_DS="DS-7.3.0.zip"
 FORGEROCK_AM="AM-7.3.0.war"
