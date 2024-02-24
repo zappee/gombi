@@ -4,9 +4,6 @@ target/**
 
 # custom project files
 backups/**
-docker/**/*.tgz
-docker/**/*.war
-docker/**/*.zip
 
 # intellij idea specific
 *.iml
