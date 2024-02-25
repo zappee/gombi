@@ -127,18 +127,18 @@ File prefix ranges:
 
 Images and its types:
 
-| image        | type           | range         |
-|--------------|----------------|---------------|
-| hello-world  | Application    | 40100 - 40199 |
-| consul-16.2  | Infrastructure | 30600 - 30699 |
-| vault-1.14   | Infrastructure | 30500 - 30599 |
-| am-7.3       | Infrastructure | 30400 - 30499 |
-| ds-7.3       | Infrastructure | 30300 - 30399 |
-| tomcat-9     | Infrastructure | 30200 - 30299 |
-| private-ca   | Infrastructure | 30100 - 30199 |
-| openjdk-17   | Core           | 20200 - 20299 |
-| openjdk-11   | Core           | 20100 - 20199 |
-| base         | Base           | 10000 - 19999 |
+| image         | type           | range         |
+|---------------|----------------|---------------|
+| jar-runner-17 | Application    | 40100 - 40199 |
+| hcp-consul    | Infrastructure | 30600 - 30699 |
+| hcp-vault     | Infrastructure | 30500 - 30599 |
+| forgerock-am  | Infrastructure | 30400 - 30499 |
+| forgerock-ds  | Infrastructure | 30300 - 30399 |
+| tomcat-9      | Infrastructure | 30200 - 30299 |
+| easy-rsa-pki  | Infrastructure | 30100 - 30199 |
+| openjdk-17    | Core           | 20200 - 20299 |
+| openjdk-11    | Core           | 20100 - 20199 |
+| base          | Base           | 10000 - 19999 |
 
 ## Annex 3) Troubleshooting
 **SSH**

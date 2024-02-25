@@ -22,8 +22,8 @@ ENV IMAGE_NAME="java-17-runner" \
     \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
-    \
-    CONSUL_SERVER_HOSTNAME="consul.hello.com"
+    CONSUL_SERVER_HOSTNAME="consul.hello.com" \
+    JAR_HOME="/jars-to-run"
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \
