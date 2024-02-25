@@ -16,6 +16,5 @@ log_start "$0"
   printf "export %s=\"%s\"\n" "CONSUL_CONFIG_DIR" "$CONSUL_CONFIG_DIR"
   printf "export %s=\"%s\"\n" "CONSUL_CONFIG_TEMPLATE_DIR" "$CONSUL_CONFIG_TEMPLATE_DIR"
   printf "export %s=\"%s\"\n" "CONSUL_DATA_DIR" "$CONSUL_DATA_DIR"
-  printf "export %s=\"%s\"\n" "CONSUL_NODE_NAME" "$CONSUL_NODE_NAME"
 } >> /etc/profile
 log_end "$0"

@@ -82,3 +82,17 @@ services:
             - "13063:8501" # Consul UI HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
+
+    # ----- Services -----------------------------------------------------------
+    user-service:
+        image: remal-java-17-runner:0.0.1
+        container_name: user-service.hello.com
+        hostname: user-service.hello.com
+        depends_on:
+            - consul
+        ports:
+            - "13112:22"   # SSH
+            - "13113:443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}

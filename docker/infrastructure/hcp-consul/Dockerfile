@@ -1,7 +1,7 @@
 # ******************************************************************************
 #  Remal HashiCorp Consul Docker image build file.
 #
-#  Since : Oct, 2023
+#  Since : October, 2023
 #  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 #  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
@@ -23,7 +23,6 @@ ENV IMAGE_NAME="consul-1.17" \
     KEYSTORE_HOME="/tmp" \
     \
     CONSUL_INSTALL_KIT="consul_1.17.3_linux_386.zip" \
-    CONSUL_NODE_NAME="agent-one" \
     CONSUL_CONFIG_TEMPLATE_DIR="/tmp/consul-config-template" \
     CONSUL_CONFIG_DIR="/tmp/consul-config" \
     CONSUL_DATA_DIR="/tmp/consul-data"
