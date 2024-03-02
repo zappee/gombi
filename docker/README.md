@@ -47,7 +47,7 @@ s remal.sh s
 ~~~
 
 ### 3.4) Setting Up Certificate Authorities (CA) in Firefox 
-How to get Firefox to trust all self signed certificates you use locally to serve your development sites over https and not complain about them?
+How to get Firefox to trust all self-signed certificates you use locally to serve your development sites over https and not complain about them?
 You can add the root CA to your web browser.
 The root CA locates in the CA server, the Docker container name is `pki.remal.com`.
 
@@ -105,7 +105,7 @@ The Remal slim image build process will download the files on-the-fly from your 
 4. Then start the build using the `slim` parameter, for example `./remal.sh ab`
 
 ## Annex 2) `init` and `startup` script naming convention
-The files under the `init` and `startup` directories must be unique ans the filenames must start with a number prefix, for example `010_start-tomcat.sh`
+The files under the `init` and `startup` directories must be unique and the filenames must start with a number prefix, for example `010_start-tomcat.sh`
 The prefix determines the execution order of the scripts.
 If the filenames are not unique then during the Docker image build the files can be overridden accidentally.
 

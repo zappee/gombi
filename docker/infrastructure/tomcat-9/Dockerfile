@@ -51,8 +51,8 @@ RUN set -ue; \
 FROM base AS base-slim
 RUN set -ue; \
     printf "building slim image\n"; \
-    hostIp="$(ip route | awk '/default/ { print $3 }')"; \
-    wget -O "/tmp/$TOMCAT_INSTALL_KIT" http://$hostIp:8080/docker-build/$TOMCAT_INSTALL_KIT; \
+    host_ip="$(ip route | awk '/default/ { print $3 }')"; \
+    wget -O "/tmp/$TOMCAT_INSTALL_KIT" http://$host_ip:8080/docker-build/$TOMCAT_INSTALL_KIT; \
     mkdir -p "$CATALINA_HOME"; \
     tar -xvf "/tmp/$TOMCAT_INSTALL_KIT" --strip-components=1 -C "$CATALINA_HOME"; \
     rm -R "$CATALINA_HOME/webapps/docs/"; \

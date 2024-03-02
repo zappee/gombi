@@ -66,15 +66,15 @@ RUN set -ue; \
 # slim image
 FROM base AS base-slim
 RUN set -ue; \
-    hostIp="$(ip route | awk '/default/ { print $3 }')"; \
+    host_ip="$(ip route | awk '/default/ { print $3 }')"; \
     mkdir -p "$CATALINA_HOME/webapps/$AM_CONTEXT_ROOT"; \
-    wget -O "$CATALINA_HOME/webapps/openam/$AM_CONTEXT_ROOT.war" http://$hostIp:8080/docker-build/$AM_INSTALL_KIT; \
+    wget -O "$CATALINA_HOME/webapps/openam/$AM_CONTEXT_ROOT.war" http://$host_ip:8080/docker-build/$AM_INSTALL_KIT; \
     cd "$CATALINA_HOME/webapps/$AM_CONTEXT_ROOT"; \
     jar -xvf "$AM_CONTEXT_ROOT.war"; \
     rm "$CATALINA_HOME/webapps/openam/$AM_CONTEXT_ROOT.war"; \
     \
     mkdir -p "$AM_CONFIG_TOOL_HOME"; \
-    wget -O "$AM_CONFIG_TOOL_HOME/$AM_CONFIG_TOOL_INSTALL_KIT" http://$hostIp:8080/docker-build/$AM_CONFIG_TOOL_INSTALL_KIT; \
+    wget -O "$AM_CONFIG_TOOL_HOME/$AM_CONFIG_TOOL_INSTALL_KIT" http://$host_ip:8080/docker-build/$AM_CONFIG_TOOL_INSTALL_KIT; \
     cd "$AM_CONFIG_TOOL_HOME"; \
     unzip "$AM_CONFIG_TOOL_INSTALL_KIT"; \
     rm "$AM_CONFIG_TOOL_INSTALL_KIT"

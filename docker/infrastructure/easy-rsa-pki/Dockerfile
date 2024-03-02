@@ -56,8 +56,8 @@ RUN set -ue; \
 FROM base AS base-slim
 RUN set -ue; \
     printf "building slim image\n"; \
-    hostIp="$(ip route | awk '/default/ { print $3 }')"; \
-    wget -O "/tmp/$EASYRSA_INSTALL_KIT" http://$hostIp:8080/docker-build/$EASYRSA_INSTALL_KIT; \
+    host_ip="$(ip route | awk '/default/ { print $3 }')"; \
+    wget -O "/tmp/$EASYRSA_INSTALL_KIT" http://$host_ip:8080/docker-build/$EASYRSA_INSTALL_KIT; \
     mkdir -p "$EASYRSA_HOME"; \
     tar -xvf "/tmp/$EASYRSA_INSTALL_KIT" --strip-components=1 -C "$EASYRSA_HOME"; \
     rm -f "/tmp/$EASYRSA_INSTALL_KIT"
