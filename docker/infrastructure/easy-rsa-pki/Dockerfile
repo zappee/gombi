@@ -47,6 +47,8 @@ FROM base AS base-fat
 COPY "bin/$EASYRSA_INSTALL_KIT" "/tmp/"
 RUN set -ue; \
     printf "building fat image\n"; \
+    printf "Easy RSA version: %s\n" "$EASYRSA_INSTALL_KIT"; \
+    ls -all "/tmp/"; \
     mkdir -p "$EASYRSA_HOME"; \
     tar -xvf "/tmp/$EASYRSA_INSTALL_KIT" --strip-components=1 -C "$EASYRSA_HOME"; \
     rm -f "/tmp/$EASYRSA_INSTALL_KIT"
