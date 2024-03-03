@@ -63,16 +63,16 @@ rectangle "Hashicorp Consul"             as consul      <<$JAR_INFRA>>    <<STYL
 rectangle "Java-17 Runner"               as javaRunner  <<$JAR_INFRA>>    <<STYLE_INFRA>>
 rectangle "User Service"                 as userService <<$JAR_APP>>      <<STYLE_APP>>
 
-alpine  -->  base
-base    -->  java11
-base    -->  java17
-java17  -->  pki
-java11  -->  tomcat9
-java17  -->  ds
-tomcat9 -->  am
-base    ---> vault
-base    ---> consul
-java17  -->  javaRunner
-consul  ..   userService
+alpine     -->  base
+base       -->  java11
+base       -->  java17
+java17     -->  pki
+java11     -->  tomcat9
+java17     -->  ds
+tomcat9    -->  am
+base       ---> vault
+java17     -->  consul
+consul     -->  javaRunner
+javaRunner ..   userService
 
 @enduml
