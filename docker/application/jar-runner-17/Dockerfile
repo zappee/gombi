@@ -33,3 +33,5 @@ LABEL "com.remal.image.vendor"="Remal" \
       "com.remal.image.author"="${IMAGE_AUTHOR}"
 
 COPY config/consul-template.json "$CONSUL_CONFIG_TEMPLATE_DIR/"
+COPY container-scripts/init/* /docker.init/
+COPY container-scripts/startup/* /docker.startup/
