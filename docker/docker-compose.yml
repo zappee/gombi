@@ -92,9 +92,10 @@ services:
             - consul
         ports:
             - "13112:22"   # SSH
-            - "13113:443" # HTTPS
+            - "13113:8080" # HTTPS
+            - "13114:443" # HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - web_data:/jars-to-run
+            - $HOME/dev/workspace/java/remal/gombi/modules/rest-template/target:/jars-to-run
