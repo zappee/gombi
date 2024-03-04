@@ -24,7 +24,7 @@ else
 
   for jar_file in "$JAR_HOME"/*.jar; do
     printf "%s | [INFO]  starting %s at the background...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"
-    nohup java -jar "$jar_file" 2>&1 &
+    java -jar "$jar_file" 2>&1 &
     pid=$!
     timeout 5 bash -c 'while true; do if kill -0 '"$pid"' 2>/dev/null; then echo '"$(date +"%Y-%b-%d %H:%M:%S") \| [DEBUG] $jar_file started successfully"'; break; fi; sleep 0.5; done' || printf "%s | [ERROR] an unexpected error has occurred while starting %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"
   done
