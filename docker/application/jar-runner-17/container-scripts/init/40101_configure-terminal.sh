@@ -11,6 +11,7 @@
 log_start "$0"
 {
   printf "export %s=\"%s\"\n" "JAR_HOME" "$JAR_HOME"
+  printf "export %s=\"%s\"\n" "FQDN" "$(hostname -f)"
   printf "cd %s\n" "$JAR_HOME"
 } >> /etc/profile
 log_end "$0"

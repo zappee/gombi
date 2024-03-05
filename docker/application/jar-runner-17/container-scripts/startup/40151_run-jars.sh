@@ -14,6 +14,9 @@
 # ------------------------------------------------------------------------------
 log_start "$0"
 
+FQDN=$(hostname -f)
+export FQDN
+
 number_of_jars=$(find "$JAR_HOME" -maxdepth 1 -type f -name "*.jar" | wc -l)
 printf "%s | [DEBUG] JAR files in the %s directory: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$JAR_HOME" "$number_of_jars"
 
