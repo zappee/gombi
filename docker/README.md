@@ -149,7 +149,7 @@ Images and its types:
   NoHostAuthenticationForLocalhost yes
   ~~~
 
-* Connect to a container from another container using Docker network and run a command:
+* Connect to a container Docker network and run a command:
   ~~~
   sshpass -p password ssh -oStrictHostKeyChecking=no root@pki.remal.com "ls -all"
   ~~~
@@ -161,6 +161,12 @@ Images and its types:
 
 **PKI**
 * Lists entries in a keystore: `keytool -list -v -keystore <keystore-file> -storepass <changeit>`
+
+**BusyBox**
+
+* Replace `wget` and `curl` with GNU version
+  * `apk add wget`
+  * `apk add curl`
 
 ## Annex 4) Useful bash aliases
 ~~~
