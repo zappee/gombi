@@ -161,12 +161,13 @@ Images and its types:
 
 **PKI**
 * Lists entries in a keystore: `keytool -list -v -keystore <keystore-file> -storepass <changeit>`
+* Test HTTPS connection: `curl https://user-service.hello.com:8443/actuator/health`
 
 **BusyBox**
 
 * Replace `wget` and `curl` with GNU version
-  * `apk add wget`
-  * `apk add curl`
+  * `apk --no-cache add curl`
+  * `apk --no-cache add wget`
 
 ## Annex 4) Useful bash aliases
 ~~~

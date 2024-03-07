@@ -84,15 +84,31 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
 
     # ----- Services -----------------------------------------------------------
-    user-service:
+    user-service-1:
         image: remal-java-17-runner:0.0.1
-        container_name: user-service.hello.com
-        hostname: user-service.hello.com
+        container_name: user-service-1.hello.com
+        hostname: user-service-1.hello.com
         depends_on:
             - consul
         ports:
             - "13112:22"   # SSH
             - "13113:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+        volumes:
+            - $HOME/dev/workspace/java/remal/gombi-jars:/jars-to-run
+
+    # ----- Services -----------------------------------------------------------
+    user-service-2:
+        image: remal-java-17-runner:0.0.1
+        container_name: user-service-2.hello.com
+        hostname: user-service-2.hello.com
+        depends_on:
+            - consul
+        ports:
+            - "13114:22"   # SSH
+            - "13115:8443" # HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
