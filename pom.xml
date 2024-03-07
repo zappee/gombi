@@ -16,7 +16,8 @@
     </properties>
 
     <modules>
-        <module>modules/rest-template</module>
+        <module>modules/templates/hello-service</module>
+        <module>modules/templates/user-service</module>
     </modules>
 
 </project>

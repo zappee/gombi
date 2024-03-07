@@ -28,13 +28,13 @@ public class HelloController {
     private String hello;
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
-    @GetMapping
+    @GetMapping("")
     public String sayHello() {
-        var response = String.format("Hello %s, the time is %s.",
+        var response = String.format("Hello <b>%s</b>, the time is <b>%s</b>.",
                 hello,
                 LocalDateTime.now().format(DATE_TIME_FORMATTER));
 
-        log.debug(response);
+        log.debug(String.format("calling sayHello(): {response: \"%s\"}", response));
         return response;
     }
 }

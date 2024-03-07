@@ -21,10 +21,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.remal.gombi.template.rest</groupId>
-    <artifactId>rest-template</artifactId>
+    <groupId>com.remal.gombi.template.user</groupId>
+    <artifactId>user-service</artifactId>
     <version>0.0.2</version>
-    <name>rest-template</name>
+    <name>user-service</name>
     <description>Skeleton REST project can be used as a template.</description>
 
     <properties>

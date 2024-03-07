@@ -127,18 +127,20 @@ File prefix ranges:
 
 Images and its types:
 
-| image         | type           | range         |
-|---------------|----------------|---------------|
-| jar-runner-17 | Application    | 40100 - 40199 |
-| hcp-consul    | Infrastructure | 30600 - 30699 |
-| hcp-vault     | Infrastructure | 30500 - 30599 |
-| forgerock-am  | Infrastructure | 30400 - 30499 |
-| forgerock-ds  | Infrastructure | 30300 - 30399 |
-| tomcat-9      | Infrastructure | 30200 - 30299 |
-| easy-rsa-pki  | Infrastructure | 30100 - 30199 |
-| openjdk-17    | Core           | 20200 - 20299 |
-| openjdk-11    | Core           | 20100 - 20199 |
-| base          | Base           | 10000 - 19999 |
+| image           | type           | range         |
+|-----------------|----------------|---------------|
+| user-service-1  | Application    | 40100 - 40199 |
+| user-service-2  | Application    | 40200 - 40299 |
+| hello-service-1 | Application    | 40300 - 40399 |
+| hcp-consul      | Infrastructure | 30600 - 30699 |
+| hcp-vault       | Infrastructure | 30500 - 30599 |
+| forgerock-am    | Infrastructure | 30400 - 30499 |
+| forgerock-ds    | Infrastructure | 30300 - 30399 |
+| tomcat-9        | Infrastructure | 30200 - 30299 |
+| easy-rsa-pki    | Infrastructure | 30100 - 30199 |
+| openjdk-17      | Core           | 20200 - 20299 |
+| openjdk-11      | Core           | 20100 - 20199 |
+| base            | Base           | 10000 - 19999 |
 
 ## Annex 3) Troubleshooting
 **SSH**
@@ -168,6 +170,9 @@ Images and its types:
 * Replace `wget` and `curl` with GNU version
   * `apk --no-cache add curl`
   * `apk --no-cache add wget`
+
+**Run JAR in the container**
+  * `kill -9 $(pidof java) && /docker.startup/40151_run-jars.sh`
 
 ## Annex 4) Useful bash aliases
 ~~~
