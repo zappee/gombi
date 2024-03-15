@@ -1,6 +1,6 @@
 #!/bin/bash -ue
 # ******************************************************************************
-# HashiCorp Consule startup script.
+# HashiCorp Consul startup script.
 #
 # Since : Oct, 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>

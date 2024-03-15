@@ -22,8 +22,8 @@ public class UserController {
 
     @GetMapping("")
     public String getUserName() {
-        var userName = "Arnold Somogyi";
-        log.debug(String.format("calling getUserName(): {response: \"%s\"}", userName));
+        String userName = "Arnold Somogyi";
+        log.debug("calling getUserName(): {response: \"{}\"}", userName);
         return userName;
     }
 }

@@ -10,11 +10,11 @@
 # properly.
 #
 # Usage:
-#    ./update-binaries.sh [zero|real]
+#    ./update-binaries.sh [0|1]
 # Arguments:
-#    zero:    overwrites the binary files with zero length marker files
-#    real:    copy the binaries from the source to the target directories
-#    default: zero
+#    0:    overwrites the binary files with zero length marker files
+#    1:    copy the binaries from the source to the target directories
+#    default: 0
 #
 # Since : February, 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -50,10 +50,10 @@ function show_manual() {
 # ------------------------------------------------------------------------------
 function show_usage() {
   printf "%s" "$COLOR_USAGE"
-  printf "Usage: ./update-binaries.sh [zero|real]\n"
-  printf "   zero: overwrites the binary files with zero length marker files\n"
-  printf "   real: copy the binaries from the source to the target directories\n"
-  printf "   default: zero\n\n"
+  printf "Usage: ./update-binaries.sh [0|1]\n"
+  printf "   0: overwrites the binary files with zero length marker files\n"
+  printf "   1: copy the binaries from the source to the target directories\n"
+  printf "   default: 0\n\n"
   printf "%s" "$COLOR_DEFAULT"
 }
 
@@ -70,9 +70,10 @@ function show_user_selection() {
 # Validate the user input.
 # ------------------------------------------------------------------------------
 function validate_user_input() {
-  if ! [[ "$1" =~ ^(zero|real)$ ]]; then
+  if ! [[ "$1" =~ ^("0"|"1")$ ]]; then
       printf "%sIllegal number of parameters.%s\n\n" "$COLOR_ERROR" "$COLOR_DEFAULT"
       show_usage
+      exit 1
   fi
 }
 
@@ -97,7 +98,7 @@ COLOR_USAGE=$(tput setaf 226)
 
 show_manual
 show_usage
-COMMAND=${1:-zero}
+COMMAND=${1:-"0"}
 validate_user_input "$COMMAND"
 show_user_selection "$COMMAND"
 waiting_for_approval
@@ -106,7 +107,7 @@ index=0
 for binary in "${BINARIES[@]}"; do
   IFS=';' read -r file_name target_dir <<< "$binary"
   index=$((index += 1))
-  if [[ "$COMMAND" == "zero" ]]; then
+  if [[ "$COMMAND" == "0" ]]; then
     printf "%s) overwriting %s file in %s directory with a marker file...\n" "$index" "$file_name" "$PROJECT_HOME/$target_dir"
     rm "$PROJECT_HOME/$target_dir/$file_name"
     touch "$PROJECT_HOME/$target_dir/$file_name"
