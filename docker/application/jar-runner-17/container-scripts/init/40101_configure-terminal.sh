@@ -10,7 +10,10 @@
 . /shared.sh
 
 log_start "$0"
+
+FQDN=$(hostname -f)
 {
+  printf "export %s=\"%s\"\n" "FQDN" "$FQDN"
   printf "export %s=\"%s\"\n" "JAR_HOME" "$JAR_HOME"
   printf "export %s=\"%s\"\n" "JAVA_OPTS" "$JAVA_OPTS"
   printf "export %s=\"%s\"\n" "JAVA_DEBUG" "$JAVA_DEBUG"
@@ -20,4 +23,5 @@ log_start "$0"
   printf "export %s=\"%s\"\n" "FQDN" "$(hostname -f)"
   printf "cd %s\n" "$JAR_HOME"
 } >> /etc/profile
+
 log_end "$0"
