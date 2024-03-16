@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -61,10 +62,14 @@ public class HelloController {
                 "service instances: {}",
                 serviceInstances.stream().map(x -> x.getUri().toString()).collect(Collectors.joining(", ")));
 
-        Optional<URI> uri = serviceInstances
+        /*Optional<URI> uri = serviceInstances
                 .stream()
                 .findFirst()
-                .map(ServiceInstance::getUri);
+                .map(ServiceInstance::getUri);*/
+
+        int randomIndex = ThreadLocalRandom.current().nextInt(serviceInstances.size());
+        Optional<URI> uri = Optional.of(serviceInstances.get(randomIndex).getUri());
+
         log.debug("rest endpoint url: {serviceId: {}, uri: {}}", serviceId, uri);
         return uri;
     }
