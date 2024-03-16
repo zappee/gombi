@@ -30,7 +30,7 @@ BINARIES=(
   "AM-SSOConfiguratorTools-5.1.3.18.zip;docker/infrastructure/forgerock-am/bin"
   "apache-tomcat-9.0.71.tar.gz;docker/infrastructure/tomcat-9/bin"
   "EasyRSA-3.1.7.tgz;docker/infrastructure/easy-rsa-pki/bin"
-  "consul_1.17.3_linux_386.zip;docker/infrastructure/hcp-consul/bin"
+  "consul_1.18.0_linux_386.zip;docker/infrastructure/hcp-consul/bin"
   "vault_1.15.0_linux_386.zip;docker/infrastructure/hcp-vault/bin"
 )
 

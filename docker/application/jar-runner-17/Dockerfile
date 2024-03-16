@@ -23,7 +23,15 @@ ENV IMAGE_NAME="java-17-runner" \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     CONSUL_SERVER_HOSTNAME="consul.hello.com" \
-    JAR_HOME="/jars-to-run"
+    \
+    JAR_HOME="/jar-to-run" \
+    JAVA_OPTS="-Xms768m -Xmx768m" \
+    JAVA_DEBUG="true" \
+    JAVA_DEBUG_PORT=8000 \
+    \
+    HEALTH_CHECK="true" \
+    HEALTH_CHECK_URI="https://localhost:8443/actuator/health" \
+    HEALTH_CHECK_STATE="\"status\":\"UP\""
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \
@@ -31,6 +39,10 @@ LABEL "com.remal.image.vendor"="Remal" \
       "com.remal.image.version"="${IMAGE_TAG}" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
       "com.remal.image.author"="${IMAGE_AUTHOR}"
+
+# installing tools
+RUN set -ue; \
+    apk add --no-cache curl
 
 COPY config/consul-template.json "$CONSUL_CONFIG_TEMPLATE_DIR/"
 COPY container-scripts/init/* /docker.init/

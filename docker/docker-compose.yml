@@ -92,12 +92,13 @@ services:
             - consul
         ports:
             - "14212:22"   # SSH
-            - "14213:8443" # HTTPS
+            - "14213:8000" # JVM debug
+            - "14214:8443" # HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi-jars/hello:/jars-to-run
+            - $HOME/dev/workspace/java/remal/gombi-jars/hello:/jar-to-run
 
     user-service-1:
         image: remal-java-17-runner:0.0.1
@@ -107,12 +108,13 @@ services:
             - consul
         ports:
             - "14112:22"   # SSH
-            - "14113:8443" # HTTPS
+            - "14113:8000" # JVM debug
+            - "14114:8443" # HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi-jars/user:/jars-to-run
+            - $HOME/dev/workspace/java/remal/gombi-jars/user:/jar-to-run
 
     user-service-2:
         image: remal-java-17-runner:0.0.1
@@ -122,9 +124,10 @@ services:
             - consul
         ports:
             - "14122:22"   # SSH
-            - "14123:8443" # HTTPS
+            - "14123:8000" # JVM debug
+            - "14124:8443" # HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi-jars/user:/jars-to-run
+            - $HOME/dev/workspace/java/remal/gombi-jars/user:/jar-to-run
