@@ -7,11 +7,12 @@
  *  Description:
  *     Spring REST endpoint.
  */
-
 package com.remal.gombi.template.rest.controller;
 
+import com.remal.gombi.template.commons.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,10 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user")
 public class UserController {
 
-    @GetMapping("")
-    public String getUserName() {
-        String userName = "Arnold Somogyi";
-        log.debug("calling getUserName(): {response: \"{}\"}", userName);
-        return userName;
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable("id") String id) {
+        log.debug("calling getUser(): {response: \"{}\"}", id);
+        return User.builder().username(id).build();
     }
 }

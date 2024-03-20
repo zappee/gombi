@@ -16,8 +16,8 @@
     </properties>
 
     <modules>
+        <module>modules/templates/template-commons</module>
         <module>modules/templates/hello-service</module>
         <module>modules/templates/user-service</module>
     </modules>
-
 </project>

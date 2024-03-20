@@ -5,9 +5,8 @@
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
  *  Description:
- *     <class-description>
+ *     Spring application entry point.
  */
-
 package com.remal.gombi.template.rest;
 
 import org.springframework.boot.WebApplicationType;

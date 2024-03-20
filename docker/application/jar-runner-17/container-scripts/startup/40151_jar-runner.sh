@@ -44,7 +44,7 @@ jar_runner() {
   printf "%s | [INFO]  starting the %s java application...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"
   printf "%s | [DEBUG] JVM options: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$java_opts"
 
-  java $java_opts -jar "$jar_file" 2>&1 &
+  java "$java_opts" -jar "$jar_file" 2>&1 &
 
   if [[ "${HEALTH_CHECK^^}" == "TRUE" && -n "$HEALTH_CHECK_URI" && -n "$HEALTH_CHECK_STATE" ]]; then
     printf "%s | [INFO]  waiting for health checks to pass...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
