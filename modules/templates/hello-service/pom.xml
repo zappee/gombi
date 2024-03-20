@@ -31,8 +31,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
-        <remal-template-commons.version>0.0.1</remal-template-commons.version>
-
+        <remal.template.commons.version>0.0.1</remal.template.commons.version>
         <apache.httpclient5.version>5.2</apache.httpclient5.version>
         <lombok.version>1.18.30</lombok.version>
         <spring.cloud.starter.consul.version>4.1.0</spring.cloud.starter.consul.version>
@@ -49,6 +48,10 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-all</artifactId>
             <version>${spring.cloud.starter.consul.version}</version>
@@ -57,7 +60,7 @@
         <dependency>
             <groupId>com.remal.gombi.template.hello</groupId>
             <artifactId>template-commons</artifactId>
-            <version>${remal-template-commons.version}</version>
+            <version>${remal.template.commons.version}</version>
         </dependency>
         <!-- lombok library -->
         <dependency>

@@ -9,15 +9,13 @@
  */
 package com.remal.gombi.template.commons.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class User {
     private String username;
     private String fullname;

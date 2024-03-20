@@ -7,9 +7,9 @@
  *  Description:
  *     Spring bean configuration.
  */
-package com.remal.gombi.template.rest.configuration;
+package com.remal.gombi.template.service.hello.configuration;
 
-import com.remal.gombi.template.rest.exception.InitializationException;
+import com.remal.gombi.template.service.hello.exception.InitializationException;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;

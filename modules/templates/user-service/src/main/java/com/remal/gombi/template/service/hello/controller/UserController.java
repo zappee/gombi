@@ -7,9 +7,10 @@
  *  Description:
  *     Spring REST endpoint.
  */
-package com.remal.gombi.template.rest.controller;
+package com.remal.gombi.template.service.hello.controller;
 
 import com.remal.gombi.template.commons.model.User;
+import com.remal.gombi.template.service.hello.monitoring.LogCall;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @GetMapping("/{id}")
+    @LogCall
     public User getUser(@PathVariable("id") String id) {
-        log.debug("calling getUser(): {response: \"{}\"}", id);
         return User.builder().username(id).build();
     }
 }

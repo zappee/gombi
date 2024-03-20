@@ -7,10 +7,11 @@
  *  Description:
  *     Spring REST endpoint.
  */
-package com.remal.gombi.template.rest.controller;
+package com.remal.gombi.template.service.hello.controller;
 
 import com.remal.gombi.template.commons.model.User;
-import com.remal.gombi.template.rest.service.UserService;
+import com.remal.gombi.template.service.hello.monitoring.LogCall;
+import com.remal.gombi.template.service.hello.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,17 +36,14 @@ public class HelloController {
         this.userService = userService;
     }
 
-
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
+
     @GetMapping("")
+    @LogCall
     public String sayHello() {
         User user = userService.getUser("arnold");
-
-        String response = String.format("Hello <b>%s</b>, the time is <b>%s</b>.",
+        return String.format("Hello <b>%s</b>, the time is <b>%s</b>.",
                 user.getUsername(),
                 LocalDateTime.now().format(DATE_TIME_FORMATTER));
-
-        log.debug("calling sayHello(): {response: \"{}}\"}", response);
-        return response;
     }
 }

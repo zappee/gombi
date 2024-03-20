@@ -7,12 +7,11 @@
  *  Description:
  *     Service discovery.
  */
-package com.remal.gombi.template.rest.service;
+package com.remal.gombi.template.commons.spring.discovery;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.util.List;
@@ -20,8 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Service
-public class ServiceDiscovery {
+public class ConsulServiceDiscovery {
 
     private final DiscoveryClient discoveryClient;
 
@@ -30,7 +28,7 @@ public class ServiceDiscovery {
      *
      * @param discoveryClient object to be injected by spring
      */
-    public ServiceDiscovery(DiscoveryClient discoveryClient) {
+    public ConsulServiceDiscovery(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
     }
 

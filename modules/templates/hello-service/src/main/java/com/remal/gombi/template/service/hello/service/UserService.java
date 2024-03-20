@@ -7,9 +7,10 @@
  *  Description:
  *     Service discovery.
  */
-package com.remal.gombi.template.rest.service;
+package com.remal.gombi.template.service.hello.service;
 
 import com.remal.gombi.template.commons.model.User;
+import com.remal.gombi.template.commons.spring.discovery.ConsulServiceDiscovery;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,7 +18,7 @@ import java.net.URI;
 
 @Service
 public class UserService {
-    private final ServiceDiscovery serviceDiscovery;
+    private final ConsulServiceDiscovery serviceDiscovery;
     private final RestTemplate restTemplate;
 
     /**
@@ -25,7 +26,7 @@ public class UserService {
      *
      * @param serviceDiscovery object to be injected by spring
      */
-    public UserService(ServiceDiscovery serviceDiscovery, RestTemplate restTemplate) {
+    public UserService(ConsulServiceDiscovery serviceDiscovery, RestTemplate restTemplate) {
         this.serviceDiscovery = serviceDiscovery;
         this.restTemplate = restTemplate;
     }

@@ -7,7 +7,7 @@
  *  Description:
  *     Custom exception class.
  */
-package com.remal.gombi.template.rest.exception;
+package com.remal.gombi.template.service.hello.exception;
 
 public class InitializationException extends RuntimeException {
 
