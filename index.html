@@ -29,7 +29,6 @@
 <body>
     <h1 class="title">Remal Docker Containers</h1>
 
-
     <table class="infobox-table">
         <tr class="infobox-row-separator">
             <td class="infobox-label">Build Docker images:</td>
@@ -301,10 +300,10 @@
                 </span>
             </td>
         </tr>
-        <!-- OpenJDK 11 -->
+        <!-- OpenJDK 21 -->
         <tr class="imagelist-content imagelist-core">
-            <td><span class="imagelist-col-margin">openjdk-11</span></td>
-            <td><span class="imagelist-col-margin">OpenJDK 11 base image</span></td>
+            <td><span class="imagelist-col-margin">openjdk-21</span></td>
+            <td><span class="imagelist-col-margin">OpenJDK 21 base image</span></td>
             <td>
                 <table>
                     <tr>
@@ -327,6 +326,28 @@
         <tr class="imagelist-content imagelist-core">
             <td><span class="imagelist-col-margin">openjdk-17</span></td>
             <td><span class="imagelist-col-margin">OpenJDK 17 base image</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13022</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+        <!-- OpenJDK 11 -->
+        <tr class="imagelist-content imagelist-core">
+            <td><span class="imagelist-col-margin">openjdk-11</span></td>
+            <td><span class="imagelist-col-margin">OpenJDK 11 base image</span></td>
             <td>
                 <table>
                     <tr>
