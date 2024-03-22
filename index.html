@@ -16,7 +16,7 @@
         .imagelist-app { background-color: #FFF176; }
         .imagelist-content { color: black; font-size: small; white-space: nowrap; }
         .imagelist-command { font-style: italic; }
-        .imagelist-port-host { color: #689F38; font-weight: bold; }
+        .imagelist-port-host { color: #8BC34A; font-weight: bold; }
         .imagelist-port-docker { color: #E91E63; }
         .imagelist-port-info { color: #E91E63; }
 
@@ -28,6 +28,7 @@
 </head>
 <body>
     <h1 class="title">Remal Docker Containers</h1>
+
     <table class="infobox-table">
         <tr class="infobox-row-separator">
             <td class="infobox-label">Build Docker images:</td>
@@ -58,6 +59,7 @@
             <td></td>
         </tr>
     </table>
+
     <table style="width:100%; margin-top: 25px;">
         <tr class="imagelist-header">
             <th>Container name</th>
@@ -67,26 +69,20 @@
         </tr>
         <!-- User service -->
         <tr class="imagelist-content imagelist-app">
-            <td><span class="imagelist-col-margin">user-service-1</span></td>
-            <td><span class="imagelist-col-margin">Remal user service rest api</span></td>
+            <td><span class="imagelist-col-margin">user-service</span></td>
+            <td><span class="imagelist-col-margin">Remal user rest api</span></td>
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">14112</td>
+                        <td class="imagelist-port-host">13112</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
                         <td class="imagelist-port-info">(SSH)</td>
                     </tr>
                     <tr>
-                        <td class="imagelist-port-host">14113</td>
+                        <td class="imagelist-port-host">13113</td>
                         <td>:</td>
-                        <td class="imagelist-port-docker">8000</td>
-                        <td class="imagelist-port-info">(JVM debug)</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">14114</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">8443</td>
+                        <td class="imagelist-port-docker">443</td>
                         <td class="imagelist-port-info">(HTTPS)</td>
                     </tr>
                     <tr>
@@ -97,80 +93,7 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="imagelist-col-margin">
-                <a href="https://localhost:14114/api/user" target="_blank">https://localhost:14114/api/user</a></span>
-            </td>
-        </tr>
-        <tr class="imagelist-content imagelist-app">
-            <td><span class="imagelist-col-margin">user-service-2</span></td>
-            <td><span class="imagelist-col-margin">Remal user service rest api</span></td>
-            <td>
-                <table>
-                    <tr>
-                        <td class="imagelist-port-host">14122</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">14123</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">8000</td>
-                        <td class="imagelist-port-info">(JVM debug)</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">14124</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">8443</td>
-                        <td class="imagelist-port-info">(HTTPS)</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host"></td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
-                    </tr>
-                </table>
-            </td>
-            <td class="imagelist-command"><span class="imagelist-col-margin">
-                <a href="https://localhost:14124/api/user" target="_blank">https://localhost:14124/api/user</a></span>
-            </td>
-        </tr>
-        <!-- Hello service -->
-        <tr class="imagelist-content imagelist-app">
-            <td><span class="imagelist-col-margin">hello-service-1</span></td>
-            <td><span class="imagelist-col-margin">Remal hello service rest api</span></td>
-            <td>
-                <table>
-                    <tr>
-                        <td class="imagelist-port-host">14212</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">14213</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">8000</td>
-                        <td class="imagelist-port-info">(JVM debug)</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">14214</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">8443</td>
-                        <td class="imagelist-port-info">(HTTPS)</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host"></td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
-                    </tr>
-                </table>
-            </td>
-            <td class="imagelist-command"><span class="imagelist-col-margin">
-                <a href="https://localhost:14214/api/hello" target="_blank">https://localhost:14214/api/hello</a></span>
-            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
         </tr>
         <!-- HashiCorp Consul -->
         <tr class="imagelist-content imagelist-infra">
@@ -377,10 +300,10 @@
                 </span>
             </td>
         </tr>
-        <!-- OpenJDK 11 -->
+        <!-- OpenJDK 21 -->
         <tr class="imagelist-content imagelist-core">
-            <td><span class="imagelist-col-margin">openjdk-11</span></td>
-            <td><span class="imagelist-col-margin">OpenJDK 11 base image</span></td>
+            <td><span class="imagelist-col-margin">openjdk-21</span></td>
+            <td><span class="imagelist-col-margin">OpenJDK 21 base image</span></td>
             <td>
                 <table>
                     <tr>
@@ -403,6 +326,28 @@
         <tr class="imagelist-content imagelist-core">
             <td><span class="imagelist-col-margin">openjdk-17</span></td>
             <td><span class="imagelist-col-margin">OpenJDK 17 base image</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13022</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">(SSH)</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">(container up signal)</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+        <!-- OpenJDK 11 -->
+        <tr class="imagelist-content imagelist-core">
+            <td><span class="imagelist-col-margin">openjdk-11</span></td>
+            <td><span class="imagelist-col-margin">OpenJDK 11 base image</span></td>
             <td>
                 <table>
                     <tr>

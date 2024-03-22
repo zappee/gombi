@@ -23,6 +23,7 @@ COMMAND="${1:-}"
 LABEL_BASE="Base;base/base"
 LABEL_JAVA_11="OpenJDK 11 (Java);core/openjdk-11"
 LABEL_JAVA_17="OpenJDK 17 (Java);core/openjdk-17"
+LABEL_JAVA_21="OpenJDK 21 (Java);core/openjdk-21"
 LABEL_PKI="PKI Private Certificate Authority (CA);infrastructure/easy-rsa-pki"
 LABEL_TOMCAT_9="Apache Tomcat 9 (Tomcat);infrastructure/tomcat-9"
 LABEL_FORGEROCK_DS="ForGerock Directory Server;infrastructure/forgerock-ds"
@@ -214,6 +215,7 @@ function show_help() {
     printf "      %bb:    build of all %bCore%b images%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bb1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_11")" "$STYLE_DEFAULT"
     printf "        %bb2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_17")" "$STYLE_DEFAULT"
+    printf "        %bb3:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21")" "$STYLE_DEFAULT"
     printf "      %bc:    build of all %bInfrastructure%b imagse%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bc1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PKI")" "$STYLE_DEFAULT"
     printf "        %bc2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_TOMCAT_9")" "$STYLE_DEFAULT"
@@ -228,12 +230,13 @@ function show_help() {
     printf "        %bi1:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_BASE")" "$STYLE_DEFAULT"
     printf "        %bi2:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_11")" "$STYLE_DEFAULT"
     printf "        %bi3:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_17")" "$STYLE_DEFAULT"
-    printf "        %bi4:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PKI")" "$STYLE_DEFAULT"
-    printf "        %bi5:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_TOMCAT_9")" "$STYLE_DEFAULT"
-    printf "        %bi6:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_DS")" "$STYLE_DEFAULT"
-    printf "        %bi7:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_AM")" "$STYLE_DEFAULT"
-    printf "        %bi8:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
-    printf "        %bi9:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL")" "$STYLE_DEFAULT"
+    printf "        %bi4:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21")" "$STYLE_DEFAULT"
+    printf "        %bi5:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PKI")" "$STYLE_DEFAULT"
+    printf "        %bi6:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_TOMCAT_9")" "$STYLE_DEFAULT"
+    printf "        %bi7:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_DS")" "$STYLE_DEFAULT"
+    printf "        %bi8:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_AM")" "$STYLE_DEFAULT"
+    printf "        %bi9:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
+    printf "        %bj9:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL")" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bu:    list Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "      %bv:    list Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
@@ -308,6 +311,7 @@ if match "$COMMAND" "x";  then docker_container_remove; fi
 if match "$COMMAND" "a1"; then docker_image_build "$(get_name "$LABEL_BASE")" "$(get_path "$LABEL_BASE")"; fi
 if match "$COMMAND" "b1"; then docker_image_build "$(get_name "$LABEL_JAVA_11")" "$(get_path "$LABEL_JAVA_11")"; fi
 if match "$COMMAND" "b2"; then docker_image_build "$(get_name "$LABEL_JAVA_17")" "$(get_path "$LABEL_JAVA_17")"; fi
+if match "$COMMAND" "b3"; then docker_image_build "$(get_name "$LABEL_JAVA_21")" "$(get_path "$LABEL_JAVA_21")"; fi
 if match "$COMMAND" "c1"; then docker_image_build "$(get_name "$LABEL_PKI")" "$(get_path "$LABEL_PKI")"; fi
 if match "$COMMAND" "c2"; then docker_image_build "$(get_name "$LABEL_TOMCAT_9")" "$(get_path "$LABEL_TOMCAT_9")"; fi
 if match "$COMMAND" "c3"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_DS")" "$(get_path "$LABEL_FORGEROCK_DS")"; fi
@@ -320,12 +324,13 @@ if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_JAR_RUNNER
 if match "$COMMAND" "i1"; then docker_container_run "$(get_name "$LABEL_BASE")" "$(get_path "$LABEL_BASE")"; fi
 if match "$COMMAND" "i2"; then docker_container_run "$(get_name "$LABEL_JAVA_11")" "$(get_path "$LABEL_JAVA_11")"; fi
 if match "$COMMAND" "i3"; then docker_container_run "$(get_name "$LABEL_JAVA_17")" "$(get_path "$LABEL_JAVA_17")"; fi
-if match "$COMMAND" "i4"; then docker_container_run "$(get_name "$LABEL_PKI")" "$(get_path "$LABEL_PKI")"; fi
-if match "$COMMAND" "i5"; then docker_container_run "$(get_name "$LABEL_TOMCAT_9")" "$(get_path "$LABEL_TOMCAT_9")"; fi
-if match "$COMMAND" "i6"; then docker_container_run "$(get_name "$LABEL_FORGEROCK_DS")" "$(get_path "$LABEL_FORGEROCK_DS")"; fi
-if match "$COMMAND" "i7"; then docker_container_run "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
-if match "$COMMAND" "i8"; then docker_container_run "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
-if match "$COMMAND" "i9"; then docker_container_run "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
+if match "$COMMAND" "i4"; then docker_container_run "$(get_name "$LABEL_JAVA_21")" "$(get_path "$LABEL_JAVA_21")"; fi
+if match "$COMMAND" "i5"; then docker_container_run "$(get_name "$LABEL_PKI")" "$(get_path "$LABEL_PKI")"; fi
+if match "$COMMAND" "i6"; then docker_container_run "$(get_name "$LABEL_TOMCAT_9")" "$(get_path "$LABEL_TOMCAT_9")"; fi
+if match "$COMMAND" "i7"; then docker_container_run "$(get_name "$LABEL_FORGEROCK_DS")" "$(get_path "$LABEL_FORGEROCK_DS")"; fi
+if match "$COMMAND" "i8"; then docker_container_run "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
+if match "$COMMAND" "i9"; then docker_container_run "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
+if match "$COMMAND" "j1"; then docker_container_run "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
 
 # command executors
 if match "$COMMAND" "u";  then docker_image_show; fi
