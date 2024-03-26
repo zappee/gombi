@@ -1,7 +1,7 @@
 # ******************************************************************************
 #  Remal HashiCorp Consul Docker image build file.
 #
-#  Since : October, 2023
+#  Since : October 2023
 #  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 #  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
@@ -14,9 +14,9 @@ EXPOSE 22/tcp
 EXPOSE 8501/tcp
 
 # environment variables
-ENV IMAGE_NAME="consul-1.17" \
+ENV IMAGE_NAME="consul-1.18" \
     IMAGE_TAG="0.0.1-remal" \
-    IMAGE_DESCRIPTION="HashiCorp Consul 1.17.2" \
+    IMAGE_DESCRIPTION="HashiCorp Consul 1.18.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     PKI_HOST="pki.remal.com" \

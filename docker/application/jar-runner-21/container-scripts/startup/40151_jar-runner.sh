@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Java JAR file runner.
 #
-# Since : February, 2024
+# Since : February 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
@@ -33,27 +33,39 @@ jar_runner() {
   jar_files=("$JAR_HOME"/*.jar)
   jar_file="${jar_files[0]}"
 
-  local java_opts
+  local jvm_params
   if [[ "${JAVA_DEBUG^^}" == "TRUE" && -n "$JAVA_DEBUG_PORT" ]]; then
-    java_opts="-agentlib:jdwp=transport=dt_socket,address=*:$JAVA_DEBUG_PORT,server=y,suspend=n $JAVA_OPTS"
-  else
-    java_opts="$JAVA_OPTS"
+    jvm_params="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$JAVA_DEBUG_PORT $JAVA_OPTS"
   fi
+  jvm_params="$jvm_params $JAVA_OPTS"
+  jvm_params=$(echo "$jvm_params" | xargs)   # trim whitespaces
+
+  local health_check_cmd
+  health_check_cmd="curl -X GET -s $HEALTH_CHECK_URI 2>&1 | grep -m 1 '$EXPECTED_HEALTH_CHECK_STATE'"
+
+  printf "%s | [INFO]  running the %s JAR file...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"
+  printf "%s | [DEBUG]             java debug enabled: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$JAVA_DEBUG"
+  printf "%s | [DEBUG]                java debug port: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$JAVA_DEBUG_PORT"
+  printf "%s | [DEBUG]           original JVM options: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$JAVA_OPTS"
+  printf "%s | [DEBUG]        JVM options for the JAR: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jvm_params"
+  printf "%s | [DEBUG]                       JAR home: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$JAR_HOME"
+  printf "%s | [DEBUG]                       JAR file: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"
+  printf "%s | [DEBUG]               health-check URI: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$HEALTH_CHECK_URI"
+  printf "%s | [DEBUG]    expected health-check state: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$EXPECTED_HEALTH_CHECK_STATE"
+  printf "%s | [DEBUG]           health-check command: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "${health_check_cmd[*]}"
 
   cd "$JAR_HOME" || { echo "Error while trying to change directory from $(pwd) to $JAR_HOME"; exit 1; }
   printf "%s | [INFO]  starting the %s java application...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"
-  printf "%s | [DEBUG] JVM options: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$java_opts"
+  java "$jvm_params" -jar "$jar_file" 2>&1 &
 
-  java "$java_opts" -jar "$jar_file" 2>&1 &
+  if [[ "${HEALTH_CHECK^^}" == "TRUE" && -n "$HEALTH_CHECK_URI" && -n "$EXPECTED_HEALTH_CHECK_STATE" ]]; then
+    printf "%s | [INFO]  waiting for health checks to pass the test...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 
-  if [[ "${HEALTH_CHECK^^}" == "TRUE" && -n "$HEALTH_CHECK_URI" && -n "$HEALTH_CHECK_STATE" ]]; then
-    printf "%s | [INFO]  waiting for health checks to pass...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-    printf "%s | [DEBUG]      health-check URI: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$HEALTH_CHECK_URI"
-    printf "%s | [DEBUG]    health-check state: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$HEALTH_CHECK_STATE"
-    until curl -vs "$HEALTH_CHECK_URI" 2>&1 | grep -qe "$HEALTH_CHECK_STATE"
-    do
-      sleep 0.5
-    done
+    # if any pipeline ever ends with a non-zero ('error') exit status,
+    # terminate the script immediately
+    set +e
+    until eval "$health_check_cmd"; do sleep 0.5 ; done
+    set -e
   fi
 }
 

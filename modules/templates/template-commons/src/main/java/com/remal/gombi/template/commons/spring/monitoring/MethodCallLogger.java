@@ -63,15 +63,11 @@ public class MethodCallLogger {
 
     private String getReturnValueAsString(Object object) {
         if (Objects.nonNull(object)) {
-            /*return switch (object) {
-                case String s -> String.format("\"%s\"", object);
+            return switch (object) {
+                case String value -> "\"" + value + "\"";
+                case Integer value -> value.toString();
                 default -> object.toString();
-            };*/
-            if (object instanceof String) {
-                return String.format("\"%s\"", object);
-            } else {
-                return object.toString();
-            }
+            };
         }
         return "<null>";
     }

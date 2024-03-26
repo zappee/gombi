@@ -2,7 +2,7 @@
 #  Remal Java Executable JAR runner.
 #  This container is optimalized for running a Spring-Boot JAR.
 #
-#  Since : February, 2024
+#  Since : February 2024
 #  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 #  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
@@ -15,9 +15,9 @@ EXPOSE 22/tcp
 EXPOSE 443/tcp
 
 # environment variables
-ENV IMAGE_NAME="java-17-runner" \
+ENV IMAGE_NAME="java-21-runner" \
     IMAGE_TAG="0.0.1-remal" \
-    IMAGE_DESCRIPTION="Remal Java 17 Runner" \
+    IMAGE_DESCRIPTION="Remal Java 21 Runner" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     PKI_HOST="pki.remal.com" \
@@ -25,13 +25,13 @@ ENV IMAGE_NAME="java-17-runner" \
     CONSUL_SERVER_HOSTNAME="consul.hello.com" \
     \
     JAR_HOME="/jar-to-run" \
-    JAVA_OPTS="-Xms768m -Xmx768m" \
+    JAVA_OPTS="" \
     JAVA_DEBUG="true" \
     JAVA_DEBUG_PORT=8000 \
     \
     HEALTH_CHECK="true" \
     HEALTH_CHECK_URI="https://localhost:8443/actuator/health" \
-    HEALTH_CHECK_STATE="\"status\":\"UP\""
+    EXPECTED_HEALTH_CHECK_STATE='\"status\":\"UP\"'
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \

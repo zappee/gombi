@@ -21,14 +21,13 @@
     <description>Template common services.</description>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <lombok.version>1.18.30</lombok.version>
-        <spring.cloud.starter.consul.version>4.1.0</spring.cloud.starter.consul.version>
-        <spring.maven.plugin.version>3.2.3</spring.maven.plugin.version>
-        <spring.starter.aop.version>3.2.3</spring.starter.aop.version>
+        <spring.starter.consul.version>4.1.0</spring.starter.consul.version>
+        <spring.starter.version>3.2.4</spring.starter.version>
     </properties>
 
     <dependencies>
@@ -36,13 +35,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-            <version>${spring.starter.aop.version}</version>
+            <version>${spring.starter.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-all</artifactId>
-            <version>${spring.cloud.starter.consul.version}</version>
+            <version>${spring.starter.consul.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- lombok library -->
@@ -60,7 +59,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.maven.plugin.version}</version>
+                <version>${spring.starter.version}</version>
                 <executions>
                     <execution>
                         <goals>

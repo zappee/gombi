@@ -42,7 +42,7 @@ public class HelloController {
     @LogCall
     public String sayHello() {
         User user = userService.getUser("arnold");
-        return String.format("Hello <b>%s</b>, the time is <b>%s</b>.",
+        return String.format("Hello %s, the time is %s.",
                 user.getUsername(),
                 LocalDateTime.now().format(DATE_TIME_FORMATTER));
     }

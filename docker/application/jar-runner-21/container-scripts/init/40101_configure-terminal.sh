@@ -11,15 +11,14 @@
 
 log_start "$0"
 
-FQDN=$(hostname -f)
 {
-  printf "export %s=\"%s\"\n" "FQDN" "$FQDN"
   printf "export %s=\"%s\"\n" "JAR_HOME" "$JAR_HOME"
   printf "export %s=\"%s\"\n" "JAVA_OPTS" "$JAVA_OPTS"
   printf "export %s=\"%s\"\n" "JAVA_DEBUG" "$JAVA_DEBUG"
   printf "export %s=\"%s\"\n" "JAVA_DEBUG_PORT" "$JAVA_DEBUG_PORT"
+  printf "export %s=\"%s\"\n" "HEALTH_CHECK" "$HEALTH_CHECK"
   printf "export %s=\"%s\"\n" "HEALTH_CHECK_URI" "$HEALTH_CHECK_URI"
-  printf "export %s=\"%s\"\n" "HEALTH_CHECK_STATE" "$HEALTH_CHECK_STATE"
+  printf "export %s=\"%s\"\n" "EXPECTED_HEALTH_CHECK_STATE" "$EXPECTED_HEALTH_CHECK_STATE"
   printf "export %s=\"%s\"\n" "FQDN" "$(hostname -f)"
   printf "cd %s\n" "$JAR_HOME"
 } >> /etc/profile
