@@ -35,10 +35,10 @@ jar_runner() {
 
   local jvm_params
   if [[ "${JAVA_DEBUG^^}" == "TRUE" && -n "$JAVA_DEBUG_PORT" ]]; then
-    jvm_params="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$JAVA_DEBUG_PORT $JAVA_OPTS"
+    jvm_params="$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$JAVA_DEBUG_PORT"
+  else
+    jvm_params="$JAVA_OPTS"
   fi
-  jvm_params="$jvm_params $JAVA_OPTS"
-  jvm_params=$(echo "$jvm_params" | xargs)   # trim whitespaces
 
   local health_check_cmd
   health_check_cmd="curl -X GET -s $HEALTH_CHECK_URI 2>&1 | grep -m 1 '$EXPECTED_HEALTH_CHECK_STATE'"
@@ -56,7 +56,7 @@ jar_runner() {
 
   cd "$JAR_HOME" || { echo "Error while trying to change directory from $(pwd) to $JAR_HOME"; exit 1; }
   printf "%s | [INFO]  starting the %s java application...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"
-  java "$jvm_params" -jar "$jar_file" 2>&1 &
+  java $jvm_params -jar $jar_file 2>&1 &
 
   if [[ "${HEALTH_CHECK^^}" == "TRUE" && -n "$HEALTH_CHECK_URI" && -n "$EXPECTED_HEALTH_CHECK_STATE" ]]; then
     printf "%s | [INFO]  waiting for health checks to pass the test...\n" "$(date +"%Y-%b-%d %H:%M:%S")"

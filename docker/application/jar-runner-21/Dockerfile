@@ -25,7 +25,7 @@ ENV IMAGE_NAME="java-21-runner" \
     CONSUL_SERVER_HOSTNAME="consul.hello.com" \
     \
     JAR_HOME="/jar-to-run" \
-    JAVA_OPTS="" \
+    JAVA_OPTS="-XX:+PrintFlagsFinal -Xms512m -Xmx512m -XX:+UseZGC" \
     JAVA_DEBUG="true" \
     JAVA_DEBUG_PORT=8000 \
     \
