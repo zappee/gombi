@@ -72,7 +72,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul-1.17:0.0.1
+        image: remal-consul-1.18:1.0.0
         container_name: consul.hello.com
         hostname: consul.hello.com
         depends_on:
@@ -82,3 +82,52 @@ services:
             - "13063:8501" # Consul UI HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
+
+    # ----- Services -----------------------------------------------------------
+    hello-service-1:
+        image: remal-java-21-runner:0.0.1
+        container_name: hello-service-1.hello.com
+        hostname: hello-service-1.hello.com
+        depends_on:
+            - consul
+        ports:
+            - "14212:22"   # SSH
+            - "14213:8000" # JVM debug
+            - "14214:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+        volumes:
+            - $HOME/dev/workspace/java/remal/gombi-jars/hello:/jar-to-run
+
+    user-service-1:
+        image: remal-java-21-runner:0.0.1
+        container_name: user-service-1.hello.com
+        hostname: user-service-1.hello.com
+        depends_on:
+            - consul
+        ports:
+            - "14112:22"   # SSH
+            - "14113:8000" # JVM debug
+            - "14114:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+        volumes:
+            - $HOME/dev/workspace/java/remal/gombi-jars/user:/jar-to-run
+
+    user-service-2:
+        image: remal-java-21-runner:0.0.1
+        container_name: user-service-2.hello.com
+        hostname: user-service-2.hello.com
+        depends_on:
+            - consul
+        ports:
+            - "14122:22"   # SSH
+            - "14123:8000" # JVM debug
+            - "14124:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+        volumes:
+            - $HOME/dev/workspace/java/remal/gombi-jars/user:/jar-to-run

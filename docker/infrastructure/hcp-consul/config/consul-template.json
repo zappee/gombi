@@ -1,8 +1,8 @@
 {
   "bootstrap": true,
   "server": true,
-  "log_level": "debug",
-  "datacenter": "consule",
+  "log_level": "info",
+  "datacenter": "consul",
   "encrypt": "f502FprfDugOXiWqZUJpyAwgeXH+6qs6VNFjPxX8TgU=",
   "bind_addr": "0.0.0.0",
   "client_addr": "0.0.0.0",

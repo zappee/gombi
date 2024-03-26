@@ -47,7 +47,7 @@ s remal.sh s
 ~~~
 
 ### 3.4) Setting Up Certificate Authorities (CA) in Firefox 
-How to get Firefox to trust all self signed certificates you use locally to serve your development sites over https and not complain about them?
+How to get Firefox to trust all self-signed certificates you use locally to serve your development sites over https and not complain about them?
 You can add the root CA to your web browser.
 The root CA locates in the CA server, the Docker container name is `pki.remal.com`.
 
@@ -105,7 +105,7 @@ The Remal slim image build process will download the files on-the-fly from your 
 4. Then start the build using the `slim` parameter, for example `./remal.sh ab`
 
 ## Annex 2) `init` and `startup` script naming convention
-The files under the `init` and `startup` directories must be unique ans the filenames must start with a number prefix, for example `010_start-tomcat.sh`
+The files under the `init` and `startup` directories must be unique and the filenames must start with a number prefix, for example `010_start-tomcat.sh`
 The prefix determines the execution order of the scripts.
 If the filenames are not unique then during the Docker image build the files can be overridden accidentally.
 
@@ -127,18 +127,21 @@ File prefix ranges:
 
 Images and its types:
 
-| image        | type           | range         |
-|--------------|----------------|---------------|
-| hello-world  | Application    | 40100 - 40199 |
-| consul-16.2  | Infrastructure | 30600 - 30699 |
-| vault-1.14   | Infrastructure | 30500 - 30599 |
-| am-7.3       | Infrastructure | 30400 - 30499 |
-| ds-7.3       | Infrastructure | 30300 - 30399 |
-| tomcat-9     | Infrastructure | 30200 - 30299 |
-| private-ca   | Infrastructure | 30100 - 30199 |
-| openjdk-17   | Core           | 20200 - 20299 |
-| openjdk-11   | Core           | 20100 - 20199 |
-| base         | Base           | 10000 - 19999 |
+| image           | type           | range          |
+|-----------------|----------------|----------------|
+| user-service-1  | Application    | 40100 - 40199  |
+| user-service-2  | Application    | 40200 - 40299  |
+| hello-service-1 | Application    | 40300 - 40399  |
+| hcp-consul      | Infrastructure | 30600 - 30699  |
+| hcp-vault       | Infrastructure | 30500 - 30599  |
+| forgerock-am    | Infrastructure | 30400 - 30499  |
+| forgerock-ds    | Infrastructure | 30300 - 30399  |
+| tomcat-9        | Infrastructure | 30200 - 30299  |
+| easy-rsa-pki    | Infrastructure | 30100 - 30199  |
+| openjdk-21      | Core           | 20300 - 20399 |
+| openjdk-17      | Core           | 20200 - 20299  |
+| openjdk-11      | Core           | 20100 - 20199  |
+| base            | Base           | 10000 - 19999  |
 
 ## Annex 3) Troubleshooting
 **SSH**
@@ -149,7 +152,7 @@ Images and its types:
   NoHostAuthenticationForLocalhost yes
   ~~~
 
-* Connect to a container from another container using Docker network and run a command:
+* Connect to a container Docker network and run a command:
   ~~~
   sshpass -p password ssh -oStrictHostKeyChecking=no root@pki.remal.com "ls -all"
   ~~~
@@ -161,6 +164,16 @@ Images and its types:
 
 **PKI**
 * Lists entries in a keystore: `keytool -list -v -keystore <keystore-file> -storepass <changeit>`
+* Test HTTPS connection: `curl https://user-service.hello.com:8443/actuator/health`
+
+**BusyBox**
+
+* Replace `wget` and `curl` with GNU version
+  * `apk --no-cache add curl`
+  * `apk --no-cache add wget`
+
+**Run JAR in the container**
+  * `kill -9 $(pidof java) && /docker.startup/40151_run-jars.sh`
 
 ## Annex 4) Useful bash aliases
 ~~~

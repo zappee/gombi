@@ -54,8 +54,8 @@ RUN set -ue; \
 # slim image
 FROM base AS base-slim
 RUN set -ue; \
-    hostIp="$(ip route | awk '/default/ { print $3 }')"; \
-    wget -O "/tmp/$VAULT_INSTALL_KIT" http://$hostIp:8080/docker-build/$VAULT_INSTALL_KIT; \
+    host_ip="$(ip route | awk '/default/ { print $3 }')"; \
+    wget -O "/tmp/$VAULT_INSTALL_KIT" http://$host_ip:8080/docker-build/$VAULT_INSTALL_KIT; \
     unzip "/tmp/$VAULT_INSTALL_KIT" -d "/usr/local/bin/"; \
     rm "/tmp/$VAULT_INSTALL_KIT"
 

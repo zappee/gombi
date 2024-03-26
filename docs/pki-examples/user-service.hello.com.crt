@@ -1,0 +1,62 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            55:ad:f0:97:37:26:ec:e1:eb:9a:94:71:9a:44:e8:06
+        Signature Algorithm: ecdsa-with-SHA256
+        Issuer: CN=hello.com
+        Validity
+            Not Before: Mar  5 10:39:44 2024 GMT
+            Not After : Jun  8 10:39:44 2026 GMT
+        Subject: CN=user-service.hello.com
+        Subject Public Key Info:
+            Public Key Algorithm: id-ecPublicKey
+                Public-Key: (384 bit)
+                pub:
+                    04:90:8b:74:29:fb:a2:c8:fe:13:79:c2:02:06:93:
+                    91:cb:d7:30:ce:6b:e7:57:5c:c4:84:24:fc:ba:af:
+                    2c:ff:01:5b:24:0a:b9:e5:1e:3c:9e:4b:25:82:03:
+                    6d:59:a1:2c:b6:19:02:7a:8e:76:ba:70:a3:d0:ff:
+                    35:bc:cf:f7:da:ab:78:9b:17:60:80:9d:1f:4c:bd:
+                    6d:5f:a4:c4:8c:de:ae:69:d1:d2:a6:5a:66:02:0a:
+                    75:f1:25:f3:42:6a:4b
+                ASN1 OID: secp384r1
+                NIST CURVE: P-384
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Subject Key Identifier: 
+                5B:DA:FE:F5:14:F3:05:75:4D:CF:93:48:33:0C:12:94:6E:A4:EB:8D
+            X509v3 Authority Key Identifier: 
+                keyid:DF:2B:95:81:DC:34:49:56:6D:CF:1B:F9:43:F4:DB:35:DA:08:12:3F
+                DirName:/CN=hello.com
+                serial:32:28:B6:EF:D9:9E:F9:7B:1F:1C:D5:0F:EF:2A:99:11:32:A0:09:4B
+            X509v3 Extended Key Usage: 
+                TLS Web Server Authentication, TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature, Key Encipherment
+            X509v3 Subject Alternative Name: 
+                DNS:user-service.hello.com, DNS:localhost, IP Address:127.0.0.1
+    Signature Algorithm: ecdsa-with-SHA256
+    Signature Value:
+        30:65:02:31:00:d1:6d:53:1e:7e:49:e4:a4:a9:46:6a:17:88:
+        fb:73:cc:2f:39:f9:fe:0b:fc:06:1e:af:60:04:b0:03:bf:ed:
+        4b:f4:7f:4b:52:2e:8d:4f:21:9e:3b:cf:de:c5:4d:bd:d2:02:
+        30:46:c8:23:3b:a4:7f:a6:33:d5:71:aa:40:75:40:c9:18:7d:
+        d0:ed:d5:ec:1a:f5:d8:c1:f1:07:34:27:ef:64:22:2d:45:64:
+        06:10:2d:ea:8a:88:ea:02:1c:72:0f:27:30
+-----BEGIN CERTIFICATE-----
+MIICTzCCAdWgAwIBAgIQVa3wlzcm7OHrmpRxmkToBjAKBggqhkjOPQQDAjAUMRIw
+EAYDVQQDDAloZWxsby5jb20wHhcNMjQwMzA1MTAzOTQ0WhcNMjYwNjA4MTAzOTQ0
+WjAhMR8wHQYDVQQDDBZ1c2VyLXNlcnZpY2UuaGVsbG8uY29tMHYwEAYHKoZIzj0C
+AQYFK4EEACIDYgAEkIt0KfuiyP4TecICBpORy9cwzmvnV1zEhCT8uq8s/wFbJAq5
+5R48nkslggNtWaEsthkCeo52unCj0P81vM/32qt4mxdggJ0fTL1tX6TEjN6uadHS
+plpmAgp18SXzQmpLo4HeMIHbMAkGA1UdEwQCMAAwHQYDVR0OBBYEFFva/vUU8wV1
+Tc+TSDMMEpRupOuNME8GA1UdIwRIMEaAFN8rlYHcNElWbc8b+UP02zXaCBI/oRik
+FjAUMRIwEAYDVQQDDAloZWxsby5jb22CFDIotu/Znvl7HxzVD+8qmREyoAlLMB0G
+A1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjALBgNVHQ8EBAMCBaAwMgYDVR0R
+BCswKYIWdXNlci1zZXJ2aWNlLmhlbGxvLmNvbYIJbG9jYWxob3N0hwR/AAABMAoG
+CCqGSM49BAMCA2gAMGUCMQDRbVMefknkpKlGaheI+3PMLzn5/gv8Bh6vYASwA7/t
+S/R/S1IujU8hnjvP3sVNvdICMEbIIzukf6Yz1XGqQHVAyRh90O3V7Br12MHxBzQn
+72QiLUVkBhAt6oqI6gIccg8nMA==
+-----END CERTIFICATE-----

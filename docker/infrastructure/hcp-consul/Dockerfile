@@ -1,7 +1,7 @@
 # ******************************************************************************
 #  Remal HashiCorp Consul Docker image build file.
 #
-#  Since : Oct, 2023
+#  Since : October 2023
 #  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 #  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
@@ -14,16 +14,15 @@ EXPOSE 22/tcp
 EXPOSE 8501/tcp
 
 # environment variables
-ENV IMAGE_NAME="consul-1.17" \
+ENV IMAGE_NAME="consul-1.18" \
     IMAGE_TAG="0.0.1-remal" \
-    IMAGE_DESCRIPTION="HashiCorp Consul 1.17.2" \
+    IMAGE_DESCRIPTION="HashiCorp Consul 1.18.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     \
-    CONSUL_INSTALL_KIT="consul_1.17.3_linux_386.zip" \
-    CONSUL_NODE_NAME="agent-one" \
+    CONSUL_INSTALL_KIT="consul_1.18.0_linux_386.zip" \
     CONSUL_CONFIG_TEMPLATE_DIR="/tmp/consul-config-template" \
     CONSUL_CONFIG_DIR="/tmp/consul-config" \
     CONSUL_DATA_DIR="/tmp/consul-data"
@@ -47,8 +46,8 @@ RUN set -ue; \
 # slim image
 FROM base AS base-slim
 RUN set -ue; \
-    hostIp="$(ip route | awk '/default/ { print $3 }')"; \
-    wget -O "/tmp/$CONSUL_INSTALL_KIT" http://$hostIp:8080/docker-build/$CONSUL_INSTALL_KIT; \
+    host_ip="$(ip route | awk '/default/ { print $3 }')"; \
+    wget -O "/tmp/$CONSUL_INSTALL_KIT" http://$host_ip:8080/docker-build/$CONSUL_INSTALL_KIT; \
     unzip "/tmp/$CONSUL_INSTALL_KIT" -d "/usr/local/bin/"; \
     rm "/tmp/$CONSUL_INSTALL_KIT"
 

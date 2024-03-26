@@ -14,5 +14,5 @@
 # Main program starts here.
 # ------------------------------------------------------------------------------
 log_start "$0"
-if [ -n "$DS_CONFIG_RESTORE_FROM" ]; then restore_ds_config $DS_CONFIG_RESTORE_FROM; fi
+if [ -n "$DS_CONFIG_RESTORE_FROM" ]; then restore_ds_config "$DS_CONFIG_RESTORE_FROM"; fi
 log_end "$0"

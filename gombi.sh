@@ -30,7 +30,7 @@ LABEL_FORGEROCK_DS="ForGerock Directory Server;infrastructure/forgerock-ds"
 LABEL_FORGEROCK_AM="ForGerock Access Management;infrastructure/forgerock-am"
 LABEL_HCP_VAULT="HashiCorp Vault;infrastructure/hcp-vault"
 LABEL_HCP_CONSUL="HashiCorp Consul;infrastructure/hcp-consul"
-LABEL_REMAL_HELLO_WORLD="Hello World;application/hello-world"
+LABEL_JAR_RUNNER_21="Remal JAR Runner with Java 21;application/jar-runner-21"
 
 COLOR_GREEN="\e[38;5;118m"
 COLOR_YELLOW="\e[38;5;226m"
@@ -54,10 +54,10 @@ function docker_container_logs {
 }
 
 # ------------------------------------------------------------------------------
-# Stop and remove of all running Remal Docker containers.
+# Stop and remove of all the running Remal Docker containers.
 # ------------------------------------------------------------------------------
 function docker_container_remove {
-  printf "%b> stopping and removing the Remal Docker containers...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf "%b> stopping and removing all the Remal Docker containers...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
 
   local running_containers_number
   running_containers_number="$(docker ps -aq --filter "label=com.remal.image.vendor=Remal" | wc -l)"
@@ -130,6 +130,14 @@ function docker_image_build {
 
   printf "\n%b> building '%s' docker image...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
   docker/build.sh "$dir"
+}
+
+# ------------------------------------------------------------------------------
+# Remove all the Remal Docker images.
+# ------------------------------------------------------------------------------
+function docker_image_remove {
+  printf "%b> removing all the Remal Docker images...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  docker image rm $(docker image ls --filter "label=com.remal.image.vendor=Remal" -q)
 }
 
 # ------------------------------------------------------------------------------
@@ -224,7 +232,7 @@ function show_help() {
     printf "        %bc5:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
     printf "        %bc6:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL")" "$STYLE_DEFAULT"
     printf "      %bd:    build of all %bApplication%b imagse%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_REMAL_HELLO_WORLD")" "$STYLE_DEFAULT"
+    printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAR_RUNNER_21")" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bs:    start the complete Docker stack%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bi1:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_BASE")" "$STYLE_DEFAULT"
@@ -242,6 +250,7 @@ function show_help() {
     printf "      %bv:    list Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "      %bw:    show Remal Docker containers' log%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "      %bx:    remove of all Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %by:    remove of all Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "\n"
     printf "Contact: arnold.somogyi@gmail.com\n"
     printf "Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved\n"
@@ -305,6 +314,8 @@ START=$(date +%s)
 
 # command executors
 if match "$COMMAND" "x";  then docker_container_remove; fi
+if match "$COMMAND" "y";  then docker_image_remove; fi
+if match "$COMMAND" "u";  then docker_image_show; fi
 
 # builder tasks
 # if is_task_invalid "$COMMAND" "a"; then show_invalid_task_error; fi
@@ -318,7 +329,7 @@ if match "$COMMAND" "c3"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_
 if match "$COMMAND" "c4"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
 if match "$COMMAND" "c5"; then docker_image_build "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
 if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
-#if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_REMAL_HELLO_WORLD")" "$(get_path "$LABEL_REMAL_HELLO_WORLD")"; fi
+if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_JAR_RUNNER_21")" "$(get_path "$LABEL_JAR_RUNNER_21")"; fi
 
 # docker runners
 if match "$COMMAND" "i1"; then docker_container_run "$(get_name "$LABEL_BASE")" "$(get_path "$LABEL_BASE")"; fi

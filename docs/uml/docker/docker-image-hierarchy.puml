@@ -1,7 +1,7 @@
 ' ******************************************************************************
 ' UML PlantUML diagram that shows the Remal Docker container hierarchy.
 '
-' Since : Jul, 2023
+' Since : July 2023
 ' Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 '
 ' Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
@@ -49,32 +49,34 @@ sprite $JAR_CORE     jar:archimate/interaction
 sprite $JAR_INFRA    jar:archimate/network
 sprite $JAR_APP      jar:archimate/physical-equipment
 
-rectangle "alpine"                       as alpine       <<$JAR_EXTERNAL>> <<STYLE_EXTERNAL>>
-rectangle "remal-base"                   as base         <<$JAR_BASE>>     <<STYLE_BASE>>
-rectangle "OpenJDK-11"                   as java11       <<$JAR_CORE>>     <<STYLE_CORE>>
-rectangle "OpenJDK-17"                   as java17       <<$JAR_CORE>>     <<STYLE_CORE>>
-rectangle "OpenJDK-21"                   as java21       <<$JAR_CORE>>     <<STYLE_CORE>>
-rectangle "Private PKI"                  as pki          <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Apache Tomcat 9"              as tomcat9      <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "ForgeRock Directory Services" as ds           <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "ForgeRock Access Management"  as am           <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Hashicorp Vault"              as vault        <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Hashicorp Consul"             as consul       <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Hashicorp Consul"             as consul       <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Examples"                     as examples     <<$JAR_APP>>      <<STYLE_APP>>
-rectangle "User Service"                 as user_service <<$JAR_APP>>      <<STYLE_APP>>
+rectangle "alpine"                       as alpine         <<$JAR_EXTERNAL>> <<STYLE_EXTERNAL>>
+rectangle "remal-base"                   as base           <<$JAR_BASE>>     <<STYLE_BASE>>
+rectangle "OpenJDK-11"                   as java11         <<$JAR_CORE>>     <<STYLE_CORE>>
+rectangle "OpenJDK-17"                   as java17         <<$JAR_CORE>>     <<STYLE_CORE>>
+rectangle "OpenJDK-21"                   as java21         <<$JAR_CORE>>     <<STYLE_CORE>>
+rectangle "Private PKI"                  as pki            <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Apache Tomcat 9"              as tomcat9        <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "ForgeRock Directory Services" as ds             <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "ForgeRock Access Management"  as am             <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Hashicorp Vault"              as vault          <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Hashicorp Consul"             as consul         <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Hashicorp Consul"             as consul         <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Java-21 Runner"               as java_runner_21 <<$JAR_INFRA>>    <<STYLE_INFRA>>
+rectangle "Examples"                     as examples       <<$JAR_APP>>      <<STYLE_APP>>
+rectangle "User Service"                 as user_service   <<$JAR_APP>>      <<STYLE_APP>>
 
-alpine  -->   base
-base    -->   java11
-base    -->   java17
-base    -->   java21
-base    --->   pki
-java11  -->   tomcat9
-java17  -->   ds
-tomcat9 -->   am
-base    --->   vault
-base    --->   consul
-java21  ----> examples
-java21  ----> user_service
+alpine         -->   base
+base           -->   java11
+base           -->   java17
+base           -->   java21
+base           --->  pki
+java11         -->   tomcat9
+java17         -->   ds
+java21         -->   consul
+tomcat9        -->   am
+base           --->  vault
+consul         -->   java_runner_21
+java_runner_21 -->   examples
+java_runner_21 -->   user_service
 
 @enduml
