@@ -13,6 +13,7 @@ import com.remal.gombi.template.commons.model.User;
 import com.remal.gombi.template.service.hello.monitoring.LogCall;
 import com.remal.gombi.template.service.hello.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,9 @@ import java.time.format.DateTimeFormatter;
 @RestController
 @RequestMapping("/api/hello")
 public class HelloController {
+
+    @Value("${com.remal.gombi.service.example.user-service.username}")
+    private String username;
 
     private final UserService userService;
 
@@ -41,7 +45,8 @@ public class HelloController {
     @GetMapping("")
     @LogCall
     public String sayHello() {
-        User user = userService.getUser("arnold");
+        log.debug("value from the key/valuev store: {username: \"{}\"}", username);
+        User user = userService.getUser(username);
         return String.format("Hello %s, the time is %s.",
                 user.getUsername(),
                 LocalDateTime.now().format(DATE_TIME_FORMATTER));

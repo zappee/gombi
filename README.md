@@ -14,7 +14,7 @@ The framework provides the following base Docker images:
 - OpenJDK 11 and 17 base Docker images
 - Apache Tomcat 9 base image
 
-![docker image hierarchy](docs/uml/docker/docker-image-hierarchy.png)
+![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy.png)
 
 ## 2) Components of the environment
 * Base Docker Images:
