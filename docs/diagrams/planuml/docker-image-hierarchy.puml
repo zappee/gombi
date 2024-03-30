@@ -41,7 +41,7 @@
   }
 </style>
 
-title **Docker container hierarchy used by Remal**
+title **Remal Docker image hierarchy**
 
 sprite $JAR_EXTERNAL jar:archimate/meaning
 sprite $JAR_BASE     jar:archimate/goal
