@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter;
 @RequestMapping("/api/hello")
 public class HelloController {
 
-    @Value("${com.remal.gombi.service.example.user-service.username}")
+    @Value("${user.username}")
     private String username;
 
     private final UserService userService;
@@ -45,7 +45,7 @@ public class HelloController {
     @GetMapping("")
     @LogCall
     public String sayHello() {
-        log.debug("value from the key/valuev store: {username: \"{}\"}", username);
+        log.debug("value from the key/value store: {username: \"{}\"}", username);
         User user = userService.getUser(username);
         return String.format("Hello %s, the time is %s.",
                 user.getUsername(),

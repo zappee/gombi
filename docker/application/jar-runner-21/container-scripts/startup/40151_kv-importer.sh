@@ -12,6 +12,30 @@
 . /shared.sh
 
 # ------------------------------------------------------------------------------
+# Checks if the provided files exist or not.
+# If the files doe not exist then if exits from the script.
+#
+# Arguments
+#    arg 1:  path to the file that must exists
+#    arg 2:  path to the file that must exists
+# ------------------------------------------------------------------------------
+check_files() {
+  local file_1_to_check file_2_to_check
+  file_1_to_check="$1"
+  file_2_to_check="$2"
+
+  if [ ! -f "$file_1_to_check" ]; then
+    printf "%s | [ERROR] file \"%s\" not found\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_1_to_check"
+    exit 0
+  fi
+
+  if [ ! -f "$file_2_to_check" ]; then
+    printf "%s | [ERROR] file \"%s\" not found\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_2_to_check"
+    exit 0
+  fi
+}
+
+# ------------------------------------------------------------------------------
 # Clean up the temporary files.
 #
 # Arguments:
@@ -24,6 +48,24 @@ cleanup_workspace() {
 
   printf "%s | [INFO]  cleaning up the workspace: \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$workspace_home"
   rm -R "$workspace_home"
+}
+
+# ------------------------------------------------------------------------------
+# Get the Spring Boot application name.
+#
+# Arguments
+#    arg 1: property file
+#    arg 2: variable to hold the return value
+# ------------------------------------------------------------------------------
+get_application_name() {
+  local properties_file application_name
+  properties_file="$1"
+  application_name=$( (grep -w "^spring.application.name" | cut -d'=' -f2) < "$properties_file")
+
+  local result
+  result="$2"
+  eval "$result"="${application_name}"
+
 }
 
 # ------------------------------------------------------------------------------
@@ -41,6 +83,8 @@ get_first_jar() {
 
   local files
   files=($jars_home/*.jar)
+  printf "%s | [DEBUG] files in the \"%s\" directory: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home" "${files[0]}"
+
   if (( ${#files[@]} == 0 )); then
     printf "%s | [ERROR] there is no *.jar files in the \"%s\" directory\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home"
     exit 1
@@ -48,7 +92,7 @@ get_first_jar() {
 
   local result
   result="$2"
-  eval "$result"="${files[1]}"
+  eval "$result"="${files[0]}"
 }
 
 # ------------------------------------------------------------------------------
@@ -58,12 +102,13 @@ get_first_jar() {
 #    arg 1:  path to the *.properties file
 # ------------------------------------------------------------------------------
 insert_kv() {
-  local properties_file
+  local properties_file application_name
   properties_file="$1"
+  application_name="$2"
 
   while IFS='=' read -d $'\n' -r key value; do
     [[ "$key" =~ ^([[:space:]]*|[[:space:]]*#.*)$ ]] && continue
-      key=${key//.//}   # replacing all the "." characters to "/"
+      key="config/${application_name}/${key}"
       if consul kv get "$key" 2>/dev/null 1>/dev/null; then
         printf "%s | [DEBUG]  \"%s\" key exist, ignore it\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$key"
       else
@@ -71,23 +116,6 @@ insert_kv() {
         consul kv put "$key" "$value" 1>/dev/null
       fi
   done < "$properties_file"
-}
-
-# ------------------------------------------------------------------------------
-# Checks the provided file exists or not.
-# If the file not exist it exits the script.
-#
-# Arguments
-#    arg 1:  path to the file
-# ------------------------------------------------------------------------------
-validate_file() {
-  local file_to_check
-  file_to_check="$1"
-
-  if [ ! -f "$file_to_check" ]; then
-    printf "%s | [ERROR] file \"%s\" not found\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_check"
-    exit 0
-  fi
 }
 
 # ------------------------------------------------------------------------------
@@ -102,8 +130,8 @@ unpack_jar() {
   archive_file="$1"
   target="$2"
 
-  printf "%s | [INFO]  extracting the \"%s\" file to \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$archive_file" "$target"
-  unzip "$archive_file" -d "$target"
+  printf "%s | [DEBUG] unpacking the \"%s\" file to \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$archive_file" "$target"
+  unzip -q "$archive_file" -d "$target"
 }
 
 # ------------------------------------------------------------------------------
@@ -112,13 +140,14 @@ unpack_jar() {
 log_start "$0"
 
 UNPACK_DIR="/tmp/extracted-jar"
-PROP_FILE="$UNPACK_DIR/BOOT-INF/classes/config.properties"
+KV_PROP_FILE="$UNPACK_DIR/BOOT-INF/classes/config.properties"
+APP_PROP_FILE="$UNPACK_DIR/BOOT-INF/classes/application.properties"
 printf "%s | [INFO]  inserting key/values into Hashicorp Consul...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 get_first_jar "$JAR_HOME" JAR_FILE
-printf "%s | [DEBUG] extracting the \"%s\" file from the \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROP_FILE" "$JAR_FILE"
 unpack_jar "$JAR_FILE" "$UNPACK_DIR"
-validate_file "$PROP_FILE"
-insert_kv "$PROP_FILE"
+check_files "$KV_PROP_FILE" "$APP_PROP_FILE"
+get_application_name "$APP_PROP_FILE" APP_NAME
+insert_kv "$KV_PROP_FILE" "$APP_NAME"
 cleanup_workspace "$UNPACK_DIR"
 
 log_end "$0"
