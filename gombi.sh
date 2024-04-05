@@ -315,7 +315,6 @@ START=$(date +%s)
 # command executors
 if match "$COMMAND" "x";  then docker_container_remove; fi
 if match "$COMMAND" "y";  then docker_image_remove; fi
-if match "$COMMAND" "u";  then docker_image_show; fi
 
 # builder tasks
 # if is_task_invalid "$COMMAND" "a"; then show_invalid_task_error; fi
