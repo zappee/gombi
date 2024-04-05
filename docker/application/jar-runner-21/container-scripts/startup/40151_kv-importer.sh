@@ -51,21 +51,36 @@ cleanup_workspace() {
 }
 
 # ------------------------------------------------------------------------------
-# Get the Spring Boot application name.
+# Get the key context for the Hashicorp Consul KV store.
+# The property key in the Consul KV store should always start with “config” name
+# followed by application main class name (spring.application.name). The main
+# class name can be overwritten by the spring.cloud.consul.config.name setting.
+#
+# For example, if
+#       - java code: @Value("${app.hello}")
+#       - application.properties: spring.application.name=hello-service
+#    then the full path of the key is config/hello-service/app.hello
 #
 # Arguments
 #    arg 1: property file
 #    arg 2: variable to hold the return value
 # ------------------------------------------------------------------------------
-get_application_name() {
-  local properties_file application_name
+get_kv_context() {
+  local properties_file application_name config_name key_context
   properties_file="$1"
   application_name=$( (grep -w "^spring.application.name" | cut -d'=' -f2) < "$properties_file")
+  config_name=$( (grep -w "^spring.cloud.consul.config.name" | cut -d'=' -f2) < "$properties_file")
+  key_context="config/"
+
+  if [[ -n "$config_name" ]]; then
+    key_context+="$config_name"
+  else
+    key_context+="$application_name"
+  fi
 
   local result
   result="$2"
-  eval "$result"="${application_name}"
-
+  eval "$result"="${key_context}"
 }
 
 # ------------------------------------------------------------------------------
@@ -100,15 +115,16 @@ get_first_jar() {
 #
 # Arguments
 #    arg 1:  path to the *.properties file
+#    arg 2:  the key context in the KV store
 # ------------------------------------------------------------------------------
 insert_kv() {
-  local properties_file application_name
+  local properties_file key_context
   properties_file="$1"
-  application_name="$2"
+  key_context="$2"
 
   while IFS='=' read -d $'\n' -r key value; do
     [[ "$key" =~ ^([[:space:]]*|[[:space:]]*#.*)$ ]] && continue
-      key="config/${application_name}/${key}"
+      key="${key_context}/${key}"
       if consul kv get "$key" 2>/dev/null 1>/dev/null; then
         printf "%s | [DEBUG]  \"%s\" key exist, ignore it\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$key"
       else
@@ -146,8 +162,8 @@ printf "%s | [INFO]  inserting key/values into Hashicorp Consul...\n" "$(date +"
 get_first_jar "$JAR_HOME" JAR_FILE
 unpack_jar "$JAR_FILE" "$UNPACK_DIR"
 check_files "$KV_PROP_FILE" "$APP_PROP_FILE"
-get_application_name "$APP_PROP_FILE" APP_NAME
-insert_kv "$KV_PROP_FILE" "$APP_NAME"
+get_kv_context "$APP_PROP_FILE" CONTEXT
+insert_kv "$KV_PROP_FILE" "$CONTEXT"
 cleanup_workspace "$UNPACK_DIR"
 
 log_end "$0"
