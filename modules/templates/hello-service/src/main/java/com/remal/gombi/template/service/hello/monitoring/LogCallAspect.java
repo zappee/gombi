@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class LogCallAspect extends MethodCallLogger {
 
     @Around("@annotation(com.remal.gombi.template.service.hello.monitoring.LogCall)")
-    public Object logM(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
         LogCall lc = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(LogCall.class);
         return logMethodCall(joinPoint, lc.targets());
     }
