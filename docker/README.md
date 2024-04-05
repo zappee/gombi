@@ -138,7 +138,7 @@ Images and its types:
 | forgerock-ds    | Infrastructure | 30300 - 30399  |
 | tomcat-9        | Infrastructure | 30200 - 30299  |
 | easy-rsa-pki    | Infrastructure | 30100 - 30199  |
-| openjdk-21      | Core           | 20300 - 20399 |
+| openjdk-21      | Core           | 20300 - 20399  |
 | openjdk-17      | Core           | 20200 - 20299  |
 | openjdk-11      | Core           | 20100 - 20199  |
 | base            | Base           | 10000 - 19999  |
