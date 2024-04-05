@@ -221,7 +221,7 @@ function show_ready_message() {
   printf "%s | [DEBUG] | '_ \ / _\` / __|  | '_ \ / _ \/ _ \ '_ \   / __| __/ _\` | \'__| __/ _ \/ _\` |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG] | | | | (_| \__ \  | |_) |  __/  __/ | | |  \__ \ || (_| | |  | ||  __/ (_| |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG] |_| |_|\__,_|___/  |_.__/ \___|\___|_| |_|  |___/\__\__,_|_|   \__\___|\__,_|\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG] © 2023 Remal Softwares. All rights reserved.\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] © 2023 Remal Software. All rights reserved.\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }
 
 # ------------------------------------------------------------------------------

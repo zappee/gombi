@@ -2,7 +2,7 @@
 <!--
   ~  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
   ~
-  ~  Since: February 2024
+  ~  Since:  February 2024
   ~  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
   ~
   ~  Description:
@@ -31,9 +31,9 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
 
-        <remal.template.commons.version>0.0.1</remal.template.commons.version>
         <apache.httpclient5.version>5.2</apache.httpclient5.version>
         <lombok.version>1.18.30</lombok.version>
+        <remal.template.commons.version>0.0.1</remal.template.commons.version>
         <spring.cloud.starter.consul.version>4.1.0</spring.cloud.starter.consul.version>
     </properties>
 
@@ -53,7 +53,12 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-all</artifactId>
+            <artifactId>spring-cloud-starter-consul-config</artifactId>
+            <version>${spring.cloud.starter.consul.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
             <version>${spring.cloud.starter.consul.version}</version>
         </dependency>
         <!-- remal dependencies -->

@@ -67,34 +67,29 @@
             <th>Ports</th>
             <th>Commands</th>
         </tr>
+        <!-- User service 1 -->
         <tr class="imagelist-content imagelist-app">
             <td><span class="imagelist-col-margin">user-service-1</span></td>
-            <td><span class="imagelist-col-margin">Remal user service rest api</span></td>
+            <td><span class="imagelist-col-margin">Remal sample user service</span></td>
             <td>
                 <table>
                     <tr>
                         <td class="imagelist-port-host">14112</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">14113</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">8000</td>
-                        <td class="imagelist-port-info">(JVM debug)</td>
+                        <td class="imagelist-port-info">JVM debug</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">14114</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">8443</td>
-                        <td class="imagelist-port-info">(HTTPS)</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host"></td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">HTTPS</td>
                     </tr>
                 </table>
             </td>
@@ -102,34 +97,29 @@
                 <a href="https://localhost:14114/api/user" target="_blank">https://localhost:14114/api/user</a></span>
             </td>
         </tr>
+        <!-- User service 2 -->
         <tr class="imagelist-content imagelist-app">
             <td><span class="imagelist-col-margin">user-service-2</span></td>
-            <td><span class="imagelist-col-margin">Remal user service rest api</span></td>
+            <td><span class="imagelist-col-margin">Remal sample user service</span></td>
             <td>
                 <table>
                     <tr>
                         <td class="imagelist-port-host">14122</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">14123</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">8000</td>
-                        <td class="imagelist-port-info">(JVM debug)</td>
+                        <td class="imagelist-port-info">JVM debug</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">14124</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">8443</td>
-                        <td class="imagelist-port-info">(HTTPS)</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host"></td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">HTTPS</td>
                     </tr>
                 </table>
             </td>
@@ -140,32 +130,26 @@
         <!-- Hello service -->
         <tr class="imagelist-content imagelist-app">
             <td><span class="imagelist-col-margin">hello-service-1</span></td>
-            <td><span class="imagelist-col-margin">Remal hello service rest api</span></td>
+            <td><span class="imagelist-col-margin">Remal sample hello service</span></td>
             <td>
                 <table>
                     <tr>
                         <td class="imagelist-port-host">14212</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">14213</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">8000</td>
-                        <td class="imagelist-port-info">(JVM debug)</td>
+                        <td class="imagelist-port-info">JVM debug</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">14214</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">8443</td>
-                        <td class="imagelist-port-info">(HTTPS)</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host"></td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">HTTPS</td>
                     </tr>
                 </table>
             </td>
@@ -187,19 +171,25 @@
                         <td class="imagelist-port-host">13062</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">13063</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">8501</td>
-                        <td class="imagelist-port-info">(HTTPS web UI)</td>
+                        <td class="imagelist-port-info">web console, HTTPS</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">8500</td>
+                        <td class="imagelist-port-info">Hashicorp Consul port</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
             </td>
@@ -221,19 +211,19 @@
                         <td class="imagelist-port-host">13052</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">13058</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">8200</td>
-                        <td class="imagelist-port-info">(HTTP web UI)</td>
+                        <td class="imagelist-port-info">web console, HTTPS</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
             </td>
@@ -251,25 +241,25 @@
                         <td class="imagelist-port-host">13042</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">13048</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">8080</td>
-                        <td class="imagelist-port-info">(HTTP)</td>
+                        <td class="imagelist-port-info">HTTP</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">13044</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">443</td>
-                        <td class="imagelist-port-info">(HTTPS)</td>
+                        <td class="imagelist-port-info">HTTPS</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
             </td>
@@ -292,31 +282,31 @@
                         <td class="imagelist-port-host">13012</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">389</td>
-                        <td class="imagelist-port-info">(LDAP)</td>
+                        <td class="imagelist-port-info">LDAP</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">13036</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">636</td>
-                        <td class="imagelist-port-info">(LDAPS)</td>
+                        <td class="imagelist-port-info">LDAPS</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host">13034</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">444</td>
-                        <td class="imagelist-port-info">(embedded administration connector)</td>
+                        <td class="imagelist-port-info">embedded administration connector</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
             </td>
@@ -339,13 +329,13 @@
                         <td class="imagelist-port-host">13012</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
             </td>
@@ -361,13 +351,13 @@
                         <td class="imagelist-port-host">13022</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
             </td>
@@ -388,13 +378,13 @@
                         <td class="imagelist-port-host">13022</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
             </td>
@@ -410,13 +400,13 @@
                         <td class="imagelist-port-host">13022</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
             </td>
@@ -432,13 +422,13 @@
                         <td class="imagelist-port-host">13022</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
             </td>
@@ -454,13 +444,13 @@
                         <td class="imagelist-port-host">13022</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">(SSH)</td>
+                        <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
                         <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">(container up signal)</td>
+                        <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
             </td>

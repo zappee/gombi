@@ -13,6 +13,8 @@ FROM ${IMAGE_FROM} AS base
 
 EXPOSE 22/tcp
 EXPOSE 443/tcp
+EXPOSE 8500/tcp
+EXPOSE 8501/tcp
 
 # environment variables
 ENV IMAGE_NAME="java-21-runner" \

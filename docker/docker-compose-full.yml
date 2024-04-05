@@ -14,6 +14,62 @@ services:
             - EASYRSA_REQ_CITY=${EASYRSA_REQ_CITY}
             - EASYRSA_REQ_ORG=${EASYRSA_REQ_ORG}
 
+    # ----- LDAP Directory Server ----------------------------------------------
+    ds:
+        image: remal-ds-7.3:0.0.1
+        container_name: ds.${DOMAIN_NAME}
+        hostname: ds.${DOMAIN_NAME}
+        depends_on:
+            - pki
+        ports:
+            - "13032:22"   # SSH
+            - "13034:4444" # admin connector port
+            - "13036:636"  # LDAP over SSL
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - NEW_DS_DEPLOYMENT_KEY=false
+            - DS_CONFIG_BACKUP=false
+            - DS_CONFIG_RESTORE_FROM=xlatest
+            - AM_IDENTITY_STORE_BACKUP=false
+            - AM_IDENTITY_STORE_RESTORE_FROM=xlatest
+            - AM_CONFIG_STORE_BACKUP=false
+            - AM_CONFIG_STORE_RESTORE_FROM=xlatest
+        volumes:
+            - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/opendj/backup
+
+    # ----- Access Management Server -------------------------------------------
+    forgerock-am:
+        image: remal-am-7.3:0.0.1
+        container_name: am.${DOMAIN_NAME}
+        hostname: am.${DOMAIN_NAME}
+        depends_on:
+            - pki
+        ports:
+            - "13042:22"   # SSH
+            - "13048:8080" # HTTP
+            - "13044:443"  # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - AM_CONFIG_STORE_HOST=ds.${DOMAIN_NAME}
+            - AM_USER_STORE_HOST=ds.${DOMAIN_NAME}
+            - AM_CONFIG_BACKUP=false
+            - AM_CONFIG_RESTORE_FROM=xlatest
+        volumes:
+            - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/openam/backup
+
+    # ----- Hashicorp Vault ----------------------------------------------------
+    vault:
+        image: remal-vault-1.14:0.0.1
+        container_name: vault.${DOMAIN_NAME}
+        hostname: vault.${DOMAIN_NAME}
+        depends_on:
+            - pki
+        ports:
+            - "13052:22"   # SSH
+            - "13058:8200" # vault listening
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
         image: remal-consul-1.18:1.0.0
@@ -23,7 +79,7 @@ services:
             - pki
         ports:
             - "13062:22"   # SSH
-            - "13063:8501" # Consul web console, HTTPS
+            - "13063:8501" # Consul UI HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
 

@@ -56,7 +56,7 @@ jar_runner() {
 
   cd "$JAR_HOME" || { echo "Error while trying to change directory from $(pwd) to $JAR_HOME"; exit 1; }
   printf "%s | [INFO]  starting the %s java application...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"
-  java $jvm_params -jar $jar_file 2>&1 &
+  java $jvm_params -jar "$jar_file" 2>&1 &
 
   if [[ "${HEALTH_CHECK^^}" == "TRUE" && -n "$HEALTH_CHECK_URI" && -n "$EXPECTED_HEALTH_CHECK_STATE" ]]; then
     printf "%s | [INFO]  waiting for health checks to pass the test...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
