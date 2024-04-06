@@ -119,29 +119,29 @@ File prefix ranges:
 
 | image type     | range       |
 |----------------|-------------|
-| Application    | 5000 - 9999 |
-| Infrastructure | 3000 - 4999 |
+| Application    | 7000 - 7999 |
+| Monitoring     | 4000 - 4999 |
+| Infrastructure | 3000 - 3999 |
 | Core           | 2000 - 2999 |
 | Base           | 1000 - 1999 |
 
 
 Images and its types:
 
-| image           | type           | range          |
-|-----------------|----------------|----------------|
-| user-service-1  | Application    | 40100 - 40199  |
-| user-service-2  | Application    | 40200 - 40299  |
-| hello-service-1 | Application    | 40300 - 40399  |
-| hcp-consul      | Infrastructure | 30600 - 30699  |
-| hcp-vault       | Infrastructure | 30500 - 30599  |
-| forgerock-am    | Infrastructure | 30400 - 30499  |
-| forgerock-ds    | Infrastructure | 30300 - 30399  |
-| tomcat-9        | Infrastructure | 30200 - 30299  |
-| easy-rsa-pki    | Infrastructure | 30100 - 30199  |
-| openjdk-21      | Core           | 20300 - 20399  |
-| openjdk-17      | Core           | 20200 - 20299  |
-| openjdk-11      | Core           | 20100 - 20199  |
-| base            | Base           | 10000 - 19999  |
+| image          | type           | range         |
+|----------------|----------------|---------------|
+| jar-runner-21  | Application    | 70100 - 70199 |
+| prometheus     | Monitoring     | 40100 - 40199 |
+| hcp-consul     | Infrastructure | 30600 - 30699 |
+| hcp-vault      | Infrastructure | 30500 - 30599 |
+| forgerock-am   | Infrastructure | 30400 - 30499 |
+| forgerock-ds   | Infrastructure | 30300 - 30399 |
+| tomcat-9       | Infrastructure | 30200 - 30299 |
+| easy-rsa-pki   | Infrastructure | 30100 - 30199 |
+| openjdk-21     | Core           | 20300 - 20399 |
+| openjdk-17     | Core           | 20200 - 20299 |
+| openjdk-11     | Core           | 20100 - 20199 |
+| base           | Base           | 10000 - 19999 |
 
 ## Annex 3) Troubleshooting
 **SSH**

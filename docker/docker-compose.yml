@@ -16,7 +16,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul-1.18:1.0.0
+        image: remal-consul:1.0.0
         container_name: consul.hello.com
         hostname: consul.hello.com
         depends_on:
@@ -27,7 +27,7 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
 
-    # ----- Services -----------------------------------------------------------
+    # ----- Service: Hello-1 ---------------------------------------------------
     hello-service-1:
         image: remal-java-21-runner:0.0.1
         container_name: hello-service-1.hello.com
@@ -42,8 +42,9 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi-jars/hello:/jar-to-run
+            - $HOME/dev/workspace/java/remal/volumes/service-hello:/jar-to-run
 
+    # ----- Service: Hello-2 ---------------------------------------------------
     user-service-1:
         image: remal-java-21-runner:0.0.1
         container_name: user-service-1.hello.com
@@ -58,8 +59,9 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi-jars/user:/jar-to-run
+            - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
 
+    # ----- Service: User-1 ----------------------------------------------------
     user-service-2:
         image: remal-java-21-runner:0.0.1
         container_name: user-service-2.hello.com
@@ -74,4 +76,15 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi-jars/user:/jar-to-run
+            - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
+
+    # ----- Monitoring: Prometheus ---------------------------------------------
+    prometheus:
+        image: remal-prometheus:0.0.1
+        container_name: prometheus.hello.com
+        hostname: prometheus.hello.com
+        depends_on:
+            - consul
+        ports:
+            - "13072:22"   # SSH
+            - "13073:9090" # HTTP

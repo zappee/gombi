@@ -14,7 +14,7 @@ EXPOSE 22/tcp
 EXPOSE 8501/tcp
 
 # environment variables
-ENV IMAGE_NAME="consul-1.18" \
+ENV IMAGE_NAME="remal-consul" \
     IMAGE_TAG="0.0.1-remal" \
     IMAGE_DESCRIPTION="HashiCorp Consul 1.18.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \

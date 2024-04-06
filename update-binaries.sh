@@ -16,7 +16,7 @@
 #    1:    copy the binaries from the source to the target directories
 #    default: 0
 #
-# Since : February, 2024
+# Since:  February, 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
@@ -32,6 +32,7 @@ BINARIES=(
   "EasyRSA-3.1.7.tgz;docker/infrastructure/easy-rsa-pki/bin"
   "consul_1.18.0_linux_386.zip;docker/infrastructure/hcp-consul/bin"
   "vault_1.15.0_linux_386.zip;docker/infrastructure/hcp-vault/bin"
+  "prometheus-2.51.1.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
 )
 
 # ----------------------------------------------------------------------------

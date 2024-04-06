@@ -14,23 +14,35 @@
  *     keeps up-to-date the configuration values without restarting the spring
  *     boot application.
  */
-package com.remal.gombi.template.service.hello.configuration;
+package com.remal.gombi.template.service.hello.service;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
 @Component
 @RefreshScope
-@Getter
-@Setter
-public class ApplicationConfiguration {
+public class ConfigurationService {
+
+    private final MicrometerService micrometerService;
+
+    public ConfigurationService(MicrometerService micrometerService) {
+        this.micrometerService = micrometerService;
+    }
 
     @Value("${user.username}")
     private String username;
 
     @Value("${user.description}")
     private String description;
+
+    public String getUsername() {
+        micrometerService.getUsernameConfigirationCounter().increment();
+        return username;
+    }
+
+    public String getDescription() {
+        micrometerService.getdescriptionConfigirationCounter().increment();
+        return description;
+    }
 }

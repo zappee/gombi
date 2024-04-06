@@ -1,11 +1,11 @@
 # ******************************************************************************
-#  Remal Java Executable JAR runner.
-#  This container is optimalized for running a Spring-Boot JAR.
+# Remal Java Executable JAR runner image build file.
+# This container is optimalized for running a Spring-Boot JAR.
 #
-#  Since : February 2024
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since:  February 2024
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM=${IMAGE_FROM}
 ARG BUILD_TYPE="fat"

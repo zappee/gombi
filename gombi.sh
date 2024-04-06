@@ -30,6 +30,7 @@ LABEL_FORGEROCK_DS="ForGerock Directory Server;infrastructure/forgerock-ds"
 LABEL_FORGEROCK_AM="ForGerock Access Management;infrastructure/forgerock-am"
 LABEL_HCP_VAULT="HashiCorp Vault;infrastructure/hcp-vault"
 LABEL_HCP_CONSUL="HashiCorp Consul;infrastructure/hcp-consul"
+LABEL_PROMETHEUS="Remal Gafana;monitoring/prometheus"
 LABEL_JAR_RUNNER_21="Remal JAR Runner with Java 21;application/jar-runner-21"
 
 COLOR_GREEN="\e[38;5;118m"
@@ -231,8 +232,10 @@ function show_help() {
     printf "        %bc4:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_AM")" "$STYLE_DEFAULT"
     printf "        %bc5:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
     printf "        %bc6:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL")" "$STYLE_DEFAULT"
-    printf "      %bd:    build of all %bApplication%b imagse%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAR_RUNNER_21")" "$STYLE_DEFAULT"
+    printf "      %bd:    build of all %bMonitoring%b imagse%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PROMETHEUS")" "$STYLE_DEFAULT"
+    printf "      %be:    build of all %bApplication%b imagse%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "        %be1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAR_RUNNER_21")" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bs:    start the complete Docker stack%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bi1:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_BASE")" "$STYLE_DEFAULT"
@@ -328,7 +331,8 @@ if match "$COMMAND" "c3"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_
 if match "$COMMAND" "c4"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
 if match "$COMMAND" "c5"; then docker_image_build "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
 if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
-if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_JAR_RUNNER_21")" "$(get_path "$LABEL_JAR_RUNNER_21")"; fi
+if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_PROMETHEUS")" "$(get_path "$LABEL_PROMETHEUS")"; fi
+if match "$COMMAND" "e1"; then docker_image_build "$(get_name "$LABEL_JAR_RUNNER_21")" "$(get_path "$LABEL_JAR_RUNNER_21")"; fi
 
 # docker runners
 if match "$COMMAND" "i1"; then docker_container_run "$(get_name "$LABEL_BASE")" "$(get_path "$LABEL_BASE")"; fi

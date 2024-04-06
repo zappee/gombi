@@ -10,7 +10,7 @@
 package com.remal.gombi.template.service.hello.controller;
 
 import com.remal.gombi.template.commons.model.User;
-import com.remal.gombi.template.service.hello.configuration.ApplicationConfiguration;
+import com.remal.gombi.template.service.hello.service.ConfigurationService;
 import com.remal.gombi.template.service.hello.monitoring.LogCall;
 import com.remal.gombi.template.service.hello.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter;
 @RequestMapping("/api/hello")
 public class HelloController {
 
-    private final ApplicationConfiguration configuration;
+    private final ConfigurationService configuration;
     private final UserService userService;
 
     /**
@@ -34,7 +34,7 @@ public class HelloController {
      *
      * @param userService object to be injected by spring
      */
-    public HelloController(UserService userService, ApplicationConfiguration configuration) {
+    public HelloController(UserService userService, ConfigurationService configuration) {
         this.userService = userService;
         this.configuration = configuration;
     }

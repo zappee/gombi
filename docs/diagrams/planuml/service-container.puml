@@ -22,46 +22,59 @@
     LineColor Purple
     BackgroundColor HotPink
   }
+  .STYLE_MONITOR {
+    RoundCorner 20
+    LineThickness 2
+    LineColor Sienna
+    BackgroundColor Bisque
+  }
 </style>
 
-skinparam defaultTextAlignment center
 
+skinparam defaultTextAlignment center
 title **Remal java-runner Docker container dependencies**
+
 
 sprite $JAR_INFRA    jar:archimate/network
 sprite $JAR_APP      jar:archimate/physical-equipment
+sprite $JAR_MONITOR  jar:archimate/assignment
 
-node    "Private PKI"                         as pki                  <<$JAR_INFRA>> <<STYLE_INFRA>>
-node    "Hashicorp Consul Agent\nServer"      as consul_server        <<$JAR_INFRA>> <<STYLE_INFRA>>
-node    "Java Runner"                         as java_runner_1        <<$JAR_INFRA>> <<STYLE_INFRA>> {
-   component "Hashicorp Consul Agent\nClient" as consul_client_1      <<$JAR_INFRA>> <<STYLE_INFRA>>
-   component "User Service\nJAR"              as u_service            <<$JAR_APP>>   <<STYLE_APP>>
-   portin "rest"                              as u_service_endpoint_1
-   portin "rest"                              as u_service_endpoint_2
-   portin "rest"                              as u_service_endpoint_x
+
+node          "Private PKI"                    as pki                  <<$JAR_INFRA>> <<STYLE_INFRA>>
+node          "Hashicorp Consul Agent\nServer" as consul_server        <<$JAR_INFRA>> <<STYLE_INFRA>>
+node          "Java Runner"                    as java_runner_1        <<$JAR_INFRA>> <<STYLE_INFRA>> {
+   component  "Hashicorp Consul Agent\nClient" as consul_client_1      <<$JAR_INFRA>> <<STYLE_INFRA>>
+   component  "User Service\nJAR"              as u_service            <<$JAR_APP>>   <<STYLE_APP>>
+   portin     "rest"                           as u_service_endpoint_1
+   portin     "rest"                           as u_service_endpoint_2
+   portin     "rest"                           as u_service_endpoint_x
 }
-node    "Java    Runner"                      as java_runner_2        <<$JAR_INFRA>> <<STYLE_INFRA>> {
-   component "Hashicorp Consul Agent\nClient" as consul_client_2      <<$JAR_INFRA>> <<STYLE_INFRA>>
-   component "Payment Service\nJAR"           as p_service            <<$JAR_APP>>   <<STYLE_APP>>
-   portin "rest"                              as p_service_endpoint_1
-   portin "rest"                              as p_service_endpoint_2
-   portin "rest"                              as p_service_endpoint_x
+node          "Java    Runner"                 as java_runner_2        <<$JAR_INFRA>> <<STYLE_INFRA>> {
+   component  "Hashicorp Consul Agent\nClient" as consul_client_2      <<$JAR_INFRA>> <<STYLE_INFRA>>
+   component  "Payment Service\nJAR"           as p_service            <<$JAR_APP>>   <<STYLE_APP>>
+   portin     "rest"                           as p_service_endpoint_1
+   portin     "rest"                           as p_service_endpoint_2
+   portin     "rest"                           as p_service_endpoint_x
 }
+node          "Prometheus"                     as prometheus           <<$JAR_MONITOR>> <<STYLE_MONITOR>>
+node          "Gafana"                         as gafana               <<$JAR_MONITOR>> <<STYLE_MONITOR>>
 
-consul_server      ..>> pki                 : generate\ncertificate
 
-java_runner_1      ..>> pki                 : generate\ncertificate
-   consul_client_1 ..>> consul_server
-   u_service       ..>> consul_client_1     : service discovery\ndistributed configuration
-   u_service       --> u_service_endpoint_1
-   u_service       --> u_service_endpoint_2
-   u_service       --> u_service_endpoint_x
-
-java_runner_2      ..>> pki                 : generate\ncertificate
-   consul_client_2 ..>> consul_server
-   p_service       ..>> consul_client_2     : service discovery\ndistributed configuration
-   p_service       --> p_service_endpoint_1
-   p_service       --> p_service_endpoint_2
-   p_service       --> p_service_endpoint_x
+consul_server       -->> pki                  : generate\ncertificate
+java_runner_1       -->> pki                  : generate\ncertificate
+   consul_client_1 --->> consul_server
+   u_service        -->> consul_client_1      : service discovery\ndistributed configuration
+   u_service         --> u_service_endpoint_1
+   u_service         --> u_service_endpoint_2
+   u_service         --> u_service_endpoint_x
+java_runner_2       -->> pki                  : generate\ncertificate
+   consul_client_2 --->> consul_server
+   p_service        -->> consul_client_2      : service discovery\ndistributed configuration
+   p_service         --> p_service_endpoint_1
+   p_service         --> p_service_endpoint_2
+   p_service         --> p_service_endpoint_x
+u_service            ..> prometheus
+p_service            ..> prometheus
+prometheus           ..> gafana
 
 @enduml

@@ -1,0 +1,36 @@
+#!/bin/bash -ue
+# ******************************************************************************
+# Prometheus startup script.
+#
+# Since:  March 2024
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+#
+# Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+# ******************************************************************************
+. /shared.sh
+
+# ------------------------------------------------------------------------------
+# Start the Prometheus Server and wait for the full server start-up.
+# ------------------------------------------------------------------------------
+function start_prometheus() {
+  printf "%s | [INFO]  starting Prometheus...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG]       PROMETHEUS_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_HOME"
+  printf "%s | [DEBUG]     PROMETHEUS_CONFIG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_CONFIG"
+  printf "%s | [DEBUG]        PROMETHEUS_LOG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_LOG"
+  printf "%s | [DEBUG]    PROMETHEUS_STORAGE: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_STORAGE"
+
+  "${PROMETHEUS_HOME}/prometheus" \
+      --config.file="$PROMETHEUS_CONFIG" \
+      --storage.tsdb.path="$PROMETHEUS_STORAGE" > "$PROMETHEUS_LOG" 2>&1 &
+
+  tail -F "$PROMETHEUS_LOG" &
+  wait_until_text_found "$PROMETHEUS_LOG" "Server is ready to receive web requests"
+  printf "%s | [INFO]  Prometheus has been started...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+}
+
+# ------------------------------------------------------------------------------
+# Main program starts here.
+# ------------------------------------------------------------------------------
+log_start "$0"
+start_prometheus
+log_end "$0"

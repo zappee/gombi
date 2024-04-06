@@ -3,7 +3,7 @@
 # Copy the server keystore from Private-PKI server. The keystore will be used
 # by Tomcat for TLS/HTTPS.
 #
-# Since : March 2024
+# Since:  March 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
