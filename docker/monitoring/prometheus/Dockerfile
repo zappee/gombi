@@ -19,13 +19,14 @@ ENV IMAGE_NAME="remal-prometheus" \
     IMAGE_DESCRIPTION="Remal Prometheus" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
-    PKI_HOST="prometheus.remal.com" \
+    PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     CONSUL_SERVER_HOSTNAME="consul.hello.com" \
     \
     PROMETHEUS_INSTALL_KIT="prometheus-2.51.1.linux-amd64.tar.gz" \
     PROMETHEUS_HOME="/opt/prometheus" \
     PROMETHEUS_CONFIG="/opt/prometheus/prometheus.yml" \
+    PROMETHEUS_WEB_CONFIG="/opt/prometheus/web-config.yml" \
     PROMETHEUS_LOG="/var/log/prometheus.log" \
     PROMETHEUS_STORAGE="/opt/prometheus/data"
 
@@ -60,4 +61,4 @@ RUN set -ue; \
 FROM base-$BUILD_TYPE AS final
 RUN set -ue; \
     mkdir -p "$PROMETHEUS_STORAGE"
-COPY config/prometheus.yml "$PROMETHEUS_HOME/"
+COPY config/*.yml "$PROMETHEUS_HOME/"

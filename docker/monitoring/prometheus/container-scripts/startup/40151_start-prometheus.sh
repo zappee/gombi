@@ -14,13 +14,15 @@
 # ------------------------------------------------------------------------------
 function start_prometheus() {
   printf "%s | [INFO]  starting Prometheus...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]       PROMETHEUS_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_HOME"
-  printf "%s | [DEBUG]     PROMETHEUS_CONFIG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_CONFIG"
-  printf "%s | [DEBUG]        PROMETHEUS_LOG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_LOG"
-  printf "%s | [DEBUG]    PROMETHEUS_STORAGE: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_STORAGE"
+  printf "%s | [DEBUG]          PROMETHEUS_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_HOME"
+  printf "%s | [DEBUG]        PROMETHEUS_CONFIG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_CONFIG"
+  printf "%s | [DEBUG]           PROMETHEUS_LOG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_LOG"
+  printf "%s | [DEBUG]       PROMETHEUS_STORAGE: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_STORAGE"
+  printf "%s | [DEBUG]    PROMETHEUS_WEB_CONFIG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_WEB_CONFIG"
 
   "${PROMETHEUS_HOME}/prometheus" \
       --config.file="$PROMETHEUS_CONFIG" \
+      --web.config.file="$PROMETHEUS_WEB_CONFIG" \
       --storage.tsdb.path="$PROMETHEUS_STORAGE" > "$PROMETHEUS_LOG" 2>&1 &
 
   tail -F "$PROMETHEUS_LOG" &

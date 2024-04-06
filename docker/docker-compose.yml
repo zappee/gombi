@@ -87,4 +87,6 @@ services:
             - consul
         ports:
             - "13072:22"   # SSH
-            - "13073:9090" # HTTP
+            - "13073:9090" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
