@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Generate a server cert using Remal's Private PKI infrastructure.
 #
-# Since : November 2023
+# Since:  November 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
