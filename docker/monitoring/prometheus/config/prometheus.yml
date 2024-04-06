@@ -1,11 +1,23 @@
 global:
   scrape_interval: 5s
   evaluation_interval: 5s
+
+# collecting the URLs to monitor from the service-segistry
 scrape_configs:
-  - job_name: 'hello-service-job'
-    metrics_path: '/actuator/prometheus'
-    scheme: https
-    static_configs:
-      - targets: ['hello-service-1.hello.com:8443']
+  - job_name: "consul-service-discovery-job"
+    metrics_path: /actuator/prometheus
+    consul_sd_configs:
+      - server: "${CONSUL_HOST}:8500"
+        scheme: "http"
+    relabel_configs:
+      - source_labels: [__meta_consul_service_port] # exclude the consul node itself
+        regex: "8300"
+        action: drop
+      - source_labels: [__scheme__]                 # spring-boot actuator endpoints use HTTPS
+        regex: http
+        target_label: __scheme__
+        replacement: https
     tls_config:
-      insecure_skip_verify: true
+      ca_file: ${KEYSTORE_HOME}/ca.crt
+      cert_file: ${KEYSTORE_HOME}/${FQDN}.crt
+      key_file: ${KEYSTORE_HOME}/${FQDN}.pem

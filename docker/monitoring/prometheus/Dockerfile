@@ -1,7 +1,7 @@
 # ******************************************************************************
 # Remal Gafana Monitoring System Docker image build file.
 #
-# Since : April 2024
+# Since:  April 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
@@ -19,9 +19,9 @@ ENV IMAGE_NAME="remal-prometheus" \
     IMAGE_DESCRIPTION="Remal Prometheus" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
-    PKI_HOST="pki.remal.com" \
+    PKI_HOST="pki.hello.com" \
     KEYSTORE_HOME="/tmp" \
-    CONSUL_SERVER_HOSTNAME="consul.hello.com" \
+    CONSUL_HOST="consul.hello.com" \
     \
     PROMETHEUS_INSTALL_KIT="prometheus-2.51.1.linux-amd64.tar.gz" \
     PROMETHEUS_HOME="/opt/prometheus" \

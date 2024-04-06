@@ -60,21 +60,22 @@ node          "Prometheus"                     as prometheus           <<$JAR_MO
 node          "Gafana"                         as gafana               <<$JAR_MONITOR>> <<STYLE_MONITOR>>
 
 
-consul_server       -->> pki                  : generate\ncertificate
-java_runner_1       -->> pki                  : generate\ncertificate
-   consul_client_1 --->> consul_server
-   u_service        -->> consul_client_1      : service discovery\ndistributed configuration
-   u_service         --> u_service_endpoint_1
-   u_service         --> u_service_endpoint_2
-   u_service         --> u_service_endpoint_x
-java_runner_2       -->> pki                  : generate\ncertificate
-   consul_client_2 --->> consul_server
-   p_service        -->> consul_client_2      : service discovery\ndistributed configuration
-   p_service         --> p_service_endpoint_1
-   p_service         --> p_service_endpoint_2
-   p_service         --> p_service_endpoint_x
-u_service            ..> prometheus
-p_service            ..> prometheus
-prometheus           ..> gafana
+consul_server      <--> pki                  : generate\ncertificate
+java_runner_1      <--> pki                  : generate\ncertificate
+   consul_client_1 ---> consul_server
+   u_service        --> consul_client_1      : service discovery\\\ndistributed configuration
+   u_service        --> u_service_endpoint_1
+   u_service        --> u_service_endpoint_2
+   u_service        --> u_service_endpoint_x
+java_runner_2      <--> pki                  : generate\ncertificate
+   consul_client_2 ---> consul_server
+   p_service        --> consul_client_2      : service discovery\\\ndistributed configuration
+   p_service        --> p_service_endpoint_1
+   p_service        --> p_service_endpoint_2
+   p_service        --> p_service_endpoint_x
+u_service          <..  prometheus
+p_service          <..  prometheus
+prometheus         <..  gafana
+prometheus          ..> consul_server        : get list\nof\nservice hosts
 
 @enduml

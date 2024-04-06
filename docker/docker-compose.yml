@@ -90,3 +90,4 @@ services:
             - "13073:9090" # HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_HOST=consul.${DOMAIN_NAME}

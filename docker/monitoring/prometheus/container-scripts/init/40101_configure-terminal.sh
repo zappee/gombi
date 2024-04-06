@@ -10,14 +10,12 @@
 . /shared.sh
 
 log_start "$0"
-
 {
   printf "export %s=\"%s\"\n" "PKI_HOST" "$PKI_HOST"
   printf "export %s=\"%s\"\n" "KEYSTORE_HOME" "$KEYSTORE_HOME"
-  printf "export %s=\"%s\"\n" "CONSUL_SERVER_HOSTNAME" "$CONSUL_SERVER_HOSTNAME"
+  printf "export %s=\"%s\"\n" "CONSUL_HOST" "$CONSUL_HOST"
   printf "export %s=\"%s\"\n" "PROMETHEUS_HOME" "$PROMETHEUS_HOME"
   printf "export %s=\"%s\"\n" "FQDN" "$(hostname -f)"
   printf "cd %s\n" "$PROMETHEUS_HOME"
 } >> /etc/profile
-
 log_end "$0"
