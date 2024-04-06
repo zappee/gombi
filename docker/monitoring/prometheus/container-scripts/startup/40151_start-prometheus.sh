@@ -21,6 +21,7 @@ function start_prometheus() {
   printf "%s | [DEBUG]    PROMETHEUS_WEB_CONFIG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PROMETHEUS_WEB_CONFIG"
 
   "${PROMETHEUS_HOME}/prometheus" \
+      --log.level=debug \
       --config.file="$PROMETHEUS_CONFIG" \
       --web.config.file="$PROMETHEUS_WEB_CONFIG" \
       --storage.tsdb.path="$PROMETHEUS_STORAGE" > "$PROMETHEUS_LOG" 2>&1 &
