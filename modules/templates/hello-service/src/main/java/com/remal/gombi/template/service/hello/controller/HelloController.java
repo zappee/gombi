@@ -32,7 +32,7 @@ public class HelloController {
 
     private final ConfigurationService configuration;
     private final UserService userService;
-    private final Timer sayHelloTimer;
+    private final Timer sayHelloExecutionTimeTimer;
 
     /**
      * Constructor with object injections.
@@ -44,7 +44,7 @@ public class HelloController {
                            MicrometerBuilder micrometer) {
         this.userService = userService;
         this.configuration = configuration;
-        sayHelloTimer = micrometer.buildTimer("say_hello");
+        sayHelloExecutionTimeTimer = micrometer.getMeasureExecutionTimeMeter("say_hello");
     }
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
@@ -53,22 +53,17 @@ public class HelloController {
     @LogCall
     public String sayHello() {
         AtomicReference<String> result = new AtomicReference<>();
-
-        sayHelloTimer.record(() -> {
+        sayHelloExecutionTimeTimer.record(() -> {
             String username = configuration.getUsername();
             User user = userService.getUser(username);
-
-            boolean random = Math.random() < 0.5;
-            if (random) {
-                user.setDescription(configuration.getDescription());
-            }
+            String description = (Math.random() < 0.5) ? configuration.getDescription() : null;
+            user.setDescription(description);
 
             String now = LocalDateTime.now().format(DATE_TIME_FORMATTER);
             String message = String.format("Hello %s, the time is %s.", user.getUsername(), now);
             message += Objects.nonNull((user.getDescription())) ? "<br>" + user.getDescription() : "";
             result.set(message);
         });
-
         return result.get();
     }
 }

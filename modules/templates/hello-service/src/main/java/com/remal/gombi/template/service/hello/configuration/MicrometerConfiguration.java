@@ -9,28 +9,15 @@
  */
 package com.remal.gombi.template.service.hello.configuration;
 
-import com.remal.gombi.template.commons.monitoring.MicrometerBuilder;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
-import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MicrometerConfiguration {
 
-    private final BuildProperties buildProperties;
-
-    public MicrometerConfiguration(BuildProperties buildProperties) {
-        this.buildProperties = buildProperties;
-    }
-
     @Bean
-    public MicrometerBuilder createMicrometerBuilder() {
-        return new MicrometerBuilder(createMircometerRegistry(), buildProperties.getName());
-    }
-
-    @Bean
-    protected CompositeMeterRegistry createMircometerRegistry() {
+    public CompositeMeterRegistry buildMircometerRegistry() {
         return new CompositeMeterRegistry();
     }
 }

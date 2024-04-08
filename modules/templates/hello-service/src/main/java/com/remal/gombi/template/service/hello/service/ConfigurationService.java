@@ -28,12 +28,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ConfigurationService {
 
-    private final Counter usernameCounter;
-    private final Counter descriptionCounter;
+    private final Counter usernameAccessCounter;
+    private final Counter descriptionAccessCounter;
 
-    public ConfigurationService(MicrometerBuilder micrometerBuilder) {
-        usernameCounter = micrometerBuilder.buildCounter("user.username");
-        descriptionCounter = micrometerBuilder.buildCounter("user.description");
+    public ConfigurationService(MicrometerBuilder micrometer) {
+        usernameAccessCounter = micrometer.getAccessToConfigKeyMeter("user.username");
+        descriptionAccessCounter = micrometer.getAccessToConfigKeyMeter("user.description");
     }
 
     @Value("${user.username}")
@@ -44,13 +44,13 @@ public class ConfigurationService {
 
     public String getUsername() {
         log.debug("value from the kv store: {user.username: \"{}\"}", username);
-        usernameCounter.increment();
+        usernameAccessCounter.increment();
         return username;
     }
 
     public String getDescription() {
         log.debug("value from the kv store: {user.description: \"{}\"}", description);
-        descriptionCounter.increment();
+        descriptionAccessCounter.increment();
         return description;
     }
 }

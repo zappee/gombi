@@ -16,8 +16,6 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Optional;
-
 @Slf4j
 public class MicrometerBuilder {
 
@@ -27,65 +25,52 @@ public class MicrometerBuilder {
     private final CompositeMeterRegistry micrometerRegistry;
 
     public MicrometerBuilder(CompositeMeterRegistry micrometerRegistry, String project) {
-        this.project = applyingMicrometerNaming(project);
+        this.project = project;
         this.micrometerRegistry = micrometerRegistry;
     }
 
-    public Counter buildCounter(String meterId) {
-        return buildCounter(meterId, null);
+    public Timer getMeasureExecutionTimeMeter(String meterId) {
+        return buildTimer(Type.EXECUTION_TIME, meterId, "Execution time of the method");
     }
 
-    public Counter buildCounter(String meterId, String meterDescription) {
-        Type type = Type.COUNTER;
-        String name = getName(type, meterId);
-        log.debug(NEW_METER_LOG_TEMPLATE, type.getName(), name);
+    public Counter getAccessToConfigKeyMeter(String meterId) {
+        return buildCounter(Type.CONFIG_KEY, meterId, "Number of access to the configuration key");
+    }
 
-        Optional<String> description = Optional.ofNullable(meterDescription);
+    private Counter buildCounter(Type type, String meterId, String meterDescription) {
+        String name = getName(type, meterId);
+        logAccess(type, name);
         return Counter
                 .builder(name)
                 .tag("project", project)
                 .tag("type", type.getName())
-                .description(description.orElse(""))
+                .description(meterDescription)
                 .register(micrometerRegistry);
     }
 
-    public Timer buildTimer(String meterId) {
-        return buildTimer(meterId, null);
-    }
-
-    public Timer buildTimer(String meterId, String meterDescription) {
-        Type type = Type.TIMER;
+    private Timer buildTimer(Type type, String meterId, String meterDescription) {
         String name = getName(type, meterId);
-        log.debug(NEW_METER_LOG_TEMPLATE, type.getName(), name);
-
-        Optional<String> description = Optional.ofNullable(meterDescription);
+        logAccess(type, name);
         return Timer
                 .builder(name)
                 .tag("project", project)
                 .tag("type", type.getName())
-                .description(description.orElse(""))
+                .description(meterDescription)
                 .register(micrometerRegistry);
     }
 
-    private String getName(MicrometerBuilder.Type type, String meterId) {
-        String id = applyingMicrometerNaming(meterId);
-        return switch (type) {
-            case COUNTER -> String.format("%s_%s_%s", project, type.getName(), id);
-            case TIMER -> String.format("%s_%s_%s_%s", project, type.getName(), id, "milli");
-        };
+    private static void logAccess(Type type, String name) {
+        log.debug(NEW_METER_LOG_TEMPLATE, type.getName(), name);
     }
 
-    private String applyingMicrometerNaming(String s) {
-        String delimiter = "_";
-        return s
-                .replaceAll("-", delimiter)
-                .replaceAll("\\.", delimiter);
+    private String getName(MicrometerBuilder.Type type, String meterId) {
+        return String.format("%s_%s_%s", project, type.getName(), meterId);
     }
 
     @Getter
     private enum Type {
-        COUNTER("counter"),
-        TIMER("timer");
+        EXECUTION_TIME("execution_time"),
+        CONFIG_KEY("config");
 
         private final String name;
 

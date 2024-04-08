@@ -26,20 +26,17 @@ import java.util.concurrent.atomic.AtomicReference;
 @RequestMapping("/api/user")
 public class UserController {
 
-    private final Timer userEndpointTimer;
+    private final Timer getUserTimer;
 
     public UserController(MicrometerBuilder micrometer) {
-        userEndpointTimer = micrometer.buildTimer("getuser");
+        getUserTimer = micrometer.getMeasureExecutionTimeMeter("get_user");
     }
 
     @GetMapping("/{id}")
     @LogCall
     public User getUser(@PathVariable("id") String id) {
         AtomicReference<User> user = new AtomicReference<>();
-        userEndpointTimer.record(() -> {
-            User u = User.builder().username(id).build();
-            user.set(u);
-        });
+        getUserTimer.record(() -> user.set(User.builder().username(id).build()));
         return user.get();
     }
 }
