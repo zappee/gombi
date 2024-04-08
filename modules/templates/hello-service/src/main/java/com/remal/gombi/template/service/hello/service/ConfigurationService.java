@@ -16,18 +16,24 @@
  */
 package com.remal.gombi.template.service.hello.service;
 
+import com.remal.gombi.template.commons.monitoring.MicrometerBuilder;
+import io.micrometer.core.instrument.Counter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
 @Component
 @RefreshScope
+@Slf4j
 public class ConfigurationService {
 
-    private final MicrometerService micrometerService;
+    private final Counter usernameCounter;
+    private final Counter descriptionCounter;
 
-    public ConfigurationService(MicrometerService micrometerService) {
-        this.micrometerService = micrometerService;
+    public ConfigurationService(MicrometerBuilder micrometerBuilder) {
+        usernameCounter = micrometerBuilder.buildCounter("user.username");
+        descriptionCounter = micrometerBuilder.buildCounter("user.description");
     }
 
     @Value("${user.username}")
@@ -37,12 +43,14 @@ public class ConfigurationService {
     private String description;
 
     public String getUsername() {
-        micrometerService.getUsernameConfigirationCounter().increment();
+        log.debug("value from the kv store: {user.username: \"{}\"}", username);
+        usernameCounter.increment();
         return username;
     }
 
     public String getDescription() {
-        micrometerService.getdescriptionConfigirationCounter().increment();
+        log.debug("value from the kv store: {user.description: \"{}\"}", description);
+        descriptionCounter.increment();
         return description;
     }
 }

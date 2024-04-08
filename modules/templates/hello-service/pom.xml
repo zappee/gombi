@@ -54,12 +54,12 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-config</artifactId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
             <version>${spring.cloud.starter.consul.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+            <artifactId>spring-cloud-starter-consul-config</artifactId>
             <version>${spring.cloud.starter.consul.version}</version>
         </dependency>
         <!-- remal dependencies -->

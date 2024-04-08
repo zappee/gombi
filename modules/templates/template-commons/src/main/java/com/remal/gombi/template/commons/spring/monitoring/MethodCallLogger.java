@@ -33,12 +33,11 @@ public class MethodCallLogger {
             Object object = joinPoint.proceed();
 
             stopWatch.stop();
-
-            log.debug("method call details: {execution-time-in-ms: {}, method-name: {}, arguments: {}, return: {}}",
-                    stopWatch.getTotalTimeMillis(),
+            log.debug("method call ended: {method-name: {}, arguments: {}, return: {}, execution-time-in-ms: {}}",
                     methodName,
                     getArgumentsAsString(joinPoint),
-                    getReturnValueAsString(object));
+                    getReturnValueAsString(object),
+                    stopWatch.getTotalTimeMillis());
             return object;
         } else {
             return joinPoint.proceed();

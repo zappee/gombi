@@ -25,7 +25,7 @@ public class MicrometerConfiguration {
     }
 
     @Bean
-    public MicrometerBuilder createMicrometerBuilder() {
+    public MicrometerBuilder createMicrometerId() {
         return new MicrometerBuilder(createMircometerRegistry(), buildProperties.getName());
     }
 
