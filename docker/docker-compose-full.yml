@@ -59,7 +59,7 @@ services:
 
     # ----- Hashicorp Vault ----------------------------------------------------
     vault:
-        image: remal-vault-1.14:0.0.1
+        image: remal-vault:0.0.1
         container_name: vault.${DOMAIN_NAME}
         hostname: vault.${DOMAIN_NAME}
         depends_on:
