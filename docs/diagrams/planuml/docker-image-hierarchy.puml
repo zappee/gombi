@@ -39,6 +39,12 @@
     LineColor Purple
     BackgroundColor HotPink
   }
+  .STYLE_MONITOR {
+    RoundCorner 20
+    LineThickness 2
+    LineColor Sienna
+    BackgroundColor Bisque
+  }
 </style>
 
 title **Remal Docker image hierarchy**
@@ -48,6 +54,7 @@ sprite $JAR_BASE     jar:archimate/goal
 sprite $JAR_CORE     jar:archimate/interaction
 sprite $JAR_INFRA    jar:archimate/network
 sprite $JAR_APP      jar:archimate/physical-equipment
+sprite $JAR_MONITOR  jar:archimate/assignment
 
 rectangle "alpine"                       as alpine         <<$JAR_EXTERNAL>> <<STYLE_EXTERNAL>>
 rectangle "remal-base"                   as base           <<$JAR_BASE>>     <<STYLE_BASE>>
@@ -64,19 +71,23 @@ rectangle "Hashicorp Consul"             as consul         <<$JAR_INFRA>>    <<S
 rectangle "Java-21 Runner"               as java_runner_21 <<$JAR_INFRA>>    <<STYLE_INFRA>>
 rectangle "Examples"                     as examples       <<$JAR_APP>>      <<STYLE_APP>>
 rectangle "User Service"                 as user_service   <<$JAR_APP>>      <<STYLE_APP>>
+rectangle "Prometheus"                   as prometheus     <<$JAR_MONITOR>>  <<STYLE_MONITOR>>
+rectangle "Gafana"                       as gafana         <<$JAR_MONITOR>>  <<STYLE_MONITOR>>
 
-alpine         -->   base
-base           -->   java11
-base           -->   java17
-base           -->   java21
-base           --->  pki
-java11         -->   tomcat9
-java17         -->   ds
-java21         -->   consul
-tomcat9        -->   am
-base           --->  vault
-consul         -->   java_runner_21
-java_runner_21 -->   examples
-java_runner_21 -->   user_service
+alpine           -->  base
+base             -->  java11
+base             -->  java17
+base             -->  java21
+base             ---> pki
+base             ---> vault
+base           -----> prometheus
+base           -----> gafana
+java11            --> tomcat9
+java17            --> ds
+java21            --> consul
+tomcat9           --> am
+consul            --> java_runner_21
+java_runner_21    --> examples
+java_runner_21    --> user_service
 
 @enduml

@@ -7,7 +7,7 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-export IMAGE_NAME="remal-consul-1.18"
+export IMAGE_NAME="remal-consul"
 export IMAGE_TAG="1.0.0"
 export IMAGE_DESCRIPTION="HashiCorp Consul 1.18"
 export IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"

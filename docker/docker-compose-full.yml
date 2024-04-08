@@ -72,7 +72,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul-1.18:1.0.0
+        image: remal-consul:1.0.0
         container_name: consul.hello.com
         hostname: consul.hello.com
         depends_on:
@@ -98,7 +98,7 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi-jars/hello:/jar-to-run
+            - $HOME/dev/workspace/java/remal/volumes/service-hello:/jar-to-run
 
     user-service-1:
         image: remal-java-21-runner:0.0.1
@@ -114,7 +114,7 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi-jars/user:/jar-to-run
+            - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
 
     user-service-2:
         image: remal-java-21-runner:0.0.1
@@ -130,4 +130,4 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/gombi-jars/user:/jar-to-run
+            - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run

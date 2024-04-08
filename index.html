@@ -93,8 +93,10 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="imagelist-col-margin">
-                <a href="https://localhost:14114/api/user" target="_blank">https://localhost:14114/api/user</a></span>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14114/api/user/1" target="_blank">https://localhost:14114/api/user/1</a></span>
+                <br>
+                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14114/actuator" target="_blank">https://localhost:14114/actuator</a></span>
             </td>
         </tr>
         <!-- User service 2 -->
@@ -123,8 +125,10 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="imagelist-col-margin">
-                <a href="https://localhost:14124/api/user" target="_blank">https://localhost:14124/api/user</a></span>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14124/api/user/1" target="_blank">https://localhost:14124/api/user/1</a></span>
+                <br>
+                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14124/actuator" target="_blank">https://localhost:14124/actuator</a></span>
             </td>
         </tr>
         <!-- Hello service -->
@@ -153,13 +157,49 @@
                     </tr>
                 </table>
             </td>
-            <td class="imagelist-command"><span class="imagelist-col-margin">
-                <a href="https://localhost:14214/api/hello" target="_blank">https://localhost:14214/api/hello</a></span>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14214/api/hello" target="_blank">https://localhost:14214/api/hello</a></span>
+                <br>
+                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14214/actuator" target="_blank">https://localhost:14214/actuator</a></span>
+            </td>
+        </tr>
+        <!-- Prometheus -->
+        <tr class="imagelist-content imagelist-infra">
+            <td><span class="imagelist-col-margin">prometheus</span></td>
+            <td>
+                <span class="imagelist-col-margin">Prometheus</span>
+                <br>
+                <span class="imagelist-col-margin">An open-source monitoring system.</span>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13072</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">SSH</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13073</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">9090</td>
+                        <td class="imagelist-port-info">web console, HTTPS</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">container up signal</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin"><a href="https://localhost:13073" target="_blank">https://localhost:13073</a></span>
             </td>
         </tr>
         <!-- HashiCorp Consul -->
         <tr class="imagelist-content imagelist-infra">
-            <td><span class="imagelist-col-margin">consul-16.2</span></td>
+            <td><span class="imagelist-col-margin">consul</span></td>
             <td>
                 <span class="imagelist-col-margin">HashiCorp Consul</span>
                 <br>
@@ -264,10 +304,7 @@
                 </table>
             </td>
             <td class="imagelist-command">
-                <span class="imagelist-col-margin">
-                    AM: <a href="https://am.hello.com:13044/openam" target="_blank">https://am.hello.com:13044/openam</a>
-                    (amadmin/password)
-                </span>
+                <span class="imagelist-col-margin">AM: <a href="https://am.hello.com:13044/openam" target="_blank">https://am.hello.com:13044/openam</a>(amadmin/password)</span>
                 <br>
                 <span class="imagelist-col-margin">Tomcat: <a href="https://localhost:13044" target="_blank">https://localhost:13044</a></span>
             </td>

@@ -1,7 +1,7 @@
 # ******************************************************************************
 # Remal Base Docker image build file.
 #
-# Since : May, 2023
+# Since:  May 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
@@ -51,6 +51,7 @@ RUN set -ue; \
 RUN set -ue; \
     mkdir /docker.init; \
     mkdir /docker.startup
+
 COPY container-scripts/init/* /docker.init/
 COPY container-scripts/startup/* /docker.startup/
 ONBUILD COPY container-scripts/init/* /docker.init/

@@ -31,8 +31,9 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
 
-        <remal.template.commons.version>0.0.1</remal.template.commons.version>
         <lombok.version>1.18.30</lombok.version>
+        <micrometer.version>1.12.4</micrometer.version>
+        <remal.template.commons.version>0.0.1</remal.template.commons.version>
         <spring.cloud.starter.consul.version>4.1.0</spring.cloud.starter.consul.version>
     </properties>
 
@@ -72,6 +73,12 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- application monitoring facade -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>${micrometer.version}</version>
         </dependency>
     </dependencies>
 

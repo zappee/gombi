@@ -4,7 +4,7 @@
 # file. This script reads the *.properties file during the Docker container
 # startup and adds the missing KV pairs into Hashicorp Consul.
 #
-# Since : March 2024
+# Since:  March 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved

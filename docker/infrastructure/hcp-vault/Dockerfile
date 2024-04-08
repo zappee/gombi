@@ -1,7 +1,7 @@
 # ******************************************************************************
 #  Remal HashiCorp Vault Docker image build file.
 #
-#  Since : Jul, 2023
+#  Since:  July 2023
 #  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 #  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
