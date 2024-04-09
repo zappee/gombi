@@ -16,7 +16,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul:1.0.0
+        image: remal-consul:1.1.0
         container_name: consul.hello.com
         hostname: consul.hello.com
         depends_on:
