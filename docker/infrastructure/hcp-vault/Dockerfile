@@ -14,9 +14,9 @@ EXPOSE 22/tcp
 EXPOSE 8200/tcp
 
 # environment variables
-ENV IMAGE_NAME="vault-1.14" \
+ENV IMAGE_NAME="vault" \
     IMAGE_TAG="0.0.1-remal" \
-    IMAGE_DESCRIPTION="HashiCorp Vault 1.14.0" \
+    IMAGE_DESCRIPTION="HashiCorp Vault 1.15.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     PKI_HOST="pki.remal.com" \

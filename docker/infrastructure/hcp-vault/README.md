@@ -20,7 +20,7 @@ services:
 
     # ----- Hashirorp Vault service --------------------------------------------
     vault:
-        image: remal-vault-1.14:0.0.1
+        image: remal-vault:0.0.1
         container_name: vault
         hostname: vault.hello.com
         depends_on:

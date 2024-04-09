@@ -59,7 +59,7 @@ services:
 
     # ----- Hashicorp Vault ----------------------------------------------------
     vault:
-        image: remal-vault-1.14:0.0.1
+        image: remal-vault:0.0.1
         container_name: vault.${DOMAIN_NAME}
         hostname: vault.${DOMAIN_NAME}
         depends_on:
@@ -72,7 +72,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul:1.0.0
+        image: remal-consul:1.1.0
         container_name: consul.hello.com
         hostname: consul.hello.com
         depends_on:
