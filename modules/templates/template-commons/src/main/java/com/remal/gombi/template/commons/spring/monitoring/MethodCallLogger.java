@@ -9,6 +9,7 @@
  */
 package com.remal.gombi.template.commons.spring.monitoring;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -21,7 +22,9 @@ import java.util.function.Predicate;
 @Slf4j
 public class MethodCallLogger {
 
-    public Object logMethodCall(ProceedingJoinPoint joinPoint, String[] targets) throws Throwable {
+    public Object logMethodCall(ProceedingJoinPoint joinPoint,
+                                String[] targets,
+                                HttpServletRequest request) throws Throwable {
         Predicate< String > targetLog = word -> word.equals("log");
         if (log.isDebugEnabled() && Arrays.stream(targets).anyMatch(targetLog)) {
             String methodName = joinPoint.getSignature().toShortString();
@@ -33,11 +36,24 @@ public class MethodCallLogger {
             Object object = joinPoint.proceed();
 
             stopWatch.stop();
-            log.debug("method call ended: {method-name: {}, arguments: {}, return: {}, execution-time-in-ms: {}}",
-                    methodName,
-                    getArgumentsAsString(joinPoint),
-                    getReturnValueAsString(object),
-                    stopWatch.getTotalTimeMillis());
+
+            if (Objects.isNull(request)) {
+                log.debug("method call ended: {method-name: {}, arguments: {}, return: {}, execution-time-in-ms: {}}",
+                        methodName,
+                        getArgumentsAsString(joinPoint),
+                        getReturnValueAsString(object),
+                        stopWatch.getTotalTimeMillis());
+            } else {
+                String remoteHost = Objects.nonNull(request.getHeader("X-FORWARDED-FOR"))
+                        ? request.getHeader("X-FORWARDED-FOR")
+                        : request.getRemoteHost();
+                log.debug("method call ended: {method-name: {}, arguments: {}, return: {}, execution-time-in-ms: {}, remote-host: {}}",
+                        methodName,
+                        getArgumentsAsString(joinPoint),
+                        getReturnValueAsString(object),
+                        stopWatch.getTotalTimeMillis(),
+                        remoteHost);
+            }
             return object;
         } else {
             return joinPoint.proceed();
