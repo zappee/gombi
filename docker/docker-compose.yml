@@ -91,3 +91,17 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_HOST=consul.${DOMAIN_NAME}
+
+    # ----- Monitoring: Grafana ------------------------------------------------
+    grafana:
+        image: remal-grafana:0.0.1
+        container_name: grafana.hello.com
+        hostname: grafana.hello.com
+        depends_on:
+            - prometheus
+        ports:
+            - "13082:22"   # SSH
+            - "13083:3000" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - PROMETHEUS_HOST=prometheus.${DOMAIN_NAME}

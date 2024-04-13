@@ -33,6 +33,7 @@ BINARIES=(
   "consul_1.18.1_linux_386.zip;docker/infrastructure/hcp-consul/bin"
   "vault_1.15.0_linux_386.zip;docker/infrastructure/hcp-vault/bin"
   "prometheus-2.51.1.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
+  "grafana-enterprise-10.4.2.linux-amd64.tar.gz;docker/monitoring/grafana/bin"
 )
 
 # ----------------------------------------------------------------------------
