@@ -28,7 +28,7 @@ ENV IMAGE_NAME="remal-grafana" \
     GRAFANA_CONFIG="/opt/grafana/conf/custom.ini" \
     GRAFANA_PROVISIONING="/opt/grafana/conf/provisioning" \
     GRAFANA_STORAGE="/opt/grafana/data" \
-    GRAFANA_LOG="/var/log/grafana" \
+    GRAFANA_LOG_DIR="/var/log/grafana" \
     GRAFANA_PLUGINS="/opt/grafana/data/plugins" \
     GRAFANA_ADMIN_PASSWORD="password"
 
@@ -69,5 +69,5 @@ RUN set -ue; \
 FROM base-$BUILD_TYPE AS final
 RUN set -ue; \
     mkdir -p "$GRAFANA_STORAGE"; \
-    mkdir -p "$GRAFANA_LOG"
+    mkdir -p "$GRAFANA_LOG_DIR"
 COPY config/custom.ini "$GRAFANA_CONFIG"

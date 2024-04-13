@@ -17,12 +17,12 @@ function configure_grafana() {
   printf "%s | [DEBUG]             GRAFANA_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_HOME"
   printf "%s | [DEBUG]           GRAFANA_CONFIG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_CONFIG"
   printf "%s | [DEBUG]          GRAFANA_STORAGE: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_STORAGE"
-  printf "%s | [DEBUG]              GRAFANA_LOG: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_LOG"
+  printf "%s | [DEBUG]          GRAFANA_LOG_DIR: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_LOG_DIR"
   printf "%s | [DEBUG]          GRAFANA_PLUGINS: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_PLUGINS"
   printf "%s | [DEBUG]     GRAFANA_PROVISIONING: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_PROVISIONING"
 
   sed -i "s|\${GRAFANA_STORAGE}|$GRAFANA_STORAGE|g" "$GRAFANA_CONFIG"
-  sed -i "s|\${GRAFANA_LOG}|$GRAFANA_LOG|g" "$GRAFANA_CONFIG"
+  sed -i "s|\${GRAFANA_LOG_DIR}|$GRAFANA_LOG_DIR|g" "$GRAFANA_CONFIG"
   sed -i "s|\${GRAFANA_PLUGINS}|$GRAFANA_PLUGINS|g" "$GRAFANA_CONFIG"
   sed -i "s|\${GRAFANA_PROVISIONING}|$GRAFANA_PROVISIONING|g" "$GRAFANA_CONFIG"
 }
