@@ -1,6 +1,4 @@
-# Remal Image: Prometheus
-
-query: `increase(service_hello_config_user_username_count_total[1m])`
+# Remal Image: Grafana
 
 <a href="https://trackgit.com">
   <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />

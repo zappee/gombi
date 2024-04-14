@@ -160,7 +160,43 @@
             <td class="imagelist-command">
                 <span class="imagelist-col-margin">Rest: <a href="https://localhost:14214/api/hello" target="_blank">https://localhost:14214/api/hello</a></span>
                 <br>
+                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14214/api/joke" target="_blank">https://localhost:14214/api/joke</a></span>
+                <br>
                 <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14214/actuator" target="_blank">https://localhost:14214/actuator</a></span>
+            </td>
+        </tr>
+        <!-- Grafana -->
+        <tr class="imagelist-content imagelist-infra">
+            <td><span class="imagelist-col-margin">grafana</span></td>
+            <td>
+                <span class="imagelist-col-margin">Grafana</span>
+                <br>
+                <span class="imagelist-col-margin">It is a tool used to analyze and visualize data.</span>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13082</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">SSH</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13083</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">3000</td>
+                        <td class="imagelist-port-info">web console, HTTPS</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">container up signal</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin"><a href="http://localhost:13083" target="_blank">http://localhost:13083</a> (admin/password)</span>
             </td>
         </tr>
         <!-- Prometheus -->
@@ -169,7 +205,7 @@
             <td>
                 <span class="imagelist-col-margin">Prometheus</span>
                 <br>
-                <span class="imagelist-col-margin">An open-source monitoring system.</span>
+                <span class="imagelist-col-margin">An open-source monitoring system with a dimensional data model.</span>
             </td>
             <td>
                 <table>

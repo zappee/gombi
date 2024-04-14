@@ -9,15 +9,28 @@
  */
 package com.remal.gombi.template.service.hello.configuration;
 
+import com.remal.gombi.template.commons.Internet;
+import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class MicrometerConfiguration {
 
+    private final BuildProperties buildProperties;
+
+    public MicrometerConfiguration(BuildProperties buildProperties) {
+        this.buildProperties = buildProperties;
+    }
+
     @Bean
-    public CompositeMeterRegistry buildMircometerRegistry() {
-        return new CompositeMeterRegistry();
+    public CompositeMeterRegistry buildMeterRegistry() {
+        CompositeMeterRegistry registry = new CompositeMeterRegistry();
+        registry.config().commonTags("project", buildProperties.getName());
+        registry.config().commonTags("host", Internet.getHostname());
+        Metrics.addRegistry(registry);
+        return registry;
     }
 }

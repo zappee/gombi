@@ -10,11 +10,13 @@
 package com.remal.gombi.template.service.hello.monitoring;
 
 import com.remal.gombi.template.commons.spring.monitoring.MethodCallLogger;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -22,9 +24,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LogCallAspect extends MethodCallLogger {
 
+    @Autowired
+    HttpServletRequest request;
+
     @Around("@annotation(com.remal.gombi.template.service.hello.monitoring.LogCall)")
     public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
         LogCall lc = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(LogCall.class);
-        return logMethodCall(joinPoint, lc.targets());
+        return logMethodCall(joinPoint, lc.targets(), request);
     }
 }

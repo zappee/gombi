@@ -16,8 +16,7 @@
  */
 package com.remal.gombi.template.service.hello.service;
 
-import com.remal.gombi.template.commons.monitoring.MicrometerBuilder;
-import io.micrometer.core.instrument.Counter;
+import com.remal.gombi.template.commons.spring.monitoring.MicrometerBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -28,14 +27,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ConfigurationService {
 
-    private final Counter usernameAccessCounter;
-    private final Counter descriptionAccessCounter;
-
-    public ConfigurationService(MicrometerBuilder micrometer) {
-        usernameAccessCounter = micrometer.getAccessToConfigKeyMeter("user.username");
-        descriptionAccessCounter = micrometer.getAccessToConfigKeyMeter("user.description");
-    }
-
     @Value("${user.username}")
     private String username;
 
@@ -43,14 +34,16 @@ public class ConfigurationService {
     private String description;
 
     public String getUsername() {
-        log.debug("value from the kv store: {user.username: \"{}\"}", username);
-        usernameAccessCounter.increment();
+        String key = "user.username";
+        log.debug(MicrometerBuilder.CLOUD_CONFIG_ACCESS_LOG_TEMPLATE, key, username);
+        MicrometerBuilder.getCloudConfigAccessMeter(key).increment();
         return username;
     }
 
     public String getDescription() {
-        log.debug("value from the kv store: {user.description: \"{}\"}", description);
-        descriptionAccessCounter.increment();
+        String key = "user.description";
+        log.debug(MicrometerBuilder.CLOUD_CONFIG_ACCESS_LOG_TEMPLATE, key, username);
+        MicrometerBuilder.getCloudConfigAccessMeter(key).increment();
         return description;
     }
 }
