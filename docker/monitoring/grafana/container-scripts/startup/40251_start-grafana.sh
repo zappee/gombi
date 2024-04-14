@@ -8,25 +8,7 @@
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 . /shared.sh
-
-# ------------------------------------------------------------------------------
-# Start the Grafana Server and wait for the full server start-up.
-# ------------------------------------------------------------------------------
-function start_grafana() {
-  local grafana_log
-  grafana_log="$GRAFANA_LOG_DIR/grafana.log"
-
-  printf "%s | [INFO]  starting Grafana...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]    GRAFANA_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_HOME"
-  printf "%s | [DEBUG]     grafana_log: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$grafana_log"
-
-  cd "$GRAFANA_HOME"
-  ./bin/grafana server 2>&1 &
-
-  tail -F "$grafana_log" &
-  wait_until_text_found "$grafana_log" "Adding GroupVersion featuretoggle.grafana.app"
-  printf "%s | [INFO]  Grafana has been started...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-}
+. /grafana-functions.sh
 
 # ------------------------------------------------------------------------------
 # Main program starts here.

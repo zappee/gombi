@@ -21,16 +21,20 @@ ENV IMAGE_NAME="remal-grafana" \
     \
     PKI_HOST="pki.hello.com" \
     KEYSTORE_HOME="/tmp" \
-    PROMETHEUS_HOST="consul.hello.com" \
+    PROMETHEUS_HOST="prometheus.hello.com" \
+    PROMETHEUS_PORT="9090" \
+    PROMETHEUS_PROTOCOL="https" \
     \
     GRAFANA_INSTALL_KIT="grafana-enterprise-10.4.2.linux-amd64.tar.gz" \
     GRAFANA_HOME="/opt/grafana" \
+    GRAFANA_PORT=3000 \
     GRAFANA_CONFIG="/opt/grafana/conf/custom.ini" \
     GRAFANA_PROVISIONING="/opt/grafana/conf/provisioning" \
     GRAFANA_STORAGE="/opt/grafana/data" \
     GRAFANA_LOG_DIR="/var/log/grafana" \
     GRAFANA_PLUGINS="/opt/grafana/data/plugins" \
-    GRAFANA_ADMIN_PASSWORD="password"
+    GRAFANA_USER="admin" \
+    GRAFANA_PASSWORD="password"
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \
@@ -69,5 +73,8 @@ RUN set -ue; \
 FROM base-$BUILD_TYPE AS final
 RUN set -ue; \
     mkdir -p "$GRAFANA_STORAGE"; \
-    mkdir -p "$GRAFANA_LOG_DIR"
+    mkdir -p "$GRAFANA_LOG_DIR"; \
+    apk --no-cache add curl
+COPY container-scripts/grafana-functions.sh /
 COPY config/custom.ini "$GRAFANA_CONFIG"
+COPY config/datasources/* "$GRAFANA_HOME/customization/datasources/"
