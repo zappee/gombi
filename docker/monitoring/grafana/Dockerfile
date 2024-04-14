@@ -74,6 +74,7 @@ FROM base-$BUILD_TYPE AS final
 RUN set -ue; \
     mkdir -p "$GRAFANA_STORAGE"; \
     mkdir -p "$GRAFANA_LOG_DIR"; \
+    mkdir -p "$GRAFANA_PLUGINS"; \
     apk --no-cache add curl
 COPY container-scripts/grafana-functions.sh /
 COPY config/custom.ini "$GRAFANA_CONFIG"
