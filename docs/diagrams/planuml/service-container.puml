@@ -45,13 +45,15 @@ node          "Hashicorp Consul Agent\nServer" as consul_server        <<$JAR_IN
 node          "Java Runner"                    as java_runner_1        <<$JAR_INFRA>> <<STYLE_INFRA>> {
    component  "Hashicorp Consul Agent\nClient" as consul_client_1      <<$JAR_INFRA>> <<STYLE_INFRA>>
    component  "User Service\nJAR"              as u_service            <<$JAR_APP>>   <<STYLE_APP>>
+   component  "PostgreSQL"                     as u_postgresql         <<$JAR_APP>>   <<STYLE_INFRA>>
    portin     "rest"                           as u_service_endpoint_1
    portin     "rest"                           as u_service_endpoint_2
    portin     "rest"                           as u_service_endpoint_x
 }
-node          "Java    Runner"                 as java_runner_2        <<$JAR_INFRA>> <<STYLE_INFRA>> {
+node          "Java Runner"                    as java_runner_2        <<$JAR_INFRA>> <<STYLE_INFRA>> {
    component  "Hashicorp Consul Agent\nClient" as consul_client_2      <<$JAR_INFRA>> <<STYLE_INFRA>>
    component  "Payment Service\nJAR"           as p_service            <<$JAR_APP>>   <<STYLE_APP>>
+   component  "PostgreSQL"                     as p_postgresql         <<$JAR_APP>>   <<STYLE_INFRA>>
    portin     "rest"                           as p_service_endpoint_1
    portin     "rest"                           as p_service_endpoint_2
    portin     "rest"                           as p_service_endpoint_x
@@ -63,12 +65,14 @@ node          "Gafana"                         as gafana               <<$JAR_MO
 consul_server      <--> pki                  : generate\ncertificate
 java_runner_1      <--> pki                  : generate\ncertificate
    consul_client_1 ---> consul_server
+   u_service       <--> u_postgresql
    u_service        --> consul_client_1      : service discovery\\\ndistributed configuration
    u_service        --> u_service_endpoint_1
    u_service        --> u_service_endpoint_2
    u_service        --> u_service_endpoint_x
 java_runner_2      <--> pki                  : generate\ncertificate
    consul_client_2 ---> consul_server
+   p_service       <--> p_postgresql
    p_service        --> consul_client_2      : service discovery\\\ndistributed configuration
    p_service        --> p_service_endpoint_1
    p_service        --> p_service_endpoint_2
