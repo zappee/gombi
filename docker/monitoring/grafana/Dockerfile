@@ -48,11 +48,8 @@ LABEL "com.remal.image.vendor"="Remal" \
 FROM base AS base-fat
 COPY "bin/$GRAFANA_INSTALL_KIT" "/tmp/"
 RUN set -ue; \
-    tar -xvf "/tmp/$GRAFANA_INSTALL_KIT" -C "$(dirname "$GRAFANA_HOME")"; \
-    version=$(basename $GRAFANA_INSTALL_KIT | awk -F"-" '{ print $3 }'); \
-    version="${version%.*}"; \
-    printf "grafana version: %s\n" "$version"; \
-    mv "$(dirname "$GRAFANA_HOME")/grafana-v${version}" "$GRAFANA_HOME"; \
+    mkdir -p "$GRAFANA_HOME"; \
+    tar -xvf "/tmp/$GRAFANA_INSTALL_KIT" -C "$GRAFANA_HOME" --strip-components=1; \
     rm "/tmp/$GRAFANA_INSTALL_KIT"
 
 
@@ -61,11 +58,8 @@ FROM base AS base-slim
 RUN set -ue; \
     host_ip="$(ip route | awk '/default/ { print $3 }')"; \
     wget -O "/tmp/$GRAFANA_INSTALL_KIT" http://$host_ip:8080/docker-build/$GRAFANA_INSTALL_KIT; \
-    tar -xvf "/tmp/$GRAFANA_INSTALL_KIT" -C "$(dirname "$GRAFANA_HOME")"; \
-    version=$(basename $GRAFANA_INSTALL_KIT | awk -F"-" '{ print $3 }'); \
-    version="${version%.*}"; \
-    printf "grafana version: %s\n" "$version"; \
-    mv "$(dirname "$GRAFANA_HOME")/grafana-v${version}" "$GRAFANA_HOME"; \
+    mkdir -p "$GRAFANA_HOME"; \
+    tar -xvf "/tmp/$GRAFANA_INSTALL_KIT" -C "$GRAFANA_HOME" --strip-components=1; \
     rm "/tmp/$GRAFANA_INSTALL_KIT"
 
 
