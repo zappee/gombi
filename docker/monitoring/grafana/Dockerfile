@@ -27,6 +27,7 @@ ENV IMAGE_NAME="remal-grafana" \
     \
     GRAFANA_INSTALL_KIT="grafana-enterprise-10.4.2.linux-amd64.tar.gz" \
     GRAFANA_HOME="/opt/grafana" \
+    GRAFANA_PROTOCOL="https" \
     GRAFANA_PORT=3000 \
     GRAFANA_CONFIG="/opt/grafana/conf/custom.ini" \
     GRAFANA_PROVISIONING="/opt/grafana/conf/provisioning" \

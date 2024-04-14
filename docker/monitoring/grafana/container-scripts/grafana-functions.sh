@@ -22,6 +22,7 @@ function create_grafana_datasources() {
   printf "%s | [DEBUG]          json_files: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$json_files"
   printf "%s | [DEBUG]        GRAFANA_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_USER"
   printf "%s | [DEBUG]    GRAFANA_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_PASSWORD"
+  printf "%s | [DEBUG]    GRAFANA_PROTOCOL: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_PROTOCOL"
 
   start_grafana
   for file in $json_files; do
@@ -31,7 +32,7 @@ function create_grafana_datasources() {
       -H "Content-Type: application/json" \
       --user "$GRAFANA_USER":"$GRAFANA_PASSWORD" \
       --data-binary @"$file" \
-      http://localhost:"$GRAFANA_PORT"/api/datasources
+      "$GRAFANA_PROTOCOL"://localhost:"$GRAFANA_PORT"/api/datasources
     printf "\n"
   done;
   stop_grafana
@@ -41,6 +42,9 @@ function create_grafana_datasources() {
 # Grafana server configuration.
 # ------------------------------------------------------------------------------
 function grafana_configuration() {
+  local fqdn
+  fqdn=$(hostname -f)
+
   printf "%s | [INFO]  configuring Grafana...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG]             GRAFANA_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_HOME"
   printf "%s | [DEBUG]             GRAFANA_PORT: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_PORT"
@@ -49,12 +53,18 @@ function grafana_configuration() {
   printf "%s | [DEBUG]          GRAFANA_LOG_DIR: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_LOG_DIR"
   printf "%s | [DEBUG]          GRAFANA_PLUGINS: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_PLUGINS"
   printf "%s | [DEBUG]     GRAFANA_PROVISIONING: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_PROVISIONING"
+  printf "%s | [DEBUG]                     FQDN: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
+  printf "%s | [DEBUG]            KEYSTORE_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$KEYSTORE_HOME"
+  printf "%s | [DEBUG]         GRAFANA_PROTOCOL: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$GRAFANA_PROTOCOL"
 
   sed -i "s|\${GRAFANA_STORAGE}|$GRAFANA_STORAGE|g" "$GRAFANA_CONFIG"
   sed -i "s|\${GRAFANA_LOG_DIR}|$GRAFANA_LOG_DIR|g" "$GRAFANA_CONFIG"
   sed -i "s|\${GRAFANA_PLUGINS}|$GRAFANA_PLUGINS|g" "$GRAFANA_CONFIG"
   sed -i "s|\${GRAFANA_PROVISIONING}|$GRAFANA_PROVISIONING|g" "$GRAFANA_CONFIG"
   sed -i "s|\${GRAFANA_PORT}|$GRAFANA_PORT|g" "$GRAFANA_CONFIG"
+  sed -i "s|\${FQDN}|$fqdn|g" "$GRAFANA_CONFIG"
+  sed -i "s|\${KEYSTORE_HOME}|$KEYSTORE_HOME|g" "$GRAFANA_CONFIG"
+  sed -i "s|\${GRAFANA_PROTOCOL}|$GRAFANA_PROTOCOL|g" "$GRAFANA_CONFIG"
 }
 
 # ----------------------------------------------------------------------------
