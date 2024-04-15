@@ -21,7 +21,7 @@ ARG DS_HOME="/opt/opendj"
 
 # environment variables
 ENV IMAGE_NAME="ds-7.3" \
-    IMAGE_TAG="0.0.1-remal" \
+    IMAGE_TAG="0.0.1" \
     IMAGE_DESCRIPTION="ForgeRock Directory Server 7.3.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \

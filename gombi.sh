@@ -21,18 +21,19 @@ ENVIRONMENT_FILE=".env.hello.com"
 COMMAND="${1:-}"
 
 LABEL_BASE="Base;base/base"
-LABEL_JAVA_11="OpenJDK 11 (Java);core/openjdk-11"
-LABEL_JAVA_17="OpenJDK 17 (Java);core/openjdk-17"
-LABEL_JAVA_21="OpenJDK 21 (Java);core/openjdk-21"
+LABEL_JAVA_11="OpenJDK 11;core/openjdk-11"
+LABEL_JAVA_17="OpenJDK 17;core/openjdk-17"
+LABEL_JAVA_21="OpenJDK 21;core/openjdk-21"
 LABEL_PKI="PKI Private Certificate Authority (CA);infrastructure/easy-rsa-pki"
-LABEL_TOMCAT_9="Apache Tomcat 9 (Tomcat);infrastructure/tomcat-9"
-LABEL_FORGEROCK_DS="ForGerock Directory Server;infrastructure/forgerock-ds"
-LABEL_FORGEROCK_AM="ForGerock Access Management;infrastructure/forgerock-am"
+LABEL_TOMCAT_9="Apache Tomcat 9;infrastructure/tomcat-9"
+LABEL_FORGEROCK_DS="ForgeRock Directory Server;infrastructure/forgerock-ds"
+LABEL_FORGEROCK_AM="ForgeRock Access Management;infrastructure/forgerock-am"
 LABEL_HCP_VAULT="HashiCorp Vault;infrastructure/hcp-vault"
 LABEL_HCP_CONSUL="HashiCorp Consul;infrastructure/hcp-consul"
 LABEL_PROMETHEUS="Remal Prometheus;monitoring/prometheus"
 LABEL_GRAFANA="Remal Grafana;monitoring/grafana"
-LABEL_JAR_RUNNER_21="Remal JAR Runner with Java 21;application/jar-runner-21"
+LABEL_JAVA_21_RUNNER="Remal Java 21 Runner;application/java-21-runner"
+LABEL_JAVA_21_POSTGRES_RUNNER="Remal Java 21 with Postgres Runner;application/java-21-postgres-runner"
 
 COLOR_GREEN="\e[38;5;118m"
 COLOR_YELLOW="\e[38;5;226m"
@@ -159,7 +160,7 @@ function docker_image_show {
 function get_name {
   local string
   string="$1"
-  cut -d';' -f1 <<<"$string"
+  cut -d';' -f1 <<<"$string" | echo "'$(cat)'"
 }
 
 # ------------------------------------------------------------------------------
@@ -188,7 +189,8 @@ function show_execution_time() {
   execution_time=$(($(date +%s) - start))
 
   if [ -n "$command" ]; then
-    printf "\nexecution time: %s day %s\n" "$(($(date -d@$execution_time -u +%d)-1))" "$(date -d@$execution_time -u +%H\ hour\ %M\ min\ %S\ sec)"
+    printf "\n"
+    printf "execution time: %s day %s\n" "$(($(date -d@$execution_time -u +%d)-1))" "$(date -d@$execution_time -u +%H\ hour\ %M\ min\ %S\ sec)"
   fi
 }
 
@@ -226,18 +228,19 @@ function show_help() {
     printf "        %bb1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_11")" "$STYLE_DEFAULT"
     printf "        %bb2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_17")" "$STYLE_DEFAULT"
     printf "        %bb3:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21")" "$STYLE_DEFAULT"
-    printf "      %bc:    build of all %bInfrastructure%b imagse%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bc:    build of all %bInfrastructure%b images%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bc1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PKI")" "$STYLE_DEFAULT"
     printf "        %bc2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_TOMCAT_9")" "$STYLE_DEFAULT"
     printf "        %bc3:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_DS")" "$STYLE_DEFAULT"
     printf "        %bc4:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_AM")" "$STYLE_DEFAULT"
     printf "        %bc5:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
     printf "        %bc6:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL")" "$STYLE_DEFAULT"
-    printf "      %bd:    build of all %bMonitoring%b imagse%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "      %bd:    build of all %bMonitoring%b images%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PROMETHEUS")" "$STYLE_DEFAULT"
     printf "        %bd2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_GRAFANA")" "$STYLE_DEFAULT"
-    printf "      %be:    build of all %bApplication%b imagse%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %be1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAR_RUNNER_21")" "$STYLE_DEFAULT"
+    printf "      %be:    build of all %bApplication%b images%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
+    printf "        %be1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21_RUNNER")" "$STYLE_DEFAULT"
+    printf "        %be2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21_POSTGRES_RUNNER")" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bs:    start the complete Docker stack%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bi1:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_BASE")" "$STYLE_DEFAULT"
@@ -335,7 +338,8 @@ if match "$COMMAND" "c5"; then docker_image_build "$(get_name "$LABEL_HCP_VAULT"
 if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
 if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_PROMETHEUS")" "$(get_path "$LABEL_PROMETHEUS")"; fi
 if match "$COMMAND" "d2"; then docker_image_build "$(get_name "$LABEL_GRAFANA")" "$(get_path "$LABEL_GRAFANA")"; fi
-if match "$COMMAND" "e1"; then docker_image_build "$(get_name "$LABEL_JAR_RUNNER_21")" "$(get_path "$LABEL_JAR_RUNNER_21")"; fi
+if match "$COMMAND" "e1"; then docker_image_build "$(get_name "$LABEL_JAVA_21_RUNNER")" "$(get_path "$LABEL_JAVA_21_RUNNER")"; fi
+if match "$COMMAND" "e2"; then docker_image_build "$(get_name "$LABEL_JAVA_21_POSTGRES_RUNNER")" "$(get_path "$LABEL_JAVA_21_POSTGRES_RUNNER")"; fi
 
 # docker runners
 if match "$COMMAND" "i1"; then docker_container_run "$(get_name "$LABEL_BASE")" "$(get_path "$LABEL_BASE")"; fi

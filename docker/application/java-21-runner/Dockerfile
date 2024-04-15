@@ -18,7 +18,7 @@ EXPOSE 8501/tcp
 
 # environment variables
 ENV IMAGE_NAME="java-21-runner" \
-    IMAGE_TAG="0.0.1-remal" \
+    IMAGE_TAG="0.0.1" \
     IMAGE_DESCRIPTION="Remal Java 21 Runner" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
