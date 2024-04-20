@@ -1,0 +1,38 @@
+PGPASSWORD=password psql --host=localhost --dbname=postgres --username=postgres --port=5432
+
+
+su postgres
+/usr/libexec/postgresql16/pg_ctl stop -D $POSTGRES_DATA
+/usr/libexec/postgresql16/pg_ctl start -D $POSTGRES_DATA
+
+
+psql -c "ALTER USER postgres PASSWORD 'password';"
+
+CREATE ROLE szuper SUPERUSER LOGIN PASSWORD 'password';
+
+
+create database mydb;
+create user myuser with encrypted password 'password';
+grant all privileges on database mydb to myuser;
+
+
+/bin/su -c "psql -c \"CREATE DATABASE baby;\"" - postgres
+/bin/su -c "psql -c \"CREATE ROLE arni LOGIN PASSWORD 'password';\"" - postgres
+/bin/su -c "psql -c \"GRANT CONNECT ON DATABASE baby TO arni;\"" - postgres
+
+PGPASSWORD=password psql --host=localhost --username=arni --dbname=baby
+
+
+GRANT CONNECT ON DATABASE bettertrack TO stage;
+GRANT USAGE ON SCHEMA public TO stage;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO stage;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO stage;
+GRANT USAGE ON ALL SEQUENCES IN SCHEMA public TO stage;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE ON SEQUENCES TO stage;
+GRANT CREATE ON SCHEMA public TO stage;
+
+
+
+; \
+    echo "host all all 0.0.0.0/0 md5" >> $POSTGRES_DATA/pg_hba.conf; \
+    echo "listen_addresses='*'" >> $POSTGRES_DATA/postgresql.conf

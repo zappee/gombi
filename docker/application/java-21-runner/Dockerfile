@@ -42,6 +42,17 @@ LABEL "com.remal.image.vendor"="Remal" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
       "com.remal.image.author"="${IMAGE_AUTHOR}"
 
+
+# fat image
+FROM base AS base-fat
+
+
+# slim image
+FROM base AS base-slim
+
+
+# final image
+FROM base-$BUILD_TYPE AS final
 # installing tools
 RUN set -ue; \
     apk add --no-cache curl
