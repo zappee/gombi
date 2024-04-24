@@ -84,10 +84,10 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
 
     # ----- Services -----------------------------------------------------------
-    hello-service-1:
+    hello-service:
         image: remal-java-21-runner:0.0.1
-        container_name: hello-service-1.hello.com
-        hostname: hello-service-1.hello.com
+        container_name: hello-service.hello.com
+        hostname: hello-service.hello.com
         depends_on:
             - consul
         ports:
@@ -100,10 +100,10 @@ services:
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/service-hello:/jar-to-run
 
-    user-service-1:
-        image: remal-java-21-runner:0.0.1
-        container_name: user-service-1.hello.com
-        hostname: user-service-1.hello.com
+    user-service:
+        image: remal-java-21-postgres-runner:0.0.1
+        container_name: user-service.hello.com
+        hostname: user-service.hello.com
         depends_on:
             - consul
         ports:
@@ -113,21 +113,6 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-        volumes:
-            - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
-
-    user-service-2:
-        image: remal-java-21-runner:0.0.1
-        container_name: user-service-2.hello.com
-        hostname: user-service-2.hello.com
-        depends_on:
-            - consul
-        ports:
-            - "14122:22"   # SSH
-            - "14123:8000" # JVM debug
-            - "14124:8443" # HTTPS
-        environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            - START_POSTGRES=true
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run

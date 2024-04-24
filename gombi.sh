@@ -79,15 +79,17 @@ function docker_container_remove {
 #    arg 1: task description string
 #    arg 2: relative directory that points to the image source code
 # ------------------------------------------------------------------------------
-function docker_container_run {
-  local title dir
+function docker_stack_up {
+  local title dir environment_file docker_compose_file
   title="$1"
   dir="$2"
+  environment_file="$WORKSPACE/docker/$ENVIRONMENT_FILE"
+  docker_compose_file="$WORKSPACE/$dir/docker-compose.yml"
 
-  printf "\n%b> starting the '%s' docker container...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
-  cd "$WORKSPACE/docker/$dir"
-  ./start.sh
-  cd "$WORKSPACE"
+  printf "\n%b> starting the '%s' docker stack...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
+  printf "%b       environment-file: '%s'%b\n" "$COLOR_YELLOW" "$environment_file" "$STYLE_DEFAULT"
+  printf "%b     docker-compose.yml: '%s'%b\n" "$COLOR_YELLOW" "$docker_compose_file" "$STYLE_DEFAULT"
+  docker-compose --env-file="$environment_file" -f "$docker_compose_file" up
 }
 
 # ------------------------------------------------------------------------------
@@ -107,16 +109,6 @@ function docker_container_show {
       --filter "label=com.remal.image.vendor=Remal" \
       --format "{{.ID}}\t{{.Names}}\t{{.Image}}\t{{.CreatedAt}}\t{{.Status}}" | sort -k 2
   fi
-}
-
-# ------------------------------------------------------------------------------
-# Starting the full Remal Docker stack.
-# ------------------------------------------------------------------------------
-function docker_containers_run {
-  printf "%b> starting the Remal Docker stack...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-  cd "$WORKSPACE/docker"
-  docker-compose --env-file="$ENVIRONMENT_FILE" up
-  cd "$WORKSPACE"
 }
 
 # ------------------------------------------------------------------------------
@@ -243,16 +235,7 @@ function show_help() {
     printf "        %be2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21_POSTGRES_RUNNER")" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bs:    start the complete Docker stack%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bi1:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_BASE")" "$STYLE_DEFAULT"
-    printf "        %bi2:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_11")" "$STYLE_DEFAULT"
-    printf "        %bi3:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_17")" "$STYLE_DEFAULT"
-    printf "        %bi4:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21")" "$STYLE_DEFAULT"
-    printf "        %bi5:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PKI")" "$STYLE_DEFAULT"
-    printf "        %bi6:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_TOMCAT_9")" "$STYLE_DEFAULT"
-    printf "        %bi7:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_DS")" "$STYLE_DEFAULT"
-    printf "        %bi8:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_AM")" "$STYLE_DEFAULT"
-    printf "        %bi9:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
-    printf "        %bj9:   start %s container%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL")" "$STYLE_DEFAULT"
+    printf "        %bi1:   start the 'hello-world' stack%b\n" "$COLOR_GREEN" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bu:    list Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "      %bv:    list Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
@@ -341,22 +324,13 @@ if match "$COMMAND" "d2"; then docker_image_build "$(get_name "$LABEL_GRAFANA")"
 if match "$COMMAND" "e1"; then docker_image_build "$(get_name "$LABEL_JAVA_21_RUNNER")" "$(get_path "$LABEL_JAVA_21_RUNNER")"; fi
 if match "$COMMAND" "e2"; then docker_image_build "$(get_name "$LABEL_JAVA_21_POSTGRES_RUNNER")" "$(get_path "$LABEL_JAVA_21_POSTGRES_RUNNER")"; fi
 
-# docker runners
-if match "$COMMAND" "i1"; then docker_container_run "$(get_name "$LABEL_BASE")" "$(get_path "$LABEL_BASE")"; fi
-if match "$COMMAND" "i2"; then docker_container_run "$(get_name "$LABEL_JAVA_11")" "$(get_path "$LABEL_JAVA_11")"; fi
-if match "$COMMAND" "i3"; then docker_container_run "$(get_name "$LABEL_JAVA_17")" "$(get_path "$LABEL_JAVA_17")"; fi
-if match "$COMMAND" "i4"; then docker_container_run "$(get_name "$LABEL_JAVA_21")" "$(get_path "$LABEL_JAVA_21")"; fi
-if match "$COMMAND" "i5"; then docker_container_run "$(get_name "$LABEL_PKI")" "$(get_path "$LABEL_PKI")"; fi
-if match "$COMMAND" "i6"; then docker_container_run "$(get_name "$LABEL_TOMCAT_9")" "$(get_path "$LABEL_TOMCAT_9")"; fi
-if match "$COMMAND" "i7"; then docker_container_run "$(get_name "$LABEL_FORGEROCK_DS")" "$(get_path "$LABEL_FORGEROCK_DS")"; fi
-if match "$COMMAND" "i8"; then docker_container_run "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
-if match "$COMMAND" "i9"; then docker_container_run "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
-if match "$COMMAND" "j1"; then docker_container_run "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
-
 # command executors
 if match "$COMMAND" "u";  then docker_image_show; fi
 if match "$COMMAND" "v";  then docker_container_show; fi
-if match "$COMMAND" "s";  then docker_containers_run; fi
+
+# docker runners
+if match "$COMMAND" "i1"; then docker_stack_up "hello-world" "modules/hello-world"; fi
+
 if match "$COMMAND" "w";  then docker_container_logs; fi
 
 show_execution_time "$START" "$#"
