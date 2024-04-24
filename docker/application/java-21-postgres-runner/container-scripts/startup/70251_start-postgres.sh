@@ -14,5 +14,5 @@
 # Main program starts here.
 # ------------------------------------------------------------------------------
 log_start "$0"
-start_postgres "$START_POSTGRES"
+start_postgres "$START_DB"
 log_end "$0"

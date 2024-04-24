@@ -16,8 +16,8 @@ log_start "$0"
   printf "export %s=\"%s\"\n" "POSTGRES_DATA" "$POSTGRES_DATA"
   printf "export %s=\"%s\"\n" "POSTGRES_LOG_DIR" "$POSTGRES_LOG_DIR"
   printf "export %s=\"%s\"\n" "POSTGRES_CONFIG" "$POSTGRES_CONFIG"
-  printf "export %s=\"%s\"\n" "POSTGRES_USER" "$POSTGRES_USER"
-  printf "export %s=\"%s\"\n" "POSTGRES_PASSWORD" "$POSTGRES_PASSWORD"
+  printf "export %s=\"%s\"\n" "DB_ADMIN_USER" "$DB_ADMIN_USER"
+  printf "export %s=\"%s\"\n" "DB_ADMIN_PASSWORD" "$DB_ADMIN_PASSWORD"
 } >> /etc/profile
 
 log_end "$0"

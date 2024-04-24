@@ -9,6 +9,24 @@
 # ******************************************************************************
 . /shared.sh
 
+# ------------------------------------------------------------------------------
+# Create a new database and a new user. It can be used by any Java application
+# running in the container.
+# ------------------------------------------------------------------------------
+function create_database_and_user() {
+  local db_user db_password
+  db_user="$1"
+  db_password="$2"
+
+  printf "%s | [INFO]  creating a new database and a user...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG]        database user: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$db_user"
+  printf "%s | [DEBUG]    database password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$db_password"
+
+  /bin/su -c "psql -c \"CREATE DATABASE $db_user;\"" - postgres
+  /bin/su -c "psql -c \"CREATE USER $db_user WITH ENCRYPTED PASSWORD '<$db_password>';\"" - postgres
+  /bin/su -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE $db_user TO $db_user;\"" - postgres
+}
+
 # ----------------------------------------------------------------------------
 # Postgres server configuration.
 # ------------------------------------------------------------------------------
@@ -55,11 +73,12 @@ function start_postgres() {
     printf "%s | [DEBUG]      postgres_log: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$postgres_log"
 
     pkill -f "$postgres_log" || true # exit code must be zero always
+    rm -f "$postgres_log"
     /bin/su -c "pg_ctl start -D $POSTGRES_DATA" - postgres
     tail -n +1 -F "$postgres_log" &
 
     wait_until_content_found "$postgres_log" "database system is ready"
-    printf "%s | [INFO]  Postgres Database server has been started...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+    printf "%s | [INFO]  Postgres Database server has been started successfully\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   else
     printf "%s | [DEBUG] skipping the startup of the Postgres database server...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   fi
@@ -76,10 +95,6 @@ function stop_postgres() {
   printf "%s | [DEBUG]     POSTGRES_DATA: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$POSTGRES_DATA"
   printf "%s | [DEBUG]      postgres_log: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$postgres_log"
 
-  pkill -f "$postgres_log" || true # exit code must be zero always
   /bin/su -c "pg_ctl stop -D $POSTGRES_DATA" - postgres
-  tail -n +1 -F "$postgres_log" &
-
-  wait_until_content_found "$postgres_log" "database system is ready"
   printf "%s | [INFO]  Postgres Database server has been stopped...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }
