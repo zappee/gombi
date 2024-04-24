@@ -174,7 +174,7 @@ function import_to_keystore() {
 # ------------------------------------------------------------------------------
 log_start() {
   local script_file="$1"
-  printf "%s | [DEBUG] ===== executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
+  printf "%s | [DEBUG] ====> executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
 }
 
 # ------------------------------------------------------------------------------
@@ -185,7 +185,7 @@ log_start() {
 # ------------------------------------------------------------------------------
 log_end() {
   local script_file="$1"
-  printf "%s | [DEBUG] ----- end of the \"%s\" script\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
+  printf "%s | [DEBUG] <---- end of the \"%s\" script\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
 }
 
 # ------------------------------------------------------------------------------
@@ -288,7 +288,7 @@ wait_for_container() {
 #    arg 1: the file to be monitored
 #    arg 1: the expected content
 # ------------------------------------------------------------------------------
-wait_until_text_found() {
+wait_until_content_found() {
   local file_to_monitor required_string pid
   file_to_monitor="$1"
   required_string="$2"
@@ -296,6 +296,6 @@ wait_until_text_found() {
 
   printf "%s | [DEBUG] monitoring the \"%s\" file and waiting until \"%s\" text appears...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_monitor" "$required_string"
   printf "%s | [DEBUG] own PID: \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$pid"
-  grep -q "$required_string" <(tail -n0 --pid "$pid" -f "$file_to_monitor")
+  grep -q "$required_string" <(tail -n +1 --pid "$pid" -F "$file_to_monitor")
   printf "%s | [DEBUG] expected content \"%s\" appeared, let's continue\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$required_string"
 }

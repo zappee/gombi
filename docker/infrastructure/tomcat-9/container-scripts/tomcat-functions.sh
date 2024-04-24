@@ -46,7 +46,7 @@ function start_tomcat() {
 
   "$CATALINA_HOME/bin/catalina.sh" start
   tail -F "$CATALINA_HOME/logs/catalina.out" &
-  wait_until_text_found "$CATALINA_HOME/logs/catalina.out" "Server startup in"
+  wait_until_content_found "$CATALINA_HOME/logs/catalina.out" "Server startup in"
   printf "%s | [INFO]  Apache Tomcat has been started...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }
 
@@ -56,6 +56,6 @@ function start_tomcat() {
 function stop_tomcat() {
   printf "%s | [INFO]  stopping Apache Tomcat...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   "$CATALINA_HOME/bin/catalina.sh" stop 15
-  wait_until_text_found "$CATALINA_HOME/logs/catalina.out" "Destroying ProtocolHandler"
+  wait_until_content_found "$CATALINA_HOME/logs/catalina.out" "Destroying ProtocolHandler"
   printf "%s | [INFO]  Apache Tomcat has been stopped\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }

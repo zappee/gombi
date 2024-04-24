@@ -27,7 +27,7 @@ function start_prometheus() {
       --storage.tsdb.path="$PROMETHEUS_STORAGE" > "$PROMETHEUS_LOG" 2>&1 &
 
   tail -F "$PROMETHEUS_LOG" &
-  wait_until_text_found "$PROMETHEUS_LOG" "Server is ready to receive web requests"
+  wait_until_content_found "$PROMETHEUS_LOG" "Server is ready to receive web requests"
   printf "%s | [INFO]  Prometheus has been started...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }
 

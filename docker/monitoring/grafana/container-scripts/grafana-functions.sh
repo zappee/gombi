@@ -102,7 +102,7 @@ function start_grafana() {
   ./bin/grafana server 2>&1 &
 
   tail -F "$grafana_log" &
-  wait_until_text_found "$grafana_log" "Adding GroupVersion featuretoggle.grafana.app"
+  wait_until_content_found "$grafana_log" "Adding GroupVersion featuretoggle.grafana.app"
   printf "%s | [INFO]  Grafana has been started...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }
 
