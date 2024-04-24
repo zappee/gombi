@@ -113,6 +113,6 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-            - START_POSTGRES=true
+            - START_DB=true
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
