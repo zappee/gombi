@@ -15,7 +15,7 @@ EXPOSE 3000/tcp
 
 # environment variables
 ENV IMAGE_NAME="remal-grafana" \
-    IMAGE_TAG="0.0.1-remal" \
+    IMAGE_TAG="0.0.1" \
     IMAGE_DESCRIPTION="Remal Grafana" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \

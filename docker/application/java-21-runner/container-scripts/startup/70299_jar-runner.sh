@@ -2,6 +2,12 @@
 # ******************************************************************************
 # Java JAR file runner.
 #
+# WARNING: Do not change the name of this file.
+# The prefix in the filename ensures, that the JAR-Runner will run at the end of
+# the startup flow. This helps for the container to run all the script files
+# from the 'startup' directory first. For example, it ensure that the Postgres
+# database server will be started before the Java application.
+#
 # Since:  February 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #

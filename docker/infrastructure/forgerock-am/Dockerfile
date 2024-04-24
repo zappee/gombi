@@ -17,7 +17,7 @@ EXPOSE 1331/tcp
 
 # environment variables
 ENV IMAGE_NAME="am-7.3" \
-    IMAGE_TAG="0.0.1-remal" \
+    IMAGE_TAG="0.0.1" \
     IMAGE_DESCRIPTION="ForgeRock Access Management Server 7.3.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \

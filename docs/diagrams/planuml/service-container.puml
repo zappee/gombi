@@ -40,42 +40,30 @@ sprite $JAR_APP      jar:archimate/physical-equipment
 sprite $JAR_MONITOR  jar:archimate/assignment
 
 
-node          "Private PKI"                    as pki                  <<$JAR_INFRA>> <<STYLE_INFRA>>
-node          "Hashicorp Consul Agent\nServer" as consul_server        <<$JAR_INFRA>> <<STYLE_INFRA>>
-node          "Java Runner"                    as java_runner_1        <<$JAR_INFRA>> <<STYLE_INFRA>> {
-   component  "Hashicorp Consul Agent\nClient" as consul_client_1      <<$JAR_INFRA>> <<STYLE_INFRA>>
-   component  "User Service\nJAR"              as u_service            <<$JAR_APP>>   <<STYLE_APP>>
-   portin     "rest"                           as u_service_endpoint_1
-   portin     "rest"                           as u_service_endpoint_2
-   portin     "rest"                           as u_service_endpoint_x
+node          "Java Runner"                    as java_runner     <<$JAR_INFRA>>   <<STYLE_INFRA>> {
+   component  "User Service\nJAR"              as rest_service    <<$JAR_APP>>     <<STYLE_APP>>
+   component  "Hashicorp Consul Agent\nClient" as consul_client   <<$JAR_INFRA>>   <<STYLE_INFRA>>
+   component  "PostgreSQL"                     as postgresql      <<$JAR_APP>>     <<STYLE_INFRA>>
+   portin     "GET\nrest"                      as rest_service_i1
+   portin     "POST\nrest"                     as rest_service_i2
+   portin     "POST\nrest"                     as rest_service_ix
 }
-node          "Java    Runner"                 as java_runner_2        <<$JAR_INFRA>> <<STYLE_INFRA>> {
-   component  "Hashicorp Consul Agent\nClient" as consul_client_2      <<$JAR_INFRA>> <<STYLE_INFRA>>
-   component  "Payment Service\nJAR"           as p_service            <<$JAR_APP>>   <<STYLE_APP>>
-   portin     "rest"                           as p_service_endpoint_1
-   portin     "rest"                           as p_service_endpoint_2
-   portin     "rest"                           as p_service_endpoint_x
-}
-node          "Prometheus"                     as prometheus           <<$JAR_MONITOR>> <<STYLE_MONITOR>>
-node          "Gafana"                         as gafana               <<$JAR_MONITOR>> <<STYLE_MONITOR>>
+node          "Prometheus"                     as prometheus      <<$JAR_MONITOR>> <<STYLE_MONITOR>>
+node          "Gafana"                         as gafana          <<$JAR_MONITOR>> <<STYLE_MONITOR>>
+node          "Private PKI"                    as pki             <<$JAR_INFRA>>   <<STYLE_INFRA>>
+node          "Hashicorp Consul Agent\nServer" as consul_server   <<$JAR_INFRA>>   <<STYLE_INFRA>>
 
 
-consul_server      <--> pki                  : generate\ncertificate
-java_runner_1      <--> pki                  : generate\ncertificate
-   consul_client_1 ---> consul_server
-   u_service        --> consul_client_1      : service discovery\\\ndistributed configuration
-   u_service        --> u_service_endpoint_1
-   u_service        --> u_service_endpoint_2
-   u_service        --> u_service_endpoint_x
-java_runner_2      <--> pki                  : generate\ncertificate
-   consul_client_2 ---> consul_server
-   p_service        --> consul_client_2      : service discovery\\\ndistributed configuration
-   p_service        --> p_service_endpoint_1
-   p_service        --> p_service_endpoint_2
-   p_service        --> p_service_endpoint_x
-u_service          <..  prometheus
-p_service          <..  prometheus
-prometheus         <..  gafana
-prometheus          ..> consul_server        : get list\nof\nservice hosts
+consul_server    <--> pki             : generate\ncertificate
+java_runner      <--> pki             : generate\ncertificate
+   consul_client  --> consul_server
+   rest_service  <--> postgresql
+   rest_service   --> consul_client   : service discovery\\\ndistributed configuration
+   rest_service   --> rest_service_i1
+   rest_service   --> rest_service_i2
+   rest_service   --> rest_service_ix
+prometheus       ...> rest_service
+gafana            ..> prometheus
+prometheus        ..> consul_server   : get the URL\n of services\nto monitor
 
 @enduml

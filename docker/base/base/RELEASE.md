@@ -14,6 +14,11 @@ All notable changes to this project will be documented in this file.
 * execution of script files from `/docker.startup` directory when the container starts
 * `shutdown-actions.sh` script, called before container stops completely
 
+## [0.0.2] - 24/Apr/2024
+#### Modified
+* Improvement in the `wait_until_text_found` method of the `shared.sh` script.
+* Improvement in log.
+
 <a href="https://trackgit.com">
   <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
 </a>

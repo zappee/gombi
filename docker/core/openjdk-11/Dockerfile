@@ -14,7 +14,7 @@ EXPOSE 1331/tcp
 
 # environment variables
 ENV IMAGE_NAME="openjdk-11" \
-    IMAGE_TAG="0.0.1-remal" \
+    IMAGE_TAG="0.0.1" \
     IMAGE_DESCRIPTION="Remal Base image" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \

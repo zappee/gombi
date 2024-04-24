@@ -15,7 +15,7 @@ EXPOSE 8200/tcp
 
 # environment variables
 ENV IMAGE_NAME="vault" \
-    IMAGE_TAG="0.0.1-remal" \
+    IMAGE_TAG="0.0.1" \
     IMAGE_DESCRIPTION="HashiCorp Vault 1.15.0" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
