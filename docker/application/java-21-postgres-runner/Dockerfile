@@ -25,6 +25,8 @@ ENV IMAGE_NAME="remal-java-21-postgres-runner" \
     POSTGRES_DATA="/var/lib/postgresql/data" \
     POSTGRES_LOG_DIR="/var/log/postgresql" \
     POSTGRES_CONFIG="/var/lib/postgresql/data/postgresql.conf" \
+    POSTGRES_USER="postgres" \
+    POSTGRES_PASSWORD="password" \
     START_POSTGRES="false"
 
 # set image metadata
@@ -64,3 +66,4 @@ COPY --chown=postgres:postgres config/*.conf $POSTGRES_DATA/
 USER root:root
 COPY container-scripts/init/* /docker.init/
 COPY container-scripts/startup/* /docker.startup/
+COPY container-scripts/postgres-functions.sh /

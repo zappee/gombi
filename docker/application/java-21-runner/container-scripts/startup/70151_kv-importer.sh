@@ -13,24 +13,18 @@
 
 # ------------------------------------------------------------------------------
 # Checks if the provided files exist or not.
-# If the files doe not exist then if exits from the script.
+# If the files doe not exist then it exits from the script.
 #
 # Arguments
 #    arg 1:  path to the file that must exists
-#    arg 2:  path to the file that must exists
 # ------------------------------------------------------------------------------
-check_files() {
-  local file_1_to_check file_2_to_check
-  file_1_to_check="$1"
-  file_2_to_check="$2"
+file_exists() {
+  local file_to_check
+  file_to_check="$1"
 
-  if [ ! -f "$file_1_to_check" ]; then
-    printf "%s | [ERROR] file \"%s\" not found\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_1_to_check"
-    exit 0
-  fi
-
-  if [ ! -f "$file_2_to_check" ]; then
-    printf "%s | [ERROR] file \"%s\" not found\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_2_to_check"
+  if [ ! -f "$file_to_check" ]; then
+    printf "%s | [ERROR] file \"%s\" not found\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_check"
+    log_end "$0"
     exit 0
   fi
 }
@@ -161,7 +155,8 @@ APP_PROP_FILE="$UNPACK_DIR/BOOT-INF/classes/application.properties"
 printf "%s | [INFO]  inserting key/values into Hashicorp Consul...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 get_first_jar "$JAR_HOME" JAR_FILE
 unpack_jar "$JAR_FILE" "$UNPACK_DIR"
-check_files "$KV_PROP_FILE" "$APP_PROP_FILE"
+file_exists "$KV_PROP_FILE"
+file_exists "$APP_PROP_FILE"
 get_kv_context "$APP_PROP_FILE" CONTEXT
 insert_kv "$KV_PROP_FILE" "$CONTEXT"
 cleanup_workspace "$UNPACK_DIR"
