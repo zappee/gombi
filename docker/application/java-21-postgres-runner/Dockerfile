@@ -23,6 +23,8 @@ ENV IMAGE_NAME="remal-java-21-postgres-runner" \
     \
     POSTGRES_HOME="/var/lib/postgresql" \
     POSTGRES_DATA="/var/lib/postgresql/data" \
+    POSTGRES_LOG_DIR="/var/log/postgresql" \
+    POSTGRES_CONFIG="/var/lib/postgresql/data/postgresql.conf" \
     START_POSTGRES="false"
 
 # set image metadata
