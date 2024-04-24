@@ -45,7 +45,7 @@ function start_tomcat() {
   printf "%s | [DEBUG]    CATALINA_OPTS: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "${CATALINA_OPTS:-}"
 
   "$CATALINA_HOME/bin/catalina.sh" start
-  tail -F "$CATALINA_HOME/logs/catalina.out" &
+  tail -n +1 -F "$CATALINA_HOME/logs/catalina.out" &
   wait_until_content_found "$CATALINA_HOME/logs/catalina.out" "Server startup in"
   printf "%s | [INFO]  Apache Tomcat has been started...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }

@@ -39,7 +39,7 @@ function show_audit_log() {
   printf "%s | [INFO]  showing the  HashiCorp Vault audit log...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_AUDIT_LOG"
 
   kill "$(ps aux | grep "[^]]$VAULT_AUDIT_LOG" | awk '{print $1}')" 2>/dev/null || true
-  tail -F "$VAULT_AUDIT_LOG" &
+  tail -n +1 -F "$VAULT_AUDIT_LOG" &
 }
 
 # ----------------------------------------------------------------------------
