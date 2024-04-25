@@ -18,6 +18,9 @@ log_start "$0"
   printf "export %s=\"%s\"\n" "POSTGRES_CONFIG" "$POSTGRES_CONFIG"
   printf "export %s=\"%s\"\n" "DB_ADMIN_USER" "$DB_ADMIN_USER"
   printf "export %s=\"%s\"\n" "DB_ADMIN_PASSWORD" "$DB_ADMIN_PASSWORD"
+  printf "export %s=\"%s\"\n" "DB_APP_DATABASE" "$DB_APP_DATABASE"
+  printf "export %s=\"%s\"\n" "DB_APP_USER" "$DB_APP_USER"
+  printf "export %s=\"%s\"\n" "DB_APP_PASSWORD" "$DB_APP_PASSWORD"
 } >> /etc/profile
 
 log_end "$0"

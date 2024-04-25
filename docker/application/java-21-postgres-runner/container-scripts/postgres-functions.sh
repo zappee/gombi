@@ -10,21 +10,28 @@
 . /shared.sh
 
 # ------------------------------------------------------------------------------
-# Create a new database and a new user. It can be used by any Java application
+# Create a new database and a new user. It can be used by the Java application
 # running in the container.
+#
+# Arguments:
+#    arg 1: database name
+#    arg 2: username
+#    arg 3: password for the user
 # ------------------------------------------------------------------------------
 function create_database_and_user() {
-  local db_user db_password
-  db_user="$1"
-  db_password="$2"
+  local database user password
+  database="$1"
+  user="$2"
+  password="$3"
 
   printf "%s | [INFO]  creating a new database and a user...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]        database user: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$db_user"
-  printf "%s | [DEBUG]    database password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$db_password"
+  printf "%s | [DEBUG]            database name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$database"
+  printf "%s | [DEBUG]                     user: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$user"
+  printf "%s | [DEBUG]    password for the user: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$password"
 
-  /bin/su -c "psql -c \"CREATE DATABASE $db_user;\"" - postgres
-  /bin/su -c "psql -c \"CREATE USER $db_user WITH ENCRYPTED PASSWORD '<$db_password>';\"" - postgres
-  /bin/su -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE $db_user TO $db_user;\"" - postgres
+  /bin/su -c "psql -c \"CREATE USER $user WITH PASSWORD '$password';\"" - postgres
+  /bin/su -c "psql -c \"CREATE DATABASE $database OWNER $user;\"" - postgres
+  /bin/su -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE $database TO $user;\"" - postgres
 }
 
 # ----------------------------------------------------------------------------
@@ -39,18 +46,22 @@ function postgres_configuration() {
 }
 
 # ------------------------------------------------------------------------------
-# Set the password for the given database user.
+# Set the password for the given user.
+#
+# Arguments:
+#    arg 1: username
+#    arg 2: password for the user
 # ------------------------------------------------------------------------------
 function set_database_password() {
-  local db_user db_password
-  db_user="$1"
-  db_password="$2"
+  local user password
+  user="$1"
+  password="$2"
 
   printf "%s | [INFO]  setting up the password for a database user...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]        database user: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$db_user"
-  printf "%s | [DEBUG]    database password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$db_password"
+  printf "%s | [DEBUG]        database user: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$user"
+  printf "%s | [DEBUG]    database password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$password"
 
-  /bin/su -c "psql -c \"ALTER USER $db_user PASSWORD '$db_password';\"" - postgres
+  /bin/su -c "psql -c \"ALTER USER $user PASSWORD '$password';\"" - postgres
 }
 
 # ------------------------------------------------------------------------------

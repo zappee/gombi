@@ -18,7 +18,7 @@ log_start "$0"
 postgres_configuration
 start_postgres "true"
 set_database_password "$DB_ADMIN_USER" "$DB_ADMIN_PASSWORD"
-create_database_and_user "$DB_APP_USER" "$DB_APP_PASSWORD"
+create_database_and_user "$DB_APP_DATABASE" "$DB_APP_USER" "$DB_APP_PASSWORD"
 stop_postgres
 
 log_end "$0"
