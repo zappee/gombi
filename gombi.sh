@@ -83,7 +83,7 @@ function docker_stack_up {
   local title dir environment_file docker_compose_file
   title="$1"
   dir="$2"
-  environment_file="$WORKSPACE/docker/$ENVIRONMENT_FILE"
+  environment_file="$WORKSPACE/$dir/$ENVIRONMENT_FILE"
   docker_compose_file="$WORKSPACE/$dir/docker-compose.yml"
 
   printf "\n%b> starting the '%s' docker stack...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
