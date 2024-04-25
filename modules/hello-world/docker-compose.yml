@@ -59,7 +59,10 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-            - START_POSTGRES=true
+            - START_DB=true
+            - DB_APP_DATABASE=default_db
+            - DB_APP_USER=application
+            - DB_APP_PASSWORD=password
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
 
@@ -78,7 +81,10 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-            - START_POSTGRES=true
+            - START_DB=true
+            - DB_APP_DATABASE=default_db
+            - DB_APP_USER=application
+            - DB_APP_PASSWORD=password
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
 
