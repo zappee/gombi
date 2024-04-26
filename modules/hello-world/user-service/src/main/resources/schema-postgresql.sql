@@ -7,7 +7,9 @@ CREATE SEQUENCE IF NOT EXISTS account_id_seq
 
 CREATE TABLE IF NOT EXISTS account (
     id integer NOT NULL DEFAULT nextval('account_id_seq'),
-    name varchar(200) NOT NULL,
+    username varchar(100) NOT NULL,
+    name varchar(100),
+    email varchar(200),
     PRIMARY KEY (id)
 );
 
