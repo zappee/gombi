@@ -1,6 +1,6 @@
 # project files
 *.class
-target/**
+**/target/*
 
 # custom project files
 backups/**
