@@ -27,11 +27,11 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
 
-    # ----- Hello-Service-1 ----------------------------------------------------
-    hello-service-1:
+    # ----- Echo-Service-1 ----------------------------------------------------
+    echo-service-1:
         image: remal-java-21-runner:0.0.1
-        container_name: hello-service-1.hello.com
-        hostname: hello-service-1.hello.com
+        container_name: echo-service-1.hello.com
+        hostname: echo-service-1.hello.com
         depends_on:
             - consul
         ports:
@@ -42,9 +42,9 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/volumes/service-hello:/jar-to-run
+            - $HOME/dev/workspace/java/remal/volumes/echo-service:/jar-to-run
 
-    # ----- Usr-Service-1 ------------------------------------------------------
+    # ----- User-Service-1 -----------------------------------------------------
     user-service-1:
         image: remal-java-21-postgres-runner:0.0.1
         container_name: user-service-1.hello.com
@@ -64,7 +64,7 @@ services:
             - DB_APP_USER=application
             - DB_APP_PASSWORD=password
         volumes:
-            - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
+            - $HOME/dev/workspace/java/remal/volumes/user-service:/jar-to-run
 
     # ----- User-Service-2 -----------------------------------------------------
     user-service-2:
@@ -86,7 +86,7 @@ services:
             - DB_APP_USER=application
             - DB_APP_PASSWORD=password
         volumes:
-            - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
+            - $HOME/dev/workspace/java/remal/volumes/user-service:/jar-to-run
 
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:

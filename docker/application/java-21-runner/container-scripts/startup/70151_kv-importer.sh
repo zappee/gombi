@@ -52,8 +52,8 @@ cleanup_workspace() {
 #
 # For example, if
 #       - java code: @Value("${app.hello}")
-#       - application.properties: spring.application.name=hello-service
-#    then the full path of the key is config/hello-service/app.hello
+#       - application.properties: spring.application.name=echo-service
+#    then the full path of the key is config/echo-service/app.hello
 #
 # Arguments
 #    arg 1: property file

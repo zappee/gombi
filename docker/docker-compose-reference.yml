@@ -84,10 +84,10 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
 
     # ----- Services -----------------------------------------------------------
-    hello-service:
+    echo-service:
         image: remal-java-21-runner:0.0.1
-        container_name: hello-service.hello.com
-        hostname: hello-service.hello.com
+        container_name: echo-service.hello.com
+        hostname: echo-service.hello.com
         depends_on:
             - consul
         ports:
