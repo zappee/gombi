@@ -1,0 +1,117 @@
+version: '3'
+services:
+    # ----- Private Certificate Authority Server -------------------------------
+    pki:
+        image: remal-private-ca:0.0.1
+        container_name: pki.${DOMAIN_NAME}
+        hostname: pki.${DOMAIN_NAME}
+        ports:
+            - "13012:22"   # SSH
+        environment:
+            - EASYRSA_REQ_CN=${DOMAIN_NAME}
+            - EASYRSA_REQ_COUNTRY=${EASYRSA_REQ_COUNTRY}
+            - EASYRSA_REQ_PROVINCE=${EASYRSA_REQ_PROVINCE}
+            - EASYRSA_REQ_CITY=${EASYRSA_REQ_CITY}
+            - EASYRSA_REQ_ORG=${EASYRSA_REQ_ORG}
+
+    # ----- Hashicorp Consul ---------------------------------------------------
+    consul:
+        image: remal-consul:1.1.0
+        container_name: consul.hello.com
+        hostname: consul.hello.com
+        depends_on:
+            - pki
+        ports:
+            - "13062:22"   # SSH
+            - "13063:8501" # Consul web console, HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+
+    # ----- Echo-Service-1 ----------------------------------------------------
+    echo-service-1:
+        image: remal-java-21-runner:0.0.1
+        container_name: echo-service-1.hello.com
+        hostname: echo-service-1.hello.com
+        depends_on:
+            - consul
+        ports:
+            - "14212:22"   # SSH
+            - "14213:8000" # JVM debug
+            - "14214:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+        volumes:
+            - $HOME/dev/workspace/java/remal/volumes/echo-service:/jar-to-run
+
+    # ----- User-Service-1 -----------------------------------------------------
+    user-service-1:
+        image: remal-java-21-postgres-runner:0.0.1
+        container_name: user-service-1.hello.com
+        hostname: user-service-1.hello.com
+        depends_on:
+            - consul
+        ports:
+            - "14112:22"   # SSH
+            - "14113:8000" # JVM debug
+            - "14114:8443" # HTTPS
+            - "14115:5432" # Postgres
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            - START_DB=true
+            - DB_APP_DATABASE=default_db
+            - DB_APP_USER=application
+            - DB_APP_PASSWORD=password
+        volumes:
+            - $HOME/dev/workspace/java/remal/volumes/user-service:/jar-to-run
+
+    # ----- User-Service-2 -----------------------------------------------------
+    user-service-2:
+        image: remal-java-21-postgres-runner:0.0.1
+        container_name: user-service-2.hello.com
+        hostname: user-service-2.hello.com
+        depends_on:
+            - consul
+        ports:
+            - "14122:22"   # SSH
+            - "14123:8000" # JVM debug
+            - "14124:8443" # HTTPS
+            - "14125:5432" # Postgres
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            - START_DB=true
+            - DB_APP_DATABASE=default_db
+            - DB_APP_USER=application
+            - DB_APP_PASSWORD=password
+        volumes:
+            - $HOME/dev/workspace/java/remal/volumes/user-service:/jar-to-run
+
+    # ----- Monitoring: Prometheus ---------------------------------------------
+    prometheus:
+        image: remal-prometheus:0.0.1
+        container_name: prometheus.hello.com
+        hostname: prometheus.hello.com
+        depends_on:
+            - consul
+        ports:
+            - "13072:22"   # SSH
+            - "13073:9090" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_HOST=consul.${DOMAIN_NAME}
+
+    # ----- Monitoring: Grafana ------------------------------------------------
+    grafana:
+        image: remal-grafana:0.0.1
+        container_name: grafana.hello.com
+        hostname: grafana.hello.com
+        depends_on:
+            - prometheus
+        ports:
+            - "13082:22"   # SSH
+            - "13083:3000" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - PROMETHEUS_HOST=prometheus.${DOMAIN_NAME}

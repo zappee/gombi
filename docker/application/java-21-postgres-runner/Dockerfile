@@ -25,9 +25,14 @@ ENV IMAGE_NAME="remal-java-21-postgres-runner" \
     POSTGRES_DATA="/var/lib/postgresql/data" \
     POSTGRES_LOG_DIR="/var/log/postgresql" \
     POSTGRES_CONFIG="/var/lib/postgresql/data/postgresql.conf" \
-    POSTGRES_USER="postgres" \
-    POSTGRES_PASSWORD="password" \
-    START_POSTGRES="false"
+    START_DB="false" \
+    \
+    DB_ADMIN_USER="postgres" \
+    DB_ADMIN_PASSWORD="password" \
+    \
+    DB_APP_DATABASE="app" \
+    DB_APP_USER="application" \
+    DB_APP_PASSWORD="password"
 
 # set image metadata
 LABEL "com.remal.image.vendor"="Remal" \

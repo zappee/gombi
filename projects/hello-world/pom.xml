@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+  ~
+  ~  Since:  February 2024
+  ~  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+  ~
+  ~  Description:
+  ~     Application POM.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>c</groupId>
+    <artifactId>hello</artifactId>
+    <version>0.1.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>hello-commons</module>
+        <module>echo-service</module>
+        <module>user-service</module>
+    </modules>
+</project>
