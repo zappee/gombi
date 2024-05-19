@@ -17,8 +17,8 @@ services:
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
         image: remal-consul:1.1.0
-        container_name: consul.hello.com
-        hostname: consul.hello.com
+        container_name: consul.${DOMAIN_NAME}
+        hostname: consul.${DOMAIN_NAME}
         depends_on:
             - pki
         ports:
@@ -30,8 +30,8 @@ services:
     # ----- Echo-Service-1 ----------------------------------------------------
     echo-service-1:
         image: remal-java-21-runner:0.0.1
-        container_name: echo-service-1.hello.com
-        hostname: echo-service-1.hello.com
+        container_name: echo-service-1.${DOMAIN_NAME}
+        hostname: echo-service-1.${DOMAIN_NAME}
         depends_on:
             - consul
         ports:
@@ -47,8 +47,8 @@ services:
     # ----- User-Service-1 -----------------------------------------------------
     user-service-1:
         image: remal-java-21-postgres-runner:0.0.1
-        container_name: user-service-1.hello.com
-        hostname: user-service-1.hello.com
+        container_name: user-service-1.${DOMAIN_NAME}
+        hostname: user-service-1.${DOMAIN_NAME}
         depends_on:
             - consul
         ports:
@@ -69,8 +69,8 @@ services:
     # ----- User-Service-2 -----------------------------------------------------
     user-service-2:
         image: remal-java-21-postgres-runner:0.0.1
-        container_name: user-service-2.hello.com
-        hostname: user-service-2.hello.com
+        container_name: user-service-2.${DOMAIN_NAME}
+        hostname: user-service-2.${DOMAIN_NAME}
         depends_on:
             - consul
         ports:
@@ -91,8 +91,8 @@ services:
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:
         image: remal-prometheus:0.0.1
-        container_name: prometheus.hello.com
-        hostname: prometheus.hello.com
+        container_name: prometheus.${DOMAIN_NAME}
+        hostname: prometheus.${DOMAIN_NAME}
         depends_on:
             - consul
         ports:
@@ -105,8 +105,8 @@ services:
     # ----- Monitoring: Grafana ------------------------------------------------
     grafana:
         image: remal-grafana:0.0.1
-        container_name: grafana.hello.com
-        hostname: grafana.hello.com
+        container_name: grafana.${DOMAIN_NAME}
+        hostname: grafana.${DOMAIN_NAME}
         depends_on:
             - prometheus
         ports:
