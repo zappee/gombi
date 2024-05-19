@@ -72,6 +72,7 @@ jar_runner() {
     set +e
     until eval "$health_check_cmd"; do sleep 0.5 ; done
     set -e
+    printf "%s | [INFO]  the Java application is up and running\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   fi
 }
 
