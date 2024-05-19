@@ -329,7 +329,7 @@ if match "$COMMAND" "u";  then docker_image_show; fi
 if match "$COMMAND" "v";  then docker_container_show; fi
 
 # docker runners
-if match "$COMMAND" "i1"; then docker_stack_up "hello-world" "modules/hello-world"; fi
+if match "$COMMAND" "i1"; then docker_stack_up "hello-world" "projects"; fi
 
 if match "$COMMAND" "w";  then docker_container_logs; fi
 
