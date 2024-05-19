@@ -13,37 +13,59 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.remal.gombi.hello</groupId>
-    <artifactId>hello-commons</artifactId>
-    <version>0.0.1</version>
-    <name>hello-commons</name>
-    <description>Hello REST service.</description>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.5</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.remal.hello</groupId>
+    <artifactId>user-service</artifactId>
+    <version>0.0.2</version>
+    <name>user-service</name>
+    <description>User REST service.</description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <jakarta.servlet.api.version>6.0.0</jakarta.servlet.api.version>
         <lombok.version>1.18.30</lombok.version>
         <micrometer.version>1.12.4</micrometer.version>
+        <postgresql.version>42.7.3</postgresql.version>
+        <remal.hello.commons.version>0.0.1</remal.hello.commons.version>
         <spring.cloud.starter.consul.version>4.1.0</spring.cloud.starter.consul.version>
-        <spring.starter.version>3.2.4</spring.starter.version>
     </properties>
 
     <dependencies>
         <!-- spring -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-            <version>${spring.starter.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
             <version>${spring.cloud.starter.consul.version}</version>
-            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-config</artifactId>
+            <version>${spring.cloud.starter.consul.version}</version>
+        </dependency>
+        <!-- remal dependencies -->
+        <dependency>
+            <groupId>com.remal.hello</groupId>
+            <artifactId>hello-commons</artifactId>
+            <version>${remal.hello.commons.version}</version>
         </dependency>
         <!-- lombok library -->
         <dependency>
@@ -57,24 +79,25 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>${micrometer.version}</version>
-            <scope>provided</scope>
         </dependency>
-        <!-- Servlet API -->
+        <!-- database -->
         <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>${jakarta.servlet.api.version}</version>
-            <scope>provided</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- generate build information + executable JAR -->
+            <!-- generate build information and an executable JAR -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.starter.version}</version>
                 <executions>
                     <execution>
                         <goals>

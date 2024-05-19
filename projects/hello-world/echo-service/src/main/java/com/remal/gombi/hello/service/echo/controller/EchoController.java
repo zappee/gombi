@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Slf4j
 @RestController
 @RequestMapping("/api")
-public class HelloController {
+public class EchoController {
 
     private final ConfigurationService configuration;
     private final UserService userService;
@@ -37,19 +37,19 @@ public class HelloController {
      *
      * @param userService object to be injected by spring
      */
-    public HelloController(UserService userService,
-                           ConfigurationService configuration) {
+    public EchoController(UserService userService,
+                          ConfigurationService configuration) {
         this.userService = userService;
         this.configuration = configuration;
     }
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
 
-    @GetMapping("hello")
+    @GetMapping("echo")
     @LogCall
-    public String hello() {
+    public String echo() {
         AtomicReference<String> result = new AtomicReference<>();
-        MicrometerBuilder.getRestResponseTimeTimer("hello").record(() -> {
+        MicrometerBuilder.getRestResponseTimeTimer("echo").record(() -> {
             String username = configuration.getUsername();
             User user = userService.getUser(username);
             String description = (Math.random() < 0.5) ? configuration.getDescription() : null;
