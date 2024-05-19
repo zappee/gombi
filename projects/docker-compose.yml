@@ -27,7 +27,7 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
 
-    # ----- Echo-Service-1 ----------------------------------------------------
+    # ----- echo-service-1 ----------------------------------------------------
     echo-service-1:
         image: remal-java-21-runner:0.0.1
         container_name: echo-service-1.${DOMAIN_NAME}
@@ -44,7 +44,7 @@ services:
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/echo-service:/jar-to-run
 
-    # ----- User-Service-1 -----------------------------------------------------
+    # ----- user-service-1 -----------------------------------------------------
     user-service-1:
         image: remal-java-21-postgres-runner:0.0.1
         container_name: user-service-1.${DOMAIN_NAME}
@@ -66,7 +66,7 @@ services:
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/user-service:/jar-to-run
 
-    # ----- User-Service-2 -----------------------------------------------------
+    # ----- user-service-2 -----------------------------------------------------
     user-service-2:
         image: remal-java-21-postgres-runner:0.0.1
         container_name: user-service-2.${DOMAIN_NAME}
