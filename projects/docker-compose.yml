@@ -42,7 +42,7 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
-            - $HOME/dev/workspace/java/remal/volumes/echo-service:/jar-to-run
+            - $HOME/dev/workspace/java/remal/bin/echo-service:/jar-to-run
 
     # ----- user-service-1 -----------------------------------------------------
     user-service-1:
@@ -64,7 +64,7 @@ services:
             - DB_APP_USER=application
             - DB_APP_PASSWORD=password
         volumes:
-            - $HOME/dev/workspace/java/remal/volumes/user-service:/jar-to-run
+            - $HOME/dev/workspace/java/remal/bin/user-service:/jar-to-run
 
     # ----- user-service-2 -----------------------------------------------------
     user-service-2:
@@ -86,7 +86,7 @@ services:
             - DB_APP_USER=application
             - DB_APP_PASSWORD=password
         volumes:
-            - $HOME/dev/workspace/java/remal/volumes/user-service:/jar-to-run
+            - $HOME/dev/workspace/java/remal/bin/user-service:/jar-to-run
 
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:
