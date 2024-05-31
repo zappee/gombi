@@ -92,6 +92,7 @@ function start_postgres() {
     printf "%s | [INFO]  Postgres Database server has been started successfully\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   else
     printf "%s | [DEBUG] skipping the startup of the Postgres database server...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+    printf "%s | [DEBUG] to start the Postgres database server, use 'START_DB=true' in the 'docker-compose.yml' file\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   fi
 }
 
