@@ -1,7 +1,7 @@
 {
   "bootstrap": false,
   "server": false,
-  "log_level": "info",
+  "log_level": "error",
   "datacenter": "consul",
   "encrypt": "f502FprfDugOXiWqZUJpyAwgeXH+6qs6VNFjPxX8TgU=",
   "bind_addr": "0.0.0.0",
