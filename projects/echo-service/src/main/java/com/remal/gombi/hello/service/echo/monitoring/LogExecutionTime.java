@@ -7,7 +7,7 @@
  *  Description:
  *     Custom annotation to log the execution time of a method.
  */
-package com.remal.gombi.hello.service.user.monitoring;
+package com.remal.gombi.hello.service.echo.monitoring;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -16,6 +16,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LogCall {
+public @interface LogExecutionTime {
     String[] targets() default {"log", "dashboard"};
 }

@@ -9,7 +9,7 @@
  */
 package com.remal.gombi.hello.service.echo.controller;
 
-import com.remal.gombi.hello.service.echo.monitoring.LogCall;
+import com.remal.gombi.hello.service.echo.monitoring.LogExecutionTime;
 import com.remal.gombi.hello.service.echo.service.ConfigurationService;
 import com.remal.gombi.hello.service.echo.service.UserService;
 import com.remal.gombi.hello.commons.model.User;
@@ -46,7 +46,7 @@ public class EchoController {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
 
     @GetMapping("echo")
-    @LogCall
+    @LogExecutionTime
     public String echo() {
         AtomicReference<String> result = new AtomicReference<>();
         MicrometerBuilder.getRestResponseTimeTimer("echo").record(() -> {
@@ -64,7 +64,7 @@ public class EchoController {
     }
 
     @GetMapping("joke")
-    @LogCall
+    @LogExecutionTime
     public String joke() {
         AtomicReference<String> result = new AtomicReference<>();
         MicrometerBuilder.getRestResponseTimeTimer("joke").record(() ->

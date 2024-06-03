@@ -22,14 +22,14 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Slf4j
-public class LogCallAspect extends MethodCallLogger {
+public class ExecutionTimeAspect extends MethodCallLogger {
 
     @Autowired
     HttpServletRequest request;
 
-    @Around("@annotation(com.remal.gombi.hello.service.echo.monitoring.LogCall)")
-    public Object log(ProceedingJoinPoint joinPoint) throws Throwable {
-        LogCall lc = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(LogCall.class);
-        return logMethodCall(joinPoint, lc.targets(), request);
+    @Around("@annotation(com.remal.gombi.hello.service.echo.monitoring.LogExecutionTime)")
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        LogExecutionTime annotation = ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(LogExecutionTime.class);
+        return logMethodCall(joinPoint, annotation.targets(), request);
     }
 }

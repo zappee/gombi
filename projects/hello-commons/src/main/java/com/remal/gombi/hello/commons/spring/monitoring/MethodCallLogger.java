@@ -25,7 +25,7 @@ public class MethodCallLogger {
     public Object logMethodCall(ProceedingJoinPoint joinPoint,
                                 String[] targets,
                                 HttpServletRequest request) throws Throwable {
-        Predicate< String > targetLog = word -> word.equals("log");
+        Predicate< String > targetLog = word -> word.equals("slf4j");
         if (log.isDebugEnabled() && Arrays.stream(targets).anyMatch(targetLog)) {
             String methodName = joinPoint.getSignature().toShortString();
             log.debug("calling {} method...", methodName);
@@ -68,7 +68,7 @@ public class MethodCallLogger {
         for (int i = 0; i < argumentNames.length; i++) {
             String argumentName = argumentNames[i];
             Object argumentValue = argumentValues[i];
-            sb.append(String.format("[arg-name: \"%s\", arg-value: \"%s\"]", argumentName, argumentValue.toString()));
+            sb.append(String.format("[name: \"%s\", value: \"%s\"]", argumentName, argumentValue.toString()));
             if (i < argumentNames.length-1) {
                 sb.append(", ");
             }
