@@ -28,7 +28,7 @@
         <lombok.version>1.18.32</lombok.version>
         <micrometer.version>1.13.0</micrometer.version>
         <spring.cloud.starter.consul.version>4.1.1</spring.cloud.starter.consul.version>
-        <spring.boot.version>3.2.5</spring.boot.version>
+        <spring.boot.version>3.3.0</spring.boot.version>
     </properties>
 
     <dependencies>
