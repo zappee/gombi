@@ -9,12 +9,14 @@
  */
 package com.remal.gombi.hello.service.echo.controller;
 
+import com.remal.gombi.hello.commons.model.User;
+import com.remal.gombi.hello.service.echo.micrometer.MicrometerBuilder;
 import com.remal.gombi.hello.service.echo.monitoring.LogExecutionTime;
 import com.remal.gombi.hello.service.echo.service.ConfigurationService;
 import com.remal.gombi.hello.service.echo.service.UserService;
-import com.remal.gombi.hello.commons.model.User;
-import com.remal.gombi.hello.commons.spring.monitoring.MicrometerBuilder;
+import io.micrometer.core.instrument.Timer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -31,6 +33,7 @@ public class EchoController {
 
     private final ConfigurationService configuration;
     private final UserService userService;
+    private final MicrometerBuilder micrometerBuilder;
 
     /**
      * Constructor with object injections.
@@ -38,9 +41,11 @@ public class EchoController {
      * @param userService object to be injected by spring
      */
     public EchoController(UserService userService,
-                          ConfigurationService configuration) {
+                          ConfigurationService configuration,
+                          MicrometerBuilder micrometerBuilder) {
         this.userService = userService;
         this.configuration = configuration;
+        this.micrometerBuilder = micrometerBuilder;
     }
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
@@ -48,29 +53,46 @@ public class EchoController {
     @GetMapping("echo")
     @LogExecutionTime
     public String echo() {
-        AtomicReference<String> result = new AtomicReference<>();
-        MicrometerBuilder.getRestResponseTimeTimer("echo").record(() -> {
-            String userId = "1";
-            User user = userService.getUser(userId);
+        long start = System.nanoTime();
+        String meterId = "echo";
+        Timer timer = micrometerBuilder.getTimer(meterId);
+
+        try {
             String description = (Math.random() < 0.5) ? configuration.getOptionA() : configuration.getOptionB();
+            User user = userService.getUser("1");
             user.setDescription(description);
 
             String now = LocalDateTime.now().format(DATE_TIME_FORMATTER);
             String message = String.format("Hello %s, the time is %s.", user.getEmail(), now);
             message += Objects.nonNull((user.getDescription())) ? "<br>" + user.getDescription() : "";
-            result.set(message);
-        });
-        return result.get();
+
+            micrometerBuilder.getCounter(meterId, HttpStatus.OK.name()).increment();
+            return message;
+        } catch (RuntimeException e) {
+            micrometerBuilder.getCounter(meterId, HttpStatus.INTERNAL_SERVER_ERROR.name()).increment();
+            throw new RuntimeException(e);
+        } finally {
+            timer.record(System.nanoTime() - start, TimeUnit.NANOSECONDS);
+        }
     }
 
     @GetMapping("joke")
     @LogExecutionTime
     public String joke() {
-        AtomicReference<String> result = new AtomicReference<>();
-        MicrometerBuilder.getRestResponseTimeTimer("joke").record(() ->
-                result.set("When Alexander Graham Bell invented the telephone, "
-                        + "he had three missed calls from Chuck Norris")
-        );
-        return result.get();
+        long start = System.nanoTime();
+        String meterId = "joke";
+        Timer timer = micrometerBuilder.getTimer(meterId);
+
+        try {
+            String response = "When Alexander Graham Bell invented the telephone, he had three missed calls from Chuck Norris";
+
+            micrometerBuilder.getCounter(meterId, HttpStatus.OK.name()).increment();
+            return response;
+        } catch (RuntimeException e) {
+            micrometerBuilder.getCounter(meterId, HttpStatus.INTERNAL_SERVER_ERROR.name()).increment();
+            throw new RuntimeException(e);
+        } finally {
+            timer.record(System.nanoTime() - start, TimeUnit.NANOSECONDS);
+        }
     }
 }

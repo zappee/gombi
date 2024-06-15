@@ -16,7 +16,7 @@
  */
 package com.remal.gombi.hello.service.echo.service;
 
-import com.remal.gombi.hello.commons.spring.monitoring.MicrometerBuilder;
+import com.remal.gombi.hello.service.echo.micrometer.MicrometerBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -27,23 +27,32 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class ConfigurationService {
 
+    public static final String ACCESS_LOG_TEMPLATE = "value from the kv store: {{}: \"{}\"}";
+    private final MicrometerBuilder micrometerBuilder;
+
+
     @Value("${description.option.a}")
     private String optionA;
 
     @Value("${description.option.b}")
     private String optionB;
 
+    public ConfigurationService(MicrometerBuilder micrometerBuilder) {
+        this.micrometerBuilder = micrometerBuilder;
+    }
+
     public String getOptionA() {
-        String key = "description.option.a";
-        log.debug(MicrometerBuilder.CLOUD_CONFIG_ACCESS_LOG_TEMPLATE, key, optionA);
-        MicrometerBuilder.getCloudConfigAccessMeter(key).increment();
+        logAccess("kv.description.option.a");
         return optionA;
     }
 
     public String getOptionB() {
-        String key = "description.option.b";
-        log.debug(MicrometerBuilder.CLOUD_CONFIG_ACCESS_LOG_TEMPLATE, key, optionB);
-        MicrometerBuilder.getCloudConfigAccessMeter(key).increment();
+        logAccess("kv.description.option.b");
         return optionB;
+    }
+
+    private void logAccess(String id) {
+        log.debug(ACCESS_LOG_TEMPLATE, id, optionB);
+        micrometerBuilder.getCounter(id).increment();
     }
 }
