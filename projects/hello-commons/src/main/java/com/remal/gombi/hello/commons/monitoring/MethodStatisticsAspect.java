@@ -7,7 +7,7 @@
  *  Description:
  *     Custom annotation to log the execution time of a method.
  */
-package com.remal.gombi.hello.service.user.monitoring;
+package com.remal.gombi.hello.commons.monitoring;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Timer;
@@ -45,7 +45,7 @@ public class MethodStatisticsAspect {
         this.meterRegistry = meterRegistry;
     }
 
-    @Around("@annotation(com.remal.gombi.hello.service.user.monitoring.MethodStatistics)")
+    @Around("@annotation(com.remal.gombi.hello.commons.monitoring.MethodStatistics)")
     public Object aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
         long startInNano = System.nanoTime();
         String className = joinPoint.getTarget().getClass().getSimpleName();

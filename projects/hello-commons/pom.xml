@@ -26,6 +26,7 @@
 
         <jakarta.servlet.api.version>6.0.0</jakarta.servlet.api.version>
         <lombok.version>1.18.32</lombok.version>
+        <micrometer.version>1.13.0</micrometer.version>
         <spring.cloud.starter.consul.version>4.1.1</spring.cloud.starter.consul.version>
         <spring.boot.version>3.3.0</spring.boot.version>
     </properties>
@@ -50,6 +51,12 @@
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <!-- application monitoring facade -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>${micrometer.version}</version>
         </dependency>
         <!-- Servlet API -->
         <dependency>

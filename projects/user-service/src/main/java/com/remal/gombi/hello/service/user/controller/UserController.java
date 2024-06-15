@@ -10,7 +10,7 @@
 package com.remal.gombi.hello.service.user.controller;
 
 import com.remal.gombi.hello.commons.model.User;
-import com.remal.gombi.hello.service.user.monitoring.MethodStatistics;
+import com.remal.gombi.hello.commons.monitoring.MethodStatistics;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,12 +25,10 @@ public class UserController {
     @GetMapping("/{id}")
     @MethodStatistics
     public User getUser(@PathVariable("id") String id) {
-            User user = User.builder()
+            return User.builder()
                     .username(id)
                     .email("arnold.somogyi@gmail.com")
                     .description("project owner")
                     .build();
-
-            return user;
     }
 }

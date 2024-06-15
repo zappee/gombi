@@ -7,7 +7,7 @@
  *  Description:
  *     Custom annotation to log the execution time of a method.
  */
-package com.remal.gombi.hello.service.user.monitoring;
+package com.remal.gombi.hello.commons.monitoring;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
