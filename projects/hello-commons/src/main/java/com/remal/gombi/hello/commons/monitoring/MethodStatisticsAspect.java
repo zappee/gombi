@@ -120,7 +120,7 @@ public class MethodStatisticsAspect {
 
     private Counter getCounter(String id, ProceedStatus status) {
         return Counter
-                .builder("java_method_call_result")
+                .builder("java_method_call")
                 .tags("id", id, "status", status.name())
                 .description("total number of the method calls")
                 .register(meterRegistry);

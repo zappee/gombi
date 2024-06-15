@@ -31,7 +31,6 @@
 
         <apache.httpclient5.version>5.2</apache.httpclient5.version>
         <lombok.version>1.18.32</lombok.version>
-        <micrometer.version>1.13.0</micrometer.version>
         <remal.hello.commons.version>0.0.1</remal.hello.commons.version>
         <spring.cloud.starter.consul.version>4.1.1</spring.cloud.starter.consul.version>
     </properties>
@@ -78,12 +77,6 @@
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
             <version>${apache.httpclient5.version}</version>
-        </dependency>
-        <!-- application monitoring facade -->
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-            <version>${micrometer.version}</version>
         </dependency>
     </dependencies>
 

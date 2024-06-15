@@ -14,9 +14,11 @@ import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan("com.remal.gombi.hello.commons.monitoring")
 public class MicrometerConfiguration {
 
     private final BuildProperties buildProperties;
