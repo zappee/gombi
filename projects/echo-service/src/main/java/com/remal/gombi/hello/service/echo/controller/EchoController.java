@@ -10,8 +10,6 @@
 package com.remal.gombi.hello.service.echo.controller;
 
 import com.remal.gombi.hello.commons.model.User;
-import com.remal.gombi.hello.service.echo.micrometer.MicrometerBuilder;
-import com.remal.gombi.hello.service.echo.monitoring.LogExecutionTime;
 import com.remal.gombi.hello.service.echo.service.ConfigurationService;
 import com.remal.gombi.hello.service.echo.service.UserService;
 import io.micrometer.core.instrument.Timer;
@@ -33,7 +31,7 @@ public class EchoController {
 
     private final ConfigurationService configuration;
     private final UserService userService;
-    private final MicrometerBuilder micrometerBuilder;
+  //  private final MicrometerBuilder micrometerBuilder;
 
     /**
      * Constructor with object injections.
@@ -41,21 +39,21 @@ public class EchoController {
      * @param userService object to be injected by spring
      */
     public EchoController(UserService userService,
-                          ConfigurationService configuration,
-                          MicrometerBuilder micrometerBuilder) {
+                          ConfigurationService configuration/*,
+                          MicrometerBuilder micrometerBuilder*/) {
         this.userService = userService;
         this.configuration = configuration;
-        this.micrometerBuilder = micrometerBuilder;
+        //this.micrometerBuilder = micrometerBuilder;
     }
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
 
     @GetMapping("echo")
-    @LogExecutionTime
+  //  @LogExecutionTime
     public String echo() {
         long start = System.nanoTime();
-        String meterId = "echo";
-        Timer timer = micrometerBuilder.getTimer(meterId);
+//        String meterId = "echo";
+        //Timer timer = micrometerBuilder.getTimer(meterId);
 
         try {
             String description = (Math.random() < 0.5) ? configuration.getOptionA() : configuration.getOptionB();
@@ -66,33 +64,33 @@ public class EchoController {
             String message = String.format("Hello %s, the time is %s.", user.getEmail(), now);
             message += Objects.nonNull((user.getDescription())) ? "<br>" + user.getDescription() : "";
 
-            micrometerBuilder.getCounter(meterId, HttpStatus.OK.name()).increment();
+         //   micrometerBuilder.getCounter(meterId, HttpStatus.OK.name()).increment();
             return message;
         } catch (RuntimeException e) {
-            micrometerBuilder.getCounter(meterId, HttpStatus.INTERNAL_SERVER_ERROR.name()).increment();
+          //  micrometerBuilder.getCounter(meterId, HttpStatus.INTERNAL_SERVER_ERROR.name()).increment();
             throw new RuntimeException(e);
         } finally {
-            timer.record(System.nanoTime() - start, TimeUnit.NANOSECONDS);
+           // timer.record(System.nanoTime() - start, TimeUnit.NANOSECONDS);
         }
     }
 
     @GetMapping("joke")
-    @LogExecutionTime
+  //  @LogExecutionTime
     public String joke() {
         long start = System.nanoTime();
         String meterId = "joke";
-        Timer timer = micrometerBuilder.getTimer(meterId);
+      //  Timer timer = micrometerBuilder.getTimer(meterId);
 
         try {
             String response = "When Alexander Graham Bell invented the telephone, he had three missed calls from Chuck Norris";
 
-            micrometerBuilder.getCounter(meterId, HttpStatus.OK.name()).increment();
+        //    micrometerBuilder.getCounter(meterId, HttpStatus.OK.name()).increment();
             return response;
         } catch (RuntimeException e) {
-            micrometerBuilder.getCounter(meterId, HttpStatus.INTERNAL_SERVER_ERROR.name()).increment();
+        //    micrometerBuilder.getCounter(meterId, HttpStatus.INTERNAL_SERVER_ERROR.name()).increment();
             throw new RuntimeException(e);
         } finally {
-            timer.record(System.nanoTime() - start, TimeUnit.NANOSECONDS);
+       //     timer.record(System.nanoTime() - start, TimeUnit.NANOSECONDS);
         }
     }
 }

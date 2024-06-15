@@ -16,7 +16,6 @@
  */
 package com.remal.gombi.hello.service.echo.service;
 
-import com.remal.gombi.hello.service.echo.micrometer.MicrometerBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -28,7 +27,7 @@ import org.springframework.stereotype.Component;
 public class ConfigurationService {
 
     public static final String ACCESS_LOG_TEMPLATE = "value from the kv store: {{}: \"{}\"}";
-    private final MicrometerBuilder micrometerBuilder;
+   // private final MicrometerBuilder micrometerBuilder;
 
 
     @Value("${description.option.a}")
@@ -37,9 +36,9 @@ public class ConfigurationService {
     @Value("${description.option.b}")
     private String optionB;
 
-    public ConfigurationService(MicrometerBuilder micrometerBuilder) {
-        this.micrometerBuilder = micrometerBuilder;
-    }
+   // public ConfigurationService(MicrometerBuilder micrometerBuilder) {
+  //      this.micrometerBuilder = micrometerBuilder;
+  //  }
 
     public String getOptionA() {
         logAccess("kv.description.option.a");
@@ -53,6 +52,6 @@ public class ConfigurationService {
 
     private void logAccess(String id) {
         log.debug(ACCESS_LOG_TEMPLATE, id, optionB);
-        micrometerBuilder.getCounter(id).increment();
+     //   micrometerBuilder.getCounter(id).increment();
     }
 }
