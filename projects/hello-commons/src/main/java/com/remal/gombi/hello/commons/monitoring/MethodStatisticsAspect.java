@@ -51,35 +51,49 @@ public class MethodStatisticsAspect {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
         String fullQualifiedMethodName = className + "." + methodName;
+        MethodStatistics parameters = ((MethodSignature) joinPoint.getSignature())
+                .getMethod()
+                .getAnnotation(MethodStatistics.class);
 
         try {
             // log arguments before the call
             String arguments = getArgumentsAsString(joinPoint);
-            if (arguments.isEmpty()) {
-                log.debug("calling the {}() method...", fullQualifiedMethodName);
-            } else {
-                log.debug("calling the {}() method with parameters: {}...", fullQualifiedMethodName, arguments);
+            if (parameters.logToLogfile()) {
+                if (arguments.isEmpty()) {
+                    log.debug("calling the {}() method...", fullQualifiedMethodName);
+                } else {
+                    log.debug("calling the {}() method with parameters: {}...", fullQualifiedMethodName, arguments);
+                }
             }
 
             // call the method
             Object o = joinPoint.proceed();
 
             // log the result of the call
-            getCounter(fullQualifiedMethodName, ProceedStatus.ok).increment();
+            if (parameters.countMethodCalls()) {
+                getCounter(fullQualifiedMethodName, ProceedStatus.ok).increment();
+            }
             String returnValue = getReturnValueAsString(o);
             long endInMilli = (System.nanoTime() - startInNano) / 1000000;
-            if (Objects.nonNull(o)) {
-                log.debug(TEMPLATE_WITH_RETURN, fullQualifiedMethodName, arguments, returnValue, endInMilli);
-            } else {
-                log.debug(TEMPLATE_NO_RETURN, fullQualifiedMethodName, arguments, endInMilli);
+
+            if (parameters.logToLogfile()) {
+                if (Objects.nonNull(o)) {
+                    log.debug(TEMPLATE_WITH_RETURN, fullQualifiedMethodName, arguments, returnValue, endInMilli);
+                } else {
+                    log.debug(TEMPLATE_NO_RETURN, fullQualifiedMethodName, arguments, endInMilli);
+                }
             }
             return o;
 
         } catch(Throwable t) {
-            getCounter(fullQualifiedMethodName, ProceedStatus.error).increment();
+            if (parameters.countMethodCalls()) {
+                getCounter(fullQualifiedMethodName, ProceedStatus.error).increment();
+            }
             throw new Throwable(t);
         } finally {
-            getTimer(fullQualifiedMethodName).record(System.nanoTime() - startInNano, TimeUnit.NANOSECONDS);
+            if (parameters.executionTimeStatistic()) {
+                getTimer(fullQualifiedMethodName).record(System.nanoTime() - startInNano, TimeUnit.NANOSECONDS);
+            }
         }
     }
 

@@ -33,12 +33,12 @@ public class ConfigurationService {
     @Value("${description.option.b}")
     private String optionB;
 
-    @MethodStatistics
+    @MethodStatistics(logToLogfile = false)
     public String getOptionA() {
         return optionA;
     }
 
-    @MethodStatistics
+    @MethodStatistics(logToLogfile = false)
     public String getOptionB() {
         return optionB;
     }

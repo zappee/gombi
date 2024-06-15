@@ -16,4 +16,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface MethodStatistics { }
+public @interface MethodStatistics {
+    boolean logToLogfile() default true;
+    boolean executionTimeStatistic() default true;
+    boolean countMethodCalls() default true;
+}
