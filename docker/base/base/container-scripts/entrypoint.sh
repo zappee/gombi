@@ -15,11 +15,11 @@ printf "%s | [INFO ] starting OpenSSH Daemon as a background process...\n" "$(da
 
 if [ "$(is_first_startup)" == "true" ]; then
   printf "%s | [DEBUG] this is the first startup, so let's run some tasks before continue\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  /bin/run-parts --exit-on-error "/docker.init/"
+  /bin/run-parts --exit-on-error /docker.init
 fi
 
 printf "%s | [DEBUG] executing the startup scripts...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-/bin/run-parts --exit-on-error "/docker.startup/"
+/bin/run-parts --exit-on-error /docker.startup
 
 set_container_up_state
 

@@ -190,7 +190,8 @@ alias rmi='docker volume rm $(docker volume ls -qf dangling=true) ; docker rmi $
 ## Annex 5) Docker commands
 * Deploying a broken image:
   ~~~
-  $ docker run --name <id> <image-name>:<version> tail -f /dev/null
+  $ docker run -p 8022:22 --name <id> <image-name>:<version> tail -f /dev/null
+  $ docker exec -it <id> /bin/bash
   ~~~
 
 * Start an exited container:

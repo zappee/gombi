@@ -53,6 +53,7 @@ FROM base AS base-slim
 
 # final image
 FROM base-$BUILD_TYPE AS final
+
 # installing tools
 RUN set -ue; \
     apk add --no-cache curl
