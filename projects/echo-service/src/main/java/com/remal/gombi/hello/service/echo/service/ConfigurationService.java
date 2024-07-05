@@ -16,7 +16,7 @@
  */
 package com.remal.gombi.hello.service.echo.service;
 
-import com.remal.gombi.hello.commons.spring.monitoring.MicrometerBuilder;
+import com.remal.gombi.hello.commons.monitoring.MethodStatistics;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -33,17 +33,13 @@ public class ConfigurationService {
     @Value("${description.option.b}")
     private String optionB;
 
+    @MethodStatistics(logToLogfile = false)
     public String getOptionA() {
-        String key = "description.option.a";
-        log.debug(MicrometerBuilder.CLOUD_CONFIG_ACCESS_LOG_TEMPLATE, key, optionA);
-        MicrometerBuilder.getCloudConfigAccessMeter(key).increment();
         return optionA;
     }
 
+    @MethodStatistics(logToLogfile = false)
     public String getOptionB() {
-        String key = "description.option.b";
-        log.debug(MicrometerBuilder.CLOUD_CONFIG_ACCESS_LOG_TEMPLATE, key, optionB);
-        MicrometerBuilder.getCloudConfigAccessMeter(key).increment();
         return optionB;
     }
 }

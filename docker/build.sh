@@ -39,6 +39,7 @@ docker build \
   --build-arg IMAGE_AUTHOR="$IMAGE_AUTHOR" \
   --build-arg IMAGE_FROM="$IMAGE_FROM" \
   --tag "$IMAGE_NAME":"$IMAGE_TAG" \
+  --progress plain \
   "$IMAGE_SRC"
 
 printf "cleaning up unused Docker images and containers...\n"

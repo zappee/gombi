@@ -10,15 +10,12 @@
 package com.remal.gombi.hello.service.user.controller;
 
 import com.remal.gombi.hello.commons.model.User;
-import com.remal.gombi.hello.commons.spring.monitoring.MicrometerBuilder;
-import com.remal.gombi.hello.service.user.monitoring.LogCall;
+import com.remal.gombi.hello.commons.monitoring.MethodStatistics;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 @RestController
@@ -26,16 +23,12 @@ import java.util.concurrent.atomic.AtomicReference;
 public class UserController {
 
     @GetMapping("/{id}")
-    @LogCall
+    @MethodStatistics
     public User getUser(@PathVariable("id") String id) {
-        AtomicReference<User> user = new AtomicReference<>();
-        MicrometerBuilder.getRestResponseTimeTimer("get.user").record(() ->
-                user.set(User.builder()
-                        .username(id)
-                        .email("arnold.somogyi@gmail.com")
-                        .description("project owner")
-                        .build())
-        );
-        return user.get();
+            return User.builder()
+                    .username(id)
+                    .email("arnold.somogyi@gmail.com")
+                    .description("project owner")
+                    .build();
     }
 }

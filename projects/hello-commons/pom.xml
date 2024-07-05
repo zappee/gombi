@@ -25,10 +25,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <jakarta.servlet.api.version>6.0.0</jakarta.servlet.api.version>
-        <lombok.version>1.18.30</lombok.version>
-        <micrometer.version>1.12.4</micrometer.version>
-        <spring.cloud.starter.consul.version>4.1.0</spring.cloud.starter.consul.version>
-        <spring.starter.version>3.2.4</spring.starter.version>
+        <lombok.version>1.18.32</lombok.version>
+        <micrometer.version>1.13.0</micrometer.version>
+        <spring.cloud.starter.consul.version>4.1.1</spring.cloud.starter.consul.version>
+        <spring.boot.version>3.3.0</spring.boot.version>
     </properties>
 
     <dependencies>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-            <version>${spring.starter.version}</version>
+            <version>${spring.boot.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -57,7 +57,6 @@
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
             <version>${micrometer.version}</version>
-            <scope>provided</scope>
         </dependency>
         <!-- Servlet API -->
         <dependency>
@@ -74,7 +73,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring.starter.version}</version>
+                <version>${spring.boot.version}</version>
                 <executions>
                     <execution>
                         <goals>

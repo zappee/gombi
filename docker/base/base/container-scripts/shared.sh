@@ -46,7 +46,7 @@ function decrypt_private_key() {
   host_name="$1"
   keystore_pass="changeit"
 
-  printf "%s | [INFO]  decrypting private key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [INFO]  decrypting the encrypted private key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
   printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
   printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
   printf "%s | [DEBUG]        PKI_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PKI_HOST"
