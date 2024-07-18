@@ -161,7 +161,7 @@ Images and its types:
 
 **Network**
 * List of the opened port
-  * Connect to the container with SSH and install `nmap`: `apk add nmap`
+  * Connect to the container with SSH and install nmap: `apk add nmap` or `yum install nmap`
   * Run the port-scan with `nmap <host>`, e.g. `nmap ds.remal.com`
 
 **PKI**
