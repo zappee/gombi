@@ -123,7 +123,12 @@ insert_kv() {
         printf "%s | [DEBUG]  \"%s\" key exist, ignore it\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$key"
       else
         printf "%s | [DEBUG]  inserting \"%s\"=\"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$key" "$value"
-        consul kv put "$key" "$value" 1>/dev/null
+
+        local base64_value
+        base64_value=$(printf "%b%s" "$value" | base64)
+        printf "%s | [DEBUG]  base64 encoded value: \"%s\"=\"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$value" "$base64_value"
+
+        consul kv put -base64 "$key" "$base64_value" 1>/dev/null
       fi
   done < "$properties_file"
 }
