@@ -29,7 +29,7 @@ services:
 
     # ----- echo-service-1 ----------------------------------------------------
     echo-service-1:
-        image: remal-java-21-runner:0.0.1
+        image: remal-java-21-runner:0.5.0
         container_name: echo-service-1.${DOMAIN_NAME}
         hostname: echo-service-1.${DOMAIN_NAME}
         depends_on:
@@ -46,7 +46,7 @@ services:
 
     # ----- user-service-1 -----------------------------------------------------
     user-service-1:
-        image: remal-java-21-postgres-runner:0.0.1
+        image: remal-java-21-postgres-runner:0.0.2
         container_name: user-service-1.${DOMAIN_NAME}
         hostname: user-service-1.${DOMAIN_NAME}
         depends_on:
@@ -68,7 +68,7 @@ services:
 
     # ----- user-service-2 -----------------------------------------------------
     user-service-2:
-        image: remal-java-21-postgres-runner:0.0.1
+        image: remal-java-21-postgres-runner:0.0.2
         container_name: user-service-2.${DOMAIN_NAME}
         hostname: user-service-2.${DOMAIN_NAME}
         depends_on:

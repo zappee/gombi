@@ -8,7 +8,7 @@
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 export IMAGE_NAME="remal-java-21-runner"
-export IMAGE_TAG="0.0.1"
+export IMAGE_TAG="0.5.0"
 export IMAGE_DESCRIPTION="Remal Java 21 Runner"
 export IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 export IMAGE_FROM="remal-consul:1.2.0"

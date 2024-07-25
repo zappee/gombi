@@ -52,13 +52,14 @@ jar_runner() {
   printf "%s | [INFO]  running the %s JAR file...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"
   printf "%s | [DEBUG]             java debug enabled: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$JAVA_DEBUG"
   printf "%s | [DEBUG]                java debug port: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$JAVA_DEBUG_PORT"
-  printf "%s | [DEBUG]           original JVM options: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$JAVA_OPTS"
-  printf "%s | [DEBUG]        JVM options for the JAR: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jvm_params"
+  printf "%s | [DEBUG]                    JVM options: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jvm_params"
   printf "%s | [DEBUG]                       JAR home: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$JAR_HOME"
   printf "%s | [DEBUG]                       JAR file: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"
   printf "%s | [DEBUG]               health-check URI: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$HEALTH_CHECK_URI"
   printf "%s | [DEBUG]    expected health-check state: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$EXPECTED_HEALTH_CHECK_STATE"
   printf "%s | [DEBUG]           health-check command: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "${health_check_cmd[*]}"
+  printf "%s | [DEBUG]             consul server host: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$CONSUL_SERVER_HOSTNAME"
+  printf "%s | [DEBUG]                  kafka servers: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$KAFKA_SERVERS"
 
   cd "$JAR_HOME" || { echo "Error while trying to change directory from $(pwd) to $JAR_HOME"; exit 1; }
   printf "%s | [INFO]  starting the %s java application...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jar_file"

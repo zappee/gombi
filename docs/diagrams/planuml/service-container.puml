@@ -10,11 +10,23 @@
 @startuml
 
 <style>
-  .STYLE_INFRA {
+  .STYLE_KV_STORE {
+    RoundCorner 20
+    LineThickness 2
+    LineColor Sienna
+    BackgroundColor BurlyWood
+  }
+  .STYLE_PKI {
+    RoundCorner 20
+    LineThickness 2
+    LineColor GoldenRod
+    BackgroundColor Gold
+  }
+  .STYLE_DB {
     RoundCorner 20
     LineThickness 2
     LineColor SteelBlue
-    BackgroundColor Turquoise
+    BackgroundColor PaleTurquoise
   }
   .STYLE_APP {
     RoundCorner 20
@@ -22,48 +34,65 @@
     LineColor Purple
     BackgroundColor HotPink
   }
+  .STYLE_APP_CONTAINER {
+    RoundCorner 20
+    LineThickness 2
+    LineColor SteelBlue
+    BackgroundColor Pink
+  }
   .STYLE_MONITOR {
     RoundCorner 20
     LineThickness 2
-    LineColor Sienna
-    BackgroundColor Bisque
+    LineColor Green
+    BackgroundColor GreenYellow
+  }
+  .STYLE_MESSAGING {
+    RoundCorner 20
+    LineThickness 2
+    LineColor DarkTurquoise
+    BackgroundColor Aqua
   }
 </style>
-
 
 skinparam defaultTextAlignment center
 title **Remal java-runner Docker container dependencies**
 
+sprite $PKI           jar:archimate/business-interaction
+sprite $KV_STORE      jar:archimate/business-interface
+sprite $DB            jar:archimate/application-data-object
+sprite $APP           jar:archimate/physical-equipment
+sprite $APP_CONTAINER jar:archimate/physical-equipment
+sprite $MONITOR       jar:archimate/strategy-capability
+sprite $MESSAGING     jar:archimate/junction
 
-sprite $JAR_INFRA    jar:archimate/network
-sprite $JAR_APP      jar:archimate/physical-equipment
-sprite $JAR_MONITOR  jar:archimate/assignment
 
-
-node          "Java Runner"                    as java_runner     <<$JAR_INFRA>>   <<STYLE_INFRA>> {
-   component  "User Service\nJAR"              as rest_service    <<$JAR_APP>>     <<STYLE_APP>>
-   component  "Hashicorp Consul Agent\nClient" as consul_client   <<$JAR_INFRA>>   <<STYLE_INFRA>>
-   component  "PostgreSQL"                     as postgresql      <<$JAR_APP>>     <<STYLE_INFRA>>
+node          "Java Runner"                    as java_runner     <<$APP_CONTAINER>> <<STYLE_APP_CONTAINER>> {
+   component  "User Service\nJAR"              as rest_service    <<$APP>>           <<STYLE_APP>>
+   component  "Hashicorp Consul Agent\nClient" as consul_client   <<$KV_STORE>>      <<STYLE_KV_STORE>>
+   component  "PostgreSQL"                     as postgresql      <<$DB>>            <<STYLE_DB>>
    portin     "GET\nrest"                      as rest_service_i1
    portin     "POST\nrest"                     as rest_service_i2
-   portin     "POST\nrest"                     as rest_service_ix
 }
-node          "Prometheus"                     as prometheus      <<$JAR_MONITOR>> <<STYLE_MONITOR>>
-node          "Gafana"                         as gafana          <<$JAR_MONITOR>> <<STYLE_MONITOR>>
-node          "Private PKI"                    as pki             <<$JAR_INFRA>>   <<STYLE_INFRA>>
-node          "Hashicorp Consul Agent\nServer" as consul_server   <<$JAR_INFRA>>   <<STYLE_INFRA>>
+node          "Prometheus"                     as prometheus      <<$MONITOR>>       <<STYLE_MONITOR>>
+node          "Grafana"                        as grafana          <<$MONITOR>>       <<STYLE_MONITOR>>
+node          "Private PKI"                    as pki             <<$PKI>>           <<STYLE_PKI>>
+node          "Hashicorp Consul Agent\nServer" as consul_server   <<$KV_STORE>>      <<STYLE_KV_STORE>>
+node          "Zookeeper"                      as zookeeper       <<$MESSAGING>>     <<STYLE_MESSAGING>>
+node          "Kafka"                          as kafka           <<$MESSAGING>>     <<STYLE_MESSAGING>>
 
 
-consul_server    <--> pki             : generate\ncertificate
+consul_server    <..> pki             : generate\ncertificate
 java_runner      <--> pki             : generate\ncertificate
-   consul_client  --> consul_server
+prometheus       <..> pki             : generate\ncertificate
+grafana          <..> pki             : generate\ncertificate
+   consul_client  ..> consul_server
    rest_service  <--> postgresql
    rest_service   --> consul_client   : service discovery\\\ndistributed configuration
    rest_service   --> rest_service_i1
    rest_service   --> rest_service_i2
-   rest_service   --> rest_service_ix
 prometheus       ...> rest_service
-gafana            ..> prometheus
+grafana           ..> prometheus
 prometheus        ..> consul_server   : get the URL\n of services\nto monitor
-
+zookeeper       <..>  kafka
+kafka           <..>  rest_service
 @enduml

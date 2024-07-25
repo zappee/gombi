@@ -49,31 +49,33 @@
 
 title **Remal Docker image hierarchy**
 
-sprite $JAR_EXTERNAL jar:archimate/meaning
-sprite $JAR_BASE     jar:archimate/goal
-sprite $JAR_CORE     jar:archimate/interaction
-sprite $JAR_INFRA    jar:archimate/network
-sprite $JAR_APP      jar:archimate/physical-equipment
-sprite $JAR_MONITOR  jar:archimate/assignment
+sprite $EXTERNAL_IMAGE jar:archimate/meaning
+sprite $BASE_IMAGE     jar:archimate/goal
+sprite $CORE_IMAGE     jar:archimate/interaction
+sprite $INFRA_IMAGE    jar:archimate/network
+sprite $APP_IMAGE      jar:archimate/physical-equipment
+sprite $MONITOR_IMAGE  jar:archimate/assignment
 
-rectangle "alpine"                       as alpine          <<$JAR_EXTERNAL>> <<STYLE_EXTERNAL>>
-rectangle "remal-base"                   as base            <<$JAR_BASE>>     <<STYLE_BASE>>
-rectangle "OpenJDK-11"                   as java11          <<$JAR_CORE>>     <<STYLE_CORE>>
-rectangle "OpenJDK-17"                   as java17          <<$JAR_CORE>>     <<STYLE_CORE>>
-rectangle "OpenJDK-21"                   as java21          <<$JAR_CORE>>     <<STYLE_CORE>>
-rectangle "Private PKI"                  as pki             <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Apache Tomcat 9"              as tomcat9         <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "ForgeRock Directory Services" as ds              <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "ForgeRock Access Management"  as am              <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Hashicorp Vault"              as vault           <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Hashicorp Consul"             as consul          <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Hashicorp Consul"             as consul          <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Java-21 Runner"               as java_runner_21  <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Java-21 Runner + PostgreSQL"  as java_runner_21p <<$JAR_INFRA>>    <<STYLE_INFRA>>
-rectangle "Examples"                     as examples        <<$JAR_APP>>      <<STYLE_APP>>
-rectangle "User Service"                 as user_service    <<$JAR_APP>>      <<STYLE_APP>>
-rectangle "Prometheus"                   as prometheus      <<$JAR_MONITOR>>  <<STYLE_MONITOR>>
-rectangle "Gafana"                       as gafana          <<$JAR_MONITOR>>  <<STYLE_MONITOR>>
+rectangle "alpine"                       as alpine          <<$EXTERNAL_IMAGE>> <<STYLE_EXTERNAL>>
+rectangle "zookeeper"                    as zookeeper       <<$EXTERNAL_IMAGE>> <<STYLE_EXTERNAL>>
+rectangle "kafka"                        as kafka           <<$EXTERNAL_IMAGE>> <<STYLE_EXTERNAL>>
+rectangle "remal-base"                   as base            <<$BASE_IMAGE>>     <<STYLE_BASE>>
+rectangle "OpenJDK-11"                   as java11          <<$CORE_IMAGE>>     <<STYLE_CORE>>
+rectangle "OpenJDK-17"                   as java17          <<$CORE_IMAGE>>     <<STYLE_CORE>>
+rectangle "OpenJDK-21"                   as java21          <<$CORE_IMAGE>>     <<STYLE_CORE>>
+rectangle "Private PKI"                  as pki             <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
+rectangle "Apache Tomcat 9"              as tomcat9         <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
+rectangle "ForgeRock Directory Services" as ds              <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
+rectangle "ForgeRock Access Management"  as am              <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
+rectangle "Hashicorp Vault"              as vault           <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
+rectangle "Hashicorp Consul"             as consul          <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
+rectangle "Hashicorp Consul"             as consul          <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
+rectangle "Java-21 Runner"               as java_runner_21  <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
+rectangle "Java-21 Runner + PostgreSQL"  as java_runner_21p <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
+rectangle "Examples"                     as examples        <<$APP_IMAGE>>      <<STYLE_APP>>
+rectangle "User Service"                 as user_service    <<$APP_IMAGE>>      <<STYLE_APP>>
+rectangle "Prometheus"                   as prometheus      <<$MONITOR_IMAGE>>  <<STYLE_MONITOR>>
+rectangle "Grafana"                      as grafana         <<$MONITOR_IMAGE>>  <<STYLE_MONITOR>>
 
 alpine           -->   base
 base             -->   java11
@@ -82,7 +84,7 @@ base             -->   java21
 base             --->  pki
 base             --->  vault
 base           ------> prometheus
-base           ------> gafana
+base           ------> grafana
 java11            -->  tomcat9
 java17            -->  ds
 java21            -->  consul

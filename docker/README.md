@@ -162,7 +162,7 @@ Images and its types:
 **Network**
 * List of the opened port
   * Connect to the container with SSH and install nmap: `apk add nmap` or `yum install nmap`
-  * Run the port-scan with `nmap <host>`, e.g. `nmap ds.remal.com`
+  * Run the port-scan with `nmap -p- <host>`, e.g. `nmap ds.remal.com`
 
 **PKI**
 * Lists entries in a keystore: `keytool -list -v -keystore <keystore-file> -storepass <changeit>`

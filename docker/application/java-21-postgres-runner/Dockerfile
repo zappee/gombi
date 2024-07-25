@@ -17,7 +17,7 @@ EXPOSE 5432/tcp
 
 # environment variables
 ENV IMAGE_NAME="remal-java-21-postgres-runner" \
-    IMAGE_TAG="0.0.1" \
+    IMAGE_TAG="0.0.2" \
     IMAGE_DESCRIPTION="Remal Java 21 Runner with Postgres database server" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
