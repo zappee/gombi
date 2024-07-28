@@ -91,12 +91,14 @@ get_first_jar() {
   printf "%s | [INFO]  getting the first JAR file from the \"%s\" directory...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home"
 
   local files
-  files=($jars_home/*.jar)
-  printf "%s | [DEBUG] files in the \"%s\" directory: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home" "${files[0]}"
+  files=($(find "$jars_home" -type f -name "*.jar"))
+  printf "%s | [DEBUG] found %s files in the \"%s\" directory\n" "$(date +"%Y-%b-%d %H:%M:%S")" ${#files[@]} "$jars_home"
 
   if (( ${#files[@]} == 0 )); then
-    printf "%s | [ERROR] there is no *.jar files in the \"%s\" directory\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home"
+    printf "%s | [ERROR] there is no *.jar files in the \"%s\" directory, exiting...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home"
     exit 1
+  else
+    printf "%s\n" "${files[@]}"
   fi
 
   local result
