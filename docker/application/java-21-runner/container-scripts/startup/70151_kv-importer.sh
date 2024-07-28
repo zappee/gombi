@@ -90,15 +90,18 @@ get_first_jar() {
 
   printf "%s | [INFO]  getting the first JAR file from the \"%s\" directory...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home"
 
-  local files
+  local files number_of_files
   files=($(find "$jars_home" -type f -name "*.jar"))
-  printf "%s | [DEBUG] found %s file(s) in the \"%s\" directory\n" "$(date +"%Y-%b-%d %H:%M:%S")" ${#files[@]} "$jars_home"
+  number_of_files=${#files[@]}
+  printf "%s | [DEBUG] found %s file(s) in the \"%s\" directory\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$number_of_files" "$jars_home"
 
-  if (( ${#files[@]} == 0 )); then
+  if [[ "$number_of_files" -eq 0 ]]; then
     printf "%s | [ERROR] there is no *.jar files in the \"%s\" directory, exiting...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home"
     exit 1
-  else
+  elif [[ "$number_of_files" -gt 1 ]]; then
+    printf "%s | [ERROR] ambiguous configuration, there are more then one JAR file to execute:\n" "$(date +"%Y-%b-%d %H:%M:%S")"
     printf "%s\n" "${files[@]}"
+    exit 1
   fi
 
   local result
