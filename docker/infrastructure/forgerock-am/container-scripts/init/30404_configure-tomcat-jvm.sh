@@ -28,10 +28,10 @@ function tomcat_configuration() {
       -XX:MetaspaceSize=256m \
       -XX:MaxMetaspaceSize=256m"
 
-  printf "%s | [INFO]  configuring tomcat's JVM settings...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]            truststore: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$truststore_file"
-  printf "%s | [DEBUG]   truststore password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$truststore_password"
-  printf "%s | [DEBUG]             JAVA_OPTS: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$JAVA_OPTS"
+  printf "%s | [INFO]  configuring tomcat's JVM settings...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG]            truststore: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$truststore_file"
+  printf "%s | [DEBUG]   truststore password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$truststore_password"
+  printf "%s | [DEBUG]             JAVA_OPTS: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$JAVA_OPTS"
 
   printf "JAVA_OPTS=\"%s\"" "$JAVA_OPTS" > "$CATALINA_HOME/bin/setenv.sh"
   chmod +x "$CATALINA_HOME/bin/setenv.sh"

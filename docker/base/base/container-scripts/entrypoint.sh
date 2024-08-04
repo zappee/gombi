@@ -10,15 +10,15 @@
 . /shared.sh
 trap "shutdown_trap; exit" SIGINT SIGTERM SIGHUP
 
-printf "%s | [INFO ] starting OpenSSH Daemon as a background process...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+printf "%s | [INFO ] starting OpenSSH Daemon as a background process...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
 /usr/sbin/sshd -e
 
 if [ "$(is_first_startup)" == "true" ]; then
-  printf "%s | [DEBUG] this is the first startup, so let's run some tasks before continue\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG] this is the first startup, so let's run some tasks before continue\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   /bin/run-parts --exit-on-error /docker.init
 fi
 
-printf "%s | [DEBUG] executing the startup scripts...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+printf "%s | [DEBUG] executing the startup scripts...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
 /bin/run-parts --exit-on-error /docker.startup
 
 set_container_up_state

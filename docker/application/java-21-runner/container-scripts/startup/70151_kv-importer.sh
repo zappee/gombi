@@ -23,7 +23,7 @@ file_exists() {
   file_to_check="$1"
 
   if [ ! -f "$file_to_check" ]; then
-    printf "%s | [WARN]  file \"%s\" not found\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_check"
+    printf "%s | [WARN]  file \"%s\" not found\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$file_to_check"
     log_end "$0"
     exit 0
   fi
@@ -40,7 +40,7 @@ cleanup_workspace() {
   local workspace_home
   workspace_home="$1"
 
-  printf "%s | [INFO]  cleaning up the workspace: \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$workspace_home"
+  printf "%s | [INFO]  cleaning up the workspace: \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$workspace_home"
   rm -R "$workspace_home"
 }
 
@@ -88,17 +88,17 @@ get_first_jar() {
   local jars_home
   jars_home="$1"
 
-  printf "%s | [INFO]  getting the first JAR file from the \"%s\" directory...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home"
+  printf "%s | [INFO]  getting the first JAR file from the \"%s\" directory...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$jars_home"
 
   local files number_of_files
   files=($(find "$jars_home" -type f -name "*.jar"))
   number_of_files=${#files[@]}
-  printf "%s | [DEBUG] found %s file(s) in the \"%s\" directory\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$number_of_files" "$jars_home"
+  printf "%s | [DEBUG] found %s file(s) in the \"%s\" directory\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$number_of_files" "$jars_home"
 
   if [[ "$number_of_files" -eq 0 ]]; then
-    printf "%s | [WARN]  there is no *.jar files in the \"%s\" directory, exiting...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home"
+    printf "%s | [WARN]  there is no *.jar files in the \"%s\" directory, exiting...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$jars_home"
   elif [[ "$number_of_files" -gt 1 ]]; then
-    printf "%s | [ERROR] ambiguous configuration, there are more then one JAR file to execute:\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+    printf "%s | [ERROR] ambiguous configuration, there are more then one JAR file to execute:\n" "$(date +"%Y-%m-%d %H:%M:%S")"
     printf "%s\n" "${files[@]}"
     exit 1
   fi
@@ -130,13 +130,13 @@ insert_kv() {
     [[ "$key" =~ ^([[:space:]]*|[[:space:]]*#.*)$ ]] && continue
       key="${key_context}/${key}"
       if consul kv get "$key" 2>/dev/null 1>/dev/null; then
-        printf "%s | [DEBUG]  \"%s\" key exist, ignore it\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$key"
+        printf "%s | [DEBUG]  \"%s\" key exist, ignore it\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$key"
       else
-        printf "%s | [DEBUG]  inserting \"%s\"=\"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$key" "$value"
+        printf "%s | [DEBUG]  inserting \"%s\"=\"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$key" "$value"
 
         local base64_value
         base64_value=$(printf "%b%s" "$value" | base64)
-        printf "%s | [DEBUG]  base64 encoded value: \"%s\"=\"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$value" "$base64_value"
+        printf "%s | [DEBUG]  base64 encoded value: \"%s\"=\"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$value" "$base64_value"
 
         consul kv put -base64 "$key" "$base64_value" 1>/dev/null
       fi
@@ -156,9 +156,9 @@ unpack_jar() {
   target="$2"
 
   if [ -z "$archive_file" ]; then
-    printf "%s | [WARN]  there is nothing to unpack\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+    printf "%s | [WARN]  there is nothing to unpack\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   else
-    printf "%s | [DEBUG] unpacking the \"%s\" file to \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$archive_file" "$target"
+    printf "%s | [DEBUG] unpacking the \"%s\" file to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$archive_file" "$target"
     unzip -q "$archive_file" -d "$target"
   fi
 }
@@ -171,7 +171,7 @@ log_start "$0"
 UNPACK_DIR="/tmp/extracted-jar"
 KV_PROP_FILE="$UNPACK_DIR/BOOT-INF/classes/config.properties"
 APP_PROP_FILE="$UNPACK_DIR/BOOT-INF/classes/application.properties"
-printf "%s | [INFO]  inserting key/values into Hashicorp Consul...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+printf "%s | [INFO]  inserting key/values into Hashicorp Consul...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
 get_first_jar "$JAR_HOME" JAR_FILE
 unpack_jar "$JAR_FILE" "$UNPACK_DIR"
 file_exists "$KV_PROP_FILE"

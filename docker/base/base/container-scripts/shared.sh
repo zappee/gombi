@@ -26,7 +26,7 @@ function copy_from_remote_machine() {
   remote_path="$4"
   local_path="$5"
 
-  printf "%s | [DEBUG] scp %s@%s:%s %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$remote_user" "$remote_host" "$remote_path" "$local_path"
+  printf "%s | [DEBUG] scp %s@%s:%s %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$remote_user" "$remote_host" "$remote_path" "$local_path"
   sshpass -p "$remote_password" scp \
     -o StrictHostKeyChecking=no \
     -o ConnectTimeout=2 \
@@ -46,12 +46,12 @@ function decrypt_private_key() {
   host_name="$1"
   keystore_pass="changeit"
 
-  printf "%s | [INFO]  decrypting the encrypted private key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
-  printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
-  printf "%s | [DEBUG]        PKI_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PKI_HOST"
-  printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$host_name"
-  printf "%s | [DEBUG]   keystore_pass: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$keystore_pass"
+  printf "%s | [INFO]  decrypting the encrypted private key...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$SSH_USER"
+  printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$SSH_PASSWORD"
+  printf "%s | [DEBUG]        PKI_HOST: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$PKI_HOST"
+  printf "%s | [DEBUG]       host_name: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$host_name"
+  printf "%s | [DEBUG]   keystore_pass: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_pass"
   sshpass -p "$SSH_PASSWORD" \
     ssh \
       -oStrictHostKeyChecking=no \
@@ -101,13 +101,13 @@ function generate_certificate() {
   domain="$2"
   san="${3:-}"
 
-  printf "%s | [INFO]  generating a server certificate...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]        PKI_HOST: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$PKI_HOST"
-  printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_USER"
-  printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$SSH_PASSWORD"
-  printf "%s | [DEBUG]       cert_type: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$cert_type"
-  printf "%s | [DEBUG]          domain: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain"
-  printf "%s | [DEBUG]             san: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$san"
+  printf "%s | [INFO]  generating a server certificate...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG]        PKI_HOST: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$PKI_HOST"
+  printf "%s | [DEBUG]        SSH_USER: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$SSH_USER"
+  printf "%s | [DEBUG]    SSH_PASSWORD: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$SSH_PASSWORD"
+  printf "%s | [DEBUG]       cert_type: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$cert_type"
+  printf "%s | [DEBUG]          domain: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain"
+  printf "%s | [DEBUG]             san: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$san"
   sshpass -p "$SSH_PASSWORD" \
     ssh \
       -oStrictHostKeyChecking=no \
@@ -156,7 +156,7 @@ function import_to_keystore() {
   keystore="$3"
   storepass="$4"
 
-  printf "%s | [INFO ] importing \"%s\" certificate into \"%s\" keystore, alias: \"%s\", keystore-password: \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$certificate" "$keystore" "$alias" "$storepass"
+  printf "%s | [INFO ] importing \"%s\" certificate into \"%s\" keystore, alias: \"%s\", keystore-password: \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$certificate" "$keystore" "$alias" "$storepass"
   keytool \
     -importcert \
     -alias "$alias" \
@@ -174,7 +174,7 @@ function import_to_keystore() {
 # ------------------------------------------------------------------------------
 log_start() {
   local script_file="$1"
-  printf "%s | [DEBUG] ====> executing the \"%s\" script...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
+  printf "%s | [DEBUG] ====> executing the \"%s\" script...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$script_file"
 }
 
 # ------------------------------------------------------------------------------
@@ -185,7 +185,7 @@ log_start() {
 # ------------------------------------------------------------------------------
 log_end() {
   local script_file="$1"
-  printf "%s | [DEBUG] <---- end of the \"%s\" script\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
+  printf "%s | [DEBUG] <---- end of the \"%s\" script\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$script_file"
 }
 
 # ------------------------------------------------------------------------------
@@ -197,8 +197,8 @@ log_end() {
 # This runs at the background in order to does not block the execution.
 # ------------------------------------------------------------------------------
 function set_container_up_state() {
-  printf "%s | [INFO]  docker container is READY to serve incoming requests\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG] opening port %s...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$UP_SIGNAL_PORT"
+  printf "%s | [INFO]  docker container is READY to serve incoming requests\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG] opening port %s...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$UP_SIGNAL_PORT"
 
   local marker_file
   marker_file="/tmp/first-startup.marker"
@@ -214,21 +214,21 @@ function show_ready_message() {
   local fqdn
   fqdn=$(hostname -f)
 
-  printf "%s | [INFO]  container %s has been started\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
-  printf "%s | [DEBUG]  _                  _                            _             _           _ \n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG] | |                | |                          | |           | |         | |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG] | |__   __ _ ___   | |__   ___  ___ _ __     ___| |_ __ _ _ __| |_ ___  __| |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG] | '_ \ / _\` / __|  | '_ \ / _ \/ _ \ '_ \   / __| __/ _\` | \'__| __/ _ \/ _\` |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG] | | | | (_| \__ \  | |_) |  __/  __/ | | |  \__ \ || (_| | |  | ||  __/ (_| |\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG] |_| |_|\__,_|___/  |_.__/ \___|\___|_| |_|  |___/\__\__,_|_|   \__\___|\__,_|\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG] © 2023 Remal Software. All rights reserved.\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [INFO]  container %s has been started\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fqdn"
+  printf "%s | [DEBUG]  _                  _                            _             _           _ \n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | |                | |                          | |           | |         | |\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | |__   __ _ ___   | |__   ___  ___ _ __     ___| |_ __ _ _ __| |_ ___  __| |\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | '_ \ / _\` / __|  | '_ \ / _ \/ _ \ '_ \   / __| __/ _\` | \'__| __/ _ \/ _\` |\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG] | | | | (_| \__ \  | |_) |  __/  __/ | | |  \__ \ || (_| | |  | ||  __/ (_| |\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG] |_| |_|\__,_|___/  |_.__/ \___|\___|_| |_|  |___/\__\__,_|_|   \__\___|\__,_|\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG] © 2023 Remal Software. All rights reserved.\n" "$(date +"%Y-%m-%d %H:%M:%S")"
 }
 
 # ------------------------------------------------------------------------------
 # This method is called when a SIGTERM signal appears.
 # ------------------------------------------------------------------------------
 function shutdown_trap() {
-  printf "%s | [INFO]  shutting down the container...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [INFO]  shutting down the container...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
 
   local script_file
   script_file="/shutdown-actions.sh"
@@ -240,10 +240,10 @@ function shutdown_trap() {
     log_start "$script_file"
     . /shutdown-actions.sh
     elapsed=$(($(date +%s) - start))
-    printf "%s | [INFO]  execution time: %s\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$(date -d@$elapsed -u +%H\ hour\ %M\ day\ %S\ sec)"
+    printf "%s | [INFO]  execution time: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$(date -d@$elapsed -u +%H\ hour\ %M\ day\ %S\ sec)"
     log_end "$script_file"
   else
-    printf "%s | [WARN]  script \"%s\" not exist, ignoring it\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$script_file"
+    printf "%s | [WARN]  script \"%s\" not exist, ignoring it\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$script_file"
   fi
 }
 
@@ -270,11 +270,11 @@ function is_first_startup() {
 wait_for_container() {
   local domain
   domain="$1"
-  printf "%s | [INFO]  waiting for the \"%s\" container, port: \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain" "$UP_SIGNAL_PORT"
+  printf "%s | [INFO]  waiting for the \"%s\" container, port: \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain" "$UP_SIGNAL_PORT"
   while ! nc -w 5 -z "$domain" "$UP_SIGNAL_PORT" 2>/dev/null; do
     sleep 0.5
   done
-  printf "%s | [INFO]  the \"%s\" container is up and running\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain"
+  printf "%s | [INFO]  the \"%s\" container is up and running\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain"
 }
 
 # ------------------------------------------------------------------------------
@@ -294,8 +294,8 @@ wait_until_content_found() {
   required_string="$2"
   pid="$$"
 
-  printf "%s | [DEBUG] monitoring the \"%s\" file and waiting until \"%s\" text appears...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_monitor" "$required_string"
-  printf "%s | [DEBUG] own PID: \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$pid"
+  printf "%s | [DEBUG] monitoring the \"%s\" file and waiting until \"%s\" text appears...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$file_to_monitor" "$required_string"
+  printf "%s | [DEBUG] own PID: \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$pid"
   grep -q "$required_string" <(tail -n +1 --pid "$pid" -F "$file_to_monitor")
-  printf "%s | [DEBUG] expected content \"%s\" appeared, let's continue\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$required_string"
+  printf "%s | [DEBUG] expected content \"%s\" appeared, let's continue\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$required_string"
 }

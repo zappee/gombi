@@ -20,10 +20,10 @@ function tomcat_configuration() {
   keystore_file="/tmp/$fqdn.p12"
   keystore_password="changeit"
 
-  printf "%s | [INFO]  configuring tomcat's SSL connector...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]       CATALINA_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$CATALINA_HOME"
-  printf "%s | [DEBUG]            keystore: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$keystore_file"
-  printf "%s | [DEBUG]   keystore password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$keystore_password"
+  printf "%s | [INFO]  configuring tomcat's SSL connector...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG]       CATALINA_HOME: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$CATALINA_HOME"
+  printf "%s | [DEBUG]            keystore: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_file"
+  printf "%s | [DEBUG]   keystore password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_password"
 
   xmlstarlet edit \
     --inplace \

@@ -16,7 +16,7 @@
 # two are a pair. You must have a deployment key's password to use the key.
 # ------------------------------------------------------------------------------
 function generate_ds_deployment_key() {
-  printf "%s | [INFO]  generating a new ForgeRock Directory Server deployment-key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [INFO]  generating a new ForgeRock Directory Server deployment-key...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
 
   cd "$DS_HOME"
   local deployment_key deployment_key_password
@@ -27,10 +27,10 @@ function generate_ds_deployment_key() {
   printf "KEY=%s\n" "$deployment_key" > "$DEPLOYMENT_KEY_FILE"
   printf "PASSWORD=%s\n" "$deployment_key_password" >> "$DEPLOYMENT_KEY_FILE"
 
-  printf "%s | [DEBUG]    deployment key file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$DEPLOYMENT_KEY_FILE"
-  printf "%s | [DEBUG]         deployment key: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$deployment_key"
-  printf "%s | [DEBUG]   password for the key: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$deployment_key_password"
-  printf "%s | [INFO ] deployment-key has been saved\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [DEBUG]    deployment key file: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$DEPLOYMENT_KEY_FILE"
+  printf "%s | [DEBUG]         deployment key: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$deployment_key"
+  printf "%s | [DEBUG]   password for the key: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$deployment_key_password"
+  printf "%s | [INFO ] deployment-key has been saved\n" "$(date +"%Y-%m-%d %H:%M:%S")"
 }
 
 # ------------------------------------------------------------------------------
@@ -53,14 +53,14 @@ function generate_ds_master_key() {
   deployment_key=$(get_value "$DEPLOYMENT_KEY_FILE" "KEY")
   deployment_key_password=$(get_value "$DEPLOYMENT_KEY_FILE" "PASSWORD")
 
-  printf "%s | [INFO]  creating a new ForgeRock Directory Server master-key...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]                DS_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$DS_HOME"
-  printf "%s | [DEBUG]                  alias: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$alias"
-  printf "%s | [DEBUG]    deployment key file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$DEPLOYMENT_KEY_FILE"
-  printf "%s | [DEBUG]         deployment key: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$deployment_key"
-  printf "%s | [DEBUG]   password for the key: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$deployment_key_password"
-  printf "%s | [DEBUG]               keystore: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$keystore_file"
-  printf "%s | [DEBUG]      keystore password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$keystore_password"
+  printf "%s | [INFO]  creating a new ForgeRock Directory Server master-key...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG]                DS_HOME: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$DS_HOME"
+  printf "%s | [DEBUG]                  alias: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$alias"
+  printf "%s | [DEBUG]    deployment key file: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$DEPLOYMENT_KEY_FILE"
+  printf "%s | [DEBUG]         deployment key: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$deployment_key"
+  printf "%s | [DEBUG]   password for the key: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$deployment_key_password"
+  printf "%s | [DEBUG]               keystore: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_file"
+  printf "%s | [DEBUG]      keystore password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_password"
 
   "$DS_HOME/bin/dskeymgr" export-master-key-pair \
     --alias "$alias" \
@@ -98,26 +98,26 @@ function install_ds() {
   base_dn_config="ou=am-config,$domain_dn"
   base_dn_store="ou=am-identity,$domain_dn"
 
-  printf "%s | [INFO]  installing ForgeRock Directory Service (DS)...\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  printf "%s | [DEBUG]                       FQDN: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$fqdn"
-  printf "%s | [DEBUG]                     domain: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain"
-  printf "%s | [DEBUG]                  domain DN: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$domain_dn"
-  printf "%s | [DEBUG]                    DS_HOME: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$DS_HOME"
-  printf "%s | [DEBUG]                  server-id: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$server_id"
-  printf "%s | [DEBUG]                DS profiles: \"%s\", \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$ds_profile_config" "$ds_profile_store"
-  printf "%s | [DEBUG]                    base DN: \"%s\", \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$base_dn_config" "$base_dn_store"
-  printf "%s | [DEBUG]             deployment-key: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$deployment_key"
-  printf "%s | [DEBUG]    deployment-key password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$deployment_key_password"
-  printf "%s | [DEBUG]               ldap user DN: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$LDAP_USER_DN"
-  printf "%s | [DEBUG]         ldap user password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$LDAP_USER_PASSWORD"
-  printf "%s | [DEBUG]       admin connector port: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$ADMIN_CONNECTOR_PORT"
-  printf "%s | [DEBUG]                  LDAP port: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$LDAP_PORT"
-  printf "%s | [DEBUG]                 LDAPS port: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$LDAPS_PORT"
-  printf "%s | [DEBUG]            truststore file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$truststore_file"
-  printf "%s | [DEBUG]        truststore password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$truststore_password"
-  printf "%s | [DEBUG]              keystore file: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$keystore_file"
-  printf "%s | [DEBUG]          keystore password: \"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$keystore_password"
-  printf "%s | [INFO ] setting up directory-server\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  printf "%s | [INFO]  installing ForgeRock Directory Service (DS)...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG]                       FQDN: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fqdn"
+  printf "%s | [DEBUG]                     domain: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain"
+  printf "%s | [DEBUG]                  domain DN: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain_dn"
+  printf "%s | [DEBUG]                    DS_HOME: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$DS_HOME"
+  printf "%s | [DEBUG]                  server-id: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$server_id"
+  printf "%s | [DEBUG]                DS profiles: \"%s\", \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$ds_profile_config" "$ds_profile_store"
+  printf "%s | [DEBUG]                    base DN: \"%s\", \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$base_dn_config" "$base_dn_store"
+  printf "%s | [DEBUG]             deployment-key: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$deployment_key"
+  printf "%s | [DEBUG]    deployment-key password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$deployment_key_password"
+  printf "%s | [DEBUG]               ldap user DN: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$LDAP_USER_DN"
+  printf "%s | [DEBUG]         ldap user password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$LDAP_USER_PASSWORD"
+  printf "%s | [DEBUG]       admin connector port: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$ADMIN_CONNECTOR_PORT"
+  printf "%s | [DEBUG]                  LDAP port: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$LDAP_PORT"
+  printf "%s | [DEBUG]                 LDAPS port: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$LDAPS_PORT"
+  printf "%s | [DEBUG]            truststore file: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$truststore_file"
+  printf "%s | [DEBUG]        truststore password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$truststore_password"
+  printf "%s | [DEBUG]              keystore file: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_file"
+  printf "%s | [DEBUG]          keystore password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_password"
+  printf "%s | [INFO ] setting up directory-server\n" "$(date +"%Y-%m-%d %H:%M:%S")"
 
   cd "$DS_HOME"
   ./setup \

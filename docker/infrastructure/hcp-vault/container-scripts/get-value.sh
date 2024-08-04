@@ -48,11 +48,11 @@ FULL_PATH="${1//.///}"
 VAULT_FIELD="$(basename "$FULL_PATH")"
 VAULT_PATH="$(dirname "$FULL_PATH")"
 
-if is_debug "$@"; then printf "%s | [DEBUG] getting value from Vault...\n" "$(date +"%Y-%b-%d %H:%M:%S")"; fi
-if is_debug "$@"; then printf "%s | [DEBUG]            key=\"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$1"; fi
-if is_debug "$@"; then printf "%s | [DEBUG]     VAULT_ADDR=\"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_ADDR"; fi
-if is_debug "$@"; then printf "%s | [DEBUG]    VAULT_TOKEN=\"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_TOKEN"; fi
-if is_debug "$@"; then printf "%s | [DEBUG]     VAULT_PATH=\"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_PATH"; fi
-if is_debug "$@"; then printf "%s | [DEBUG]    VAULT_FIELD=\"%s\"\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_FIELD"; fi
+if is_debug "$@"; then printf "%s | [DEBUG] getting value from Vault...\n" "$(date +"%Y-%m-%d %H:%M:%S")"; fi
+if is_debug "$@"; then printf "%s | [DEBUG]            key=\"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$1"; fi
+if is_debug "$@"; then printf "%s | [DEBUG]     VAULT_ADDR=\"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$VAULT_ADDR"; fi
+if is_debug "$@"; then printf "%s | [DEBUG]    VAULT_TOKEN=\"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$VAULT_TOKEN"; fi
+if is_debug "$@"; then printf "%s | [DEBUG]     VAULT_PATH=\"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$VAULT_PATH"; fi
+if is_debug "$@"; then printf "%s | [DEBUG]    VAULT_FIELD=\"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$VAULT_FIELD"; fi
 
 vault kv get -field="$VAULT_FIELD" "kv/$VAULT_PATH"

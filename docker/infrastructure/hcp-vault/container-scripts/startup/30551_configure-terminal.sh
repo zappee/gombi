@@ -13,7 +13,7 @@
 log_start "$0"
 
 VAULT_TOKEN="$(get_vault_root_token)"
-printf "%s | [DEBUG] setting VAULT_TOKEN environment variable to \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$VAULT_TOKEN"
+printf "%s | [DEBUG] setting VAULT_TOKEN environment variable to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$VAULT_TOKEN"
 sed -i "s/.*VAULT_TOKEN.*/export VAULT_TOKEN=$VAULT_TOKEN/" /etc/profile
 
 log_end "$0"
