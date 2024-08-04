@@ -23,7 +23,7 @@ file_exists() {
   file_to_check="$1"
 
   if [ ! -f "$file_to_check" ]; then
-    printf "%s | [ERROR] file \"%s\" not found\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_check"
+    printf "%s | [WARN]  file \"%s\" not found\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$file_to_check"
     log_end "$0"
     exit 0
   fi
@@ -96,8 +96,7 @@ get_first_jar() {
   printf "%s | [DEBUG] found %s file(s) in the \"%s\" directory\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$number_of_files" "$jars_home"
 
   if [[ "$number_of_files" -eq 0 ]]; then
-    printf "%s | [ERROR] there is no *.jar files in the \"%s\" directory, exiting...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home"
-    exit 1
+    printf "%s | [WARN]  there is no *.jar files in the \"%s\" directory, exiting...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$jars_home"
   elif [[ "$number_of_files" -gt 1 ]]; then
     printf "%s | [ERROR] ambiguous configuration, there are more then one JAR file to execute:\n" "$(date +"%Y-%b-%d %H:%M:%S")"
     printf "%s\n" "${files[@]}"
@@ -106,7 +105,13 @@ get_first_jar() {
 
   local result
   result="$2"
-  eval "$result"="${files[0]}"
+  if [ ${#files[@]} -eq 0 ]; then
+    # no files in the dir
+    eval "$result"=""
+  else
+    # directory not empty
+    eval "$result"="${files[0]}"
+  fi
 }
 
 # ------------------------------------------------------------------------------
@@ -150,8 +155,12 @@ unpack_jar() {
   archive_file="$1"
   target="$2"
 
-  printf "%s | [DEBUG] unpacking the \"%s\" file to \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$archive_file" "$target"
-  unzip -q "$archive_file" -d "$target"
+  if [ -z "$archive_file" ]; then
+    printf "%s | [WARN]  there is nothing to unpack\n" "$(date +"%Y-%b-%d %H:%M:%S")"
+  else
+    printf "%s | [DEBUG] unpacking the \"%s\" file to \"%s\"...\n" "$(date +"%Y-%b-%d %H:%M:%S")" "$archive_file" "$target"
+    unzip -q "$archive_file" -d "$target"
+  fi
 }
 
 # ------------------------------------------------------------------------------

@@ -19,8 +19,7 @@
 # Jar validation error message.
 # ------------------------------------------------------------------------------
 show_no_jar_to_execute_error() {
-  printf "%s | [DEBUG] there is no JAR file to execute\n" "$(date +"%Y-%b-%d %H:%M:%S")"
-  exit 1
+  printf "%s | [WARN]  there is no JAR file to execute\n" "$(date +"%Y-%b-%d %H:%M:%S")"
 }
 
 # ------------------------------------------------------------------------------
