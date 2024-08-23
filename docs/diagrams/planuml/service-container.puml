@@ -14,7 +14,13 @@
     RoundCorner 20
     LineThickness 2
     LineColor Sienna
-    BackgroundColor BurlyWood
+    BackgroundColor LightPink
+  }
+  .STYLE_CACHE {
+    RoundCorner 20
+    LineThickness 2
+    LineColor DarkBlue
+    BackgroundColor CornflowerBlue
   }
   .STYLE_PKI {
     RoundCorner 20
@@ -26,19 +32,19 @@
     RoundCorner 20
     LineThickness 2
     LineColor SteelBlue
-    BackgroundColor PaleTurquoise
+    BackgroundColor Yellow
   }
   .STYLE_APP {
     RoundCorner 20
     LineThickness 2
     LineColor Purple
-    BackgroundColor HotPink
+    BackgroundColor RED
   }
   .STYLE_APP_CONTAINER {
     RoundCorner 20
     LineThickness 2
     LineColor SteelBlue
-    BackgroundColor Pink
+    BackgroundColor LightYellow
   }
   .STYLE_MONITOR {
     RoundCorner 20
@@ -59,6 +65,7 @@ title **Remal java-runner Docker container dependencies**
 
 sprite $PKI           jar:archimate/business-interaction
 sprite $KV_STORE      jar:archimate/business-interface
+sprite $CACHE         jar:archimate/strategy-capability
 sprite $DB            jar:archimate/application-data-object
 sprite $APP           jar:archimate/physical-equipment
 sprite $APP_CONTAINER jar:archimate/physical-equipment
@@ -68,31 +75,38 @@ sprite $MESSAGING     jar:archimate/junction
 
 node          "Java Runner"                    as java_runner     <<$APP_CONTAINER>> <<STYLE_APP_CONTAINER>> {
    component  "User Service\nJAR"              as rest_service    <<$APP>>           <<STYLE_APP>>
-   component  "Hashicorp Consul Agent\nClient" as consul_client   <<$KV_STORE>>      <<STYLE_KV_STORE>>
+   component  "Hashicorp Consul\nAgent Client" as consul_client   <<$KV_STORE>>      <<STYLE_KV_STORE>>
+   component  "Hazelcast IMDG\nClient"         as imdg_client     <<$CACHE>>         <<STYLE_CACHE>>
+   component  "Hazelcast Near\nCache"          as imdg_near_cache <<$CACHE>>         <<STYLE_CACHE>>
    component  "PostgreSQL"                     as postgresql      <<$DB>>            <<STYLE_DB>>
    portin     "GET\nrest"                      as rest_service_i1
    portin     "POST\nrest"                     as rest_service_i2
 }
 node          "Prometheus"                     as prometheus      <<$MONITOR>>       <<STYLE_MONITOR>>
-node          "Grafana"                        as grafana          <<$MONITOR>>       <<STYLE_MONITOR>>
+node          "Grafana"                        as grafana         <<$MONITOR>>       <<STYLE_MONITOR>>
 node          "Private PKI"                    as pki             <<$PKI>>           <<STYLE_PKI>>
 node          "Hashicorp Consul Agent\nServer" as consul_server   <<$KV_STORE>>      <<STYLE_KV_STORE>>
 node          "Zookeeper"                      as zookeeper       <<$MESSAGING>>     <<STYLE_MESSAGING>>
 node          "Kafka"                          as kafka           <<$MESSAGING>>     <<STYLE_MESSAGING>>
+node          "Hazelcast IMDG Member"          as imdg_member     <<$CACHE>>         <<STYLE_CACHE>>
 
 
-consul_server    <..> pki             : generate\ncertificate
-java_runner      <--> pki             : generate\ncertificate
-prometheus       <..> pki             : generate\ncertificate
-grafana          <..> pki             : generate\ncertificate
-   consul_client  ..> consul_server
-   rest_service  <--> postgresql
-   rest_service   --> consul_client   : service discovery\\\ndistributed configuration
-   rest_service   --> rest_service_i1
-   rest_service   --> rest_service_i2
-prometheus       ...> rest_service
-grafana           ..> prometheus
-prometheus        ..> consul_server   : get the URL\n of services\nto monitor
-zookeeper       <..>  kafka
-kafka           <..>  rest_service
+consul_server     <..> pki             : generate\ncertificate
+java_runner       <--> pki             : generate\ncertificate
+prometheus        <..> pki             : generate\ncertificate
+grafana           <..> pki             : generate\ncertificate
+   consul_client   ..> consul_server
+   rest_service   <--> postgresql
+   rest_service    --> consul_client   : service discovery\\\ndistributed configuration
+   rest_service    --> imdg_client     : distributed\ncache
+   imdg_client     --> imdg_near_cache
+   rest_service    --> rest_service_i1
+   rest_service    --> rest_service_i2
+prometheus        ...> rest_service
+grafana            ..> prometheus
+prometheus         ..> consul_server   : get the URL\n of services\nto monitor
+zookeeper         <..> kafka
+kafka             <..> rest_service
+imdg_near_cache   <..> imdg_member
+imdg_member       <..> pki
 @enduml

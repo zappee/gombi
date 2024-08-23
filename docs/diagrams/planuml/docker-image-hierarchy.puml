@@ -72,6 +72,7 @@ rectangle "Hashicorp Consul"             as consul          <<$INFRA_IMAGE>>    
 rectangle "Hashicorp Consul"             as consul          <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
 rectangle "Java-21 Runner"               as java_runner_21  <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
 rectangle "Java-21 Runner + PostgreSQL"  as java_runner_21p <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
+rectangle "Hazelcast IMDG"               as imdg            <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
 rectangle "Examples"                     as examples        <<$APP_IMAGE>>      <<STYLE_APP>>
 rectangle "User Service"                 as user_service    <<$APP_IMAGE>>      <<STYLE_APP>>
 rectangle "Prometheus"                   as prometheus      <<$MONITOR_IMAGE>>  <<STYLE_MONITOR>>
@@ -90,6 +91,7 @@ java17            -->  ds
 java21            -->  consul
 tomcat9           -->  am
 consul            -->  java_runner_21
+java21            -->  imdg
 java_runner_21    -->  java_runner_21p
 java_runner_21   --->  examples
 java_runner_21   --->  user_service
