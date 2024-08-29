@@ -1,17 +1,17 @@
 # ******************************************************************************
 #  Remal ForgeRock Directory Server Docker image build file.
 #
-#  Since : January, 2023
+#  Since : August, 2024
 #  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+#  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM=${IMAGE_FROM}
 ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
 EXPOSE 22/tcp
-EXPOSE 389/tcp
+EXPOSE 54327/tcp #
 EXPOSE 636/tcp
 EXPOSE 4444/tcp
 EXPOSE 1331/tcp
