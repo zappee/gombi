@@ -6,20 +6,20 @@
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
-ARG BUILD_TYPE="fat"
-FROM ${IMAGE_FROM} AS base
+ARG IMAGE_FROM
+ARG BUILD_TYPE
+FROM ${IMAGE_FROM:-remal-base:0.0.1} AS base
 
 EXPOSE 22/tcp
 EXPOSE 1331/tcp
 
+# build-time variables
+ARG IMAGE_NAME
+ARG IMAGE_TAG
+ARG IMAGE_DESCRIPTION
+
 # environment variables
-ENV IMAGE_NAME="private-ca" \
-    IMAGE_TAG="0.0.1" \
-    IMAGE_DESCRIPTION="Private Certificate Authority server" \
-    IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
-    \
-    EASYRSA_HOME="/opt/easy-rsa" \
+ENV EASYRSA_HOME="/opt/easy-rsa" \
     EASYRSA_INSTALL_KIT="EasyRSA-3.1.7.tgz" \
     \
     EASYRSA_REQ_CN="remal.com" \
@@ -35,11 +35,11 @@ ENV IMAGE_NAME="private-ca" \
     EASYRSA_PASS="changeit"
 
 # set image metadata
-LABEL "com.remal.image.vendor"="Remal" \
-      "com.remal.image.name"="${IMAGE_NAME}" \
+LABEL "com.remal.image.name"="${IMAGE_NAME}" \
       "com.remal.image.version"="${IMAGE_TAG}" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
-      "com.remal.image.author"="${IMAGE_AUTHOR}"
+      "com.remal.image.vendor"="Remal" \
+      "com.remal.image.author"="Arnold Somogyi <arnold.somogyi@gmail.com>"
 
 
 # fat image
@@ -66,5 +66,5 @@ RUN set -ue; \
 
 
 # final image
-FROM base-$BUILD_TYPE AS final
+FROM base-${BUILD_TYPE:-fat}
 COPY container-scripts/generate-cert.sh $EASYRSA_HOME/

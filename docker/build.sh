@@ -15,20 +15,21 @@
 # ******************************************************************************
 if [ "$#" -ne 1 ]; then
   printf "[ERROR] Illegal number of parameters.\n"
-  printf "Usage: %s <image-source-dir>\n\n" "${0##*/}"
+  printf "Usage: %s <image-source-relative-path>\n\n" "${0##*/}"
   exit 1
 fi
 
 SCRIPT=$(realpath "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT")
 IMAGE_SRC=$SCRIPT_PATH/${1##*docker/}
-. "$IMAGE_SRC/setenv.sh" "slim" "false" "remal.com"
+. "$IMAGE_SRC/setenv.sh" "slim" "false" "hello.com"
 
 printf "script home: %s\n" "$SCRIPT_PATH"
 printf "source code: %s\n" "$IMAGE_SRC"
 printf "build type:  %s\n" "$BUILD_TYPE"
-printf "base image:  %s\n" "$IMAGE_FROM"
-printf "image image: %s\n\n" "$IMAGE_NAME:$IMAGE_TAG"
+printf "image from:  %s\n" "$IMAGE_FROM"
+printf "image name:  %s\n" "$IMAGE_NAME"
+printf "image tag:   %s\n\n" "$IMAGE_TAG"
 
 docker build \
   --no-cache \
@@ -42,11 +43,17 @@ docker build \
   --progress plain \
   "$IMAGE_SRC"
 
+EXIT_CODE=$?
+if [ "$EXIT_CODE" -ne 0 ]; then
+  printf "An unexpected error has appeared during the \"%s\" image build.\n" "$IMAGE_TAG"
+  exit 110
+fi
+
 printf "cleaning up unused Docker images and containers...\n"
 docker ps --filter status=exited --filter status=created --quiet | xargs -r docker rm --volumes
 docker image prune --force
 
-if [ "$PUSH_IMAGE" = true ] ; then
+if [ "$PUSH_IMAGE" = true ]; then
   printf "pushing the image to the registry...\n"
   docker push "$IMAGE_NAME":"$IMAGE_TAG"
 fi

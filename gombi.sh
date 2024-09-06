@@ -88,9 +88,9 @@ function docker_stack_up {
   docker_compose_file="$WORKSPACE/$dir/docker-compose.yml"
 
   printf "\n%b> starting the '%s' docker stack...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
-  printf "%b       environment-file: '%s'%b\n" "$COLOR_YELLOW" "$environment_file" "$STYLE_DEFAULT"
-  printf "%b     docker-compose.yml: '%s'%b\n" "$COLOR_YELLOW" "$docker_compose_file" "$STYLE_DEFAULT"
-  docker-compose --env-file="$environment_file" -f "$docker_compose_file" up
+  printf "%b          environment_file=\"%s\"%b\n" "$COLOR_YELLOW" "$environment_file" "$STYLE_DEFAULT"
+  printf "%b       docker_compose_file=\"%s\"%b\n" "$COLOR_YELLOW" "$docker_compose_file" "$STYLE_DEFAULT"
+  docker compose --env-file="$environment_file" -f "$docker_compose_file" up
 }
 
 # ------------------------------------------------------------------------------
@@ -125,7 +125,11 @@ function docker_image_build {
   dir="$2"
 
   printf "\n%b> building '%s' docker image...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
-  docker/build.sh "$dir"
+  if ! docker/build.sh "$dir" ; then
+    exit_code=$?
+    printf "ERROR: Docker image build has been failed. Image: %s\n" "$title"
+    exit "$exit_code"
+  fi
 }
 
 # ------------------------------------------------------------------------------
@@ -321,7 +325,7 @@ if match "$COMMAND" "c3"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_
 if match "$COMMAND" "c4"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
 if match "$COMMAND" "c5"; then docker_image_build "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
 if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
-if match "$COMMAND" "c7"; then docker_image_build "$(get_name "$LABEL_LABEL_HAZELCAST")" "$(get_path "$LABEL_LABEL_HAZELCAST")"; fi
+if match "$COMMAND" "c7"; then docker_image_build "$(get_name "$LABEL_HAZELCAST")" "$(get_path "$LABEL_HAZELCAST")"; fi
 if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_PROMETHEUS")" "$(get_path "$LABEL_PROMETHEUS")"; fi
 if match "$COMMAND" "d2"; then docker_image_build "$(get_name "$LABEL_GRAFANA")" "$(get_path "$LABEL_GRAFANA")"; fi
 if match "$COMMAND" "e1"; then docker_image_build "$(get_name "$LABEL_JAVA_21_RUNNER")" "$(get_path "$LABEL_JAVA_21_RUNNER")"; fi

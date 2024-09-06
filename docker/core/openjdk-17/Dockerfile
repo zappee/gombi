@@ -6,26 +6,27 @@
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
-FROM ${IMAGE_FROM}
+ARG IMAGE_FROM
+ARG BUILD_TYPE
+FROM ${IMAGE_FROM:-remal-base:0.0.1}
 
 EXPOSE 22/tcp
 EXPOSE 1331/tcp
 
+# build-time variables
+ARG IMAGE_NAME
+ARG IMAGE_TAG
+ARG IMAGE_DESCRIPTION
+
 # environment variables
-ENV IMAGE_NAME="openjdk-17" \
-    IMAGE_TAG="0.0.1" \
-    IMAGE_DESCRIPTION="Remal Base image" \
-    IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
-    \
-    JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
+ENV JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
 
 # set image metadata
-LABEL "com.remal.image.vendor"="Remal" \
-      "com.remal.image.name"="${IMAGE_NAME}" \
+LABEL "com.remal.image.name"="${IMAGE_NAME}" \
       "com.remal.image.version"="${IMAGE_TAG}" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
-      "com.remal.image.author"="${IMAGE_AUTHOR}"
+      "com.remal.image.vendor"="Remal" \
+      "com.remal.image.author"="Arnold Somogyi <arnold.somogyi@gmail.com>"
 
 # install openssl and openjdk
 RUN set -ue; \

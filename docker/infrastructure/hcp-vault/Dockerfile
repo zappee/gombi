@@ -6,20 +6,20 @@
 #
 #  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
-ARG BUILD_TYPE="fat"
-FROM ${IMAGE_FROM} AS base
+ARG IMAGE_FROM
+ARG BUILD_TYPE
+FROM ${IMAGE_FROM:-remal-base:0.0.1} AS base
 
 EXPOSE 22/tcp
 EXPOSE 8200/tcp
 
+# build-time variables
+ARG IMAGE_NAME
+ARG IMAGE_TAG
+ARG IMAGE_DESCRIPTION
+
 # environment variables
-ENV IMAGE_NAME="vault" \
-    IMAGE_TAG="0.0.1" \
-    IMAGE_DESCRIPTION="HashiCorp Vault 1.15.0" \
-    IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
-    \
-    PKI_HOST="pki.remal.com" \
+ENV PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     \
     VAULT_INSTALL_KIT="vault_1.15.0_linux_386.zip" \
@@ -32,11 +32,11 @@ ENV IMAGE_NAME="vault" \
     VAULT_AUDIT_LOG="/var/log/vault-audit.log"
 
 # set image metadata
-LABEL "com.remal.image.vendor"="Remal" \
-      "com.remal.image.name"="${IMAGE_NAME}" \
+LABEL "com.remal.image.name"="${IMAGE_NAME}" \
       "com.remal.image.version"="${IMAGE_TAG}" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
-      "com.remal.image.author"="${IMAGE_AUTHOR}"
+      "com.remal.image.vendor"="Remal" \
+      "com.remal.image.author"="Arnold Somogyi <arnold.somogyi@gmail.com>"
 
 # install openssl
 RUN set -ue; \
@@ -61,6 +61,6 @@ RUN set -ue; \
 
 
 # final image
-FROM base-$BUILD_TYPE AS final
+FROM base-${BUILD_TYPE:-fat}
 COPY config/vault.hcl "$VAULT_CONFIG_FILE"
 COPY container-scripts/vault-functions.sh container-scripts/get-value.sh container-scripts/set-value.sh /

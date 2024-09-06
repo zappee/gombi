@@ -6,20 +6,20 @@
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
-ARG BUILD_TYPE="fat"
-FROM ${IMAGE_FROM} AS base
+ARG IMAGE_FROM
+ARG BUILD_TYPE
+FROM ${IMAGE_FROM:-remal-base:0.0.1} AS base
 
 EXPOSE 22/tcp
 EXPOSE 3000/tcp
 
+# build-time variables
+ARG IMAGE_NAME
+ARG IMAGE_TAG
+ARG IMAGE_DESCRIPTION
+
 # environment variables
-ENV IMAGE_NAME="remal-grafana" \
-    IMAGE_TAG="0.0.1" \
-    IMAGE_DESCRIPTION="Remal Grafana" \
-    IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
-    \
-    PKI_HOST="pki.hello.com" \
+ENV PKI_HOST="pki.hello.com" \
     KEYSTORE_HOME="/tmp" \
     PROMETHEUS_HOST="prometheus.hello.com" \
     PROMETHEUS_PORT="9090" \
@@ -38,11 +38,11 @@ ENV IMAGE_NAME="remal-grafana" \
     GRAFANA_PASSWORD="password"
 
 # set image metadata
-LABEL "com.remal.image.vendor"="Remal" \
-      "com.remal.image.name"="${IMAGE_NAME}" \
+LABEL "com.remal.image.name"="${IMAGE_NAME}" \
       "com.remal.image.version"="${IMAGE_TAG}" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
-      "com.remal.image.author"="${IMAGE_AUTHOR}"
+      "com.remal.image.vendor"="Remal" \
+      "com.remal.image.author"="Arnold Somogyi <arnold.somogyi@gmail.com>"
 
 
 # fat image
@@ -65,7 +65,7 @@ RUN set -ue; \
 
 
 # final image
-FROM base-$BUILD_TYPE AS final
+FROM base-${BUILD_TYPE:-fat}
 RUN set -ue; \
     mkdir -p "$GRAFANA_STORAGE"; \
     mkdir -p "$GRAFANA_LOG_DIR"; \

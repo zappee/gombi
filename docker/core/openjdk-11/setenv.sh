@@ -14,4 +14,4 @@ export IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 export IMAGE_FROM="remal-base:0.0.2"
 export BUILD_TYPE="${1:-fat}"
 export PUSH_IMAGE="${2:-false}"
-export DOMAIN_NAME=${3:-hello.com}
+export DOMAIN_NAME="${3:-hello.com}"

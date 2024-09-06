@@ -6,22 +6,22 @@
 #
 #  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
-ARG BUILD_TYPE="fat"
-FROM ${IMAGE_FROM} AS base
+ARG IMAGE_FROM
+ARG BUILD_TYPE
+FROM ${IMAGE_FROM:-remal-base:0.0.1} AS base
 
 EXPOSE 22/tcp
 EXPOSE 443/tcp
 EXPOSE 8080/tcp
 EXPOSE 1331/tcp
 
+# build-time variables
+ARG IMAGE_NAME
+ARG IMAGE_TAG
+ARG IMAGE_DESCRIPTION
+
 # environment variables
-ENV IMAGE_NAME="am-7.3" \
-    IMAGE_TAG="0.0.1" \
-    IMAGE_DESCRIPTION="ForgeRock Access Management Server 7.3.0" \
-    IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
-    \
-    PKI_HOST="pki.remal.com" \
+ENV PKI_HOST="pki.remal.com" \
     \
     AM_CONFIG_BACKUP="true" \
     AM_CONFIG_RESTORE_FROM="latest" \
@@ -36,17 +36,17 @@ ENV IMAGE_NAME="am-7.3" \
     AM_DEFAULT_POLICY_AGENT_PASSWORD="password" \
     AM_CONFIG_STORE_HOST="ds.hello.com" \
     AM_CONFIG_STORE_PORT="636" \
-    AM_CONFIG_STORE_MANAGER_PASSWD="password" \
+    AM_CONFIG_STORE_MANAGER_PASSWORD="password" \
     AM_USER_STORE_HOST="ds.hello.com" \
     AM_USER_STORE_PORT="636" \
-    AM_USER_STORE_MANAGER_PASSWD="password"
+    AM_USER_STORE_MANAGER_PASSWORD="password"
 
 # set image metadata
-LABEL "com.remal.image.vendor"="Remal" \
-      "com.remal.image.name"="${IMAGE_NAME}" \
+LABEL "com.remal.image.name"="${IMAGE_NAME}" \
       "com.remal.image.version"="${IMAGE_TAG}" \
       "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
-      "com.remal.image.author"="${IMAGE_AUTHOR}"
+      "com.remal.image.vendor"="Remal" \
+      "com.remal.image.author"="Arnold Somogyi <arnold.somogyi@gmail.com>"
 
 
 # fat image
@@ -81,5 +81,5 @@ RUN set -ue; \
 
 
 # final image
-FROM base-$BUILD_TYPE AS final
+FROM base-${BUILD_TYPE:-fat}
 COPY container-scripts/shutdown-actions.sh /
