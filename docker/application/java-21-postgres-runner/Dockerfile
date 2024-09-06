@@ -9,7 +9,7 @@
 # ******************************************************************************
 ARG IMAGE_FROM=${IMAGE_FROM}
 ARG BUILD_TYPE="fat"
-FROM ${IMAGE_FROM} AS base
+FROM ${IMAGE_FROM:-remal-base:0.0.1} AS base
 
 EXPOSE 22/tcp
 EXPOSE 3000/tcp
@@ -51,7 +51,7 @@ FROM base AS base-slim
 
 
 # final image
-FROM base-$BUILD_TYPE AS final
+FROM base-${BUILD_TYPE:-fat}
 
 # installing tools
 RUN set -ue; \
