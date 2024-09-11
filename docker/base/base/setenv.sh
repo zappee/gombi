@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Environment file to define variables used during the Docker image build.
 #
-# Since : May, 2023
+# Since:  May 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
@@ -10,6 +10,7 @@
 export IMAGE_NAME="remal-base"
 export IMAGE_TAG="0.0.2"
 export IMAGE_DESCRIPTION="Remal Base Docker image"
+export IMAGE_VENDOR="Remal"
 export IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 export IMAGE_FROM="alpine:3.19.1"
 export BUILD_TYPE="${1:-fat}"

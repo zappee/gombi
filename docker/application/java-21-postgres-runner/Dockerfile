@@ -7,19 +7,29 @@
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
+# default build-time values, can be overwritten during the build
+ARG IMAGE_FROM="remal-java-21-runner:0.0.1"
 ARG BUILD_TYPE="fat"
-FROM ${IMAGE_FROM:-remal-base:0.0.1} AS base
+
+FROM ${IMAGE_FROM} AS base
 
 EXPOSE 22/tcp
 EXPOSE 3000/tcp
 EXPOSE 5432/tcp
 
+# defaultvalue of the scope level build-time variables
+ARG IMAGE_NAME="remal-java-21-postgres-runner"
+ARG IMAGE_TAG="0.0.1"
+ARG IMAGE_DESCRIPTION="Remal Java 21 Runner with Postgres database server"
+ARG IMAGE_VENDOR="Remal"
+ARG IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
+
 # environment variables
-ENV IMAGE_NAME="remal-java-21-postgres-runner" \
-    IMAGE_TAG="0.0.2" \
-    IMAGE_DESCRIPTION="Remal Java 21 Runner with Postgres database server" \
-    IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
+ENV IMAGE_NAME="${IMAGE_NAME}" \
+    IMAGE_TAG="${IMAGE_TAG}" \
+    IMAGE_DESCRIPTION="${IMAGE_DESCRIPTION}" \
+    IMAGE_VENDOR="${IMAGE_VENDOR}" \
+    IMAGE_AUTHOR="${IMAGE_AUTHOR}" \
     \
     POSTGRES_HOME="/var/lib/postgresql" \
     POSTGRES_DATA="/var/lib/postgresql/data" \
@@ -34,12 +44,11 @@ ENV IMAGE_NAME="remal-java-21-postgres-runner" \
     DB_APP_USER="application" \
     DB_APP_PASSWORD="password"
 
-# set image metadata
-LABEL "com.remal.image.vendor"="Remal" \
-      "com.remal.image.name"="${IMAGE_NAME}" \
-      "com.remal.image.version"="${IMAGE_TAG}" \
-      "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
-      "com.remal.image.author"="${IMAGE_AUTHOR}"
+LABEL "image.name"="${IMAGE_NAME}" \
+      "image.version"="${IMAGE_TAG}" \
+      "image.description"="${IMAGE_DESCRIPTION}" \
+      "image.vendor"="${IMAGE_VENDOR}" \
+      "image.author"="${IMAGE_AUTHOR}"
 
 
 # fat image
@@ -51,7 +60,7 @@ FROM base AS base-slim
 
 
 # final image
-FROM base-${BUILD_TYPE:-fat}
+FROM base-${BUILD_TYPE}
 
 # installing tools
 RUN set -ue; \

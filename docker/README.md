@@ -134,6 +134,7 @@ Images and its types:
 | java-21-runner          | Application    | 70100 - 70199 |
 | grafana                 | Monitoring     | 40200 - 40299 |
 | prometheus              | Monitoring     | 40100 - 40199 |
+| hazelcast-imdg          | Infrastructure | 30700 - 30799 |
 | hcp-consul              | Infrastructure | 30600 - 30699 |
 | hcp-vault               | Infrastructure | 30500 - 30599 |
 | forgerock-am            | Infrastructure | 30400 - 30499 |

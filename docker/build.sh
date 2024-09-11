@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Remal Docker image builder.
 #
-# Since : January, 2023
+# Since:  January 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
@@ -24,12 +24,14 @@ SCRIPT_PATH=$(dirname "$SCRIPT")
 IMAGE_SRC=$SCRIPT_PATH/${1##*docker/}
 . "$IMAGE_SRC/setenv.sh" "slim" "false" "hello.com"
 
-printf "script home: %s\n" "$SCRIPT_PATH"
-printf "source code: %s\n" "$IMAGE_SRC"
-printf "build type:  %s\n" "$BUILD_TYPE"
-printf "image from:  %s\n" "$IMAGE_FROM"
-printf "image name:  %s\n" "$IMAGE_NAME"
-printf "image tag:   %s\n\n" "$IMAGE_TAG"
+printf "script home:  %s\n" "$SCRIPT_PATH"
+printf "source code:  %s\n" "$IMAGE_SRC"
+printf "build type:   %s\n" "$BUILD_TYPE"
+printf "image name:   %s\n" "$IMAGE_NAME"
+printf "image vendor: %s\n" "$IMAGE_VENDOR"
+printf "image author: %s\n" "$IMAGE_AUTHOR"
+printf "image from:   %s\n" "$IMAGE_FROM"
+printf "image tag:    %s\n\n" "$IMAGE_TAG"
 
 docker build \
   --no-cache \
@@ -37,6 +39,7 @@ docker build \
   --build-arg IMAGE_NAME="$IMAGE_NAME" \
   --build-arg IMAGE_TAG="$IMAGE_TAG" \
   --build-arg IMAGE_DESCRIPTION="$IMAGE_DESCRIPTION" \
+  --build-arg IMAGE_VENDOR="$IMAGE_VENDOR" \
   --build-arg IMAGE_AUTHOR="$IMAGE_AUTHOR" \
   --build-arg IMAGE_FROM="$IMAGE_FROM" \
   --tag "$IMAGE_NAME":"$IMAGE_TAG" \

@@ -10,7 +10,7 @@
 #
 #   2) Run the script using ./remal.sh
 #
-# Since : January 2023
+# Since:  January 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
@@ -48,12 +48,12 @@ function docker_container_logs {
   printf "%b> showing the containers' logs...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
 
   local running_containers_number
-  running_containers_number="$(docker ps -q --filter "label=com.remal.image.vendor=Remal" | wc -l)"
+  running_containers_number="$(docker ps -q --filter "label=image.vendor=Remal" | wc -l)"
 
   if [ "$running_containers_number" -eq 0 ]; then
     printf "no running container\n"
   else
-    docker ps -q --filter "label=com.remal.image.vendor=Remal" | xargs -L 1 docker logs --follow
+    docker ps -q --filter "label=image.vendor=Remal" | xargs -L 1 docker logs --follow
   fi
 }
 
@@ -64,12 +64,12 @@ function docker_container_remove {
   printf "%b> stopping and removing all the Remal Docker containers...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
 
   local running_containers_number
-  running_containers_number="$(docker ps -aq --filter "label=com.remal.image.vendor=Remal" | wc -l)"
+  running_containers_number="$(docker ps -aq --filter "label=image.vendor=Remal" | wc -l)"
 
   if [ "$running_containers_number" -eq 0 ]; then
     printf "there is no container to remove\n"
   else
-    docker rm --force $(docker container ls --filter "label=com.remal.image.vendor=Remal" -a -q)
+    docker rm --force $(docker container ls --filter "label=image.vendor=Remal" -a -q)
   fi
 }
 
@@ -88,7 +88,7 @@ function docker_stack_up {
   docker_compose_file="$WORKSPACE/$dir/docker-compose.yml"
 
   printf "\n%b> starting the '%s' docker stack...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
-  printf "%b          environment_file=\"%s\"%b\n" "$COLOR_YELLOW" "$environment_file" "$STYLE_DEFAULT"
+  printf "%b       environment_file=   \"%s\"%b\n" "$COLOR_YELLOW" "$environment_file" "$STYLE_DEFAULT"
   printf "%b       docker_compose_file=\"%s\"%b\n" "$COLOR_YELLOW" "$docker_compose_file" "$STYLE_DEFAULT"
   docker compose --env-file="$environment_file" -f "$docker_compose_file" up
 }
@@ -100,14 +100,14 @@ function docker_container_show {
   printf "%b> running/terminated Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
 
   local running_containers_number
-  running_containers_number="$(docker ps -aq --filter "label=com.remal.image.vendor=Remal" | wc -l)"
+  running_containers_number="$(docker ps -aq --filter "label=image.vendor=Remal" | wc -l)"
 
   if [ "$running_containers_number" -eq 0 ]; then
     printf "no running container\n"
   else
     docker container ls \
       -a \
-      --filter "label=com.remal.image.vendor=Remal" \
+      --filter "label=image.vendor=Remal" \
       --format "{{.ID}}\t{{.Names}}\t{{.Image}}\t{{.CreatedAt}}\t{{.Status}}" | sort -k 2
   fi
 }
@@ -137,7 +137,7 @@ function docker_image_build {
 # ------------------------------------------------------------------------------
 function docker_image_remove {
   printf "%b> removing all the Remal Docker images...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-  docker image rm $(docker image ls --filter "label=com.remal.image.vendor=Remal" -q)
+  docker image rm $(docker image ls --filter "label=image.vendor=Remal" -q)
 }
 
 # ------------------------------------------------------------------------------
@@ -145,7 +145,7 @@ function docker_image_remove {
 # ------------------------------------------------------------------------------
 function docker_image_show {
   printf "%b> Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-  docker images --filter "label=com.remal.image.vendor=Remal" --format "{{.Size}}\t{{.Repository}}:{{.Tag}}\t\t{{.CreatedSince}}\t{{.ID}}" | sort -k 2
+  docker images --filter "label=image.vendor=Remal" --format "{{.Size}}\t{{.Repository}}:{{.Tag}}\t\t{{.CreatedSince}}\t{{.ID}}" | sort -k 2
 }
 
 # ------------------------------------------------------------------------------
@@ -217,7 +217,7 @@ function show_help() {
     printf "   %bEnvironment:%b\n" "$STYLE_BOLD" "$STYLE_DEFAULT"
     printf "      BUILD_TYPE: %s\n" "$BUILD_TYPE"
     printf "      REMAL_HOME: %s\n" ""
-    printf "      WORKSPACE : %s\n\n" "$WORKSPACE"
+    printf "       WORKSPACE: %s\n\n" "$WORKSPACE"
     printf "   %bTasks%b:\n" "$STYLE_BOLD" "$STYLE_DEFAULT"
     printf "      %ba:    build the %bBase%b image%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %ba1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_BASE")" "$STYLE_DEFAULT"

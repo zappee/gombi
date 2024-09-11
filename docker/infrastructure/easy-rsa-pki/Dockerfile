@@ -1,25 +1,35 @@
 # ******************************************************************************
 # Remal Private Certificate Authority server.
 #
-# Since : March, 2023
+# Since:  March 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM
-ARG BUILD_TYPE
-FROM ${IMAGE_FROM:-remal-base:0.0.1} AS base
+# default build-time values, can be overwritten during the build
+ARG IMAGE_FROM="remal-openjdk-17:0.0.1"
+ARG BUILD_TYPE="fat"
+
+FROM ${IMAGE_FROM} AS base
 
 EXPOSE 22/tcp
 EXPOSE 1331/tcp
 
-# build-time variables
-ARG IMAGE_NAME
-ARG IMAGE_TAG
-ARG IMAGE_DESCRIPTION
+# defaultvalue of the scope level build-time variables
+ARG IMAGE_NAME="remal-private-ca"
+ARG IMAGE_TAG="0.0.1"
+ARG IMAGE_DESCRIPTION="Private Certificate Authority server"
+ARG IMAGE_VENDOR="Remal"
+ARG IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 
 # environment variables
-ENV EASYRSA_HOME="/opt/easy-rsa" \
+ENV IMAGE_NAME="${IMAGE_NAME}" \
+    IMAGE_TAG="${IMAGE_TAG}" \
+    IMAGE_DESCRIPTION="${IMAGE_DESCRIPTION}" \
+    IMAGE_VENDOR="${IMAGE_VENDOR}" \
+    IMAGE_AUTHOR="${IMAGE_AUTHOR}" \
+    \
+    EASYRSA_HOME="/opt/easy-rsa" \
     EASYRSA_INSTALL_KIT="EasyRSA-3.1.7.tgz" \
     \
     EASYRSA_REQ_CN="remal.com" \
@@ -34,12 +44,11 @@ ENV EASYRSA_HOME="/opt/easy-rsa" \
     EASYRSA_KEY_SIZE=2048 \
     EASYRSA_PASS="changeit"
 
-# set image metadata
-LABEL "com.remal.image.name"="${IMAGE_NAME}" \
-      "com.remal.image.version"="${IMAGE_TAG}" \
-      "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
-      "com.remal.image.vendor"="Remal" \
-      "com.remal.image.author"="Arnold Somogyi <arnold.somogyi@gmail.com>"
+LABEL "image.name"="${IMAGE_NAME}" \
+      "image.version"="${IMAGE_TAG}" \
+      "image.description"="${IMAGE_DESCRIPTION}" \
+      "image.vendor"="${IMAGE_VENDOR}" \
+      "image.author"="${IMAGE_AUTHOR}"
 
 
 # fat image
@@ -66,5 +75,5 @@ RUN set -ue; \
 
 
 # final image
-FROM base-${BUILD_TYPE:-fat}
+FROM base-${BUILD_TYPE}
 COPY container-scripts/generate-cert.sh $EASYRSA_HOME/

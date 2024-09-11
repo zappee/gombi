@@ -1,77 +1,84 @@
 # ******************************************************************************
-#  Remal ForgeRock Directory Server Docker image build file.
+# Remal ForgeRock Directory Server Docker image build file.
 #
-#  Since : August, 2024
-#  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Since:  August 2024
+# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-#  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+# Hazelcast ports:
+#    -  5555: hazelcast public address of a member
+#    -  5701: hazelcast uses to communicate between cluster members
+#    - 54327: used to discover Hazelcast members
+#    - 34500: hazelcast outbound-port
+#
+# Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
+# default build-time values, can be overwritten during the build
+ARG IMAGE_FROM="remal-openjdk-21:0.0.1"
 ARG BUILD_TYPE="fat"
+
 FROM ${IMAGE_FROM} AS base
 
 EXPOSE 22/tcp
-EXPOSE 54327/tcp #
-EXPOSE 636/tcp
-EXPOSE 4444/tcp
-EXPOSE 1331/tcp
+EXPOSE 5555/tcp
+EXPOSE 5701/tcp
+EXPOSE 54327/tcp
+EXPOSE 34500/tcp
 
-# build time variables
-ARG DS_HOME="/opt/opendj"
+# defaultvalue of the scope level build-time variables
+ARG IMAGE_NAME="remal-hazelcast"
+ARG IMAGE_TAG="0.0.1"
+ARG IMAGE_DESCRIPTION="Hazelcast IMDG Distributed Cache 4.2.8"
+ARG IMAGE_VENDOR="Remal"
+ARG IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 
 # environment variables
-ENV IMAGE_NAME="ds-7.3" \
-    IMAGE_TAG="0.0.1" \
-    IMAGE_DESCRIPTION="ForgeRock Directory Server 7.3.0" \
-    IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
+# environment variables
+ENV IMAGE_NAME="${IMAGE_NAME}" \
+    IMAGE_TAG="${IMAGE_TAG}" \
+    IMAGE_DESCRIPTION="${IMAGE_DESCRIPTION}" \
+    IMAGE_VENDOR="${IMAGE_VENDOR}" \
+    IMAGE_AUTHOR="${IMAGE_AUTHOR}" \
     \
-    AM_IDENTITY_STORE_NAME="am-identity-store" \
-    AM_CONFIG_STORE_NAME="am-config" \
-    \
-    NEW_DS_DEPLOYMENT_KEY="false" \
-    \
-    DS_CONFIG_BACKUP="true" \
-    DS_CONFIG_RESTORE_FROM="latest" \
-    AM_IDENTITY_STORE_BACKUP="true" \
-    AM_IDENTITY_STORE_RESTORE_FROM="latest" \
-    AM_CONFIG_STORE_BACKUP="true" \
-    AM_CONFIG_STORE_RESTORE_FROM="latest" \
-    \
-    ADMIN_CONNECTOR_PORT=4444 \
     PKI_HOST="pki.remal.com" \
-    DS_HOST="ds.hello.com" \
-    DS_HOME="$DS_HOME" \
-    DEPLOYMENT_KEY_FILE="$DS_HOME/deployment-key.properties" \
-    DS_INSTALL_KIT="DS-7.3.0.zip" \
-    LDAP_PORT=389 \
-    LDAP_USER_DN="uid=admin" \
-    LDAP_USER_PASSWORD="password" \
-    LDAPS_PORT=636
+    KEYSTORE_HOME="/tmp" \
+    \
+    HAZELCAST_HOME="/opt/hazelcast" \
+    HAZELCAST_INSTALL_KIT="hazelcast-4.2.8.tar.gz"
 
-# set image metadata
-LABEL "com.remal.image.vendor"="Remal" \
-      "com.remal.image.name"="${IMAGE_NAME}" \
-      "com.remal.image.version"="${IMAGE_TAG}" \
-      "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
-      "com.remal.image.author"="${IMAGE_AUTHOR}"
+LABEL "image.name"="${IMAGE_NAME}" \
+      "image.version"="${IMAGE_TAG}" \
+      "image.description"="${IMAGE_DESCRIPTION}" \
+      "image.vendor"="${IMAGE_VENDOR}" \
+      "image.author"="${IMAGE_AUTHOR}"
 
 
 # fat image
 FROM base AS base-fat
-COPY "bin/$DS_INSTALL_KIT" "/tmp/"
-RUN unzip "/tmp/$DS_INSTALL_KIT" -d "/opt/"
+LABEL "com.remal.image.type"="fat"
+COPY "bin/$HAZELCAST_INSTALL_KIT" "/tmp/"
+RUN set -ue; \
+    printf "building the fat image\n"; \
+    mkdir -p "$HAZELCAST_HOME"; \
+    tar -xvf "/tmp/$HAZELCAST_INSTALL_KIT" --strip-components=1 -C "$HAZELCAST_HOME"; \
+    rm -f "/tmp/$HAZELCAST_INSTALL_KIT"
 
 
 # slim image
 FROM base AS base-slim
+LABEL "com.remal.image.type"="slim"
 RUN set -ue; \
+    printf "building the slim image\n"; \
     host_ip="$(ip route | awk '/default/ { print $3 }')"; \
-    wget -O "/tmp/$DS_INSTALL_KIT" http://$host_ip:8080/docker-build/$DS_INSTALL_KIT; \
-    unzip "/tmp/$DS_INSTALL_KIT" -d "/opt/"; \
-    rm "/tmp/$DS_INSTALL_KIT"
+    wget -O "/tmp/$HAZELCAST_INSTALL_KIT" http://$host_ip:8080/docker-build/$HAZELCAST_INSTALL_KIT; \
+    mkdir -p "$HAZELCAST_HOME"; \
+    tar -xvf "/tmp/$HAZELCAST_INSTALL_KIT" --strip-components=1 -C "$HAZELCAST_HOME"; \
+    rm -f "/tmp/$HAZELCAST_INSTALL_KIT"
 
 
 # final image
-FROM base-$BUILD_TYPE AS final
-COPY container-scripts/ds-functions.sh container-scripts/shutdown-actions.sh /
-COPY config/deployment-key.properties "$DS_HOME/"
+FROM base-${BUILD_TYPE}
+LABEL "com.remal.image.zzz"="${IMAGE_NAME}"
+
+# build-time variables in the scope
+#ARG IMAGE_NAME="xxx"
+#ENV IMAGE_NAME=${IMAGE_NAME}

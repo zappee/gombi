@@ -10,6 +10,7 @@
 export IMAGE_NAME="remal-java-21-runner"
 export IMAGE_TAG="0.5.0"
 export IMAGE_DESCRIPTION="Remal Java 21 Runner"
+export IMAGE_VENDOR="Remal"
 export IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 export IMAGE_FROM="remal-consul:1.2.0"
 export BUILD_TYPE=${1:-fat}

@@ -10,6 +10,7 @@
 export IMAGE_NAME="remal-vault"
 export IMAGE_TAG="0.0.1"
 export IMAGE_DESCRIPTION="HashiCorp Vault 1.14"
+export IMAGE_VENDOR="Remal"
 export IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 export IMAGE_FROM="remal-base:0.0.2"
 export BUILD_TYPE="${1:-fat}"

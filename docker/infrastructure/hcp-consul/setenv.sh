@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Environment file to define variables used during the Docker image build.
 #
-# Since : October 2023
+# Since:  October 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
@@ -10,6 +10,7 @@
 export IMAGE_NAME="remal-consul"
 export IMAGE_TAG="1.2.0"
 export IMAGE_DESCRIPTION="HashiCorp Consul 1.18"
+export IMAGE_VENDOR="Remal"
 export IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 export IMAGE_FROM="remal-openjdk-21:0.0.1"
 export BUILD_TYPE="${1:-fat}"

@@ -14,6 +14,29 @@ services:
             - EASYRSA_REQ_CITY=${EASYRSA_REQ_CITY}
             - EASYRSA_REQ_ORG=${EASYRSA_REQ_ORG}
 
+    # ----- Hazelcast IMDG -----------------------------------------------------
+    hazelcast-1:
+        image: remal-hazelcast:0.0.1
+        container_name: hazelcast-1.${DOMAIN_NAME}
+        hostname: hazelcast-1.${DOMAIN_NAME}
+        depends_on:
+            - pki
+        ports:
+            - "13022:22"   # SSH
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+
+    hazelcast-2:
+        image: remal-hazelcast:0.0.1
+        container_name: hazelcast-2.${DOMAIN_NAME}
+        hostname: hazelcast-2.${DOMAIN_NAME}
+        depends_on:
+            - pki
+        ports:
+            - "13032:22"   # SSH
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
         image: remal-consul:1.2.0
@@ -26,6 +49,34 @@ services:
             - "13063:8501" # Consul web console, HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
+
+    # ----- Monitoring: Prometheus ---------------------------------------------
+    prometheus:
+        image: remal-prometheus:0.0.1
+        container_name: prometheus.${DOMAIN_NAME}
+        hostname: prometheus.${DOMAIN_NAME}
+        depends_on:
+            - consul
+        ports:
+            - "13072:22"   # SSH
+            - "13073:9090" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_HOST=consul.${DOMAIN_NAME}
+
+    # ----- Monitoring: Grafana ------------------------------------------------
+    grafana:
+        image: remal-grafana:0.0.1
+        container_name: grafana.${DOMAIN_NAME}
+        hostname: grafana.${DOMAIN_NAME}
+        depends_on:
+            - prometheus
+        ports:
+            - "13082:22"   # SSH
+            - "13083:3000" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - PROMETHEUS_HOST=prometheus.${DOMAIN_NAME}
 
     # ----- echo-service-1 ----------------------------------------------------
     echo-service-1:
@@ -87,31 +138,3 @@ services:
             - DB_APP_PASSWORD=password
         volumes:
             - $HOME/dev/workspace/java/remal/bin/user-service:/jar-to-run
-
-    # ----- Monitoring: Prometheus ---------------------------------------------
-    prometheus:
-        image: remal-prometheus:0.0.1
-        container_name: prometheus.${DOMAIN_NAME}
-        hostname: prometheus.${DOMAIN_NAME}
-        depends_on:
-            - consul
-        ports:
-            - "13072:22"   # SSH
-            - "13073:9090" # HTTPS
-        environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_HOST=consul.${DOMAIN_NAME}
-
-    # ----- Monitoring: Grafana ------------------------------------------------
-    grafana:
-        image: remal-grafana:0.0.1
-        container_name: grafana.${DOMAIN_NAME}
-        hostname: grafana.${DOMAIN_NAME}
-        depends_on:
-            - prometheus
-        ports:
-            - "13082:22"   # SSH
-            - "13083:3000" # HTTPS
-        environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - PROMETHEUS_HOST=prometheus.${DOMAIN_NAME}
