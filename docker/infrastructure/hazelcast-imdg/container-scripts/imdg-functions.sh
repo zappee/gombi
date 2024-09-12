@@ -20,15 +20,22 @@ function setup_imdg() {
   fqdn=$(hostname -f)
   domain=${fqdn#"${fqdn%.*.*}".}
 
+  local keystore_file keystore_password
+  keystore_file="/tmp/$fqdn.p12"
+  keystore_password="changeit"
+
   printf "%s | [INFO]  setting up Hazelcast IMDG...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   printf "%s | [DEBUG]          HAZELCAST_HOME: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$HAZELCAST_HOME"
   printf "%s | [DEBUG]    template_config_file: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$template_config_file"
   printf "%s | [DEBUG]             config_file: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$config_file"
   printf "%s | [DEBUG]                    fqdn: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fqdn"
   printf "%s | [DEBUG]                  domain: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain"
+  printf "%s | [DEBUG]                keystore: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_file"
+  printf "%s | [DEBUG]       keystore password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_password"
 
   cp -f "$template_config_file" "$config_file"
-  # sed -i "s|\${CONSUL_DATA_DIR}|$CONSUL_DATA_DIR|g" "$config_file"
+  sed -i "s|\${KEYSTORE_FILE}|$keystore_file|g" "$config_file"
+  sed -i "s|\${KEYSTORE_PASSWORD}|$keystore_password|g" "$config_file"
 }
 
 # ----------------------------------------------------------------------------
