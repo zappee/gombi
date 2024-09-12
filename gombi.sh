@@ -124,7 +124,10 @@ function docker_image_build {
   title="$1"
   dir="$2"
 
-  printf "\n%b> building '%s' docker image...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
+  printf "\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf "%b> **********************************************************************%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf "%b> building '%s' docker image...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
+  printf "%b> **********************************************************************%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
   if ! docker/build.sh "$dir" ; then
     exit_code=$?
     printf "ERROR: Docker image build has been failed. Image: %s\n" "$title"

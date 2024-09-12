@@ -43,6 +43,7 @@ ENV IMAGE_NAME="${IMAGE_NAME}" \
     KEYSTORE_HOME="/tmp" \
     \
     HAZELCAST_HOME="/opt/hazelcast" \
+    HAZELCAST_CONFIG_TEMPLATE_DIR="/tmp/hazelcast-config-template" \
     HAZELCAST_INSTALL_KIT="hazelcast-4.2.8.tar.gz"
 
 LABEL "image.name"="${IMAGE_NAME}" \
@@ -50,6 +51,10 @@ LABEL "image.name"="${IMAGE_NAME}" \
       "image.description"="${IMAGE_DESCRIPTION}" \
       "image.vendor"="${IMAGE_VENDOR}" \
       "image.author"="${IMAGE_AUTHOR}"
+
+# installing tools and settin up bash as a default shell
+RUN set -ue; \
+    apk add --no-cache curl
 
 
 # fat image
@@ -77,8 +82,5 @@ RUN set -ue; \
 
 # final image
 FROM base-${BUILD_TYPE}
-LABEL "com.remal.image.zzz"="${IMAGE_NAME}"
-
-# build-time variables in the scope
-#ARG IMAGE_NAME="xxx"
-#ENV IMAGE_NAME=${IMAGE_NAME}
+COPY container-scripts/imdg-functions.sh /
+COPY config/hazelcast.xml "$HAZELCAST_CONFIG_TEMPLATE_DIR/"
