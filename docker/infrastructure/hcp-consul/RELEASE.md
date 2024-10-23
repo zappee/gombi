@@ -14,6 +14,10 @@ All notable changes to this project will be documented in this file.
 #### Modified
 * update HashiCorp Consul to version 1.18.2
 
+## [1.3.0] - 23/Oct/2024
+#### Modified
+* update HashiCorp Consul to version 1.20.0
+
 * <a href="https://trackgit.com">
   <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
 </a>

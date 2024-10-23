@@ -30,7 +30,7 @@ BINARIES=(
   "AM-SSOConfiguratorTools-5.1.3.18.zip;docker/infrastructure/forgerock-am/bin"
   "apache-tomcat-9.0.71.tar.gz;docker/infrastructure/tomcat-9/bin"
   "EasyRSA-3.1.7.tgz;docker/infrastructure/easy-rsa-pki/bin"
-  "consul_1.18.2_linux_386.zip;docker/infrastructure/hcp-consul/bin"
+  "consul_1.20.0_linux_386.zip;docker/infrastructure/hcp-consul/bin"
   "vault_1.15.0_linux_386.zip;docker/infrastructure/hcp-vault/bin"
   "prometheus-2.51.1.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
   "grafana-enterprise-10.4.2.linux-amd64.tar.gz;docker/monitoring/grafana/bin"
@@ -58,6 +58,9 @@ function show_usage() {
   printf "   1: copy the binaries from the source to the target directories\n"
   printf "   default: 0\n\n"
   printf "%s" "$COLOR_DEFAULT"
+  printf "Environment:\n"
+  printf "   source directory: %s\n" "$REMAL_BINARY_HOME"
+  printf "   target directory: %s\n" "$PROJECT_HOME"
 }
 
 # ----------------------------------------------------------------------------
@@ -65,7 +68,7 @@ function show_usage() {
 # ------------------------------------------------------------------------------
 function show_user_selection() {
   printf "%s" "$COLOR_USAGE"
-  printf "Selected: %s\n" "$1"
+  printf "\nSelected mode: %s\n" "$1"
   printf "%s" "$COLOR_DEFAULT"
 }
 
