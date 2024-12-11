@@ -152,7 +152,7 @@ function docker_image_show {
 function get_name {
   local string
   string="$1"
-  cut -d';' -f1 <<<"$string" | echo "'$(cat)'"
+  cut -d';' -f1 <<<"$string" | echo "$(cat)"
 }
 
 # ------------------------------------------------------------------------------
@@ -244,7 +244,7 @@ function show_help() {
     printf "      %by:    remove of all Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "\n"
     printf "Contact: arnold.somogyi@gmail.com\n"
-    printf "Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved\n"
+    printf "Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved\n"
   fi
 }
 

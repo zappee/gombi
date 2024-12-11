@@ -6,7 +6,7 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
+ARG IMAGE_FROM="not-set"
 FROM ${IMAGE_FROM}
 
 EXPOSE 22/tcp

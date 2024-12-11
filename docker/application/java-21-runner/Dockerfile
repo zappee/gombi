@@ -7,7 +7,7 @@
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
+ARG IMAGE_FROM="not-set"
 ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 

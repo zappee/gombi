@@ -2,7 +2,7 @@ version: '3'
 services:
     # ----- Private Certificate Authority Server -------------------------------
     pki:
-        image: remal-private-ca:0.0.1
+        image: remal-private-ca:0.0.2
         container_name: pki.${DOMAIN_NAME}
         hostname: pki.${DOMAIN_NAME}
         ports:
@@ -16,7 +16,7 @@ services:
 
     # ----- LDAP Directory Server ----------------------------------------------
     ds:
-        image: remal-ds-7.3:0.0.1
+        image: remal-ds-7.3:0.0.2
         container_name: ds.${DOMAIN_NAME}
         hostname: ds.${DOMAIN_NAME}
         depends_on:
@@ -59,7 +59,7 @@ services:
 
     # ----- Hashicorp Vault ----------------------------------------------------
     vault:
-        image: remal-vault:0.0.1
+        image: remal-vault:0.0.2
         container_name: vault.${DOMAIN_NAME}
         hostname: vault.${DOMAIN_NAME}
         depends_on:
@@ -72,7 +72,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul:1.2.0
+        image: remal-consul:1.3.0
         container_name: consul.hello.com
         hostname: consul.hello.com
         depends_on:

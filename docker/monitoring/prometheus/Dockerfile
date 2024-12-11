@@ -6,7 +6,7 @@
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
+ARG IMAGE_FROM="not-set"
 ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
@@ -23,7 +23,7 @@ ENV IMAGE_NAME="remal-prometheus" \
     KEYSTORE_HOME="/tmp" \
     CONSUL_HOST="consul.hello.com" \
     \
-    PROMETHEUS_INSTALL_KIT="prometheus-2.51.1.linux-amd64.tar.gz" \
+    PROMETHEUS_INSTALL_KIT="prometheus-3.0.1.linux-amd64.tar.gz" \
     PROMETHEUS_HOME="/opt/prometheus" \
     PROMETHEUS_CONFIG="/opt/prometheus/prometheus.yml" \
     PROMETHEUS_WEB_CONFIG="/opt/prometheus/web-config.yml" \

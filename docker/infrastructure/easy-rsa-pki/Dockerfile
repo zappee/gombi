@@ -6,7 +6,7 @@
 #
 # Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
+ARG IMAGE_FROM="not-set"
 ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
@@ -20,7 +20,7 @@ ENV IMAGE_NAME="private-ca" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     EASYRSA_HOME="/opt/easy-rsa" \
-    EASYRSA_INSTALL_KIT="EasyRSA-3.1.7.tgz" \
+    EASYRSA_INSTALL_KIT="EasyRSA-3.2.1.tgz" \
     \
     EASYRSA_REQ_CN="remal.com" \
     EASYRSA_REQ_COUNTRY="HU" \

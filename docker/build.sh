@@ -20,17 +20,20 @@ if [ "$#" -ne 1 ]; then
 fi
 
 SCRIPT=$(realpath "$0")
-SCRIPT_PATH=$(dirname "$SCRIPT")
-IMAGE_SRC=$SCRIPT_PATH/${1##*docker/}
+SCRIPT_HOME=$(dirname "$SCRIPT")
+IMAGE_SRC="$SCRIPT_HOME/$1"
+
+# set environment
 . "$IMAGE_SRC/setenv.sh" "slim" "false" "remal.com"
 
-printf "script home: %s\n" "$SCRIPT_PATH"
-printf "source code: %s\n" "$IMAGE_SRC"
-printf "build type:  %s\n" "$BUILD_TYPE"
-printf "base image:  %s\n" "$IMAGE_FROM"
-printf "image image: %s\n\n" "$IMAGE_NAME:$IMAGE_TAG"
+printf "SCRIPT_HOME: %s\n" "$SCRIPT_HOME"
+printf "IMAGE_SRC:   %s\n" "$IMAGE_SRC"
+printf "BUILD_TYPE:  %s\n" "$BUILD_TYPE"
+printf "IMAGE_FROM:  %s\n" "$IMAGE_FROM"
+printf "image name:  %s\n\n" "$IMAGE_NAME:$IMAGE_TAG"
 
 docker build \
+  --build-arg "BUILDKIT_DOCKERFILE_CHECK=skip=SecretsUsedInArgOrEnv" \
   --no-cache \
   --build-arg BUILD_TYPE="$BUILD_TYPE" \
   --build-arg IMAGE_NAME="$IMAGE_NAME" \
@@ -52,8 +55,8 @@ if [ "$PUSH_IMAGE" = true ] ; then
 fi
 
 printf "Image has been built successfully. Details:\n"
-printf "   - script home: %s\n" "$SCRIPT_PATH"
-printf "   - source code: %s\n" "$IMAGE_SRC"
-printf "   - build type:  %s\n" "$BUILD_TYPE"
-printf "   - base image:  %s\n" "$IMAGE_FROM"
+printf "   - SCRIPT_HOME: %s\n" "$SCRIPT_HOME"
+printf "   - IMAGE_SRC:   %s\n" "$IMAGE_SRC"
+printf "   - BUILD_TYPE:  %s\n" "$BUILD_TYPE"
+printf "   - IMAGE_FROM:  %s\n" "$IMAGE_FROM"
 printf "   - image image: %s\n\n" "$IMAGE_NAME:$IMAGE_TAG"
