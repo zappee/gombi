@@ -22,9 +22,10 @@ fi
 SCRIPT=$(realpath "$0")
 SCRIPT_HOME=$(dirname "$SCRIPT")
 IMAGE_SRC="$SCRIPT_HOME/$1"
+IMAGE_TAG="0.9.0"
 
 # set environment
-. "$IMAGE_SRC/setenv.sh" "slim" "false" "remal.com"
+. "$IMAGE_SRC/setenv.sh" "slim" "false" "remal.com" "$IMAGE_TAG"
 
 printf "SCRIPT_HOME: %s\n" "$SCRIPT_HOME"
 printf "IMAGE_SRC:   %s\n" "$IMAGE_SRC"

@@ -72,14 +72,14 @@ function generate_cert_req_and_key() {
   cd "$EASYRSA_HOME" || { println "invalid path: %s" "$EASYRSA_HOME"; exit 1; }
 
   if [[ -z "${san-}"  ]]; then
-    printf "%s | [DEBUG] certificate request without SAN\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+    printf "%s | [DEBUG] generating a certificate request without SAN...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
     ./easyrsa \
       --batch \
       --passout="pass:$EASYRSA_PASS" \
       --req-cn="$domain" \
       gen-req "$domain"
   else
-    printf "%s | [DEBUG] certificate request with SAN: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$san"
+    printf "%s | [DEBUG] generating a certificate request with SAN: %s...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$san"
     ./easyrsa \
       --batch \
       --passout="pass:$EASYRSA_PASS" \
@@ -126,7 +126,7 @@ function export_to_keystore() {
   ./easyrsa \
     --passin="pass:$EASYRSA_PASS" \
     --passout="pass:$EASYRSA_PASS" \
-    export-p12 "$domain" usefn
+    export-p12 "$domain"
   cd "$work_dir" || { println "invalid path: %s" "$work_dir"; exit 1; }
 }
 
