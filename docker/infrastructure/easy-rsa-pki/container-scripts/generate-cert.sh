@@ -151,7 +151,7 @@ function wait_for_easyrsa_has_completed() {
     if [ -n "$pid" ]; then
       printf "%s | [DEBUG] EasyRSA is running, pid: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$pid"
       printf "%s | [DEBUG] wait for EasyRSA to finish its work...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-      sleep 0.5
+      sleep 1
     else
       printf "%s | [DEBUG] EasyRSA is not used by any other container, so let's continue\n" "$(date +"%Y-%m-%d %H:%M:%S")"
       break
