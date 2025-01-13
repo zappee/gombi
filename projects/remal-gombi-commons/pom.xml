@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+  ~
+  ~  Since:  February 2024
+  ~  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+  ~
+  ~  Description:
+  ~     Application POM.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>remal-gombi-commons</artifactId>
+    <version>0.1.0</version>
+    <name>gombi-commons</name>
+    <description>Common functions used by the Remal Gombi projects.</description>
+    <packaging>jar</packaging>
+
+    <parent>
+        <groupId>com.remal.gombi</groupId>
+        <artifactId>gombi</artifactId>
+        <version>0.1.0</version>
+    </parent>
+
+    <dependencies>
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+        </dependency>
+        <!-- lombok library -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <!-- application monitoring facade -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
+        <!-- Servlet API -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
