@@ -26,6 +26,8 @@ file_exists() {
     printf "%s | [WARN]  file \"%s\" not found\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$file_to_check"
     log_end "$0"
     exit 0
+  else
+    printf "%s | [DEBUG] file \"%s\" has been successfully extracted\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$file_to_check"
   fi
 }
 
@@ -42,6 +44,34 @@ cleanup_workspace() {
 
   printf "%s | [INFO]  cleaning up the workspace: \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$workspace_home"
   rm -R "$workspace_home"
+}
+
+# ------------------------------------------------------------------------------
+# Unpack the given file from the ZIP.
+#
+# Arguments:
+#    arg 1:  source zip file
+#    arg 2:  target directory to extract the file
+#    arg 3:  the file to extract from the ZIP
+# ------------------------------------------------------------------------------
+extract_file() {
+  local archive_file target_dir fie_to_extract
+  archive_file="$1"
+  target_dir="$2"
+  fie_to_extract="$3"
+
+  if [ -z "$archive_file" ]; then
+    printf "%s | [WARN]  there is nothing to unpack\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  else
+    printf "%s | [DEBUG] unpacking the \"%s\" file from the \"%s\" to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fie_to_extract" "$archive_file" "$target_dir"
+
+    # Ignore a specific exit code that appears if there file to extract not found in the ZIP.
+    #
+    # Exit codes (see the full list here: https://linux.die.net/man/1/unzip):
+    #     9: the specified zipfiles were not found
+    #    11: no matching files were found
+    unzip -j "$archive_file" "$fie_to_extract" -d "$target_dir" || (exit "$(($? == 11 ? 0 : $?))")
+  fi
 }
 
 # ------------------------------------------------------------------------------
@@ -144,40 +174,26 @@ insert_kv() {
 }
 
 # ------------------------------------------------------------------------------
-# Unpack the given ZIP archive file.
-#
-# Arguments:
-#    arg 1:  zip file to extract
-#    arg 2:  target directory to extract the file
-# ------------------------------------------------------------------------------
-unpack_jar() {
-  local archive_file target
-  archive_file="$1"
-  target="$2"
-
-  if [ -z "$archive_file" ]; then
-    printf "%s | [WARN]  there is nothing to unpack\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-  else
-    printf "%s | [DEBUG] unpacking the \"%s\" file to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$archive_file" "$target"
-    unzip -q "$archive_file" -d "$target"
-  fi
-}
-
-# ------------------------------------------------------------------------------
 # Main program starts here.
 # ------------------------------------------------------------------------------
 log_start "$0"
+printf "%s | [INFO]  inserting key/values into Hashicorp Consul...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
 
 UNPACK_DIR="/tmp/extracted-jar"
-KV_PROP_FILE="$UNPACK_DIR/BOOT-INF/classes/config.properties"
-APP_PROP_FILE="$UNPACK_DIR/BOOT-INF/classes/application.properties"
-printf "%s | [INFO]  inserting key/values into Hashicorp Consul...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+PATH_TO_PROP_FILE="BOOT-INF/classes"
+APP_PROP_FILE="application.properties"
+KV_PROP_FILE="config.properties"
+
 get_first_jar "$JAR_HOME" JAR_FILE
-unpack_jar "$JAR_FILE" "$UNPACK_DIR"
-file_exists "$KV_PROP_FILE"
-file_exists "$APP_PROP_FILE"
-get_kv_context "$APP_PROP_FILE" CONTEXT
-insert_kv "$KV_PROP_FILE" "$CONTEXT"
+
+extract_file "$JAR_FILE" "$UNPACK_DIR" "$PATH_TO_PROP_FILE/$APP_PROP_FILE"
+file_exists "$UNPACK_DIR/$APP_PROP_FILE"
+
+extract_file "$JAR_FILE" "$UNPACK_DIR" "$PATH_TO_PROP_FILE/$KV_PROP_FILE"
+file_exists "$UNPACK_DIR/$KV_PROP_FILE"
+
+get_kv_context "$UNPACK_DIR/$APP_PROP_FILE" CONTEXT
+insert_kv "$UNPACK_DIR/$KV_PROP_FILE" "$CONTEXT"
 cleanup_workspace "$UNPACK_DIR"
 
 log_end "$0"
