@@ -135,8 +135,9 @@ public class MethodStatisticsAspect {
 
     private void registerMethodExecutionTime(String id, long executionTimeInNano) {
         var endInMilliseconds = TimeUnit.MILLISECONDS.convert(executionTimeInNano, TimeUnit.NANOSECONDS);
-        log.debug("registering the method execution time to Micrometer: {meter-name: \"{}\", execution-time-in-ms: {}}...",
-                METER_NAME_TIMER, endInMilliseconds);
+        log.debug("registering the method execution time to Micrometer: "
+                        + "{meter-name: \"{}\", method: \"{}\", execution-time-in-ms: {}}...",
+                METER_NAME_TIMER, id, endInMilliseconds);
         Timer
                 .builder(METER_NAME_TIMER)
                 .tag("id", id)
@@ -146,7 +147,8 @@ public class MethodStatisticsAspect {
     }
 
     private void registerMethodCall(String id, ProceedStatus status) {
-        log.debug("registering the method call to Micrometer: {meter-name: \"{}\"}", METER_NAME_COUNTER);
+        log.debug("registering the method call to Micrometer: {meter-name: \"{}\", method: \"{}\", status: \"{}\"}",
+                METER_NAME_COUNTER, id, status.name());
         Counter
                 .builder(METER_NAME_COUNTER)
                 .tags("id", id, "status", status.name())
