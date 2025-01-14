@@ -72,7 +72,7 @@ function generate_cert_req_and_key() {
   cd "$EASYRSA_HOME" || { println "invalid path: %s" "$EASYRSA_HOME"; exit 1; }
 
   if [[ -z "${san-}"  ]]; then
-    printf "%s | [DEBUG] generating a certificate request without SAN...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+    printf "%s | [DEBUG] generating a certificate request...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
     ./easyrsa \
       --batch \
       --passout="pass:$EASYRSA_PASS" \
@@ -106,6 +106,7 @@ function signing_cert_req() {
 
   cd "$EASYRSA_HOME" || { println "invalid path: %s" "$EASYRSA_HOME"; exit 1; }
   ./easyrsa \
+    --copy-ext \
     --batch \
     --passin="pass:$EASYRSA_PASS" \
     sign-req \

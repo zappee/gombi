@@ -167,6 +167,14 @@ Images and its types:
 **PKI**
 * Lists entries in a keystore: `keytool -list -v -keystore <keystore-file> -storepass <changeit>`
 * Test HTTPS connection: `curl https://user-service.hello.com:8443/actuator/health`
+* How to check Subject Alternative Names for an SSL/TLS certificate?
+  ~~~
+  $ apk add openssl
+  $ openssl s_client -connect website.example:443 </dev/null | openssl x509 -noout -text
+
+  # or
+  $ openssl s_client -connect website.example:443 </dev/null | openssl x509 -noout -ext subjectAltName
+  ~~~
 
 **BusyBox**
 
