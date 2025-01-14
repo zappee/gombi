@@ -39,6 +39,6 @@ public class UserService {
     }
 
     private URI getServiceUri() {
-        return serviceDiscovery.getServiceUri("user-service");
+        return serviceDiscovery.getServiceUri("gombi-user-service");
     }
 }
