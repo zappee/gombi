@@ -34,6 +34,9 @@ public class MethodStatisticsAspect {
     private static final String TEMPLATE_WITH_RETURN = "< call ended: {name: {}, arguments: {}, return: {}, execution-in-ms: {}}";
     private static final String TEMPLATE_NO_RETURN = "< call ended: {name: {}, arguments: {}, return: <null>, execution-in-ms: {}}";
 
+    private static final String METER_NAME_COUNTER = "remal_method_calls";
+    private static final String METER_NAME_TIMER = "remal_method_execution_time";
+
     private final CompositeMeterRegistry meterRegistry;
 
     /**
@@ -48,6 +51,7 @@ public class MethodStatisticsAspect {
     @Around("@annotation(com.remal.gombi.hello.commons.monitoring.MethodStatistics)")
     public Object aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
         long startInNano = System.nanoTime();
+        long endInNano = -1;
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
         String fullQualifiedMethodName = className + "." + methodName;
@@ -71,28 +75,33 @@ public class MethodStatisticsAspect {
 
             // log the result of the call
             if (parameters.countMethodCalls()) {
-                getCounter(fullQualifiedMethodName, ProceedStatus.ok).increment();
+                registerMethodCall(fullQualifiedMethodName, ProceedStatus.ok);
             }
             String returnValue = getReturnValueAsString(o);
-            long endInMilli = (System.nanoTime() - startInNano) / 1000000;
+            endInNano = System.nanoTime() - startInNano;
+            var endInMilliseconds = TimeUnit.MILLISECONDS.convert(endInNano, TimeUnit.NANOSECONDS);
 
             if (parameters.logToLogfile()) {
                 if (Objects.nonNull(o)) {
-                    log.debug(TEMPLATE_WITH_RETURN, fullQualifiedMethodName, arguments, returnValue, endInMilli);
+                    log.debug(TEMPLATE_WITH_RETURN, fullQualifiedMethodName, arguments, returnValue, endInMilliseconds);
                 } else {
-                    log.debug(TEMPLATE_NO_RETURN, fullQualifiedMethodName, arguments, endInMilli);
+                    log.debug(TEMPLATE_NO_RETURN, fullQualifiedMethodName, arguments, endInMilliseconds);
                 }
             }
             return o;
 
         } catch(Throwable t) {
             if (parameters.countMethodCalls()) {
-                getCounter(fullQualifiedMethodName, ProceedStatus.error).increment();
+                registerMethodCall(fullQualifiedMethodName, ProceedStatus.error);
             }
             throw new Throwable(t);
         } finally {
             if (parameters.executionTimeStatistic()) {
-                getTimer(fullQualifiedMethodName).record(System.nanoTime() - startInNano, TimeUnit.NANOSECONDS);
+                if (endInNano == -1) {
+                    // an unexpected exception has appeared during the method call
+                    endInNano = System.nanoTime() - startInNano;
+                }
+                registerMethodExecutionTime(fullQualifiedMethodName, endInNano);
             }
         }
     }
@@ -124,19 +133,25 @@ public class MethodStatisticsAspect {
         return "<null>";
     }
 
-    private Timer getTimer(String id) {
-        return Timer
-                .builder("java_method_execution_time")
+    private void registerMethodExecutionTime(String id, long executionTimeInNano) {
+        var endInMilliseconds = TimeUnit.MILLISECONDS.convert(executionTimeInNano, TimeUnit.NANOSECONDS);
+        log.debug("registering the method execution time to Micrometer: {meter-name: \"{}\", execution-time-in-ms: {}}...",
+                METER_NAME_TIMER, endInMilliseconds);
+        Timer
+                .builder(METER_NAME_TIMER)
                 .tag("id", id)
-                .description("execution time of a Java method")
-                .register(meterRegistry);
+                .description("Execution time of a Java method")
+                .register(meterRegistry)
+                .record(executionTimeInNano, TimeUnit.NANOSECONDS);
     }
 
-    private Counter getCounter(String id, ProceedStatus status) {
-        return Counter
-                .builder("java_method_call")
+    private void registerMethodCall(String id, ProceedStatus status) {
+        log.debug("registering the method call to Micrometer: {meter-name: \"{}\"}", METER_NAME_COUNTER);
+        Counter
+                .builder(METER_NAME_COUNTER)
                 .tags("id", id, "status", status.name())
-                .description("total number of the method calls")
-                .register(meterRegistry);
+                .description("Total number of the method calls")
+                .register(meterRegistry)
+                .increment();
     }
 }
