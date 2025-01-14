@@ -29,6 +29,7 @@ Images and its versions in this release:
 * Maven dependency improvements: use dependency-management
 * SSL configuration improvement: use of SSL bundles and better `RestTemplate` configuration
 * Update to Spring Boot 3.4.1
+* Improved the meters naming in Micrometer
 
 <a href="https://trackgit.com">
   <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
