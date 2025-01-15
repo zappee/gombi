@@ -50,15 +50,15 @@ function copy_to_volume {
   local project source_dir target_dir
   project="$1"
   source_dir="$WORKSPACE/projects/$project/target/"
-  target_dir="$WORKSPACE/bin/$project/"
+  target_dir="$WORKSPACE/bin/$project"
 
   printf "\n%b> coping artifact to a Docker shared volume...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-  printf "     source: '%s'\n" "$source_dir$project-*.war"
+  printf "     source: '%s'\n" "$source_dir$project-*.jar"
   printf "     target: '%s'\n" "$target_dir"
 
   # to ensure this never expands to /*
   rm -rf "${target_dir:?}/"*
-
+  mkdir -p "$target_dir"
   rsync --archive \
         --include '*.jar' \
         --exclude '**' \
@@ -83,8 +83,8 @@ function demo_start {
   printf "       environment-file: '%s'\n" "$environment_file"
   printf "     docker-compose.yml: '%s'\n" "$docker_compose_file"
 
-  copy_to_volume "remal-gombi-echo-service"
   copy_to_volume "remal-gombi-user-service"
+  copy_to_volume "remal-gombi-welcome-service"
   docker compose --env-file="$environment_file" -f "$docker_compose_file" up
 }
 

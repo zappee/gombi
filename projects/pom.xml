@@ -108,7 +108,7 @@
 
     <modules>
         <module>remal-gombi-commons</module>
-        <module>remal-gombi-echo-service</module>
         <module>remal-gombi-user-service</module>
+        <module>remal-gombi-welcome-service</module>
     </modules>
 </project>

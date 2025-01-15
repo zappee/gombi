@@ -9,26 +9,35 @@
  */
 package com.remal.gombi.hello.service.user.controller;
 
+import com.remal.gombi.hello.commons.exception.EntryNotExistException;
 import com.remal.gombi.hello.commons.model.User;
 import com.remal.gombi.hello.commons.monitoring.MethodStatistics;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Objects;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
-    @GetMapping("/{id}")
+    private static final HashMap<String, User> users = new HashMap<>();
+
+    @GetMapping("/{username}")
     @MethodStatistics
-    public User getUser(@PathVariable("id") String id) {
-            return User.builder()
-                    .username(id)
-                    .email("arnold.somogyi@gmail.com")
-                    .description("project owner")
-                    .build();
+    public User getUserByUsername(@PathVariable("username") String username) {
+        var user = users.get(username);
+        if (Objects.isNull(user)) {
+            throw new EntryNotExistException(User.class, "username", username);
+        }
+        return user;
+    }
+
+    @PostMapping("/")
+    @MethodStatistics
+    public void saveUser(@RequestBody User user) {
+        users.put(user.getUsername(), user);
     }
 }

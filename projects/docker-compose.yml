@@ -26,23 +26,6 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
 
-    # ----- echo-service-1 ----------------------------------------------------
-    echo-service-1:
-        image: remal-java-21-runner:0.9.0
-        container_name: echo-service-1.${DOMAIN_NAME}
-        hostname: echo-service-1.${DOMAIN_NAME}
-        depends_on:
-            - consul
-        ports:
-            - "14212:22"   # SSH
-            - "14213:8000" # JVM debug
-            - "14214:8443" # HTTPS
-        environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-        volumes:
-            - $HOME/Java/gombi/bin/remal-gombi-echo-service:/jar-to-run
-
     # ----- user-service-1 -----------------------------------------------------
     user-service-1:
         image: remal-java-21-postgres-runner:0.9.0
@@ -86,6 +69,23 @@ services:
             - DB_APP_PASSWORD=password
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-user-service:/jar-to-run
+
+    # ----- welcome-service-1 --------------------------------------------------
+    welcome-service-1:
+        image: remal-java-21-runner:0.9.0
+        container_name: welcome-service-1.${DOMAIN_NAME}
+        hostname: welcome-service-1.${DOMAIN_NAME}
+        depends_on:
+            - consul
+        ports:
+            - "14212:22"   # SSH
+            - "14213:8000" # JVM debug
+            - "14214:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+        volumes:
+            - $HOME/Java/gombi/bin/remal-gombi-welcome-service:/jar-to-run
 
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:

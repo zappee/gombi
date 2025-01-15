@@ -7,7 +7,7 @@
  *  Description:
  *     Spring bean configuration.
  */
-package com.remal.gombi.hello.service.echo.configuration;
+package com.remal.gombi.hello.service.welcome.configuration;
 
 
 import org.springframework.boot.ssl.SslBundles;

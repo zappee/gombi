@@ -7,7 +7,7 @@
  *  Description:
  *     Spring application entry point.
  */
-package com.remal.gombi.hello.service.echo;
+package com.remal.gombi.hello.service.welcome;
 
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

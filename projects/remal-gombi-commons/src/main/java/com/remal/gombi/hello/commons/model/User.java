@@ -18,6 +18,7 @@ import lombok.*;
 @ToString
 public class User {
     private String username;
+    private String firstName;
     private String email;
     private String description;
 }

@@ -7,7 +7,7 @@
  *  Description:
  *     Application monitoring with Micrometer.
  */
-package com.remal.gombi.hello.service.echo.configuration;
+package com.remal.gombi.hello.service.welcome.configuration;
 
 import com.remal.gombi.hello.commons.Internet;
 import io.micrometer.core.instrument.Metrics;

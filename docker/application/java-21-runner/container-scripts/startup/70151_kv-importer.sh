@@ -63,7 +63,7 @@ extract_file() {
   if [ -z "$archive_file" ]; then
     printf "%s | [WARN]  there is nothing to unpack\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   else
-    printf "%s | [DEBUG] unpacking the \"%s\" file from the \"%s\" to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fie_to_extract" "$archive_file" "$target_dir"
+    printf "%s | [DEBUG] unpacking the \"%s\" file from \"%s\" to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fie_to_extract" "$archive_file" "$target_dir"
 
     # Ignore a specific exit code that appears if there file to extract not found in the ZIP.
     #
@@ -82,8 +82,8 @@ extract_file() {
 #
 # For example, if
 #       - java code: @Value("${app.hello}")
-#       - application.properties: spring.application.name=echo-service
-#    then the full path of the key is config/echo-service/app.hello
+#       - application.properties: spring.application.name=welcome-service
+#    then the full path of the key is config/welcome-service/app.hello
 #
 # Arguments
 #    arg 1: property file
@@ -118,7 +118,7 @@ get_first_jar() {
   local jars_home
   jars_home="$1"
 
-  printf "%s | [INFO]  getting the first JAR file from the \"%s\" directory...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$jars_home"
+  printf "%s | [INFO]  getting the first JAR file from \"%s\" directory...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$jars_home"
 
   local files number_of_files
   files=($(find "$jars_home" -type f -name "*.jar"))

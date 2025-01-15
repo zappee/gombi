@@ -7,14 +7,20 @@
  *  Description:
  *     This a Spring-Bean with RefreshScope that allows for beans to be
  *     refreshed dynamically at runtime. If a bean is refreshed then the next
- *     time the bean is accessed (i.e. a method is executed) a new instance is
- *     created.
+ *     time the bean is accessed (i.e. call the getter method) a new instance
+ *     is created.
+ *
  *     Beans with @RefreshScope feature will be dynamically updated when a
  *     value in the Hashicorp Consul KV store has changed. This configuration
  *     keeps up-to-date the configuration values without restarting the spring
  *     boot application.
+ *
+ *     +1:
+ *     Access to values from the VK store can be monitored by adding the
+ *     @MethodStatistics annotation to the method. The statistics data is
+ *     stored in Prometheus and can be viewed in Grafana.
  */
-package com.remal.gombi.hello.service.echo.service;
+package com.remal.gombi.hello.service.welcome.service;
 
 import com.remal.gombi.hello.commons.monitoring.MethodStatistics;
 import lombok.extern.slf4j.Slf4j;
@@ -25,21 +31,21 @@ import org.springframework.stereotype.Component;
 @Component
 @RefreshScope
 @Slf4j
-public class ConfigurationService {
+public class TemplateService {
 
-    @Value("${description.option.a}")
-    private String optionA;
+    @Value("${template.welcome}")
+    private String welcomeTemplate;
 
-    @Value("${description.option.b}")
-    private String optionB;
+    @Value("${template.welcome-back}")
+    private String welcomeBackTemplate;
 
     @MethodStatistics(logToLogfile = false)
-    public String getOptionA() {
-        return optionA;
+    public String getWelcomeTemplate() {
+        return welcomeTemplate;
     }
 
     @MethodStatistics(logToLogfile = false)
-    public String getOptionB() {
-        return optionB;
+    public String getWelcomeBackTemplate() {
+        return welcomeBackTemplate;
     }
 }

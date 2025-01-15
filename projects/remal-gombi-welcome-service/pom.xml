@@ -19,9 +19,9 @@
         <version>0.1.0</version>
     </parent>
 
-    <artifactId>remal-gombi-echo-service</artifactId>
+    <artifactId>remal-gombi-welcome-service</artifactId>
     <version>0.1.0</version>
-    <name>gombi-echo-service</name>
+    <name>gombi-welcome-service</name>
     <description>Echo REST service.</description>
 
     <dependencies>

@@ -7,7 +7,7 @@
  *  Description:
  *     Service discovery.
  */
-package com.remal.gombi.hello.service.echo.service;
+package com.remal.gombi.hello.service.welcome.service;
 
 import com.remal.gombi.hello.commons.model.User;
 import com.remal.gombi.hello.commons.spring.discovery.ConsulServiceDiscovery;

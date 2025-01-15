@@ -7,7 +7,7 @@
  *  Description:
  *     Service discovery.
  */
-package com.remal.gombi.hello.service.echo.configuration;
+package com.remal.gombi.hello.service.welcome.configuration;
 
 import com.remal.gombi.hello.commons.spring.discovery.ConsulServiceDiscovery;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
