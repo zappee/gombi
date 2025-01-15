@@ -13,8 +13,10 @@
 # Create Grafana data-sources using the Grafana rest endpoints.
 # ------------------------------------------------------------------------------
 function create_grafana_datasources() {
-  local json_files
+  local json_files fqdn
   json_files="$GRAFANA_HOME/customization/datasources/*.json"
+  fqdn=$(hostname -f)
+
 
   printf "%s | [INFO]  creating Grafana data-sources...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   printf "%s | [DEBUG]        GRAFANA_HOME: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$GRAFANA_HOME"
@@ -23,6 +25,7 @@ function create_grafana_datasources() {
   printf "%s | [DEBUG]        GRAFANA_USER: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$GRAFANA_USER"
   printf "%s | [DEBUG]    GRAFANA_PASSWORD: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$GRAFANA_PASSWORD"
   printf "%s | [DEBUG]    GRAFANA_PROTOCOL: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$GRAFANA_PROTOCOL"
+  printf "%s | [DEBUG]                FQDN: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fqdn"
 
   start_grafana
   for file in $json_files; do
@@ -32,7 +35,7 @@ function create_grafana_datasources() {
       -H "Content-Type: application/json" \
       --user "$GRAFANA_USER":"$GRAFANA_PASSWORD" \
       --data-binary @"$file" \
-      "$GRAFANA_PROTOCOL"://localhost:"$GRAFANA_PORT"/api/datasources
+      "$GRAFANA_PROTOCOL://$fqdn:$GRAFANA_PORT/api/datasources"
     printf "\n"
   done;
   stop_grafana
@@ -75,7 +78,7 @@ function prepare_grafana_datasource_files() {
   local json_files
   json_files="$GRAFANA_HOME/customization/datasources/*.json"
 
-  printf "%s | [INFO]  updating Grafana custom datasource json files...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [INFO]  updating Grafana datasource json files...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   printf "%s | [DEBUG]    PROMETHEUS_HOST: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$PROMETHEUS_HOST"
   printf "%s | [DEBUG]         json_files: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$json_files"
 

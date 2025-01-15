@@ -72,14 +72,14 @@ function generate_cert_req_and_key() {
   cd "$EASYRSA_HOME" || { println "invalid path: %s" "$EASYRSA_HOME"; exit 1; }
 
   if [[ -z "${san-}"  ]]; then
-    printf "%s | [DEBUG] certificate request without SAN\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+    printf "%s | [DEBUG] generating a certificate request...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
     ./easyrsa \
       --batch \
       --passout="pass:$EASYRSA_PASS" \
       --req-cn="$domain" \
       gen-req "$domain"
   else
-    printf "%s | [DEBUG] certificate request with SAN: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$san"
+    printf "%s | [DEBUG] generating a certificate request with SAN: %s...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$san"
     ./easyrsa \
       --batch \
       --passout="pass:$EASYRSA_PASS" \
@@ -106,6 +106,7 @@ function signing_cert_req() {
 
   cd "$EASYRSA_HOME" || { println "invalid path: %s" "$EASYRSA_HOME"; exit 1; }
   ./easyrsa \
+    --copy-ext \
     --batch \
     --passin="pass:$EASYRSA_PASS" \
     sign-req \
@@ -126,8 +127,37 @@ function export_to_keystore() {
   ./easyrsa \
     --passin="pass:$EASYRSA_PASS" \
     --passout="pass:$EASYRSA_PASS" \
-    export-p12 "$domain" usefn
+    export-p12 "$domain"
   cd "$work_dir" || { println "invalid path: %s" "$work_dir"; exit 1; }
+}
+
+# ------------------------------------------------------------------------------
+# EasyRSA is a simple tool and is not designed to be run multiple times
+# concurrently. This means that you must ensure that you do not run the tool
+# more than once in parallel.
+#
+# Running multiple EasyRSA jobs in parallel cause that the same 'serial number'
+# is reused multiple times by EasyRSA and the certificates generated will have the
+# same 'serial number'. This causes various problems, such as a
+# SEC_ERROR_REUSED_ISSUER_AND_SERIAL error in the web browser.
+#
+# This function checks whether EasyRSA is running or not and only continues if
+# it is not.
+# ------------------------------------------------------------------------------
+function wait_for_easyrsa_has_completed() {
+  local pid
+
+  while : ; do
+    pid=$(pidof easyrsa) || true
+    if [ -n "$pid" ]; then
+      printf "%s | [DEBUG] EasyRSA is running, pid: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$pid"
+      printf "%s | [DEBUG] wait for EasyRSA to finish its work...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+      sleep 1
+    else
+      printf "%s | [DEBUG] EasyRSA is not used by any other container, so let's continue\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+      break
+    fi
+  done
 }
 
 # ------------------------------------------------------------------------------
@@ -135,7 +165,12 @@ function export_to_keystore() {
 # ------------------------------------------------------------------------------
 validate_arguments "$@"
 show_context "$@"
+
+wait_for_easyrsa_has_completed
 generate_cert_req_and_key "$2" "${3:-}"
+
+wait_for_easyrsa_has_completed
 signing_cert_req "$1" "$2"
+
 export_to_keystore "$2"
 import_to_keystore "ca-cert" "$EASYRSA_HOME/pki/ca.crt" "$EASYRSA_HOME/pki/private/$2.p12" "$EASYRSA_PASS"

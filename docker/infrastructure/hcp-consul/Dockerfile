@@ -6,7 +6,7 @@
 #
 #  Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
+ARG IMAGE_FROM="not-set"
 ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
@@ -22,7 +22,7 @@ ENV IMAGE_NAME="remal-consul" \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     \
-    CONSUL_INSTALL_KIT="consul_1.18.2_linux_386.zip" \
+    CONSUL_INSTALL_KIT="consul_1.20.1_linux_386.zip" \
     CONSUL_CONFIG_TEMPLATE_DIR="/tmp/consul-config-template" \
     CONSUL_CONFIG_DIR="/tmp/consul-config" \
     CONSUL_DATA_DIR="/tmp/consul-data"

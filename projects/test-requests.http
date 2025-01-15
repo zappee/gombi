@@ -1,0 +1,13 @@
+### save user
+POST https://localhost:14114/api/user/
+Content-Type: application/json
+
+{
+  "username": "zappee",
+  "firstName": "Arnold",
+  "email": "arnold@gmail.com",
+  "description": "Java developer"
+}
+
+### get user
+GET https://localhost:14114/api/user/zappee

@@ -3,7 +3,7 @@
 target/
 
 # custom project files
-backups/**
+bin/**
 
 # intellij idea specific
 *.iml

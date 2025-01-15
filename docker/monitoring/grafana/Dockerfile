@@ -6,7 +6,7 @@
 #
 # Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM=${IMAGE_FROM}
+ARG IMAGE_FROM="not-set"
 ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
@@ -25,7 +25,7 @@ ENV IMAGE_NAME="remal-grafana" \
     PROMETHEUS_PORT="9090" \
     PROMETHEUS_PROTOCOL="https" \
     \
-    GRAFANA_INSTALL_KIT="grafana-enterprise-10.4.2.linux-amd64.tar.gz" \
+    GRAFANA_INSTALL_KIT="grafana-enterprise-11.4.0.linux-amd64.tar.gz" \
     GRAFANA_HOME="/opt/grafana" \
     GRAFANA_PROTOCOL="https" \
     GRAFANA_PORT=3000 \

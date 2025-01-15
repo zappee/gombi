@@ -41,6 +41,54 @@ STYLE_BOLD="\033[1m"
 STYLE_DEFAULT="\033[0m"
 
 # ------------------------------------------------------------------------------
+# Copy artifact to a Docker Volume.
+#
+# Arguments:
+#    arg 1: project name
+# ------------------------------------------------------------------------------
+function copy_to_volume {
+  local project source_dir target_dir
+  project="$1"
+  source_dir="$WORKSPACE/projects/$project/target/"
+  target_dir="$WORKSPACE/bin/$project"
+
+  printf "\n%b> coping artifact to a Docker shared volume...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf "     source: '%s'\n" "$source_dir$project-*.jar"
+  printf "     target: '%s'\n" "$target_dir"
+
+  # to ensure this never expands to /*
+  rm -rf "${target_dir:?}/"*
+  mkdir -p "$target_dir"
+  rsync --archive \
+        --include '*.jar' \
+        --exclude '**' \
+        --verbose \
+        "$source_dir" \
+        "$target_dir"
+}
+
+# ------------------------------------------------------------------------------
+# Deploy a docker container and run it in the background.
+#
+# Arguments:
+#    arg 1: relative directory that points to the image source code
+# ------------------------------------------------------------------------------
+function demo_start {
+  local dir environment_file docker_compose_file
+  dir="$1"
+  environment_file="$WORKSPACE/$dir/$ENVIRONMENT_FILE"
+  docker_compose_file="$WORKSPACE/$dir/docker-compose.yml"
+
+  printf "\n%b> starting the '%s' docker stack...%b\n" "$COLOR_YELLOW" "Demo" "$STYLE_DEFAULT"
+  printf "       environment-file: '%s'\n" "$environment_file"
+  printf "     docker-compose.yml: '%s'\n" "$docker_compose_file"
+
+  copy_to_volume "remal-gombi-user-service"
+  copy_to_volume "remal-gombi-welcome-service"
+  docker compose --env-file="$environment_file" -f "$docker_compose_file" up
+}
+
+# ------------------------------------------------------------------------------
 # Show the logs of running Docker containers.
 # ------------------------------------------------------------------------------
 function docker_container_logs {
@@ -70,26 +118,6 @@ function docker_container_remove {
   else
     docker rm --force $(docker container ls --filter "label=com.remal.image.vendor=Remal" -a -q)
   fi
-}
-
-# ------------------------------------------------------------------------------
-# Deploy a docker container and run it in the background.
-#
-# Arguments:
-#    arg 1: task description string
-#    arg 2: relative directory that points to the image source code
-# ------------------------------------------------------------------------------
-function docker_stack_up {
-  local title dir environment_file docker_compose_file
-  title="$1"
-  dir="$2"
-  environment_file="$WORKSPACE/$dir/$ENVIRONMENT_FILE"
-  docker_compose_file="$WORKSPACE/$dir/docker-compose.yml"
-
-  printf "\n%b> starting the '%s' docker stack...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
-  printf "%b       environment-file: '%s'%b\n" "$COLOR_YELLOW" "$environment_file" "$STYLE_DEFAULT"
-  printf "%b     docker-compose.yml: '%s'%b\n" "$COLOR_YELLOW" "$docker_compose_file" "$STYLE_DEFAULT"
-  docker-compose --env-file="$environment_file" -f "$docker_compose_file" up
 }
 
 # ------------------------------------------------------------------------------
@@ -152,7 +180,7 @@ function docker_image_show {
 function get_name {
   local string
   string="$1"
-  cut -d';' -f1 <<<"$string" | echo "'$(cat)'"
+  cut -d';' -f1 <<<"$string" | echo "$(cat)"
 }
 
 # ------------------------------------------------------------------------------
@@ -235,7 +263,7 @@ function show_help() {
     printf "        %be2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21_POSTGRES_RUNNER")" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bstart a Docker environment%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-    printf "        %bi1:   start the 'hello-world' Docker stack%b\n" "$COLOR_GREEN" "$STYLE_DEFAULT"
+    printf "        %bi1:   start the 'Demo' Docker stack%b\n" "$COLOR_GREEN" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bu:    list Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "      %bv:    list Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
@@ -244,7 +272,7 @@ function show_help() {
     printf "      %by:    remove of all Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "\n"
     printf "Contact: arnold.somogyi@gmail.com\n"
-    printf "Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved\n"
+    printf "Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved\n"
   fi
 }
 
@@ -329,7 +357,7 @@ if match "$COMMAND" "u";  then docker_image_show; fi
 if match "$COMMAND" "v";  then docker_container_show; fi
 
 # docker runners
-if match "$COMMAND" "i1"; then docker_stack_up "hello-world" "projects"; fi
+if match "$COMMAND" "i1"; then demo_start "projects"; fi
 
 if match "$COMMAND" "w";  then docker_container_logs; fi
 

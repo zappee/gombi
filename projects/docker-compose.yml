@@ -1,8 +1,7 @@
-version: '3'
 services:
     # ----- Private Certificate Authority Server -------------------------------
     pki:
-        image: remal-private-ca:0.0.1
+        image: remal-private-ca:0.9.0
         container_name: pki.${DOMAIN_NAME}
         hostname: pki.${DOMAIN_NAME}
         ports:
@@ -16,7 +15,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul:1.2.0
+        image: remal-consul:0.9.0
         container_name: consul.${DOMAIN_NAME}
         hostname: consul.${DOMAIN_NAME}
         depends_on:
@@ -27,26 +26,9 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
 
-    # ----- echo-service-1 ----------------------------------------------------
-    echo-service-1:
-        image: remal-java-21-runner:0.5.0
-        container_name: echo-service-1.${DOMAIN_NAME}
-        hostname: echo-service-1.${DOMAIN_NAME}
-        depends_on:
-            - consul
-        ports:
-            - "14212:22"   # SSH
-            - "14213:8000" # JVM debug
-            - "14214:8443" # HTTPS
-        environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-        volumes:
-            - $HOME/dev/workspace/java/remal/bin/echo-service:/jar-to-run
-
     # ----- user-service-1 -----------------------------------------------------
     user-service-1:
-        image: remal-java-21-postgres-runner:0.0.2
+        image: remal-java-21-postgres-runner:0.9.0
         container_name: user-service-1.${DOMAIN_NAME}
         hostname: user-service-1.${DOMAIN_NAME}
         depends_on:
@@ -64,11 +46,11 @@ services:
             - DB_APP_USER=application
             - DB_APP_PASSWORD=password
         volumes:
-            - $HOME/dev/workspace/java/remal/bin/user-service:/jar-to-run
+            - $HOME/Java/gombi/bin/remal-gombi-user-service:/jar-to-run
 
     # ----- user-service-2 -----------------------------------------------------
     user-service-2:
-        image: remal-java-21-postgres-runner:0.0.2
+        image: remal-java-21-postgres-runner:0.9.0
         container_name: user-service-2.${DOMAIN_NAME}
         hostname: user-service-2.${DOMAIN_NAME}
         depends_on:
@@ -86,11 +68,28 @@ services:
             - DB_APP_USER=application
             - DB_APP_PASSWORD=password
         volumes:
-            - $HOME/dev/workspace/java/remal/bin/user-service:/jar-to-run
+            - $HOME/Java/gombi/bin/remal-gombi-user-service:/jar-to-run
+
+    # ----- welcome-service-1 --------------------------------------------------
+    welcome-service-1:
+        image: remal-java-21-runner:0.9.0
+        container_name: welcome-service-1.${DOMAIN_NAME}
+        hostname: welcome-service-1.${DOMAIN_NAME}
+        depends_on:
+            - consul
+        ports:
+            - "14212:22"   # SSH
+            - "14213:8000" # JVM debug
+            - "14214:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+        volumes:
+            - $HOME/Java/gombi/bin/remal-gombi-welcome-service:/jar-to-run
 
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:
-        image: remal-prometheus:0.0.1
+        image: remal-prometheus:0.9.0
         container_name: prometheus.${DOMAIN_NAME}
         hostname: prometheus.${DOMAIN_NAME}
         depends_on:
@@ -104,7 +103,7 @@ services:
 
     # ----- Monitoring: Grafana ------------------------------------------------
     grafana:
-        image: remal-grafana:0.0.1
+        image: remal-grafana:0.9.0
         container_name: grafana.${DOMAIN_NAME}
         hostname: grafana.${DOMAIN_NAME}
         depends_on:
