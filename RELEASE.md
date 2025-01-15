@@ -12,7 +12,7 @@ Images and its versions in this release:
 * ds-7.3:0.0.1-remal
 * am-7.3:0.0.1-remal
 
-## [0.1.0] - 13/Feb/2025
+## [0.1.0] - 15/Jan/2025
 ### Docker Images
 * Update EasyRSA to version 3.2.1
 * Update Hashicorp Consul to version 1.20
