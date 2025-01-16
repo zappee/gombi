@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+ *  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
  *
  *  Since:  March 2024
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -7,7 +7,7 @@
  *  Description:
  *     Custom annotation to log the execution time of a method.
  */
-package com.remal.gombi.hello.commons.monitoring;
+package com.remal.gombi.commons.monitoring;
 
 import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Timer;
@@ -31,8 +31,7 @@ public class MethodStatisticsAspect {
         ok, error
     }
 
-    private static final String TEMPLATE_WITH_RETURN = "< call ended: {name: {}, arguments: {}, return: {}, execution-in-ms: {}}";
-    private static final String TEMPLATE_NO_RETURN = "< call ended: {name: {}, arguments: {}, return: <null>, execution-in-ms: {}}";
+    private static final String CALL_END_TEMPLATE = "< call ended: {name: {}, return: {}, execution-in-ms: {}}";
 
     private static final String METER_NAME_COUNTER = "remal_method_calls";
     private static final String METER_NAME_TIMER = "remal_method_execution_time";
@@ -48,21 +47,21 @@ public class MethodStatisticsAspect {
         this.meterRegistry = meterRegistry;
     }
 
-    @Around("@annotation(com.remal.gombi.hello.commons.monitoring.MethodStatistics)")
+    @Around("@annotation(com.remal.gombi.commons.monitoring.MethodStatistics)")
     public Object aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
         long startInNano = System.nanoTime();
         long endInNano = -1;
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();
         String fullQualifiedMethodName = className + "." + methodName;
-        MethodStatistics parameters = ((MethodSignature) joinPoint.getSignature())
+        MethodStatistics annotationParams = ((MethodSignature) joinPoint.getSignature())
                 .getMethod()
                 .getAnnotation(MethodStatistics.class);
 
         try {
             // log arguments before the call
-            String arguments = getArgumentsAsString(joinPoint);
-            if (parameters.logToLogfile()) {
+            var arguments = getArgumentsAsString(joinPoint);
+            if (annotationParams.logToLogfile()) {
                 if (arguments.isEmpty()) {
                     log.debug("> calling the {}()...", fullQualifiedMethodName);
                 } else {
@@ -74,29 +73,31 @@ public class MethodStatisticsAspect {
             Object o = joinPoint.proceed();
 
             // log the result of the call
-            if (parameters.countMethodCalls()) {
+            if (annotationParams.countMethodCalls()) {
                 registerMethodCall(fullQualifiedMethodName, ProceedStatus.ok);
             }
-            String returnValue = getReturnValueAsString(o);
-            endInNano = System.nanoTime() - startInNano;
-            var endInMilliseconds = TimeUnit.MILLISECONDS.convert(endInNano, TimeUnit.NANOSECONDS);
 
-            if (parameters.logToLogfile()) {
-                if (Objects.nonNull(o)) {
-                    log.debug(TEMPLATE_WITH_RETURN, fullQualifiedMethodName, arguments, returnValue, endInMilliseconds);
-                } else {
-                    log.debug(TEMPLATE_NO_RETURN, fullQualifiedMethodName, arguments, endInMilliseconds);
-                }
+            if (annotationParams.logToLogfile()) {
+                endInNano = System.nanoTime() - startInNano;
+                var endInMilliseconds = TimeUnit.MILLISECONDS.convert(endInNano, TimeUnit.NANOSECONDS);
+
+                var returnType = ((MethodSignature) joinPoint.getSignature()).getReturnType();
+                var hasReturnType = !returnType.getTypeName().equals("void");
+
+                log.debug(
+                        CALL_END_TEMPLATE,
+                        fullQualifiedMethodName,
+                        hasReturnType ? getReturnValueAsString(o) : "void", endInMilliseconds);
             }
             return o;
 
         } catch(Throwable t) {
-            if (parameters.countMethodCalls()) {
+            if (annotationParams.countMethodCalls()) {
                 registerMethodCall(fullQualifiedMethodName, ProceedStatus.error);
             }
             throw new Throwable(t);
         } finally {
-            if (parameters.executionTimeStatistic()) {
+            if (annotationParams.executionTimeStatistic()) {
                 if (endInNano == -1) {
                     // an unexpected exception has appeared during the method call
                     endInNano = System.nanoTime() - startInNano;
