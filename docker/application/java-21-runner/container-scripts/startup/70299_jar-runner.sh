@@ -58,7 +58,6 @@ jar_runner() {
   printf "%s | [DEBUG]    expected health-check state: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$EXPECTED_HEALTH_CHECK_STATE"
   printf "%s | [DEBUG]           health-check command: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "${health_check_cmd[*]}"
   printf "%s | [DEBUG]             consul server host: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$CONSUL_SERVER_HOSTNAME"
-  printf "%s | [DEBUG]                  kafka servers: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$KAFKA_SERVERS"
 
   cd "$JAR_HOME" || { echo "Error while trying to change directory from $(pwd) to $JAR_HOME"; exit 1; }
   printf "%s | [INFO]  starting the %s java application...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$jar_file"
