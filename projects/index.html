@@ -8,18 +8,19 @@
         table { padding: 5px; }
         .title { color: #9C27B0; text-transform: uppercase; font-weight: bold; font-size: x-large; line-height: 3; text-align: center; }
 
+        .type-service { background-color: #E1BEE7; }
+        .type-registry { background-color: #CE93D8; }
+        .type-monitoring { background-color: #BA68C8; }
+        .type-messaging { background-color: #BBDEFB; }
+        .type-pki { background-color: #90CAF9; }
+
         .imagelist-header { color: #BA68C8; text-transform: lowercase; font-size: small; margin-top: 20px; }
         .imagelist-col-margin { margin-left: 5px; margin-right: 5px; }
-        .imagelist-base { background-color: #FFFDE7; }
-        .imagelist-core { background-color: #FFF9C4; }
-        .imagelist-infra { background-color: #FFF59D; }
-        .service-example { background-color: #B2EBF2; }
-        .imagelist-app { background-color: #FFF176; }
         .imagelist-content { color: black; font-size: small; white-space: nowrap; }
         .imagelist-command { font-style: italic; }
-        .imagelist-port-host { color: #8BC34A; font-weight: bold; }
-        .imagelist-port-docker { color: #E91E63; }
-        .imagelist-port-info { color: #E91E63; }
+        .imagelist-port-host { color: #263238; font-weight: bold; }
+        .imagelist-port-docker { color: #263238; }
+        .imagelist-port-info { color: #263238; }
 
         .infobox-table { border-collapse: collapse; width:100%; border: 1px solid; }
         .infobox-row-separator { border-bottom: 1px solid #ddd; height: 25px; }
@@ -53,9 +54,9 @@
             <th>Commands</th>
         </tr>
         <!-- user service 1 -->
-        <tr class="imagelist-content service-example">
+        <tr class="imagelist-content type-service">
             <td><span class="imagelist-col-margin">user-service-1</span></td>
-            <td><span class="imagelist-col-margin">Remal sample user-service</span></td>
+            <td><span class="imagelist-col-margin">Service that manages user data.</span></td>
             <td>
                 <table>
                     <tr>
@@ -89,15 +90,15 @@
                 <br>
                 <span class="imagelist-col-margin">POST https://localhost:14114/api/user</span>
                 <br><br>
-                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14114/actuator" target="_blank">https://localhost:14114/actuator</a></span>
+                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14114/actuator" target="_blank">GET https://localhost:14114/actuator</a></span>
                 <br>
                 <span class="imagelist-col-margin">JDBC: jdbc:postgresql://localhost:14115/postgres (postgres/password)</span>
             </td>
         </tr>
         <!-- user service 2 -->
-        <tr class="imagelist-content service-example">
+        <tr class="imagelist-content type-service">
             <td><span class="imagelist-col-margin">user-service-2</span></td>
-            <td><span class="imagelist-col-margin">Remal sample user-service</span></td>
+            <td><span class="imagelist-col-margin">Service that manages user data.</span></td>
             <td>
                 <table>
                     <tr>
@@ -131,15 +132,15 @@
                 <br>
                 <span class="imagelist-col-margin">POST https://localhost:14114/api/user</span>
                 <br><br>
-                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14124/actuator" target="_blank">https://localhost:14124/actuator</a></span>
+                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14124/actuator" target="_blank">GET https://localhost:14124/actuator</a></span>
                 <br>
                 <span class="imagelist-col-margin">JDBC: jdbc:postgresql://localhost:14125/postgres (postgres/password)</span>
             </td>
         </tr>
         <!-- welcome service 1 -->
-        <tr class="imagelist-content service-example">
+        <tr class="imagelist-content type-service">
             <td><span class="imagelist-col-margin">welcome-service-1</span></td>
-            <td><span class="imagelist-col-margin">Remal sample welcome-service</span></td>
+            <td><span class="imagelist-col-margin">Service that generates welcome messages for customers.</span></td>
             <td>
                 <table>
                     <tr>
@@ -163,83 +164,48 @@
                 </table>
             </td>
             <td class="imagelist-command">
-                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14214/api/welcome/zappee" target="_blank">https://localhost:14214/api/welcome/zappee</a></span>
+                <span class="imagelist-col-margin">GET <a href="https://localhost:14214/api/welcome/welcome/zappee" target="_blank">https://localhost:14214/api/welcome/welcome/zappee</a></span>
                 <br>
-                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14214/api/joke" target="_blank">https://localhost:14214/api/joke</a></span>
-                <br>
-                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14214/actuator" target="_blank">https://localhost:14214/actuator</a></span>
+                <span class="imagelist-col-margin">GET <a href="https://localhost:14214/api/welcome/joke" target="_blank">https://localhost:14214/api/welcome/joke</a></span>
+                <br><br>
+                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14214/actuator" target="_blank">GET https://localhost:14214/actuator</a></span>
             </td>
         </tr>
-        <!-- Grafana -->
-        <tr class="imagelist-content imagelist-infra">
-            <td><span class="imagelist-col-margin">grafana</span></td>
-            <td>
-                <span class="imagelist-col-margin">Grafana</span>
-                <br>
-                <span class="imagelist-col-margin">It is a tool used to analyze and visualize data.</span>
-            </td>
+        <!-- kafka producer service 1 -->
+        <tr class="imagelist-content type-service">
+            <td><span class="imagelist-col-margin">kafka-producer-service-1</span></td>
+            <td><span class="imagelist-col-margin">Service that produces and sends messages to Kafka topics.</span></td>
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">13082</td>
+                        <td class="imagelist-port-host">14312</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
                         <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
-                        <td class="imagelist-port-host">13083</td>
+                        <td class="imagelist-port-host">14313</td>
                         <td>:</td>
-                        <td class="imagelist-port-docker">3000</td>
-                        <td class="imagelist-port-info">web console, HTTPS</td>
+                        <td class="imagelist-port-docker">8000</td>
+                        <td class="imagelist-port-info">JVM debug</td>
                     </tr>
                     <tr>
-                        <td class="imagelist-port-host"></td>
+                        <td class="imagelist-port-host">14314</td>
                         <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">container up signal</td>
+                        <td class="imagelist-port-docker">8443</td>
+                        <td class="imagelist-port-info">HTTPS</td>
                     </tr>
                 </table>
             </td>
             <td class="imagelist-command">
-                <span class="imagelist-col-margin"><a href="https://localhost:13083" target="_blank">https://localhost:13083</a> (admin/password)</span>
+                <span class="imagelist-col-margin">GET <a href="https://localhost:14314/api/kafka/send" target="_blank">https://localhost:14314/api/kafka/send</a></span>
+                <br><br>
+                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14314/actuator" target="_blank">GET https://localhost:14314/actuator</a></span>
             </td>
         </tr>
-        <!-- Prometheus -->
-        <tr class="imagelist-content imagelist-infra">
-            <td><span class="imagelist-col-margin">prometheus</span></td>
-            <td>
-                <span class="imagelist-col-margin">Prometheus</span>
-                <br>
-                <span class="imagelist-col-margin">An open-source monitoring system with a dimensional data model.</span>
-            </td>
-            <td>
-                <table>
-                    <tr>
-                        <td class="imagelist-port-host">13072</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">SSH</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">13073</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">9090</td>
-                        <td class="imagelist-port-info">web console, HTTPS</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host"></td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">container up signal</td>
-                    </tr>
-                </table>
-            </td>
-            <td class="imagelist-command">
-                <span class="imagelist-col-margin"><a href="https://localhost:13073" target="_blank">https://localhost:13073</a></span>
-            </td>
-        </tr>
+
         <!-- HashiCorp Consul -->
-        <tr class="imagelist-content imagelist-infra">
+        <tr class="imagelist-content type-registry">
             <td><span class="imagelist-col-margin">consul</span></td>
             <td>
                 <span class="imagelist-col-margin">HashiCorp Consul</span>
@@ -278,8 +244,127 @@
                 <span class="imagelist-col-margin"><a href="https://localhost:13063" target="_blank">https://localhost:13063</a></span>
             </td>
         </tr>
+
+        <!-- Grafana -->
+        <tr class="imagelist-content type-monitoring">
+            <td><span class="imagelist-col-margin">grafana</span></td>
+            <td>
+                <span class="imagelist-col-margin">Grafana</span>
+                <br>
+                <span class="imagelist-col-margin">It is a tool used to analyze and visualize data.</span>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13082</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">SSH</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13083</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">3000</td>
+                        <td class="imagelist-port-info">web console, HTTPS</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">container up signal</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin"><a href="https://localhost:13083" target="_blank">https://localhost:13083</a> (admin/password)</span>
+            </td>
+        </tr>
+        <!-- Prometheus -->
+        <tr class="imagelist-content type-monitoring">
+            <td><span class="imagelist-col-margin">prometheus</span></td>
+            <td>
+                <span class="imagelist-col-margin">Prometheus</span>
+                <br>
+                <span class="imagelist-col-margin">An open-source monitoring system with a dimensional data model.</span>
+            </td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13072</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">SSH</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13073</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">9090</td>
+                        <td class="imagelist-port-info">web console, HTTPS</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">container up signal</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin"><a href="https://localhost:13073" target="_blank">https://localhost:13073</a></span>
+            </td>
+        </tr>
+
+        <!-- kafka-1 -->
+        <tr class="imagelist-content type-messaging">
+            <td><span class="imagelist-col-margin">kafka-1</span></td>
+            <td><span class="imagelist-col-margin">Kafka is a high-performance data pipeline and streaming application.</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13053</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">9093</td>
+                        <td class="imagelist-port-info">Kafka's client port</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+        <!-- kafka-2 -->
+        <tr class="imagelist-content type-messaging">
+            <td><span class="imagelist-col-margin">kafka-2</span></td>
+            <td><span class="imagelist-col-margin">Kafka is a high-performance data pipeline and streaming application.</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13043</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">9093</td>
+                        <td class="imagelist-port-info">Kafka's client port</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+        <!-- zookeeper-1 -->
+        <tr class="imagelist-content type-messaging">
+            <td><span class="imagelist-col-margin">zookeeper-1</span></td>
+            <td><span class="imagelist-col-margin">Zookeeper used by Kafka</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13031</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">2181</td>
+                        <td class="imagelist-port-info">Zookeeper's client port</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+
         <!-- PKI server -->
-        <tr class="imagelist-content imagelist-infra">
+        <tr class="imagelist-content type-pki">
             <td><span class="imagelist-col-margin">private-ca</span></td>
             <td><span class="imagelist-col-margin">private Certificate Authority server</span></td>
             <td>

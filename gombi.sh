@@ -85,6 +85,7 @@ function demo_start {
 
   copy_to_volume "remal-gombi-user-service"
   copy_to_volume "remal-gombi-welcome-service"
+  copy_to_volume "remal-gombi-kafka-producer"
   docker compose --env-file="$environment_file" -f "$docker_compose_file" up
 }
 
@@ -272,7 +273,7 @@ function show_help() {
     printf "      %by:    remove of all Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "\n"
     printf "Contact: arnold.somogyi@gmail.com\n"
-    printf "Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved\n"
+    printf "Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved\n"
   fi
 }
 

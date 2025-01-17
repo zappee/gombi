@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+  ~  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
   ~
   ~  Since:  February 2024
   ~  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -29,23 +29,25 @@
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <spring-boot.version>3.4.1</spring-boot.version>
-        <spring-cloud-starter-consul.version>4.2.0</spring-cloud-starter-consul.version>
+        <jakarta.servlet.api.version>6.0.0</jakarta.servlet.api.version>
         <lombok.version>1.18.36</lombok.version>
         <micrometer.version>1.14.2</micrometer.version>
-        <jakarta.servlet.api.version>6.0.0</jakarta.servlet.api.version>
         <postgresql.version>42.7.3</postgresql.version>
+        <spring-boot.version>3.4.1</spring-boot.version>
+        <spring-cloud-starter-consul.version>4.2.0</spring-cloud-starter-consul.version>
+        <spring-kafka.version>3.3.1</spring-kafka.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- spring -->
+            <!-- spring boot -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-aop</artifactId>
                 <version>${spring-boot.version}</version>
                 <scope>provided</scope>
             </dependency>
+            <!-- spring cloud: hashicorp consul -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-consul-discovery</artifactId>
@@ -56,6 +58,12 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-consul-config</artifactId>
                 <version>${spring-cloud-starter-consul.version}</version>
+            </dependency>
+            <!-- spring kafka -->
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${spring-kafka.version}</version>
             </dependency>
             <!-- lombok library -->
             <dependency>
@@ -110,5 +118,6 @@
         <module>remal-gombi-commons</module>
         <module>remal-gombi-user-service</module>
         <module>remal-gombi-welcome-service</module>
+        <module>remal-gombi-kafka-producer</module>
     </modules>
 </project>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+  ~  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
   ~
   ~  Since:  February 2024
   ~  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -22,13 +22,22 @@
     <artifactId>remal-gombi-user-service</artifactId>
     <version>0.1.0</version>
     <name>gombi-user-service</name>
-    <description>Sample user REST service.</description>
+    <description>Service that manages user data.</description>
 
     <dependencies>
-        <!-- spring -->
+        <!-- spring boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- spring cloud: hashicorp consul -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-config</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -37,14 +46,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-consul-config</artifactId>
         </dependency>
         <!-- remal dependencies -->
         <dependency>

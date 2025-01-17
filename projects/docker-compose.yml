@@ -87,6 +87,23 @@ services:
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-welcome-service:/jar-to-run
 
+    # ----- kafka-producer-service-1 -------------------------------------------
+    kafka-producer-service-1:
+        image: remal-java-21-runner:0.9.0
+        container_name: kafka-producer-service-1.${DOMAIN_NAME}
+        hostname: kafka-producer-service-1.${DOMAIN_NAME}
+        depends_on:
+            - consul
+        ports:
+            - "14312:22"   # SSH
+            - "14313:8000" # JVM debug
+            - "14314:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+        volumes:
+            - $HOME/Java/gombi/bin/remal-gombi-kafka-producer:/jar-to-run
+
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:
         image: remal-prometheus:0.9.0
@@ -114,3 +131,48 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - PROMETHEUS_HOST=prometheus.${DOMAIN_NAME}
+
+    # ----- Kafka --------------------------------------------------------------
+    zookeeper-1:
+        image: confluentinc/cp-zookeeper:7.8.0
+        container_name: zookeeper-1.${DOMAIN_NAME}
+        hostname: zookeeper-1.${DOMAIN_NAME}
+        ports:
+            - "13031:2181" # zookeeper's client port
+        environment:
+            - ZOOKEEPER_CLIENT_PORT=2181
+            - ZOOKEEPER_TICK_TIME=2000
+
+    kafka-1:
+        image: confluentinc/cp-kafka:7.8.0
+        container_name: kafka-1.${DOMAIN_NAME}
+        hostname: kafka-1.${DOMAIN_NAME}
+        ports:
+            - "13053:9093" # kafka's client port
+        environment:
+            - KAFKA_BROKER_ID=1
+            - KAFKA_ZOOKEEPER_CONNECT=zookeeper-1.${DOMAIN_NAME}:2181
+            - KAFKA_LISTENERS=INTERNAL://kafka-1.${DOMAIN_NAME}:9092,EXTERNAL://kafka-1.${DOMAIN_NAME}:9093
+            - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka-1.${DOMAIN_NAME}:9092,EXTERNAL://localhost:13053
+            - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+            - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+            - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+        depends_on:
+            - zookeeper-1
+
+    kafka-2:
+        image: confluentinc/cp-kafka:7.8.0
+        container_name: kafka-2.${DOMAIN_NAME}
+        hostname: kafka-2.${DOMAIN_NAME}
+        ports:
+            - "13043:9093" # kafka's client port
+        environment:
+            - KAFKA_BROKER_ID=2
+            - KAFKA_ZOOKEEPER_CONNECT=zookeeper-1.${DOMAIN_NAME}:2181
+            - KAFKA_LISTENERS=INTERNAL://kafka-2.${DOMAIN_NAME}:9092,EXTERNAL://kafka-2.${DOMAIN_NAME}:9093
+            - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka-2.${DOMAIN_NAME}:9092,EXTERNAL://localhost:13043
+            - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+            - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
+            - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+        depends_on:
+            - zookeeper-1

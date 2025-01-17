@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+  ~  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
   ~
   ~  Since:  February 2024
   ~  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -26,11 +26,12 @@
     </parent>
 
     <dependencies>
-        <!-- spring -->
+        <!-- spring boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <!-- spring cloud: hashicorp consul -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
@@ -51,5 +52,4 @@
             <artifactId>jakarta.servlet-api</artifactId>
         </dependency>
     </dependencies>
-
 </project>
