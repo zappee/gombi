@@ -1,7 +1,7 @@
 services:
     # ----- Private Certificate Authority Server -------------------------------
     pki:
-        image: remal-private-ca:0.9.0
+        image: remal-private-ca:0.2.0
         container_name: pki.${DOMAIN_NAME}
         hostname: pki.${DOMAIN_NAME}
         ports:
@@ -15,7 +15,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul:0.9.0
+        image: remal-consul:0.2.0
         container_name: consul.${DOMAIN_NAME}
         hostname: consul.${DOMAIN_NAME}
         depends_on:
@@ -28,7 +28,7 @@ services:
 
     # ----- user-service-1 -----------------------------------------------------
     user-service-1:
-        image: remal-java-21-postgres-runner:0.9.0
+        image: remal-java-21-postgres-runner:0.2.0
         container_name: user-service-1.${DOMAIN_NAME}
         hostname: user-service-1.${DOMAIN_NAME}
         depends_on:
@@ -50,7 +50,7 @@ services:
 
     # ----- user-service-2 -----------------------------------------------------
     user-service-2:
-        image: remal-java-21-postgres-runner:0.9.0
+        image: remal-java-21-postgres-runner:0.2.0
         container_name: user-service-2.${DOMAIN_NAME}
         hostname: user-service-2.${DOMAIN_NAME}
         depends_on:
@@ -72,7 +72,7 @@ services:
 
     # ----- welcome-service-1 --------------------------------------------------
     welcome-service-1:
-        image: remal-java-21-runner:0.9.0
+        image: remal-java-21-runner:0.2.0
         container_name: welcome-service-1.${DOMAIN_NAME}
         hostname: welcome-service-1.${DOMAIN_NAME}
         depends_on:
@@ -89,7 +89,7 @@ services:
 
     # ----- kafka-producer-service-1 -------------------------------------------
     kafka-producer-service-1:
-        image: remal-java-21-runner:0.9.0
+        image: remal-java-21-runner:0.2.0
         container_name: kafka-producer-service-1.${DOMAIN_NAME}
         hostname: kafka-producer-service-1.${DOMAIN_NAME}
         depends_on:
@@ -106,7 +106,7 @@ services:
 
     # ----- kafka-consumer-service-1 -------------------------------------------
     kafka-consumer-service-1:
-        image: remal-java-21-postgres-runner:0.9.0
+        image: remal-java-21-postgres-runner:0.2.0
         container_name: kafka-consumer-service-1.${DOMAIN_NAME}
         hostname: kafka-consumer-service-1.${DOMAIN_NAME}
         depends_on:
@@ -128,7 +128,7 @@ services:
 
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:
-        image: remal-prometheus:0.9.0
+        image: remal-prometheus:0.2.0
         container_name: prometheus.${DOMAIN_NAME}
         hostname: prometheus.${DOMAIN_NAME}
         depends_on:
@@ -142,7 +142,7 @@ services:
 
     # ----- Monitoring: Grafana ------------------------------------------------
     grafana:
-        image: remal-grafana:0.9.0
+        image: remal-grafana:0.2.0
         container_name: grafana.${DOMAIN_NAME}
         hostname: grafana.${DOMAIN_NAME}
         depends_on:
