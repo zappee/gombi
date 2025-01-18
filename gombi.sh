@@ -86,6 +86,7 @@ function demo_start {
   copy_to_volume "remal-gombi-user-service"
   copy_to_volume "remal-gombi-welcome-service"
   copy_to_volume "remal-gombi-kafka-producer"
+  copy_to_volume "remal-gombi-kafka-consumer"
   docker compose --env-file="$environment_file" -f "$docker_compose_file" up
 }
 

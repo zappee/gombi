@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [0.2.0] - 15/Feb/2025
 ### Docker Images
 * Add Kafka to the docker stack
+* !!!!!!!!!Consolidate the version numbers of the Java projects and Docker images 
 
 ### Java projects
 * Add kafka producer and consumer sample projects

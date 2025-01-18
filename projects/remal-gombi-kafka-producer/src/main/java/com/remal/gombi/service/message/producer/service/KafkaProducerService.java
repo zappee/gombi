@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class KafkaProducerService {
 
-    @Value("${kafka.producer.bootstrap.servers}")
+    @Value("${kafka.topic.name}")
     private String kafkaTopicName;
 
     private final KafkaTemplate<String, Event> kafkaTemplate;

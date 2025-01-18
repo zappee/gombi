@@ -32,7 +32,7 @@
         <jakarta.servlet.api.version>6.0.0</jakarta.servlet.api.version>
         <lombok.version>1.18.36</lombok.version>
         <micrometer.version>1.14.2</micrometer.version>
-        <postgresql.version>42.7.3</postgresql.version>
+        <postgresql.version>42.7.5</postgresql.version>
         <spring-boot.version>3.4.1</spring-boot.version>
         <spring-cloud-starter-consul.version>4.2.0</spring-cloud-starter-consul.version>
         <spring-kafka.version>3.3.1</spring-kafka.version>
@@ -119,5 +119,6 @@
         <module>remal-gombi-user-service</module>
         <module>remal-gombi-welcome-service</module>
         <module>remal-gombi-kafka-producer</module>
+        <module>remal-gombi-kafka-consumer</module>
     </modules>
 </project>

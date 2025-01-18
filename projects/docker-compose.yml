@@ -104,6 +104,28 @@ services:
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-kafka-producer:/jar-to-run
 
+    # ----- kafka-consumer-service-1 -------------------------------------------
+    kafka-consumer-service-1:
+        image: remal-java-21-postgres-runner:0.9.0
+        container_name: kafka-consumer-service-1.${DOMAIN_NAME}
+        hostname: kafka-consumer-service-1.${DOMAIN_NAME}
+        depends_on:
+            - consul
+        ports:
+            - "14412:22"   # SSH
+            - "14413:8000" # JVM debug
+            - "14414:8443" # HTTPS
+            - "14415:5432" # Postgres
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            - START_DB=true
+            - DB_APP_DATABASE=default_db
+            - DB_APP_USER=application
+            - DB_APP_PASSWORD=password
+        volumes:
+            - $HOME/Java/gombi/bin/remal-gombi-kafka-consumer:/jar-to-run
+
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:
         image: remal-prometheus:0.9.0
