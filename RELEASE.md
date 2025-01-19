@@ -10,6 +10,21 @@ All notable changes to this project will be documented in this file.
 ### Java projects
 * Add kafka producer and consumer sample projects
 
+### Known issues
+* `Missing User Certificate` issue may appear during the startup of the docker stack in `easy-rsa-pki` container:
+  ~~~
+  Write out database with 1 new entries
+  Unable to rename /opt/easy-rsa/pki/serial.new to /opt/easy-rsa/pki/serial
+  reason: No such file or directory
+
+  Easy-RSA error:
+
+  easyrsa_openssl - Command has failed:
+  * openssl ca -utf8 -batch -in /opt/easy-rsa/pki/reqs/kafka-producer-service-1.hello.com.req -out /opt/easy-rsa/pki/55ff927f/temp.5.1 -extfile /opt/easy-rsa/pki/55ff927f/temp.4.1 -passin pass:changeit -days 825
+  ~~~
+  Solution: Delete the containers and start them again. 
+
+
 ## [0.1.0] - 15/Jan/2025
 ### Docker Images
 * Update EasyRSA to version 3.2.1
