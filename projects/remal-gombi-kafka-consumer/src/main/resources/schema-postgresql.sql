@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS event (
     source varchar(30),
     owner varchar(50),
     payload varchar,
+    created_in_utc timestamp without time zone,
     PRIMARY KEY (id)
     );
 

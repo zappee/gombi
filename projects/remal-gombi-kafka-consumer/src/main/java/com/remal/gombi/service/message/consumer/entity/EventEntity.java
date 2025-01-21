@@ -12,6 +12,8 @@ package com.remal.gombi.service.message.consumer.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "event")
 @Data
@@ -30,4 +32,7 @@ public class EventEntity {
 
     @Column(name = "payload")
     private String payload;
+
+    @Column(name = "created_in_utc")
+    private LocalDateTime createdInUtc;
 }

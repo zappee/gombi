@@ -46,6 +46,11 @@ public class Event {
     @Builder.Default
     private LocalDateTime createdInUtc = LocalDateTime.now(ZoneOffset.UTC);
 
+    /**
+     * Returns a string representation of the object.
+     *
+     * @return representation of the object
+     */
     public String toString() {
         return "{source: \"" + (Objects.isNull(source) ? "null" : source) + "\", "
                 + "owner: \"" + (Objects.isNull(owner) ? "null" : owner) + "\", "
