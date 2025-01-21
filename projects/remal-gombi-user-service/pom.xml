@@ -51,7 +51,6 @@
         <dependency>
             <groupId>com.remal.gombi</groupId>
             <artifactId>remal-gombi-commons</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <!-- lombok library -->
         <dependency>

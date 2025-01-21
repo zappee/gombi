@@ -31,6 +31,8 @@
 
         <jakarta.servlet.api.version>6.0.0</jakarta.servlet.api.version>
         <lombok.version>1.18.36</lombok.version>
+        <mapstruct.version>1.6.3</mapstruct.version>
+        <maven.compiler.plugin.version>3.13.0</maven.compiler.plugin.version>
         <micrometer.version>1.14.2</micrometer.version>
         <postgresql.version>42.7.5</postgresql.version>
         <spring-boot.version>3.4.1</spring-boot.version>
@@ -65,6 +67,12 @@
                 <artifactId>spring-kafka</artifactId>
                 <version>${spring-kafka.version}</version>
             </dependency>
+            <!-- remal dependencies -->
+            <dependency>
+                <groupId>com.remal.gombi</groupId>
+                <artifactId>remal-gombi-commons</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <!-- lombok library -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -91,6 +99,12 @@
                 <artifactId>postgresql</artifactId>
                 <version>${postgresql.version}</version>
             </dependency>
+            <!-- mappings between java beans -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -109,6 +123,30 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <!-- enable annotation-processors for lombok and mapstruct -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven.compiler.plugin.version}</version>
+                    <configuration>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${mapstruct.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                        <compilerArgs>
+                            <!-- the @Mapper construct will generate a class with the @Component annotation -->
+                            <compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
+                        </compilerArgs>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

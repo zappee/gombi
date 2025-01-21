@@ -56,7 +56,6 @@
         <dependency>
             <groupId>com.remal.gombi</groupId>
             <artifactId>remal-gombi-commons</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <!-- lombok library -->
         <dependency>
@@ -72,6 +71,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+        <!-- mappings between java beans -->
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -80,6 +84,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!-- enable annotation-processors for lombok and mapstruct -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

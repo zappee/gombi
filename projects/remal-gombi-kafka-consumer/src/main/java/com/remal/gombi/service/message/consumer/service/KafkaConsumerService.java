@@ -10,6 +10,9 @@
 package com.remal.gombi.service.message.consumer.service;
 
 import com.remal.gombi.commons.model.Event;
+import com.remal.gombi.service.message.consumer.mapper.EventMapper;
+import com.remal.gombi.service.message.consumer.repository.EventRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -18,7 +21,11 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class KafkaConsumerService {
+
+    private final EventRepository eventRepository;
+    private final EventMapper eventMapper;
 
     @KafkaListener(
             id = "${kafka.topic.name}-id",
@@ -32,5 +39,7 @@ public class KafkaConsumerService {
                 consumer.groupMetadata().groupId(),
                 data.partition(),
                 data.value().toString());
+        var eventEntity = eventMapper.toEntity(data.value());
+        eventRepository.save(eventEntity);
      }
 }
