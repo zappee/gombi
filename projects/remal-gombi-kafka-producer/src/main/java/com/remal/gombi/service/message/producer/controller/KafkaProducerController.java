@@ -12,9 +12,7 @@ package com.remal.gombi.service.message.producer.controller;
 import com.remal.gombi.commons.model.Event;
 import com.remal.gombi.commons.monitoring.MethodStatistics;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.remal.gombi.service.message.producer.service.KafkaProducerService;
 
 @Slf4j
@@ -30,9 +28,20 @@ public class KafkaProducerController {
 
     @GetMapping("/send")
     @MethodStatistics
-    public String sendMessageToKafka() {
-        var event = Event.builder().source("payment-service").owner("arnold").payload("{}").build();
-        kafkaProducer.sendEvent(event);
-        return "Message has been sent to Kafka topic.";
+    public String sendDefaultMessageToKafka() {
+        var event = Event.builder().
+                source("payment-service").
+                owner("arnold").
+                payload("{\"reason\": \"test event from the GET rest endpoint\"}")
+                .build();
+        kafkaProducer.onSend(event);
+        return "A new test message has been sent to Kafka topic.";
+    }
+
+    @PostMapping("/send")
+    @MethodStatistics
+    public String sendCustomMessageToKafka(@RequestBody Event event) {
+        kafkaProducer.onSend(event);
+        return "A new message has been sent to Kafka topic.";
     }
 }

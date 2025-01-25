@@ -5,8 +5,8 @@
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
  *  Description:
- *     A runtime exception that is thrown in case of empty result. It
- *     generates a HTTP 404 response.
+ *     This exception is thrown when a search operation result returns an
+ *     empty/null element.
  */
 package com.remal.gombi.commons.exception;
 
@@ -18,8 +18,7 @@ import java.util.Objects;
 public class EntryNotExistException extends RuntimeException {
 
     /**
-     * Exception can be thrown if the result of a search returns with
-     * empty/null element.
+     * Constructor.
      *
      * @param clazz type of the result
      * @param field name of the field being searched

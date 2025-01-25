@@ -9,6 +9,7 @@
  */
 package com.remal.gombi.service.message.consumer.service;
 
+import com.remal.gombi.commons.exception.FailureToProcessException;
 import com.remal.gombi.commons.model.Event;
 import com.remal.gombi.service.message.consumer.mapper.EventMapper;
 import com.remal.gombi.service.message.consumer.repository.EventRepository;
@@ -32,14 +33,23 @@ public class KafkaConsumerService {
             topics = "${kafka.topic.name}",
             groupId = "${random.uuid}",
             containerFactory = "consumerFactory")
-    public void onMessage(ConsumerRecord<String, Event> data, Consumer<?, ?> consumer) {
+    public void onConsume(ConsumerRecord<String, Event> data, Consumer<?, ?> consumer) {
+        var event = data.value();
+        var topic = data.topic();
+
         log.debug(
                 "receiving a message from kafka: {topic: \"{}\", group-id: \"{}\", partition: {}, payload: {}}",
-                data.topic(),
+                topic,
                 consumer.groupMetadata().groupId(),
                 data.partition(),
-                data.value().toString());
-        var eventEntity = eventMapper.toEntity(data.value());
+                event.toString());
+
+        var eventEntity = eventMapper.toEntity(event);
         eventRepository.save(eventEntity);
+
+        // a deliberately thrown error for testing purposes
+        if (event.getOwner().equals("error")) {
+            throw new FailureToProcessException(event, topic, "A deliberately thrown error for testing purposes.");
+        }
      }
 }

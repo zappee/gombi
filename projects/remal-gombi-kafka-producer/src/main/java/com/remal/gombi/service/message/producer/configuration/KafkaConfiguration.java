@@ -29,7 +29,6 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 @Slf4j
@@ -82,10 +81,7 @@ public class KafkaConfiguration {
      */
     @Bean
     public ProducerFactory<String, Event> producerFactory() {
-        DefaultKafkaProducerFactory<String, Event> factory = new DefaultKafkaProducerFactory<>(
-                producerConfiguration(),
-                new StringSerializer(),
-                new JsonSerializer<>());
+        DefaultKafkaProducerFactory<String, Event> factory = new DefaultKafkaProducerFactory<>(producerConfiguration());
         factory.setProducerPerThread(true);
         return factory;
     }
@@ -120,7 +116,7 @@ public class KafkaConfiguration {
     @Bean
     public NewTopic topic() {
         log.debug(
-                "creating a new kafka topic: \"{name: \"{}\", partitions: {}, replicas: {}}\"",
+                "creating a new kafka topic: {name: \"{}\", partitions: {}, replicas: {}}",
                 kafkaTopicName,
                 kafkaTopicPartitions,
                 kafkaTopicReplicas);
@@ -134,6 +130,8 @@ public class KafkaConfiguration {
     private Map<String, Object> producerConfiguration() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
+        configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
         // default:	true
         //
@@ -231,21 +229,12 @@ public class KafkaConfiguration {
      * @return factory configuration in human-readable format
      */
     private String factoryConfigurationToString(ProducerFactory<String, Event> producerFactory) {
-        var keySerializer = producerFactory.getKeySerializer();
-        var keySerializerAsString = Objects.isNull(keySerializer) ? "null" : keySerializer.getClass().getName();
-
-        var valueSerializer = producerFactory.getValueSerializer();
-        var valueSerializerAsString = Objects.isNull(valueSerializer) ? "null" : valueSerializer.getClass().getName();
-
-        var sb = new StringBuilder().append("configuration: ").append("{");
+         var sb = new StringBuilder();
         producerFactory.
                 getConfigurationProperties().
                 forEach((key, value) -> sb.append(String.format("\"%s\": \"%s\", ", key, value)));
 
         sb.setLength(sb.length() - 2);
-        sb.append("}, ");
-        sb.append("key-serializer: ").append(keySerializerAsString).append(", ");
-        sb.append("value-serializer: ").append(valueSerializerAsString);
         return sb.toString();
     }
 }

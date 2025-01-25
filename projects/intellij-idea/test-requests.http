@@ -1,3 +1,6 @@
+### get user
+GET https://localhost:14114/api/user/zappee
+
 ### save user
 POST https://localhost:14114/api/user/
 Content-Type: application/json
@@ -9,5 +12,33 @@ Content-Type: application/json
   "description": "Java developer"
 }
 
-### get user
-GET https://localhost:14114/api/user/zappee
+### send a default message to Kafka topic
+GET https://localhost:14314/api/kafka/send
+
+### send a custom message to Kafka topic
+POST https://localhost:14314/api/kafka/send
+Content-Type: application/json
+
+{
+  "source": "whatewer system",
+  "owner": "arnold",
+  "payload": "{\"reason\": \"custom event from the POST rest endpoint\"}",
+  "createdInUtc": [
+    2025,
+    1,
+    20,
+    21,
+    33,
+    13
+  ]
+}
+
+### simulate a failure while processing the incoming Kafka message
+POST https://localhost:14314/api/kafka/send
+Content-Type: application/json
+
+{
+  "source": "wrong system",
+  "owner": "error",
+  "payload": "{\"reason\": \"custom event from the POST rest endpoint\"}"
+}

@@ -104,10 +104,7 @@ public class KafkaConfiguration {
      */
     @Bean
     public ConsumerFactory<String, Event> consumerConfigs() {
-        ConsumerFactory<String, Event> factory = new DefaultKafkaConsumerFactory<>(
-                consumerConfiguration(),
-                new StringDeserializer(),
-                new JsonDeserializer<>(Event.class));
+        ConsumerFactory<String, Event> factory = new DefaultKafkaConsumerFactory<>(consumerConfiguration());
         log.debug("initializing a ConsumerFactory using the following setting: {{}}", factoryConfigurationToString(factory));
         return factory;
     }
@@ -135,7 +132,7 @@ public class KafkaConfiguration {
     @Bean
     public NewTopic topic() {
         log.debug(
-                "creating a new kafka topic: \"{name: \"{}\", partitions: {}, replicas: {}}\"",
+                "creating a new kafka topic: {name: \"{}\", partitions: {}, replicas: {}}",
                 kafkaTopicName,
                 kafkaTopicPartitions,
                 kafkaTopicReplicas);
@@ -149,6 +146,8 @@ public class KafkaConfiguration {
     private Map<String, Object> consumerConfiguration() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
+        configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
         // default:	latest
         // valid values: [latest, earliest, none]
