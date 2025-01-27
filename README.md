@@ -79,15 +79,11 @@ Thanks.
 
 ## 5) Thank you for buying me a coffee
 
-|                                                                                  |                                                     |
-|:--------------------------------------------------------------------------------:|:---------------------------------------------------:|
-|                                **Wise, EUR/USD**                                 |  ![Wise, EUR/USD](docs/donation/wise/wisetag.png)   |
-|                                                                                  |                                                     |
-|                                                                                  |                                                     |
-| [**PayPal, EUR**](https://www.paypal.com/donate/?hosted_button_id=VT6RPK363U5CA) | ![PayPal, EUR](docs/donation/paypal/paypal-eur.png) |
-|                                                                                  |                                                     |
-|                                                                                  |                                                     |
-| [**PayPal, USD**](https://www.paypal.com/donate/?hosted_button_id=U5JFBSZ23YGP4) | ![PayPal, USD](docs/donation/paypal/paypal-usd.png) |
+|                                                                                                                                                         |
+|:-------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|                                  **Wise, EUR/USD**<br><br>![Wise, EUR/USD](docs/donation/wise/wisetag.png)<br><br><br>                                  |
+| [**PayPal, EUR**](https://www.paypal.com/donate/?hosted_button_id=VT6RPK363U5CA)<br><br>![PayPal, EUR](docs/donation/paypal/paypal-eur.png)<br><br><br> |
+| [**PayPal, USD**](https://www.paypal.com/donate/?hosted_button_id=U5JFBSZ23YGP4)<br><br>![PayPal, USD](docs/donation/paypal/paypal-usd.png)<br><br><br> |
 
 ## 6) License and Copyright
 Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
