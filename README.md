@@ -74,8 +74,7 @@ Gombi provides the following services:
     ~~~
 
 ## 4) Contributions welcome
-Please help to improve this project. You can open a bug report, or send a new pull request,
-Thanks.
+Please help to improve this project. You can open a bug report, or send a new pull request.
 
 ## 5) Thank you for buying me a coffee
 
