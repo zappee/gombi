@@ -15,7 +15,7 @@ Gombi provides the following services:
 
 ![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy.png)
 
-## 2) Docker Images provided
+## 2) Docker Images
 * Base Image:
   * [Remal Base](docker/base/base): based on Alpine
 
@@ -73,7 +73,19 @@ Gombi provides the following services:
     $ ./gombi.sh i1
     ~~~
 
-## 4) License and Copyright
+## 4) Contributions welcome
+Please help to improve this project. You can open a bug report, or send a new pull request,
+Thanks.
+
+## 5) Thank you for buying me a coffee
+
+|                                                                                  |                                                     |
+|:--------------------------------------------------------------------------------:|:---------------------------------------------------:|
+|                                **Wise, EUR/USD**                                 | ![Wise, EUR/USD](docs/donation/wise/wisetag.png)    |
+| [**PayPal, EUR**](https://www.paypal.com/donate/?hosted_button_id=VT6RPK363U5CA) | ![PayPal, EUR](docs/donation/paypal/paypal-eur.png) |
+| [**PayPal, USD**](https://www.paypal.com/donate/?hosted_button_id=U5JFBSZ23YGP4) | ![PayPal, USD](docs/donation/paypal/paypal-usd.png) |
+
+## 6) License and Copyright
 Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
 ## Appendix 1) Reference Dockerfile
