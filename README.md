@@ -81,8 +81,12 @@ Thanks.
 
 |                                                                                  |                                                     |
 |:--------------------------------------------------------------------------------:|:---------------------------------------------------:|
-|                                **Wise, EUR/USD**                                 | ![Wise, EUR/USD](docs/donation/wise/wisetag.png)    |
+|                                **Wise, EUR/USD**                                 |  ![Wise, EUR/USD](docs/donation/wise/wisetag.png)   |
+|                                                                                  |                                                     |
+|                                                                                  |                                                     |
 | [**PayPal, EUR**](https://www.paypal.com/donate/?hosted_button_id=VT6RPK363U5CA) | ![PayPal, EUR](docs/donation/paypal/paypal-eur.png) |
+|                                                                                  |                                                     |
+|                                                                                  |                                                     |
 | [**PayPal, USD**](https://www.paypal.com/donate/?hosted_button_id=U5JFBSZ23YGP4) | ![PayPal, USD](docs/donation/paypal/paypal-usd.png) |
 
 ## 6) License and Copyright
