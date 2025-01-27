@@ -92,6 +92,4 @@ Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 * Reference Dockerfile: [docker/docker-compose-reference.yml](docker/docker-compose-reference.yml) file.
 * For more details, check [this](docker/README.md).
 
-<a href="https://trackgit.com">
-  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
-</a>
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
