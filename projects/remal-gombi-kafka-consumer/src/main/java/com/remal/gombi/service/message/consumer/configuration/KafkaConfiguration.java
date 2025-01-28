@@ -108,6 +108,7 @@ public class KafkaConfiguration {
      * configuration is safe to use:
      *
      *    configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+     *    configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
      * </PRE>
      *
      * @return configured ConsumerFactory bean
