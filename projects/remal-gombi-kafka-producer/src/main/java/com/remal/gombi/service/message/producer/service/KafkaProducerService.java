@@ -32,7 +32,7 @@ public class KafkaProducerService {
     }
 
     public void onSend(Event event) {
-        log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", kafkaTemplate.getDefaultTopic(), event);
+        log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", kafkaTopicName, event);
 
         CompletableFuture<SendResult<String, Event>> future = kafkaTemplate.send(kafkaTopicName, event);
         future.whenComplete((result, ex) -> {
