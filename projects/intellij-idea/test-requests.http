@@ -12,8 +12,11 @@ Content-Type: application/json
   "description": "Java developer"
 }
 
-### send a default message to Kafka topic
-GET https://localhost:14314/api/kafka/send
+### send one message to Kafka topic
+GET https://localhost:14314/api/kafka/send-one
+
+### send multiple message to Kafka topic
+GET https://localhost:14314/api/kafka/send-multiple
 
 ### send a custom message to Kafka topic
 POST https://localhost:14314/api/kafka/send
@@ -21,8 +24,8 @@ Content-Type: application/json
 
 {
   "source": "whatewer system",
-  "owner": "arnold",
-  "payload": "{\"reason\": \"custom event from the POST rest endpoint\"}",
+  "owner": "peter",
+  "payload": "{\"comment\": \"a custom event from the rest endpoint\"}",
   "createdInUtc": [
     2025,
     1,
@@ -40,5 +43,5 @@ Content-Type: application/json
 {
   "source": "wrong system",
   "owner": "error",
-  "payload": "{\"reason\": \"custom event from the POST rest endpoint\"}"
+  "payload": "{\"comment\": \"an error event from the rest endpoint\"}"
 }

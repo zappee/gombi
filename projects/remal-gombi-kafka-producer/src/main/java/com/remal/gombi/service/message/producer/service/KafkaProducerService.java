@@ -10,6 +10,7 @@
 package com.remal.gombi.service.message.producer.service;
 
 import com.remal.gombi.commons.model.Event;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -22,8 +23,9 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class KafkaProducerService {
 
+    @Getter
     @Value("${kafka.topic.name}")
-    private String kafkaTopicName;
+    private String kafkaTopic;
 
     private final KafkaTemplate<String, Event> kafkaTemplate;
 
@@ -32,9 +34,9 @@ public class KafkaProducerService {
     }
 
     public void onSend(Event event) {
-        log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", kafkaTopicName, event);
+        log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", kafkaTopic, event);
 
-        CompletableFuture<SendResult<String, Event>> future = kafkaTemplate.send(kafkaTopicName, event);
+        CompletableFuture<SendResult<String, Event>> future = kafkaTemplate.send(kafkaTopic, event);
         future.whenComplete((result, ex) -> {
             if (ex == null) {
                 log.info("message has been sent to Kafka successfully: {}", result.toString());

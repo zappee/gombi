@@ -11,9 +11,11 @@ package com.remal.gombi.service.message.producer.controller;
 
 import com.remal.gombi.commons.model.Event;
 import com.remal.gombi.commons.monitoring.MethodStatistics;
+import com.remal.gombi.service.message.producer.service.KafkaProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import com.remal.gombi.service.message.producer.service.KafkaProducerService;
+
+import java.util.stream.IntStream;
 
 @Slf4j
 @RestController
@@ -26,22 +28,38 @@ public class KafkaProducerController {
         this.kafkaProducer = kafkaProducer;
     }
 
-    @GetMapping("/send")
+    @GetMapping("/send-one")
     @MethodStatistics
-    public String sendDefaultMessageToKafka() {
+    public String sendOneMessage() {
         var event = Event.builder().
                 source("payment-service").
-                owner("arnold").
-                payload("{\"reason\": \"test event from the GET rest endpoint\"}")
+                owner("amelia").
+                payload("{\"comment\": \"default message\"}")
                 .build();
         kafkaProducer.onSend(event);
-        return "A new test message has been sent to Kafka topic.";
+        return "A message has been sent to the <b>" + kafkaProducer.getKafkaTopic() + "</b> Kafka topic.";
+    }
+
+    @GetMapping("/send-multiple")
+    @MethodStatistics
+    public String sendMultipleMessages() {
+        var numberOfMessages = 10;
+
+        IntStream.range(1, numberOfMessages + 1).forEach( index -> {
+            var event = Event.builder().
+                    source("payment-service").
+                    owner("amelia").
+                    payload(String.format("{\"comment\": \"%s. message\"}", index))
+                    .build();
+            kafkaProducer.onSend(event);
+        });
+        return numberOfMessages + " messages has been sent to the <b>" + kafkaProducer.getKafkaTopic() + "</b> Kafka topic.";
     }
 
     @PostMapping("/send")
     @MethodStatistics
-    public String sendCustomMessageToKafka(@RequestBody Event event) {
+    public String sendCustomMessage(@RequestBody Event event) {
         kafkaProducer.onSend(event);
-        return "A new message has been sent to Kafka topic.";
+        return "A message has been sent to the <b>" + kafkaProducer.getKafkaTopic() + "</b> Kafka topic.";
     }
 }
