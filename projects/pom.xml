@@ -142,10 +142,6 @@
                                 <version>${mapstruct.version}</version>
                             </path>
                         </annotationProcessorPaths>
-                        <compilerArgs>
-                            <!-- the @Mapper construct will generate a class with the @Component annotation -->
-                            <compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
-                        </compilerArgs>
                     </configuration>
                 </plugin>
             </plugins>

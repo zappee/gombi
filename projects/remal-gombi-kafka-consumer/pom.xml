@@ -89,6 +89,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerArgs>
+                        <!-- the @Mapper construct will generate a class with the @Component annotation -->
+                        <compilerArg>-Amapstruct.defaultComponentModel=spring</compilerArg>
+                    </compilerArgs>
+                </configuration>
             </plugin>
         </plugins>
     </build>
