@@ -100,11 +100,25 @@ public class KafkaConfiguration {
     /**
      * Kafka configuration.
      *
+     * <PRE>
+     * The DefaultKafkaConsumerFactory constructor with three parameters has to
+     * be used here because a custom JsonDeserialiser with type info is used.
+     *
+     * If using the default JsonDeserializer is okay for you, then the Map
+     * configuration is safe to use:
+     *
+     *    configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+     * </PRE>
+     *
      * @return configured ConsumerFactory bean
      */
     @Bean
     public ConsumerFactory<String, Event> consumerConfigs() {
-        ConsumerFactory<String, Event> factory = new DefaultKafkaConsumerFactory<>(consumerConfiguration());
+        ConsumerFactory<String, Event> factory = new DefaultKafkaConsumerFactory<>(
+                consumerConfiguration(),
+                new StringDeserializer(),
+                new JsonDeserializer<>(Event.class));
+
         log.debug("initializing a ConsumerFactory using the following setting: {{}}", factoryConfigurationToString(factory));
         return factory;
     }
@@ -146,8 +160,6 @@ public class KafkaConfiguration {
     private Map<String, Object> consumerConfiguration() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
-        configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 
         // default:	latest
         // valid values: [latest, earliest, none]
