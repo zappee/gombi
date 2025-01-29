@@ -23,7 +23,7 @@ POST https://localhost:14314/api/kafka/send
 Content-Type: application/json
 
 {
-  "source": "whatewer system",
+  "sourceSystem": "whatewer system",
   "owner": "peter",
   "payload": "{\"comment\": \"a custom event from the rest endpoint\"}",
   "createdInUtc": [
@@ -41,7 +41,7 @@ POST https://localhost:14314/api/kafka/send
 Content-Type: application/json
 
 {
-  "source": "wrong system",
+  "sourceSystem": "wrong system",
   "owner": "error",
   "payload": "{\"comment\": \"an error event from the rest endpoint\"}"
 }

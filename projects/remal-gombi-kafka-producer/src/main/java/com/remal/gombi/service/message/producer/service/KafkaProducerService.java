@@ -12,6 +12,7 @@ package com.remal.gombi.service.message.producer.service;
 import com.remal.gombi.commons.model.Event;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -36,10 +37,28 @@ public class KafkaProducerService {
     public void onSend(Event event) {
         log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", kafkaTopic, event);
 
-        CompletableFuture<SendResult<String, Event>> future = kafkaTemplate.send(kafkaTopic, event);
+        // Why are all producer messages sent to one partition?
+        // If you are not specifying any custom partition it will use the default partitioner
+        // as per the below rule:
+        //
+        //   1) If a partition is specified in the record, use it that partition to publish.
+        //
+        //   2) If no partition is specified but a key is present choose a partition based on
+        //      a hash of the key
+        //
+        //   3) If no partition or key is present choose a partition in a round-robin fashion
+        ProducerRecord<String, Event> record = new ProducerRecord<>(kafkaTopic, event);
+
+        CompletableFuture<SendResult<String, Event>> future = kafkaTemplate.send(record);
         future.whenComplete((result, ex) -> {
             if (ex == null) {
-                log.info("message has been sent to Kafka successfully: {}", result.toString());
+                log.info(
+                        "message has been sent to Kafka successfully: {topic: \"{}\", partition: {}, offset: {}, key: \"{}\", value: \"{}\"}",
+                        result.getRecordMetadata().topic(),
+                        result.getRecordMetadata().partition(),
+                        result.getRecordMetadata().offset(),
+                        result.getProducerRecord().key(),
+                        result.getProducerRecord().value());
             } else {
                 log.error(
                         "an unexpected error has occurred while sending message to Kafka: {topic: \"{}\", payload: {}, error: {}}",

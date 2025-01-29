@@ -7,7 +7,10 @@ CREATE SEQUENCE IF NOT EXISTS event_id_seq
 
 CREATE TABLE IF NOT EXISTS event (
     id integer NOT NULL DEFAULT nextval('event_id_seq'),
-    source varchar(30),
+    topic varchar(30),
+    partition smallint,
+    group_id varchar(50),
+    source_system varchar(30),
     owner varchar(50),
     payload varchar,
     created_in_utc timestamp without time zone,

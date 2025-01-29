@@ -32,7 +32,7 @@ public class KafkaProducerController {
     @MethodStatistics
     public String sendOneMessage() {
         var event = Event.builder().
-                source("payment-service").
+                sourceSystem("payment-service").
                 owner("amelia").
                 payload("{\"comment\": \"default message\"}")
                 .build();
@@ -43,11 +43,11 @@ public class KafkaProducerController {
     @GetMapping("/send-multiple")
     @MethodStatistics
     public String sendMultipleMessages() {
-        var numberOfMessages = 10;
+        var numberOfMessages = 5000;
 
         IntStream.range(1, numberOfMessages + 1).forEach( index -> {
             var event = Event.builder().
-                    source("payment-service").
+                    sourceSystem("payment-service").
                     owner("amelia").
                     payload(String.format("{\"comment\": \"%s. message\"}", index))
                     .build();
@@ -56,6 +56,12 @@ public class KafkaProducerController {
         return numberOfMessages + " messages has been sent to the <b>" + kafkaProducer.getKafkaTopic() + "</b> Kafka topic.";
     }
 
+    /**
+     * This method accepts only JSON request body.
+     *
+     * @param event JSON representation of the Event
+     * @return response
+     */
     @PostMapping("/send")
     @MethodStatistics
     public String sendCustomMessage(@RequestBody Event event) {

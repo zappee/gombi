@@ -28,7 +28,7 @@ public class Event {
     /**
      * The source system identifier that produced the message.
      */
-    private String source;
+    private String sourceSystem;
 
     /**
      * Identifier that identify the user who initialized the event.
@@ -52,7 +52,7 @@ public class Event {
      * @return representation of the object
      */
     public String toString() {
-        return "{source: \"" + (Objects.isNull(source) ? "null" : source) + "\", "
+        return "{sourceSystem: \"" + (Objects.isNull(sourceSystem) ? "null" : sourceSystem) + "\", "
                 + "owner: \"" + (Objects.isNull(owner) ? "null" : owner) + "\", "
                 + "payload: \"" + (Objects.isNull(payload) ? "null" : payload) + "\", "
                 + "createdInUtc: \"" + LocalDateTimeConverter.toString(createdInUtc) + "\"";

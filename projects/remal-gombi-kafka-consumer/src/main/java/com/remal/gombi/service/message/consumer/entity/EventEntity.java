@@ -24,8 +24,17 @@ public class EventEntity {
     @Column(name = "id")
     private Long id;
 
-     @Column(name = "source", length = 30)
-    private String source;
+    @Column(name = "topic", length = 30)
+    private String topic;
+
+    @Column(name = "partition")
+    private Integer partition;
+
+    @Column(name = "group_id", length = 50)
+    private String groupId;
+
+    @Column(name = "source_system", length = 30)
+    private String sourceSystem;
 
     @Column(name = "owner", length = 50)
     private String owner;

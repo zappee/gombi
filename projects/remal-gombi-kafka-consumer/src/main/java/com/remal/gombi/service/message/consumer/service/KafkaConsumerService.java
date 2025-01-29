@@ -34,22 +34,28 @@ public class KafkaConsumerService {
             groupId = "${random.uuid}",
             containerFactory = "consumerFactory")
     public void onConsume(ConsumerRecord<String, Event> data, Consumer<?, ?> consumer) {
-        var event = data.value();
         var topic = data.topic();
+        var partition = data.partition();
+        var groupId = consumer.groupMetadata().groupId();
+        var payload = data.value();
 
         log.debug(
-                "receiving a message from kafka: {topic: \"{}\", group-id: \"{}\", partition: {}, payload: {}}",
+                "receiving a message from kafka: {topic: \"{}\", partition: {}, group-id: \"{}\", payload: {}}",
                 topic,
-                consumer.groupMetadata().groupId(),
-                data.partition(),
-                event.toString());
+                partition,
+                groupId,
+                payload.toString());
 
-        var eventEntity = eventMapper.toEntity(event);
+        var eventEntity = eventMapper.toEntity(payload);
+        eventEntity.setTopic(topic);
+        eventEntity.setPartition(partition);
+        eventEntity.setGroupId(groupId);
+
         eventRepository.save(eventEntity);
 
         // a deliberately thrown error for testing purposes
-        if (event.getOwner().equals("error")) {
-            throw new FailureToProcessException(event, topic, "A deliberately thrown error for testing purposes.");
+        if (payload.getOwner().equals("error")) {
+            throw new FailureToProcessException(payload, topic, "A deliberately thrown error for testing purposes.");
         }
      }
 }

@@ -18,5 +18,8 @@ import org.mapstruct.Mapping;
 public interface EventMapper {
 
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "topic", ignore = true)
+    @Mapping(target = "partition", ignore = true)
+    @Mapping(target = "groupId", ignore = true)
     EventEntity toEntity(Event pojo);
 }

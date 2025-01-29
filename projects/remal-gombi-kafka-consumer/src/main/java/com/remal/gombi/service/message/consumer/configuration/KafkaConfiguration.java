@@ -182,6 +182,14 @@ public class KafkaConfiguration {
         //
          // If true the consumer’s offset will be periodically committed in the background.
         configs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+
+        // default: null
+        //
+        // A unique string that identifies the consumer group this consumer belongs to. This property is required
+        // if the consumer uses either the group management functionality by using subscribe(topic) or the
+        // Kafka-based offset management strategy.
+        configs.put(ConsumerConfig.GROUP_ID_CONFIG, "demo-group");
+
         return configs;
     }
 
