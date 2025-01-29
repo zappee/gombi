@@ -32,7 +32,7 @@ All notable changes to this project will be documented in this file.
 * Update Grafana to  version 11.4.0
 * Update Prometheus to version 3.0.1
 * Improved releasing process: the same image tag is used everywhere
-* Improved the way the key and value pairs are imported into the KV store in the `java-21-runner' image
+* Improved the way the key and value pairs are imported into the KV store in the `java-21-runner` image
 * Fix for parallel EsyRSA execution issue, [#1279](https://github.com/OpenVPN/easy-rsa/issues/1279)
 * Fixed missing SAN issue in generated certificate: `failed to verify certificate: x509: certificate relies on legacy Common Name field, use SANs instead`
 * Fixed a problem where Grafana did not install the first time the container was launched.
