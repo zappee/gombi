@@ -65,7 +65,7 @@ public class KafkaProducerService {
                         } else {
                             log.error(
                                     "an unexpected error has occurred while sending message to Kafka: {topic: \"{}\", payload: {}, error: {}}",
-                                    result.getRecordMetadata().topic(),
+                                    kafkaTopic,
                                     event.toString(),
                                     ex.getCause().getMessage(),
                                     ex);
