@@ -93,7 +93,7 @@ public class KafkaConfiguration {
         // needed. These producers will not be closed by destroy() or reset().
         //
         // See more details in the fillay block of the KafkaProducerService.onSend(..) method.
-        factory.setProducerPerThread(true);
+        factory.setProducerPerThread(false);
 
         // It is relevant if setProducerPerThread(true) is used.
         factory.addListener(new ProducerFactory.Listener<>() {

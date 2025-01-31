@@ -16,10 +16,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.errors.RetriableException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Component
@@ -50,44 +47,33 @@ public class KafkaProducerService {
             //
             //   3) If no partition or key is present choose a partition in a round-robin fashion
             ProducerRecord<String, Event> record = new ProducerRecord<>(kafkaTopic, event);
-
-            CompletableFuture<SendResult<String, Event>> future = kafkaTemplate.send(record);
-            future.
+            kafkaTemplate.send(record).
                     whenComplete((result, ex) -> {
                         if (ex == null) {
                             log.info(
-                                    "message has been sent to Kafka successfully: {topic: \"{}\", partition: {}, offset: {}, key: \"{}\", value: \"{}\"}",
+                                    "message successfully sent to kafka: {topic: \"{}\", partition: {}, offset: {}, key: \"{}\", value: \"{}\"}",
                                     result.getRecordMetadata().topic(),
                                     result.getRecordMetadata().partition(),
                                     result.getRecordMetadata().offset(),
                                     result.getProducerRecord().key(),
                                     result.getProducerRecord().value());
                         } else {
+                            var cause = ex.getCause();
+                            var isRetryable = cause instanceof RetriableException;
                             log.error(
-                                    "an unexpected error has occurred while sending message to Kafka: {topic: \"{}\", payload: {}, error: {}}",
+                                    "failed to send message to kafka: {topic: \"{}\", event: {}, error: {}, isRetryable: {}}",
                                     kafkaTopic,
                                     event.toString(),
-                                    ex.getCause().getMessage(),
+                                    cause.getMessage(),
+                                    isRetryable,
                                     ex);
-                        }})
-                    .exceptionally(ex -> {
-                                log.error("Sending message to kafka has been finished with an error.", ex);
-                                return null;
-                    });
+                        }});
         } catch (Throwable ex) {
-            if (ex.getCause() instanceof RetriableException) {
-                log.error(
-                        "A retryable error has been appeared while sending message to kafka: {topic: \"{}\", event: {}}",
-                        kafkaTopic,
-                        event.toString(),
-                        ex);
-            } else {
-                log.error(
-                        "A non-retryable error has been appeared while sending message to kafka: {topic: \"{}\", event: {}}",
-                        kafkaTopic,
-                        event.toString(),
-                        ex);
-            }
+            log.error(
+                    "Unable to send message to kafka topic: {topic: \"{}\", event: {}}",
+                    kafkaTopic,
+                    event.toString(),
+                    ex);
         } finally {
             // // important to use when setProducerPerThread(true) is set
             //factory.closeThreadBoundProducer();
