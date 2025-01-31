@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.errors.RetriableException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
+import org.springframework.kafka.listener.KafkaListenerErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
@@ -122,6 +124,21 @@ public class KafkaConfiguration {
 
         log.debug("initializing a ConsumerFactory using the following setting: {{}}", factoryConfigurationToString(factory));
         return factory;
+    }
+
+    @Bean
+    public KafkaListenerErrorHandler errorHandler() {
+        log.info("attaching the KafkaListenerErrorHandler...");
+
+        return (msg, ex) -> {
+            var cause = ex.getCause();
+            if (cause instanceof RetriableException) {
+                log.info("ProducerFactory > KafkaListenerErrorHandler > Retryable exception: {}", cause.getMessage());
+                return "failed"; // anything returned by the error handler is ignored
+            }
+            log.info("ProducerFactory > KafkaListenerErrorHandler > Non retryable exception: {}", cause.getMessage());
+            throw ex;
+        };
     }
 
     /**

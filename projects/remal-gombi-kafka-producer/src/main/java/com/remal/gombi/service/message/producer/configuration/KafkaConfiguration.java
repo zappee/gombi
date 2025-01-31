@@ -10,10 +10,12 @@
 package com.remal.gombi.service.message.producer.configuration;
 
 import com.remal.gombi.commons.model.Event;
+import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,10 +27,13 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.core.ProducerPostProcessor;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.lang.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 
 @Slf4j
@@ -82,7 +87,49 @@ public class KafkaConfiguration {
     @Bean
     public ProducerFactory<String, Event> producerFactory() {
         DefaultKafkaProducerFactory<String, Event> factory = new DefaultKafkaProducerFactory<>(producerConfiguration());
+
+        // Set to true to create a producer per thread instead of singleton that is shared by all clients.
+        // Clients must call closeThreadBoundProducer() to physically close the producer when it is no longer
+        // needed. These producers will not be closed by destroy() or reset().
+        //
+        // See more details in the fillay block of the KafkaProducerService.onSend(..) method.
         factory.setProducerPerThread(true);
+
+        // It is relevant if setProducerPerThread(true) is used.
+        factory.addListener(new ProducerFactory.Listener<>() {
+            @Override
+            public void producerAdded(@NonNull String id, @NonNull Producer<String, Event> producer) {
+                log.info("ProducerFactory > listener: message producer has been added, id: {}", id);
+            }
+
+            @Override
+            public void producerRemoved(@NonNull String id, @NonNull Producer<String, Event> producer) {
+                log.info("ProducerFactory > listener: message producer has been removed, id: {}", id);
+            }
+        });
+
+        factory.addPostProcessor(new ProducerPostProcessor<>() {
+            @Override
+            public Producer<String, Event> apply(Producer<String, Event> eventProducer) {
+                log.info("ProducerFactory > PostProcessor > apply");
+                return eventProducer;
+            }
+
+            @Override
+            @Nonnull
+            public <V> Function<V, Producer<String, Event>> compose(@NonNull Function<? super V, ? extends Producer<String, Event>> before) {
+                log.info("ProducerFactory > PostProcessor > compose");
+                return ProducerPostProcessor.super.compose(before);
+            }
+
+            @Override
+            @Nonnull
+            public <V> Function<Producer<String, Event>, V> andThen(@NonNull Function<? super Producer<String, Event>, ? extends V> after) {
+                log.info("ProducerFactory > PostProcessor > andThen");
+                return ProducerPostProcessor.super.andThen(after);
+            }
+        });
+
         return factory;
     }
 
@@ -161,7 +208,7 @@ public class KafkaConfiguration {
         //      will always be set to -1.
         //
         // 1:   This will mean the leader will write the record to its local log but will respond without awaiting
-        //      full acknowledgement from all followers. In this case should the leader fail immediately after
+        //      full acknowledgment from all followers. In this case should the leader fail immediately after
         //      acknowledging the record but before the followers have replicated it then the record will be lost.
         //
         // all: This means the leader will wait for the full set of in-sync replicas to acknowledge the record. This
