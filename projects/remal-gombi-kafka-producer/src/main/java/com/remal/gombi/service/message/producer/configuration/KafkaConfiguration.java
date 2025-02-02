@@ -91,8 +91,6 @@ public class KafkaConfiguration {
         // Set to true to create a producer per thread instead of singleton that is shared by all clients.
         // Clients must call closeThreadBoundProducer() to physically close the producer when it is no longer
         // needed. These producers will not be closed by destroy() or reset().
-        //
-        // See more details in the fillay block of the KafkaProducerService.onSend(..) method.
         factory.setProducerPerThread(false);
 
         // It is relevant if setProducerPerThread(true) is used.
