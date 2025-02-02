@@ -131,11 +131,20 @@ public class KafkaConfiguration {
         return factory;
     }
 
+    /**
+     * Create a template for executing high-level operations.
+     * The built-in micrometer timers are disabled as we use custom meters.
+     *
+     * @return template for executing high-level operations
+     */
     @Bean
     public KafkaTemplate<String, Event> kafkaTemplate() {
         var factory = producerFactory();
         log.debug("initializing a KafkaTemplate using the following setting: {{}}", factoryConfigurationToString(factory));
-        return new KafkaTemplate<>(factory);
+
+        var template = new KafkaTemplate<>(factory);
+        template.setMicrometerEnabled(false);
+        return template;
     }
 
     /**

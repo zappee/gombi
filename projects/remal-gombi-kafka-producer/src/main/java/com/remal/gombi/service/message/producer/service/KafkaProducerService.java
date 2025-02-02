@@ -10,7 +10,10 @@
 package com.remal.gombi.service.message.producer.service;
 
 import com.remal.gombi.commons.model.Event;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.errors.RetriableException;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class KafkaProducerService {
 
     @Getter
@@ -27,13 +31,11 @@ public class KafkaProducerService {
     private String kafkaTopic;
 
     private final KafkaTemplate<String, Event> kafkaTemplate;
-
-    public KafkaProducerService(KafkaTemplate<String, Event> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
+    private final CompositeMeterRegistry meterRegistry;
 
     public void onSend(Event event) {
         log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", kafkaTopic, event);
+        registerToBeSentEventToMicrometer();
 
         // Why are all producer messages sent to one partition?
         // If you are not specifying any custom partition it will use the default partitioner
@@ -56,6 +58,7 @@ public class KafkaProducerService {
                                 result.getRecordMetadata().offset(),
                                 result.getProducerRecord().key(),
                                 result.getProducerRecord().value());
+                        registerSentEventToMicrometer();
                     } else {
                         // If Spring is unable to deliver the message to the kafka topic within the time specified
                         // in 'delivery.timeout.ms' (ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG), Spring
@@ -69,6 +72,27 @@ public class KafkaProducerService {
                                 cause.getMessage(),
                                 isRetryable,
                                 ex);
+                        registerDroppedEventToMicrometer();
                     }});
+    }
+
+    private void registerToBeSentEventToMicrometer() {
+        getMicrometerCounter("to_be_sent", "Total number of the messages to be sent to Kafka topic.").increment();
+    }
+
+    private void registerSentEventToMicrometer() {
+        getMicrometerCounter("sent", "Total number of the messages sent.").increment();
+    }
+
+    private void registerDroppedEventToMicrometer() {
+        getMicrometerCounter("dropped", "Total number of dropped messages.").increment();
+    }
+
+    private Counter getMicrometerCounter(String status, String description) {
+        return Counter
+                .builder("remal_kafka_" + kafkaTopic)
+                .tags("topic", kafkaTopic, "status", status)
+                .description(description)
+                .register(meterRegistry);
     }
 }
