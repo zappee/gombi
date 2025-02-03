@@ -3,17 +3,17 @@
 All notable changes to this project will be documented in this file.
 
 ## [0.2.0] - 15/Feb/2025
-### Docker Images
+#### Docker Images
 * Add Kafka to the docker stack
 * Consolidate the version numbers of the Java projects and Docker images
 * Fix a known issue: `Missing User Certificate` issue may appear during the startup of the docker stack in `easy-rsa-pki` container:
 
-### Java projects
+#### Java projects
 * Add a Kafka message producer demo project
 * Add a Kafka message consumer demo project
 
 ## [0.1.0] - 15/Jan/2025
-### Docker Images
+#### Docker Images
 * Update EasyRSA to version 3.2.1
 * Update Hashicorp Consul to version 1.20
 * Update Grafana to  version 11.4.0
@@ -25,13 +25,13 @@ All notable changes to this project will be documented in this file.
 * Fixed a problem where Grafana did not install the first time the container was launched.
 * Fixed a problem where ForgeRock Directory Services did not install the first time the container was launched.
  
-### Java projects
+#### Java projects
 * Maven dependency improvements: use dependency-management
 * SSL configuration improvement: use of SSL bundles and better `RestTemplate` configuration
 * Update to Spring Boot 3.4.1
 * Improved the meters naming in Micrometer
 
-### Known issues
+#### Known issues
 * `Missing User Certificate` issue may appear during the startup of the docker stack in `easy-rsa-pki` container:
   ~~~
   Write out database with 1 new entries
