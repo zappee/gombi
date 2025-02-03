@@ -60,5 +60,3 @@ RUN set -ue; \
     mkdir -p "$CONSUL_DATA_DIR"; \
     mkdir -p "$CONSUL_CONFIG_DIR"; \
     mkdir -p "$CONSUL_CONFIG_TEMPLATE_DIR"
-
-ENTRYPOINT ["/entrypoint.sh"]
