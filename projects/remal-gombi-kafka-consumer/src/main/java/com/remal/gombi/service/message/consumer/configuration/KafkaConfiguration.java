@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.common.errors.RetriableException;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,12 +26,10 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
-import org.springframework.kafka.listener.KafkaListenerErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 
 @Slf4j
@@ -53,6 +50,30 @@ public class KafkaConfiguration {
 
     @Value("${kafka.topic.replicas:1}")
     private int kafkaTopicReplicas;
+
+    /**
+     * <PRE>
+     * The DefaultKafkaConsumerFactory constructor with three parameters has to
+     * be used here because a custom JsonDeserialiser with type info is used.
+     *
+     * If using the default JsonDeserializer is okay for you, then the Map
+     * configuration is safe to use:
+     *
+     *    configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+     *    configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+     * </PRE>
+     *
+     * @return configured ConsumerFactory bean
+     */
+    @Bean
+    public ConsumerFactory<String, Event> consumerFactory() {
+        ConsumerFactory<String, Event> factory = new DefaultKafkaConsumerFactory<>(
+                consumerConfiguration(),
+                new StringDeserializer(),
+                new JsonDeserializer<>(Event.class));
+        log.debug("initializing a ConsumerFactory...");
+        return factory;
+    }
 
     /**
      * <PRE>
@@ -77,15 +98,21 @@ public class KafkaConfiguration {
      * @return kafka listener container factory
      */
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Event> consumerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, Event> containerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Event> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
+        // When true and INFO logging is enabled each listener container writes a log
+        // message summarizing its configuration properties.
+        factory.getContainerProperties().setLogContainerConfig(true);
+
+        factory.getContainerProperties().setMissingTopicsFatal(true);
+
         // Specify a ConsumerFactory to use.
-        factory.setConsumerFactory(consumerConfigs());
+        factory.setConsumerFactory(consumerFactory());
 
         // The maximum number of concurrent KafkaMessageListenerContainers running.
         // Messages from within the same partition will be processed sequentially.
-        factory.setConcurrency(3);
+        factory.setConcurrency(1);
 
         // Set the max time to block in the consumer waiting for records.
         factory.getContainerProperties().setPollTimeout(3000);
@@ -97,48 +124,6 @@ public class KafkaConfiguration {
         factory.setCommonErrorHandler(new KafkaConsumerErrorHandler());
 
         return factory;
-    }
-
-    /**
-     * Kafka configuration.
-     *
-     * <PRE>
-     * The DefaultKafkaConsumerFactory constructor with three parameters has to
-     * be used here because a custom JsonDeserialiser with type info is used.
-     *
-     * If using the default JsonDeserializer is okay for you, then the Map
-     * configuration is safe to use:
-     *
-     *    configs.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-     *    configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-     * </PRE>
-     *
-     * @return configured ConsumerFactory bean
-     */
-    @Bean
-    public ConsumerFactory<String, Event> consumerConfigs() {
-        ConsumerFactory<String, Event> factory = new DefaultKafkaConsumerFactory<>(
-                consumerConfiguration(),
-                new StringDeserializer(),
-                new JsonDeserializer<>(Event.class));
-
-        log.debug("initializing a ConsumerFactory using the following setting: {{}}", factoryConfigurationToString(factory));
-        return factory;
-    }
-
-    @Bean
-    public KafkaListenerErrorHandler errorHandler() {
-        log.info("attaching the KafkaListenerErrorHandler...");
-
-        return (msg, ex) -> {
-            var cause = ex.getCause();
-            if (cause instanceof RetriableException) {
-                log.info("ProducerFactory > KafkaListenerErrorHandler > Retryable exception: {}", cause.getMessage());
-                return "failed"; // anything returned by the error handler is ignored
-            }
-            log.info("ProducerFactory > KafkaListenerErrorHandler > Non retryable exception: {}", cause.getMessage());
-            throw ex;
-        };
     }
 
     /**
@@ -200,38 +185,6 @@ public class KafkaConfiguration {
          // If true the consumer’s offset will be periodically committed in the background.
         configs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
 
-        // default: null
-        //
-        // A unique string that identifies the consumer group this consumer belongs to. This property is required
-        // if the consumer uses either the group management functionality by using subscribe(topic) or the
-        // Kafka-based offset management strategy.
-        configs.put(ConsumerConfig.GROUP_ID_CONFIG, "demo-group");
-
         return configs;
-    }
-
-    /**
-     * Used for logging purposes only.
-     *
-     * @param consumerFactory the factory used bz the message consumer
-     * @return factory configuration in human-readable format
-     */
-    private String factoryConfigurationToString(ConsumerFactory<String, Event> consumerFactory) {
-        var keyDeserializer = consumerFactory.getKeyDeserializer();
-        var keyDeserializerAsString = Objects.isNull(keyDeserializer) ? "null" : keyDeserializer.getClass().getName();
-
-        var valueDeserializer = consumerFactory.getValueDeserializer();
-        var valueDeserializerAsString = Objects.isNull(valueDeserializer) ? "null" : valueDeserializer.getClass().getName();
-
-        var sb = new StringBuilder().append("configuration: ").append("{");
-        consumerFactory.
-                getConfigurationProperties().
-                forEach((key, value) -> sb.append(String.format("\"%s\": \"%s\", ", key, value)));
-
-        sb.setLength(sb.length() - 2);
-        sb.append("}, ");
-        sb.append("key-serializer: ").append(keyDeserializerAsString).append(", ");
-        sb.append("value-serializer: ").append(valueDeserializerAsString);
-        return sb.toString();
     }
 }
