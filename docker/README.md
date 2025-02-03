@@ -224,4 +224,6 @@ alias rmi='docker volume rm $(docker volume ls -qf dangling=true) ; docker rmi $
   
   Example: `sshpass -p password ssh -oStrictHostKeyChecking=no root@vault.hello.com -p 13042`
 
-<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
+<a href="https://trackgit.com">
+  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
+</a>
