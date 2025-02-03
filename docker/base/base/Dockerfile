@@ -4,7 +4,7 @@
 # Since:  May 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM="not-set"
 FROM ${IMAGE_FROM}
@@ -57,5 +57,5 @@ COPY container-scripts/startup/* /docker.startup/
 ONBUILD COPY container-scripts/init/* /docker.init/
 ONBUILD COPY container-scripts/startup/* /docker.startup/
 
-COPY container-scripts/entrypoint.sh container-scripts/shared.sh /
+COPY container-scripts/entrypoint.sh container-scripts/shared.sh container-scripts/wait-for-container.sh /
 ENTRYPOINT ["/entrypoint.sh"]

@@ -18,8 +18,7 @@ services:
         image: remal-consul:0.2.0
         container_name: consul.${DOMAIN_NAME}
         hostname: consul.${DOMAIN_NAME}
-        depends_on:
-            - pki
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
         ports:
             - "13062:22"   # SSH
             - "13063:8501" # Consul web console, HTTPS
@@ -31,8 +30,7 @@ services:
         image: remal-java-21-postgres-runner:0.2.0
         container_name: user-service-1.${DOMAIN_NAME}
         hostname: user-service-1.${DOMAIN_NAME}
-        depends_on:
-            - consul
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
             - "14112:22"   # SSH
             - "14113:8000" # JVM debug
@@ -53,8 +51,7 @@ services:
         image: remal-java-21-postgres-runner:0.2.0
         container_name: user-service-2.${DOMAIN_NAME}
         hostname: user-service-2.${DOMAIN_NAME}
-        depends_on:
-            - consul
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
             - "14122:22"   # SSH
             - "14123:8000" # JVM debug
@@ -75,8 +72,7 @@ services:
         image: remal-java-21-runner:0.2.0
         container_name: welcome-service-1.${DOMAIN_NAME}
         hostname: welcome-service-1.${DOMAIN_NAME}
-        depends_on:
-            - consul
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
             - "14212:22"   # SSH
             - "14213:8000" # JVM debug
@@ -92,8 +88,7 @@ services:
         image: remal-java-21-runner:0.2.0
         container_name: kafka-producer-service-1.${DOMAIN_NAME}
         hostname: kafka-producer-service-1.${DOMAIN_NAME}
-        depends_on:
-            - consul
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
             - "14312:22"   # SSH
             - "14313:8000" # JVM debug
@@ -109,8 +104,7 @@ services:
         image: remal-java-21-postgres-runner:0.2.0
         container_name: kafka-consumer-service-1.${DOMAIN_NAME}
         hostname: kafka-consumer-service-1.${DOMAIN_NAME}
-        depends_on:
-            - consul
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
             - "14412:22"   # SSH
             - "14413:8000" # JVM debug
@@ -131,8 +125,7 @@ services:
         image: remal-prometheus:0.2.0
         container_name: prometheus.${DOMAIN_NAME}
         hostname: prometheus.${DOMAIN_NAME}
-        depends_on:
-            - consul
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
             - "13072:22"   # SSH
             - "13073:9090" # HTTPS
@@ -145,8 +138,7 @@ services:
         image: remal-grafana:0.2.0
         container_name: grafana.${DOMAIN_NAME}
         hostname: grafana.${DOMAIN_NAME}
-        depends_on:
-            - prometheus
+        entrypoint: ["/wait-for-container.sh", "prometheus.${DOMAIN_NAME}"]
         ports:
             - "13082:22"   # SSH
             - "13083:3000" # HTTPS
