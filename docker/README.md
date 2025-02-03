@@ -68,7 +68,7 @@ $ docker-compose stop --timeout 120
 ~~~
 
 ## 5) License and Copyright
-Copyright (c) 2020-2023 Remal Software, Arnold Somogyi. All rights reserved.
+Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
 ## 2) Annex 1) Image versioning
 Subsequent releases of the same image must be assigned numerical identifiers consisting of three numbers separated by periods.
@@ -224,6 +224,4 @@ alias rmi='docker volume rm $(docker volume ls -qf dangling=true) ; docker rmi $
   
   Example: `sshpass -p password ssh -oStrictHostKeyChecking=no root@vault.hello.com -p 13042`
 
-<a href="https://trackgit.com">
-  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
-</a>
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />

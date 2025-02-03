@@ -5,7 +5,7 @@
 # Since : January, 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 . /shared.sh
 trap "shutdown_trap; exit" SIGINT SIGTERM SIGHUP

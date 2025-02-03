@@ -22,8 +22,6 @@ This image is an official Remal Docker image, used as a base image of the subseq
 | 22             | SSH         |
 
 ## 5) License and Copyright
-Copyright (c) 2020-2023 Remal Software, Arnold Somogyi. All rights reserved.
+Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
-<a href="https://trackgit.com">
-  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
-</a>
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
