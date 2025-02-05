@@ -47,7 +47,7 @@ public class KafkaProducerService {
         //      a hash of the key
         //
         //   3) If no partition or key is present choose a partition in a round-robin fashion
-        ProducerRecord<String, Event> record = new ProducerRecord<>(kafkaTopic, event);
+        ProducerRecord<String, Event> record = new ProducerRecord<>(kafkaTopic, event.getUserId(), event);
         kafkaTemplate.send(record).
                 whenComplete((result, ex) -> {
                     if (ex == null) {
@@ -68,7 +68,7 @@ public class KafkaProducerService {
                         log.error(
                                 "failed to send message to kafka: {topic: \"{}\", event: {}, error: {}, isRetryable: {}}",
                                 kafkaTopic,
-                                event.toString(),
+                                event,
                                 cause.getMessage(),
                                 isRetryable,
                                 ex);

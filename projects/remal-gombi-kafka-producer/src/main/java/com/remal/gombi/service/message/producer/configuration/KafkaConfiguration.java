@@ -42,42 +42,48 @@ import java.util.function.Function;
 @EnableKafka
 public class KafkaConfiguration {
 
-    @Value("${kafka.producer.bootstrap.servers:kafka-1.hello.com:9092, kafka-2.hello.com:9092}")
-    private String kafkaBootstrapServers;
-
-    @Value("${kafka.producer.enable.idempotence:true}")
-    private String kafkaProducerEnableIdempotence;
+    // producer configuration starts from here
 
     @Value("${kafka.producer.acks:all}")
-    private String kafkaProducerAcks;
+    private String producerAcks;
 
-    @Value("${kafka.producer.retries:2147483647}")
-    private String kafkaProducerRetries;
-
-    @Value("${kafka.producer.linger.ms:0}")
-    private String kafkaProducerLingerMs;
+    @Value("${kafka.producer.bootstrap.servers:kafka-1.hello.com:9092, kafka-2.hello.com:9092}")
+    private String producerBootstrapServers;
 
     @Value("${kafka.producer.delivery.timeout.ms:120000}")
-    private String kafkaProducerDeliveryTimeoutMs;
+    private String producerDeliveryTimeoutMs;
+
+    @Value("${kafka.producer.enable.idempotence:true}")
+    private String producerEnableIdempotence;
+
+    @Value("${kafka.producer.linger.ms:0}")
+    private String producerLingerMs;
+
+    @Value("${kafka.producer.per.thread:false}")
+    private boolean producerPerThread;
 
     @Value("${kafka.producer.request.timeout.ms:30000}")
-    private String kafkaProducerRequestTimeoutMs;
+    private String producerRequestTimeoutMs;
 
-    @Value("${kafka.producer.retry.backoff.ms:100}")
-    private String kafkaProducerRetryBackoffMs;
+    @Value("${kafka.producer.retries:2147483647}")
+    private String producerRetries;
 
     @Value("${kafka.producer.retry.backoff.max.ms:1000}")
-    private String kafkaProducerRetryBackoffMaxMs;
+    private String producerRetryBackoffMaxMs;
 
+    @Value("${kafka.producer.retry.backoff.ms:100}")
+    private String producerRetryBackoffMs;
+
+    // topic configuration starts from here
 
     @Value("${kafka.topic.name:topic1}")
-    private String kafkaTopicName;
+    private String topicName;
 
     @Value("${kafka.topic.partitions:1}")
-    private int kafkaTopicPartitions;
+    private int topicPartitions;
 
     @Value("${kafka.topic.replicas:1}")
-    private int kafkaTopicReplicas;
+    private int topicReplicas;
 
     /**
      * Kafka configuration.
@@ -86,23 +92,39 @@ public class KafkaConfiguration {
      */
     @Bean
     public ProducerFactory<String, Event> producerFactory() {
+        log.debug("initializing ProducerFactory: {"
+                + "acks: \"{}\", bootstrap.servers: \"{}\", delivery.timeout.ms: {}, "
+                + "enable.idempotence: {}, linger.ms: {}, producer.per.thread: {}, "
+                + "request.timeout.ms: {}, retries: {}, retry.backoff.max.ms: {}, "
+                + "retry.backoff.ms: {}}...",
+                producerAcks,
+                producerBootstrapServers,
+                producerDeliveryTimeoutMs,
+                producerEnableIdempotence,
+                producerLingerMs,
+                producerPerThread,
+                producerRequestTimeoutMs,
+                producerRetries,
+                producerRetryBackoffMaxMs,
+                producerRetryBackoffMs);
+
         DefaultKafkaProducerFactory<String, Event> factory = new DefaultKafkaProducerFactory<>(producerConfiguration());
 
         // Set to true to create a producer per thread instead of singleton that is shared by all clients.
         // Clients must call closeThreadBoundProducer() to physically close the producer when it is no longer
         // needed. These producers will not be closed by destroy() or reset().
-        factory.setProducerPerThread(false);
+        factory.setProducerPerThread(producerPerThread);
 
         // It is relevant if setProducerPerThread(true) is used.
         factory.addListener(new ProducerFactory.Listener<>() {
             @Override
             public void producerAdded(@NonNull String id, @NonNull Producer<String, Event> producer) {
-                log.info("ProducerFactory > listener: message producer has been added, id: {}", id);
+                log.info("ProducerFactory > listener > producerAdded: {id: \"{}\"}", id);
             }
 
             @Override
             public void producerRemoved(@NonNull String id, @NonNull Producer<String, Event> producer) {
-                log.info("ProducerFactory > listener: message producer has been removed, id: {}", id);
+                log.info("ProducerFactory > listener > producerRemoved: {id: \"{}\"}", id);
             }
         });
 
@@ -139,10 +161,9 @@ public class KafkaConfiguration {
      */
     @Bean
     public KafkaTemplate<String, Event> kafkaTemplate() {
-        var factory = producerFactory();
-        log.debug("initializing a KafkaTemplate using the following setting: {{}}", factoryConfigurationToString(factory));
+        log.debug("initializing a KafkaTemplate...");
 
-        var template = new KafkaTemplate<>(factory);
+        var template = new KafkaTemplate<>(producerFactory());
         template.setMicrometerEnabled(false);
         return template;
     }
@@ -157,8 +178,9 @@ public class KafkaConfiguration {
      */
     @Bean
     public KafkaAdmin admin() {
+        log.debug("initializing a KafkaAdmin: {bootstrap.servers: \"{}\"}...", producerBootstrapServers);
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, producerBootstrapServers);
         return new KafkaAdmin(configs);
     }
 
@@ -171,36 +193,19 @@ public class KafkaConfiguration {
     public NewTopic topic() {
         log.debug(
                 "creating a new kafka topic: {name: \"{}\", partitions: {}, replicas: {}}",
-                kafkaTopicName,
-                kafkaTopicPartitions,
-                kafkaTopicReplicas);
+                topicName,
+                topicPartitions,
+                topicReplicas);
 
-        return TopicBuilder.name(kafkaTopicName)
-                .partitions(kafkaTopicPartitions)
-                .replicas(kafkaTopicReplicas)
+        return TopicBuilder
+                .name(topicName)
+                .partitions(topicPartitions)
+                .replicas(topicReplicas)
                 .build();
     }
 
     private Map<String, Object> producerConfiguration() {
         Map<String, Object> configs = new HashMap<>();
-        configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
-        configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-
-        // default:	true
-        //
-        // When set to ‘true’, the producer will ensure that exactly one copy of each message is written in the
-        // stream. If ‘false’, producer retries due to broker failures, etc., may write duplicates of the
-        // retried message in the stream. Note that enabling idempotence requires
-        // max.in.flight.requests.per.connection to be less than or equal to 5 (with message ordering preserved
-        // for any allowable value), retries to be greater than 0, and acks must be ‘all’.
-        //
-        // Idempotence is enabled by default if no conflicting configurations are set. If conflicting
-        // configurations are set and idempotence is not explicitly enabled, idempotence is disabled. If
-        // idempotence is explicitly enabled and conflicting configurations are set, a ConfigException is
-        // thrown.
-        configs.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, kafkaProducerEnableIdempotence);
-
 
         // default:	all
         // valid values: [all, -1, 0, 1]
@@ -224,27 +229,42 @@ public class KafkaConfiguration {
         //
         // Note that enabling idempotence requires this config value to be ‘all’. If conflicting configurations are
         // set and idempotence is not explicitly enabled, idempotence is disabled.
+        configs.put(ProducerConfig.ACKS_CONFIG, producerAcks);
 
-        // Idempotent producer ensures that duplicates are not introduced due to unexpected producer retries.
-        configs.put(ProducerConfig.ACKS_CONFIG, kafkaProducerAcks);
+        // default: null
+        configs.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, producerBootstrapServers);
 
-        // default: Integer.MAX_VALUE (2147483647)
+        // default: 120000 (2 min)
         //
-        // Producer attempts to send a message for this configured number of retries before marking it as failed.
-        configs.put(ProducerConfig.RETRIES_CONFIG, kafkaProducerRetries);
+        // Producer doesn’t retry the record forever if retries= Integer.MAX_VALUE, it is bounded by timeout.
+        // Record will be failed if it cannot be delivered within this configured time.
+        configs.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, producerDeliveryTimeoutMs);
+
+        // default:	true
+        //
+        // Idempotent producer ensures that duplicates are not introduced due to unexpected producer retries.
+        //
+        // When set to ‘true’, the producer will ensure that exactly one copy of each message is written in the
+        // stream. If ‘false’, producer retries due to broker failures, etc., may write duplicates of the
+        // retried message in the stream. Note that enabling idempotence requires
+        // max.in.flight.requests.per.connection to be less than or equal to 5 (with message ordering preserved
+        // for any allowable value), retries to be greater than 0, and acks must be ‘all’.
+        //
+        // Idempotence is enabled by default if no conflicting configurations are set. If conflicting
+        // configurations are set and idempotence is not explicitly enabled, idempotence is disabled. If
+        // idempotence is explicitly enabled and conflicting configurations are set, a ConfigException is
+        // thrown.
+        configs.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, producerEnableIdempotence);
+
+        // default: null
+        configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
         // default: 0
         //
         // How long to wait until we send a batch to kafka. This can introduce small delay in message processing
         // but decrease network calls between kafka producer and kafka cluster (as we are sending messages in
         // batches) which increase throughput and producer efficiency.
-        configs.put(ProducerConfig.LINGER_MS_CONFIG, kafkaProducerLingerMs);
-
-        // default: 120000 (2 min)
-        //
-        // Producer doesn’t retry the record forever if retries= Integer.MAX_VALUE, it is bounded by timeout.
-        // Record will be failed if it cannot be delivered within this configured time.
-        configs.put(ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG, kafkaProducerDeliveryTimeoutMs);
+        configs.put(ProducerConfig.LINGER_MS_CONFIG, producerLingerMs);
 
         // default:	30000 (30 seconds)
         //
@@ -253,15 +273,12 @@ public class KafkaConfiguration {
         // or fail the request if retries are exhausted. This should be larger than replica.lag.time.max.ms
         // (a broker configuration, default: 30000 (30 seconds) to reduce the possibility of message duplication
         // due to unnecessary producer retries.
-        configs.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, kafkaProducerRequestTimeoutMs);
+        configs.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, producerRequestTimeoutMs);
 
-        // default: 100 (0.1 second)
+        // default: Integer.MAX_VALUE (2147483647)
         //
-        // The amount of time to wait before attempting to retry a failed request to a given topic partition.
-        // This avoids repeatedly sending requests in a tight loop under some failure scenarios. This value is
-        // the initial backoff value and will increase exponentially for each failed request, up to the
-        // retry.backoff.max.ms value.
-        configs.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, kafkaProducerRetryBackoffMs);
+        // Producer attempts to send a message for this configured number of retries before marking it as failed.
+        configs.put(ProducerConfig.RETRIES_CONFIG, producerRetries);
 
         // default:	1000 (1 second)
         //
@@ -272,23 +289,19 @@ public class KafkaConfiguration {
         // falling within a range between 20% below and 20% above the computed value. If retry.backoff.ms is set
         // to be higher than retry.backoff.max.ms, then retry.backoff.max.ms will be used as a constant backoff
         // from the beginning without any exponential increase.
-        configs.put(ProducerConfig.RETRY_BACKOFF_MAX_MS_CONFIG, kafkaProducerRetryBackoffMaxMs);
+        configs.put(ProducerConfig.RETRY_BACKOFF_MAX_MS_CONFIG, producerRetryBackoffMaxMs);
+
+        // default: 100 (0.1 second)
+        //
+        // The amount of time to wait before attempting to retry a failed request to a given topic partition.
+        // This avoids repeatedly sending requests in a tight loop under some failure scenarios. This value is
+        // the initial backoff value and will increase exponentially for each failed request, up to the
+        // retry.backoff.max.ms value.
+        configs.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, producerRetryBackoffMs);
+
+        // default: null
+        configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
         return configs;
-    }
-
-    /**
-     * Used for logging purposes only.
-     *
-     * @param producerFactory the factory used bz the message producer
-     * @return factory configuration in human-readable format
-     */
-    private String factoryConfigurationToString(ProducerFactory<String, Event> producerFactory) {
-         var sb = new StringBuilder();
-        producerFactory.
-                getConfigurationProperties().
-                forEach((key, value) -> sb.append(String.format("\"%s\": \"%s\", ", key, value)));
-
-        sb.setLength(sb.length() - 2);
-        return sb.toString();
     }
 }

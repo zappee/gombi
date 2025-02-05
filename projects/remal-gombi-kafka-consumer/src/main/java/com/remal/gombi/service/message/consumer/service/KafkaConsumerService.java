@@ -70,7 +70,7 @@ public class KafkaConsumerService {
         eventRepository.save(eventEntity);
 
         // a deliberately thrown error for testing purposes
-        if (payload.getOwner().equals("error")) {
+        if (payload.getUserId().equals("error")) {
             throw new FailureToProcessException(payload, topic, "A deliberately thrown error for testing purposes.");
         }
      }

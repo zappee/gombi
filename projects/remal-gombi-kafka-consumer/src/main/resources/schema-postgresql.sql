@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS event (
     partition smallint,
     group_id varchar(50),
     source_system varchar(30),
-    owner varchar(50),
+    user_id varchar(50),
     payload varchar,
     created_in_utc timestamp without time zone,
     PRIMARY KEY (id)

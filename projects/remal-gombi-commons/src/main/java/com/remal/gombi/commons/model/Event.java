@@ -33,7 +33,7 @@ public class Event {
     /**
      * Identifier that identify the user who initialized the event.
      */
-    private String owner;
+    private String userId;
 
     /**
      * The business content.
@@ -53,7 +53,7 @@ public class Event {
      */
     public String toString() {
         return "{sourceSystem: \"" + (Objects.isNull(sourceSystem) ? "null" : sourceSystem) + "\", "
-                + "owner: \"" + (Objects.isNull(owner) ? "null" : owner) + "\", "
+                + "userId: \"" + (Objects.isNull(userId) ? "null" : userId) + "\", "
                 + "payload: \"" + (Objects.isNull(payload) ? "null" : payload) + "\", "
                 + "createdInUtc: \"" + LocalDateTimeConverter.toString(createdInUtc) + "\"";
     }

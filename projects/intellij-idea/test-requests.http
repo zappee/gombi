@@ -24,7 +24,7 @@ Content-Type: application/json
 
 {
   "sourceSystem": "whatewer system",
-  "owner": "peter",
+  "userId": "peter",
   "payload": "{\"comment\": \"a custom event from the rest endpoint\"}",
   "createdInUtc": [
     2025,
@@ -42,6 +42,6 @@ Content-Type: application/json
 
 {
   "sourceSystem": "wrong system",
-  "owner": "error",
+  "userId": "error",
   "payload": "{\"comment\": \"an error event from the rest endpoint\"}"
 }

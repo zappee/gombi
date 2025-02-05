@@ -36,8 +36,8 @@ public class EventEntity {
     @Column(name = "source_system", length = 30)
     private String sourceSystem;
 
-    @Column(name = "owner", length = 50)
-    private String owner;
+    @Column(name = "user_id", length = 50)
+    private String userId;
 
     @Column(name = "payload")
     private String payload;
