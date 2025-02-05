@@ -14,6 +14,7 @@ import com.remal.gombi.commons.monitoring.MethodStatistics;
 import com.remal.gombi.service.message.producer.service.KafkaProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,16 +36,23 @@ public class KafkaProducerController {
         this.kafkaProducer = kafkaProducer;
     }
 
-    @GetMapping("/send-one")
+    /**
+     *  Sends a new message to the Kafka queue with the given user-id.
+     *
+     * @param usedId user-id string
+     * @return report of the sending
+     */
+    @GetMapping("/send-one/{usedId}")
     @MethodStatistics
-    public String sendOneMessage() {
-        var event = Event.builder().
-                sourceSystem("payment-service").
-                userId("amelia").
-                payload("{\"comment\": \"default message\"}")
+    public String sendOneMessage(@PathVariable("usedId") String usedId) {
+        var event = Event.builder()
+                .sourceSystem("x-service")
+                .userId(usedId)
+                .payload(String.format("{\"index\": \"%s\"}", usedId))
                 .build();
         kafkaProducer.onSend(event);
-        return "A message has been sent to the <b>" + kafkaProducer.getKafkaTopic() + "</b> Kafka topic.";
+        return String.format("A new message has been sent to the <b>%s</b> Kafka topic. User-id: <b>%s</b>",
+                kafkaProducer.getKafkaTopic(), usedId);
     }
 
     /**
@@ -52,12 +60,12 @@ public class KafkaProducerController {
      * consumer maintains the order of the messages. SQL to get the messages on the consumer side:
      * select * EVENT where USER_ID = '3' order by ID
      *
-     * @return HTTP response to the client
+     * @param numberOfMessages the number to message to be sent in the same batch
+     * @return report of the sending
      */
-    @GetMapping("/send-multiple")
+    @GetMapping("/send-multiple/{numberOfMessages}")
     @MethodStatistics
-    public String sendMultipleMessages() {
-        var numberOfMessages = 5000;
+    public String sendMultipleMessages(@PathVariable("numberOfMessages") int numberOfMessages) {
         record User(Integer id, String name, AtomicInteger counter) {}
         var users = Map.of(
                 1, new User(1, "Alex", new AtomicInteger()),
@@ -76,13 +84,14 @@ public class KafkaProducerController {
             var userIndex = random.nextInt(users.size()) + 1;
             var user = users.get(userIndex);
             var event = Event.builder()
-                    .sourceSystem("payment-service")
+                    .sourceSystem("x-service")
                     .userId(String.valueOf(user.id))
                     .payload(String.format("{\"name\": \"%s\", index: %s}", user.name, user.counter.incrementAndGet()))
                     .build();
             kafkaProducer.onSend(event);
         });
-        return numberOfMessages + " messages has been sent to the <b>" + kafkaProducer.getKafkaTopic() + "</b> Kafka topic.";
+        return String.format("<b>%s</b> messages has been sent to the <b>%s</b> Kafka topic.",
+                numberOfMessages, kafkaProducer.getKafkaTopic());
     }
 
     /**

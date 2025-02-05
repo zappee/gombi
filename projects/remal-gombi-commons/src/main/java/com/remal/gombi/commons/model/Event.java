@@ -52,9 +52,9 @@ public class Event {
      * @return representation of the object
      */
     public String toString() {
-        return "{sourceSystem: \"" + (Objects.isNull(sourceSystem) ? "null" : sourceSystem) + "\", "
-                + "userId: \"" + (Objects.isNull(userId) ? "null" : userId) + "\", "
-                + "payload: \"" + (Objects.isNull(payload) ? "null" : payload) + "\", "
-                + "createdInUtc: \"" + LocalDateTimeConverter.toString(createdInUtc) + "\"";
+        return "{userId: " + (Objects.isNull(userId) ? "null" : "\"" + userId) + "\", "
+                + "sourceSystem: " + (Objects.isNull(sourceSystem) ? "null" : "\"" + sourceSystem) + "\", "
+                + "payload: " + (Objects.isNull(payload) ? "null" : "\"" + payload) + "\", "
+                + "createdInUtc: " + LocalDateTimeConverter.toString(createdInUtc);
     }
 }
