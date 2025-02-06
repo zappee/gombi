@@ -22,7 +22,7 @@
     <artifactId>remal-gombi-kafka-producer</artifactId>
     <version>0.2.0</version>
     <name>gombi-kafka-producer</name>
-    <description>Service that produces and sends messages to Kafka topics.</description>
+    <description>Service that produces and sends messages to kafka topics.</description>
 
     <dependencies>
         <!-- spring boot -->
