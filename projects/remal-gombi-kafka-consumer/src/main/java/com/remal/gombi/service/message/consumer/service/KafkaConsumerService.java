@@ -13,10 +13,12 @@ import com.remal.gombi.commons.exception.FailureToProcessException;
 import com.remal.gombi.commons.model.Event;
 import com.remal.gombi.service.message.consumer.mapper.EventMapper;
 import com.remal.gombi.service.message.consumer.repository.EventRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +28,13 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class KafkaConsumerService {
 
+    @Getter
+    @Value("${kafka.topic.name}")
+    private String topicName;
+
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
+    private final MicrometerMeterService meterService;
 
     @KafkaListener(
             // Think of it as the name of the bean, used only internally by Spring.
@@ -70,6 +77,7 @@ public class KafkaConsumerService {
                 groupId,
                 consumerId,
                 payload.toString());
+        meterService.registerReceivedEvent();
 
         var eventEntity = eventMapper.toEntity(payload);
         eventEntity.setTopic(topic);
@@ -82,5 +90,7 @@ public class KafkaConsumerService {
         if (payload.getUserId().equals("error")) {
             throw new FailureToProcessException(payload, topic, "A deliberately thrown error for testing purposes.");
         }
+
+        meterService.registerProcessedEvent();
      }
 }

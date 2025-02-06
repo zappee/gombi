@@ -10,9 +10,6 @@
 package com.remal.gombi.service.message.producer.service;
 
 import com.remal.gombi.commons.model.Event;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -26,12 +23,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaProducerService {
 
-    @Getter
     @Value("${kafka.topic.name}")
-    private String kafkaTopic;
+    private String topicName;
 
     private final KafkaTemplate<String, Event> kafkaTemplate;
-    private final CompositeMeterRegistry meterRegistry;
+    private final MicrometerMeterService meterService;
 
     /**
      * Sending a message to the kafka topic.
@@ -41,8 +37,8 @@ public class KafkaProducerService {
      * @param event the message to send
      */
     public void onSend(Event event) {
-        log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", kafkaTopic, event);
-        registerToBeSentEventToMicrometer();
+        log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", topicName, event);
+        meterService.registerToBeSentEvent();
 
         // Why are all producer messages sent to one partition?
         // If you are not specifying any custom partition it will use the default partitioner
@@ -54,7 +50,7 @@ public class KafkaProducerService {
         //      a hash of the key
         //
         //   3) If no partition or key is present choose a partition in a round-robin fashion
-        ProducerRecord<String, Event> record = new ProducerRecord<>(kafkaTopic, event.getUserId(), event);
+        ProducerRecord<String, Event> record = new ProducerRecord<>(topicName, event.getUserId(), event);
         kafkaTemplate.send(record).
                 whenComplete((result, ex) -> {
                     if (ex == null) {
@@ -65,7 +61,7 @@ public class KafkaProducerService {
                                 result.getRecordMetadata().offset(),
                                 result.getProducerRecord().key(),
                                 result.getProducerRecord().value());
-                        registerSentEventToMicrometer();
+                        meterService.registerSentEvent();
                     } else {
                         // If Spring is unable to deliver the message to the kafka topic within the time specified
                         // in 'delivery.timeout.ms' (ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG), Spring
@@ -74,32 +70,12 @@ public class KafkaProducerService {
                         var isRetryable = cause instanceof RetriableException;
                         log.error(
                                 "failed to send message to kafka: {topic: \"{}\", event: {}, error: {}, isRetryable: {}}",
-                                kafkaTopic,
+                                topicName,
                                 event,
                                 cause.getMessage(),
                                 isRetryable,
                                 ex);
-                        registerDroppedEventToMicrometer();
+                        meterService.registerDroppedEvent();
                     }});
-    }
-
-    private void registerToBeSentEventToMicrometer() {
-        getMicrometerCounter("to_be_sent", "Total number of the messages to be sent to kafka topic.").increment();
-    }
-
-    private void registerSentEventToMicrometer() {
-        getMicrometerCounter("sent", "Total number of the messages sent.").increment();
-    }
-
-    private void registerDroppedEventToMicrometer() {
-        getMicrometerCounter("dropped", "Total number of dropped messages.").increment();
-    }
-
-    private Counter getMicrometerCounter(String status, String description) {
-        return Counter
-                .builder("remal_kafka_" + kafkaTopic)
-                .tags("topic", kafkaTopic, "status", status)
-                .description(description)
-                .register(meterRegistry);
     }
 }

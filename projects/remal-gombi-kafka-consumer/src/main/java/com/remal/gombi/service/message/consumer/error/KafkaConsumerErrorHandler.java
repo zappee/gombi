@@ -9,30 +9,40 @@
  */
 package com.remal.gombi.service.message.consumer.error;
 
+import com.remal.gombi.service.message.consumer.service.MicrometerMeterService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.errors.RecordDeserializationException;
-import org.springframework.kafka.listener.CommonErrorHandler;
+import org.springframework.kafka.listener.ConsumerRecordRecoverer;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.listener.MessageListenerContainer;
+import org.springframework.util.backoff.BackOff;
 
 @Slf4j
-public class KafkaConsumerErrorHandler implements CommonErrorHandler {
+public class KafkaConsumerErrorHandler extends DefaultErrorHandler {
 
-    @Override
-    public boolean handleOne(Exception exception,
-                             ConsumerRecord<?, ?> record,
-                             Consumer<?, ?> consumer,
-                             MessageListenerContainer container) {
-        return handle(exception, consumer);
+    private final MicrometerMeterService meterService;
+
+    public KafkaConsumerErrorHandler(ConsumerRecordRecoverer recoverer, BackOff backOff, MicrometerMeterService meterService) {
+        super(recoverer, backOff);
+        this.meterService = meterService;
     }
 
     @Override
-    public void handleOtherException(Exception exception,
+    public boolean handleOne(Exception thrownException,
+                             ConsumerRecord<?, ?> record,
+                             Consumer<?, ?> consumer,
+                             MessageListenerContainer container) {
+        return handle(thrownException, consumer);
+    }
+
+    @Override
+    public void handleOtherException(Exception thrownException,
                                      Consumer<?, ?> consumer,
                                      MessageListenerContainer container,
                                      boolean batchListener) {
-        handle(exception, consumer);
+        handle(thrownException, consumer);
     }
 
     private boolean handle(Exception exception, Consumer<?,?> consumer) {
@@ -41,8 +51,9 @@ public class KafkaConsumerErrorHandler implements CommonErrorHandler {
             consumer.seek(e.topicPartition(), e.offset() + 1L);
             consumer.commitSync();
         } else {
-            log.error("An unexpected error occurred while trying to handle the incoming message: ", exception);
+            log.error("An unexpected error occurred while trying to process the incoming message: ", exception);
         }
+        meterService.registerDroppedEvent();
         return false;
     }
 }

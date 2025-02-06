@@ -12,6 +12,8 @@ package com.remal.gombi.service.message.consumer.configuration;
 import com.remal.gombi.commons.converter.InstantConverter;
 import com.remal.gombi.commons.exception.FailureToProcessException;
 import com.remal.gombi.commons.model.Event;
+import com.remal.gombi.service.message.consumer.error.KafkaConsumerErrorHandler;
+import com.remal.gombi.service.message.consumer.service.MicrometerMeterService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.AdminClientConfig;
@@ -42,6 +44,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 @EnableKafka
 public class KafkaConfiguration {
+
+    private final MicrometerMeterService meterService;
 
     // producer configuration starts from here
 
@@ -214,26 +218,6 @@ public class KafkaConfiguration {
         return factory;
     }
 
-    @Bean
-    public DefaultErrorHandler errorHandler() {
-        BackOff fixedBackOff = new FixedBackOff(consumerBackoffInterval, consumerBackoffMaxAttempts);
-        DefaultErrorHandler errorHandler = new DefaultErrorHandler((consumerRecord, e) -> {
-            // logic to execute when all the retry attempts are exhausted
-            log.error("Error occurred while processing an incoming message. This message will be dropped: "
-                    + "{topic: \"{}\", partition: {}, offset: {}, timestamp: {}, key: \"{}\", value: \"{}\"}",
-                    consumerRecord.topic(),
-                    consumerRecord.partition(),
-                    consumerRecord.offset(),
-                    InstantConverter.toInstant(consumerRecord.timestamp()),
-                    consumerRecord.key().toString(),
-                    consumerRecord.value().toString(),
-                    e.getCause());
-        }, fixedBackOff);
-        errorHandler.addRetryableExceptions(FailureToProcessException.class);
-        errorHandler.addNotRetryableExceptions(NullPointerException.class);
-        return errorHandler;
-    }
-
     /**
      * When using Spring Boot, a KafkaAdmin bean is automatically registered so
      * you only need the NewTopic @Beans. But if you use NewTopic and custom
@@ -303,5 +287,27 @@ public class KafkaConfiguration {
         configs.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, consumerIsolationLevel);
 
         return configs;
+    }
+
+    private DefaultErrorHandler errorHandler() {
+        BackOff fixedBackOff = new FixedBackOff(consumerBackoffInterval, consumerBackoffMaxAttempts);
+
+        DefaultErrorHandler errorHandler = new KafkaConsumerErrorHandler((consumerRecord, e) -> {
+            // logic to execute when all the retry attempts are exhausted
+            log.error("Error occurred while processing an incoming message. This message will be dropped: "
+                            + "{topic: \"{}\", partition: {}, offset: {}, timestamp: {}, key: \"{}\", value: \"{}\"}",
+                    consumerRecord.topic(),
+                    consumerRecord.partition(),
+                    consumerRecord.offset(),
+                    InstantConverter.toInstant(consumerRecord.timestamp()),
+                    consumerRecord.key().toString(),
+                    consumerRecord.value().toString(),
+                    e.getCause());
+            meterService.registerDroppedEvent();
+        }, fixedBackOff, meterService);
+
+        errorHandler.addRetryableExceptions(FailureToProcessException.class);
+        errorHandler.addNotRetryableExceptions(NullPointerException.class);
+        return errorHandler;
     }
 }

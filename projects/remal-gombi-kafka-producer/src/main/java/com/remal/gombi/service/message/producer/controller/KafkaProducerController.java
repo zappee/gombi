@@ -13,6 +13,7 @@ import com.remal.gombi.commons.model.Event;
 import com.remal.gombi.commons.monitoring.MethodStatistics;
 import com.remal.gombi.service.message.producer.service.KafkaProducerService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,9 @@ import java.util.stream.IntStream;
 public class KafkaProducerController {
 
     private final KafkaProducerService kafkaProducer;
+
+    @Value("${kafka.topic.name}")
+    private String topicName;
 
     public KafkaProducerController(KafkaProducerService kafkaProducer) {
         this.kafkaProducer = kafkaProducer;
@@ -52,7 +56,7 @@ public class KafkaProducerController {
                 .build();
         kafkaProducer.onSend(event);
         return String.format("A new message has been sent to the <b>%s</b> kafka topic. User-id: <b>%s</b>",
-                kafkaProducer.getKafkaTopic(), usedId);
+                topicName, usedId);
     }
 
     /**
@@ -92,7 +96,7 @@ public class KafkaProducerController {
             kafkaProducer.onSend(event);
         });
         return String.format("<b>%s</b> messages has been sent to the <b>%s</b> kafka topic.",
-                numberOfMessages, kafkaProducer.getKafkaTopic());
+                numberOfMessages, topicName);
     }
 
     /**
@@ -105,6 +109,6 @@ public class KafkaProducerController {
     @MethodStatistics
     public String sendCustomMessage(@RequestBody Event event) {
         kafkaProducer.onSend(event);
-        return "A message has been sent to the <b>" + kafkaProducer.getKafkaTopic() + "</b> Kafka topic.";
+        return "A message has been sent to the <b>" + topicName + "</b> Kafka topic.";
     }
 }
