@@ -19,6 +19,7 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -42,11 +43,19 @@ public class KafkaConsumerService {
             // domain name of the host machine on which the consumer is running.
             clientIdPrefix = "${FQDN}",
 
-            // Used by Kafka broker to uniquely identify a consumer group.
+            // Used by kafka broker to uniquely identify a consumer group.
             groupId = "${kafka.topic.name}-${random.uuid}",
 
             topics = "${kafka.topic.name}",
             containerFactory = "containerFactory")
+
+    // The trick here is giving transactionManager as the value for the @Transactional annotation because
+    // there are two transaction manager beans available: transactionManager and kafkaTransactionManager.
+    // The transactionManager is an instance of JpaTransactionManager while the kafkaTransactionManager
+    // bean is an instance of KafkaTransactionManager.
+    // Whenever a new message comes in, it will automatically begin a kafka transaction before it starts
+    // running our method.
+    @Transactional("transactionManager")
     public void onMessage(ConsumerRecord<String, Event> data, Consumer<?, ?> consumer) {
         var topic = data.topic();
         var partition = data.partition();

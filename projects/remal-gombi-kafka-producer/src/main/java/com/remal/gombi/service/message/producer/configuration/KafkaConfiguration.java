@@ -42,6 +42,11 @@ import java.util.function.Function;
 @EnableKafka
 public class KafkaConfiguration {
 
+    // environment variables
+
+    @Value("${FQDN}")
+    private String fqdn;
+
     // producer configuration starts from here
 
     @Value("${kafka.producer.acks:all}")
@@ -92,11 +97,13 @@ public class KafkaConfiguration {
      */
     @Bean
     public ProducerFactory<String, Event> producerFactory() {
+        var transactionIdPrefix = "tx-" + fqdn + "-";
+
         log.debug("initializing ProducerFactory: {"
                 + "acks: \"{}\", bootstrap.servers: \"{}\", delivery.timeout.ms: {}, "
                 + "enable.idempotence: {}, linger.ms: {}, producer.per.thread: {}, "
                 + "request.timeout.ms: {}, retries: {}, retry.backoff.max.ms: {}, "
-                + "retry.backoff.ms: {}}...",
+                + "retry.backoff.ms: {}, transaction.id.prefix: \"{}\"}...",
                 producerAcks,
                 producerBootstrapServers,
                 producerDeliveryTimeoutMs,
@@ -106,7 +113,8 @@ public class KafkaConfiguration {
                 producerRequestTimeoutMs,
                 producerRetries,
                 producerRetryBackoffMaxMs,
-                producerRetryBackoffMs);
+                producerRetryBackoffMs,
+                transactionIdPrefix);
 
         DefaultKafkaProducerFactory<String, Event> factory = new DefaultKafkaProducerFactory<>(producerConfiguration());
 
@@ -114,6 +122,10 @@ public class KafkaConfiguration {
         // Clients must call closeThreadBoundProducer() to physically close the producer when it is no longer
         // needed. These producers will not be closed by destroy() or reset().
         factory.setProducerPerThread(producerPerThread);
+
+        // Use it with the @Transactional annotation on the onSend method.
+        //factory.setTransactionIdPrefix(transactionIdPrefix);
+
 
         // It is relevant if setProducerPerThread(true) is used.
         factory.addListener(new ProducerFactory.Listener<>() {

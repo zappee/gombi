@@ -6,7 +6,7 @@
  *
  *  Description:
  *     This exception is thrown when an error occurs while processing an
- *     incoming message from a Kafka topic.
+ *     incoming message from a kafka topic.
  */
 package com.remal.gombi.commons.exception;
 
@@ -27,7 +27,7 @@ public class FailureToProcessException extends RuntimeException {
      */
     public FailureToProcessException(Event event, String topic, String errorMessage) {
         super(String.format(
-                "Failure while trying to process an incoming message from Kafka: {event: \"%s\", topic: \"%s\", error: \"%s\"}",
+                "Failure while trying to process an incoming message from kafka: {event: \"%s\", topic: \"%s\", error: \"%s\"}",
                 Objects.isNull(event) ? "null" : event.toString(),
                 topic,
                 errorMessage));

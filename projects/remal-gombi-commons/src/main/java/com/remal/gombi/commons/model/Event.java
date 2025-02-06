@@ -5,7 +5,7 @@
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
  *  Description:
- *     Simple POJO, used in Kafka.
+ *     Simple POJO, used with kafka.
  */
 package com.remal.gombi.commons.model;
 

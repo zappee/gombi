@@ -51,14 +51,15 @@ public class KafkaProducerController {
                 .payload(String.format("{\"index\": \"%s\"}", usedId))
                 .build();
         kafkaProducer.onSend(event);
-        return String.format("A new message has been sent to the <b>%s</b> Kafka topic. User-id: <b>%s</b>",
+        return String.format("A new message has been sent to the <b>%s</b> kafka topic. User-id: <b>%s</b>",
                 kafkaProducer.getKafkaTopic(), usedId);
     }
 
     /**
      * This endpoint demonstrates how messages can be produced using the hashing key technique, while the
      * consumer maintains the order of the messages. SQL to get the messages on the consumer side:
-     * select * EVENT where USER_ID = '3' order by ID
+     *    (1) select * EVENT where USER_ID = '3' order by ID
+     *    (2) select ID, PARTITION, USER_ID, PAYLOAD from EVENT order by min(USER_ID) over (partition by USER_ID), ID
      *
      * @param numberOfMessages the number to message to be sent in the same batch
      * @return report of the sending
@@ -90,7 +91,7 @@ public class KafkaProducerController {
                     .build();
             kafkaProducer.onSend(event);
         });
-        return String.format("<b>%s</b> messages has been sent to the <b>%s</b> Kafka topic.",
+        return String.format("<b>%s</b> messages has been sent to the <b>%s</b> kafka topic.",
                 numberOfMessages, kafkaProducer.getKafkaTopic());
     }
 

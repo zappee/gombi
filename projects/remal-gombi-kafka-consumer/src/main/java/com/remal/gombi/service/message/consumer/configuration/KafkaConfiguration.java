@@ -9,6 +9,8 @@
  */
 package com.remal.gombi.service.message.consumer.configuration;
 
+import com.remal.gombi.commons.converter.InstantConverter;
+import com.remal.gombi.commons.exception.FailureToProcessException;
 import com.remal.gombi.commons.model.Event;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +27,11 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
+import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.util.backoff.BackOff;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +51,12 @@ public class KafkaConfiguration {
     @Value("${kafka.consumer.batch.listener:false}")
     private boolean consumerBatchListener;
 
+    @Value(value = "${kafka.consumer.backoff.interval:5000}")
+    private Long consumerBackoffInterval;
+
+    @Value(value = "${kafka.consumer.backoff.max.attempts:9}")
+    private Long consumerBackoffMaxAttempts;
+
     @Value("${kafka.consumer.bootstrap.servers:kafka-1.hello.com:9092, kafka-2.hello.com:9092}")
     private String consumerBootstrapServers;
 
@@ -54,6 +66,9 @@ public class KafkaConfiguration {
     @Value("${kafka.consumer.enable.auto.commit:true}")
     private boolean consumerEnableAutoCommit;
 
+    @Value("${kafka.consumer.isolation.level:read_uncommitted}")
+    private String consumerIsolationLevel;
+
     @Value("${kafka.consumer.log.container.config:false}")
     private boolean consumerLogContainerConfig;
 
@@ -61,7 +76,7 @@ public class KafkaConfiguration {
     private boolean consumerMissingTopicsFatal;
 
     @Value("${kafka.consumer.poll.timeout:5000}")
-    private int consumerPollTimeout;
+    private Long consumerPollTimeout;
 
     // topic configuration starts from here
 
@@ -93,7 +108,8 @@ public class KafkaConfiguration {
         log.debug("initializing ConsumerFactory: {"
                         + "auto.offset.reset: \"{}\", batch.listener: {}, bootstrap.servers: \"{}\", "
                         + "concurrency: {}, enable.auto.commit: {}, log.container.config: {}, "
-                        + "missing.topics.fatal: {}, poll.timeout: {}}...",
+                        + "missing.topics.fatal: {}, poll.timeout: {}, isolation.level: \"{}\", "
+                        + "backoff.interval: {}, backoff.max.attempts: {}}...",
                 consumerAutoOffsetReset,
                 consumerBatchListener,
                 consumerBootstrapServers,
@@ -101,7 +117,10 @@ public class KafkaConfiguration {
                 consumerEnableAutoCommit,
                 consumerLogContainerConfig,
                 consumerMissingTopicsFatal,
-                consumerPollTimeout);
+                consumerPollTimeout,
+                consumerIsolationLevel,
+                consumerBackoffInterval,
+                consumerBackoffMaxAttempts);
 
         return new DefaultKafkaConsumerFactory<>(
                 consumerConfiguration(),
@@ -118,7 +137,7 @@ public class KafkaConfiguration {
      * designed to handle the messages in bulk to meet the SLAs.
      *
      * Additionally, without batch processing, consumers have to poll regularly
-     * on the Kafka topics to get the messages individually. This approach puts
+     * on the kafka topics to get the messages individually. This approach puts
      * pressure on the compute resources. Therefore, batch processing is much
      * more efficient than single message processing per poll.
      *
@@ -157,6 +176,24 @@ public class KafkaConfiguration {
         //    2) use the Hashing-Key technique
         factory.setConcurrency(consumerConcurrency);
 
+        // There are several ack modes available:
+        //
+        //    (1) AckMode.RECORD: In this after-processing mode, the consumer sends an acknowledgment for each
+        //                        message it processes.
+        //
+        //    (2) AckMode.BATCH:  In this manual mode, the consumer sends an acknowledgment for a batch of messages,
+        //                        rather than for each message.
+        //
+        //    (3) AckMode.COUNT:  In this manual mode, the consumer sends an acknowledgment after it has processed
+        //                        a specific number of messages.
+        //
+        //    (4) AckMode.MANUAL: In this manual mode, the consumer doesn’t send an acknowledgment for the
+        //                        messages it processes.
+        //
+        //    (5) AckMode.TIME:   In this manual mode, the consumer sends an acknowledgment after a certain amount
+        //                        of time has passed.
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.RECORD);
+
         // When true and INFO logging is enabled each listener container writes a log
         // message summarizing its configuration properties.
         factory.getContainerProperties().setLogContainerConfig(consumerLogContainerConfig);
@@ -171,7 +208,30 @@ public class KafkaConfiguration {
         // Set the max time to block in the consumer waiting for records.
         factory.getContainerProperties().setPollTimeout(consumerPollTimeout);
 
+        // Container error Handlers.
+        factory.setCommonErrorHandler(errorHandler());
+
         return factory;
+    }
+
+    @Bean
+    public DefaultErrorHandler errorHandler() {
+        BackOff fixedBackOff = new FixedBackOff(consumerBackoffInterval, consumerBackoffMaxAttempts);
+        DefaultErrorHandler errorHandler = new DefaultErrorHandler((consumerRecord, e) -> {
+            // logic to execute when all the retry attempts are exhausted
+            log.error("Error occurred while processing an incoming message. This message will be dropped: "
+                    + "{topic: \"{}\", partition: {}, offset: {}, timestamp: {}, key: \"{}\", value: \"{}\"}",
+                    consumerRecord.topic(),
+                    consumerRecord.partition(),
+                    consumerRecord.offset(),
+                    InstantConverter.toInstant(consumerRecord.timestamp()),
+                    consumerRecord.key().toString(),
+                    consumerRecord.value().toString(),
+                    e.getCause());
+        }, fixedBackOff);
+        errorHandler.addRetryableExceptions(FailureToProcessException.class);
+        errorHandler.addNotRetryableExceptions(NullPointerException.class);
+        return errorHandler;
     }
 
     /**
@@ -216,7 +276,7 @@ public class KafkaConfiguration {
         // default:	latest
         // valid values: [latest, earliest, none]
         //
-        // What to do when there is no initial offset in Kafka or if the current offset does not exist any more
+        // What to do when there is no initial offset in kafka or if the current offset does not exist any more
         // on the server (e.g. because that data has been deleted):
         //
         //    - earliest: automatically reset the offset to the earliest offset
@@ -236,6 +296,11 @@ public class KafkaConfiguration {
         //
         // If true the consumer’s offset will be periodically committed in the background.
         configs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+
+        // Consumer should only read committed messages. If the transaction is not successful, kafka message
+        // will not be marked as committed and this message will not be visible to consumers. So if the
+        // transaction fails to complete, the consumer will not receive that event.
+        configs.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, consumerIsolationLevel);
 
         return configs;
     }

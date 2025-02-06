@@ -33,6 +33,13 @@ public class KafkaProducerService {
     private final KafkaTemplate<String, Event> kafkaTemplate;
     private final CompositeMeterRegistry meterRegistry;
 
+    /**
+     * Sending a message to the kafka topic.
+     * Use the @Transactional if you want to send records to kafka and perform some database updates.
+     * The database transaction will commit followed by the kafka transaction.
+     *
+     * @param event the message to send
+     */
     public void onSend(Event event) {
         log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", kafkaTopic, event);
         registerToBeSentEventToMicrometer();
@@ -77,7 +84,7 @@ public class KafkaProducerService {
     }
 
     private void registerToBeSentEventToMicrometer() {
-        getMicrometerCounter("to_be_sent", "Total number of the messages to be sent to Kafka topic.").increment();
+        getMicrometerCounter("to_be_sent", "Total number of the messages to be sent to kafka topic.").increment();
     }
 
     private void registerSentEventToMicrometer() {
