@@ -68,7 +68,7 @@ $ docker-compose stop --timeout 120
 ~~~
 
 ## 5) License and Copyright
-Copyright (c) 2020-2023 Remal Software, Arnold Somogyi. All rights reserved.
+Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
 ## 2) Annex 1) Image versioning
 Subsequent releases of the same image must be assigned numerical identifiers consisting of three numbers separated by periods.

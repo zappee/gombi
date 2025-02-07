@@ -15,7 +15,7 @@ Gombi provides the following services:
 
 ![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy.png)
 
-## 2) Docker Images provided
+## 2) Docker Images
 * Base Image:
   * [Remal Base](docker/base/base): based on Alpine
 
@@ -54,31 +54,37 @@ Gombi provides the following services:
   * [OpenJDK-21 Runner with Postgres Database Server](docker/application/java-21-postgres-runner)
 
 
-## 3) Build the images
+## 3) Build and start
+### 3.1) Build the Docker images
+1. Start a `Tomcat`.
+2. Download the installation files from [here](https://drive.google.com/drive/u/0/folders/1RUkp1vwSX0aTdlQ2zgyOUKQexHovHY77) and copy them under the `$TOMCAT_HOME/webapps/docker-build/` directory.
+3. Use the `./update-binaries.sh 1` command to copy the installation files into the image build directories.
+4. Build the Docker images using the `./gombi.sh abcdeu` command.
 
-## 4) How to start
-1. Build the sample projects
+### 3.2) Build the Java projects
     ~~~
     $ cd gombi/projects
     $ mvn clean package 
     ~~~
 
-2. Copy the artifacts (*.war) into the directory that will be mapped into the `Java Runners` container.
-
-   The default directories:
-   * `$HOME/Java/gombi/bin/echo-service`
-   * `$HOME/Java/gombi/bin/user-service`
-
-   The path cen be changed in the compose file: `projects/docker-compose.yml`
-
-3. Start the Remal-Gombi Docker stack
+## 3.3) Start the sample docker stack
     ~~~
     $ cd gombi/projects
-    $ mvn clean package 
+    $ ./gombi.sh i1
     ~~~
 
+## 4) Contributions welcome
+Please help to improve this project. You can open a bug report, or send a new pull request.
 
-## 5) License and Copyright
+## 5) Thank you for buying me a coffee
+
+|                                                                                                                                                         |
+|:-------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|                                  **Wise, EUR/USD**<br><br>![Wise, EUR/USD](docs/donation/wise/wisetag.png)<br><br><br>                                  |
+| [**PayPal, EUR**](https://www.paypal.com/donate/?hosted_button_id=VT6RPK363U5CA)<br><br>![PayPal, EUR](docs/donation/paypal/paypal-eur.png)<br><br><br> |
+| [**PayPal, USD**](https://www.paypal.com/donate/?hosted_button_id=U5JFBSZ23YGP4)<br><br>![PayPal, USD](docs/donation/paypal/paypal-usd.png)<br><br><br> |
+
+## 6) License and Copyright
 Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
 ## Appendix 1) Reference Dockerfile

@@ -4,7 +4,7 @@
 # Since : March 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM="not-set"
 FROM ${IMAGE_FROM}

@@ -5,7 +5,7 @@
 # Since:  February 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM="not-set"
 ARG BUILD_TYPE="fat"
@@ -25,7 +25,6 @@ ENV IMAGE_NAME="java-21-runner" \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     CONSUL_SERVER_HOSTNAME="consul.hello.com" \
-    KAFKA_SERVERS="kafka-1.hello.com:9092, kafka-2.hello.com:9092" \
     \
     JAR_HOME="/jar-to-run" \
     JAVA_OPTS="-Xms512m -Xmx512m -XX:+UseZGC" \

@@ -1,7 +1,7 @@
 services:
     # ----- Private Certificate Authority Server -------------------------------
     pki:
-        image: remal-private-ca:0.9.0
+        image: remal-private-ca:0.2.0
         container_name: pki.${DOMAIN_NAME}
         hostname: pki.${DOMAIN_NAME}
         ports:
@@ -15,7 +15,7 @@ services:
 
     # ----- LDAP Directory Server ----------------------------------------------
     ds:
-        image: remal-ds-7.3:0.9.0
+        image: remal-ds-7.3:0.2.0
         container_name: ds.${DOMAIN_NAME}
         hostname: ds.${DOMAIN_NAME}
         depends_on:
@@ -38,7 +38,7 @@ services:
 
     # ----- Access Management Server -------------------------------------------
     forgerock-am:
-        image: remal-am-7.3:0.9.0
+        image: remal-am-7.3:0.2.0
         container_name: am.${DOMAIN_NAME}
         hostname: am.${DOMAIN_NAME}
         depends_on:
@@ -58,11 +58,10 @@ services:
 
     # ----- Hashicorp Vault ----------------------------------------------------
     vault:
-        image: remal-vault:0.9.0
+        image: remal-vault:0.2.0
         container_name: vault.${DOMAIN_NAME}
         hostname: vault.${DOMAIN_NAME}
-        depends_on:
-            - pki
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
         ports:
             - "13052:22"   # SSH
             - "13058:8200" # vault listening
@@ -71,11 +70,10 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul:0.9.0
-        container_name: consul.hello.com
-        hostname: consul.hello.com
-        depends_on:
-            - pki
+        image: remal-consul:0.2.0
+        container_name: consul.${DOMAIN_NAME}
+        hostname: consul.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
         ports:
             - "13062:22"   # SSH
             - "13063:8501" # Consul UI HTTPS
@@ -84,11 +82,10 @@ services:
 
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:
-        image: remal-prometheus:0.9.0
+        image: remal-prometheus:0.2.0
         container_name: prometheus.${DOMAIN_NAME}
         hostname: prometheus.${DOMAIN_NAME}
-        depends_on:
-            - consul
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
             - "13072:22"   # SSH
             - "13073:9090" # HTTPS
@@ -98,11 +95,10 @@ services:
 
     # ----- Monitoring: Grafana ------------------------------------------------
     grafana:
-        image: remal-grafana:0.9.0
+        image: remal-grafana:0.2.0
         container_name: grafana.${DOMAIN_NAME}
         hostname: grafana.${DOMAIN_NAME}
-        depends_on:
-            - prometheus
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
             - "13082:22"   # SSH
             - "13083:3000" # HTTPS
@@ -114,11 +110,10 @@ services:
 
     # ----- Services -----------------------------------------------------------
     echo-service:
-        image: remal-java-21-runner:0.9.0
+        image: remal-java-21-runner:0.2.0
         container_name: welcome-service.hello.com
         hostname: welcome-service.hello.com
-        depends_on:
-            - consul
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
             - "14212:22"   # SSH
             - "14213:8000" # JVM debug
@@ -130,11 +125,10 @@ services:
             - $HOME/dev/workspace/java/remal/volumes/service-hello:/jar-to-run
 
     user-service:
-        image: remal-java-21-postgres-runner:0.9.0
+        image: remal-java-21-postgres-runner:0.2.0
         container_name: user-service.hello.com
         hostname: user-service.hello.com
-        depends_on:
-            - consul
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
             - "14112:22"   # SSH
             - "14113:8000" # JVM debug

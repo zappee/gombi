@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~  Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+  ~  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
   ~
   ~  Since:  February 2024
   ~  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -14,7 +14,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>remal-gombi-commons</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <name>gombi-commons</name>
     <description>Common functions used by the Remal Gombi projects.</description>
     <packaging>jar</packaging>
@@ -22,15 +22,16 @@
     <parent>
         <groupId>com.remal.gombi</groupId>
         <artifactId>gombi</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0</version>
     </parent>
 
     <dependencies>
-        <!-- spring -->
+        <!-- spring boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <!-- spring cloud: hashicorp consul -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-consul-discovery</artifactId>
@@ -51,5 +52,4 @@
             <artifactId>jakarta.servlet-api</artifactId>
         </dependency>
     </dependencies>
-
 </project>

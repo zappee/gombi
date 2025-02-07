@@ -13,7 +13,7 @@
 #    san:       Subject Alternative Name of the certificate, optional
 #               e.g. "DNS:pki.hello.com,DNS:localhost,IP:127.0.0.1"
 #
-# Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 . /shared.sh
 

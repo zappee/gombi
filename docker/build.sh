@@ -5,7 +5,7 @@
 # Since : January, 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2023 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 #
 # Usage:
 #    $ ./build.sh <image-source-dir>
@@ -22,7 +22,7 @@ fi
 SCRIPT=$(realpath "$0")
 SCRIPT_HOME=$(dirname "$SCRIPT")
 IMAGE_SRC="$SCRIPT_HOME/$1"
-IMAGE_TAG="0.9.0"
+IMAGE_TAG="0.2.0"
 
 # set environment
 . "$IMAGE_SRC/setenv.sh" "slim" "false" "remal.com" "$IMAGE_TAG"

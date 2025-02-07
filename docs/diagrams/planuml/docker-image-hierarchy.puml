@@ -4,7 +4,7 @@
 ' Since : July 2023
 ' Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 '
-' Copyright (c) 2020-2024 Remal Software and Arnold Somogyi All rights reserved
+' Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 ' ******************************************************************************
 @startuml
 
@@ -77,21 +77,21 @@ rectangle "User Service"                 as user_service    <<$APP_IMAGE>>      
 rectangle "Prometheus"                   as prometheus      <<$MONITOR_IMAGE>>  <<STYLE_MONITOR>>
 rectangle "Grafana"                      as grafana         <<$MONITOR_IMAGE>>  <<STYLE_MONITOR>>
 
-alpine           -->   base
-base             -->   java11
-base             -->   java17
-base             -->   java21
-base             --->  pki
-base             --->  vault
-base           ------> prometheus
-base           ------> grafana
-java11            -->  tomcat9
-java17            -->  ds
-java21            -->  consul
-tomcat9           -->  am
-consul            -->  java_runner_21
-java_runner_21    -->  java_runner_21p
-java_runner_21   --->  examples
-java_runner_21   --->  user_service
+alpine --> base
+base --> java11
+base --> java17
+base --> java21
+java17 --> pki
+base ---> vault
+base ------> prometheus
+base ------> grafana
+java11 --> tomcat9
+java17 --> ds
+java21 --> consul
+tomcat9 --> am
+consul --> java_runner_21
+java_runner_21 --> java_runner_21p
+java_runner_21 ---> examples
+java_runner_21 ---> user_service
 
 @enduml

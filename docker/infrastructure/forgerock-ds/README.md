@@ -108,7 +108,7 @@ Configuration of a new LDAP connection:
 ![accept the certificate](docs/screenshots/apache-directory-studio-connect-3.png)
 
 ## 5) License and Copyright
-Copyright (c) 2020-2024 Remal Software, Arnold Somogyi. All rights reserved.
+Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
 <a href="https://trackgit.com">
   <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
