@@ -16,13 +16,13 @@ EXPOSE 8200/tcp
 # environment variables
 ENV IMAGE_NAME="vault" \
     IMAGE_TAG="0.0.1" \
-    IMAGE_DESCRIPTION="HashiCorp Vault 1.15.0" \
+    IMAGE_DESCRIPTION="HashiCorp Vault 1.18" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     \
-    VAULT_INSTALL_KIT="vault_1.15.0_linux_386.zip" \
+    VAULT_INSTALL_KIT="vault_1.18.4_linux_386.zip" \
     VAULT_CONFIG_FILE="/etc/vault.hcl" \
     VAULT_INIT_LOG="/var/log/vault-tokens.txt" \
     VAULT_FILE_STORE="/opt/vault/data" \

@@ -162,7 +162,7 @@ function docker_image_build {
 # ------------------------------------------------------------------------------
 function docker_image_remove {
   printf "%b> removing all the Remal Docker images...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
-  docker image rm $(docker image ls --filter "label=com.remal.image.vendor=Remal" -q)
+  docker image rm $(docker image ls --filter "label=com.remal.image.vendor=Remal" -q) || true
 }
 
 # ------------------------------------------------------------------------------

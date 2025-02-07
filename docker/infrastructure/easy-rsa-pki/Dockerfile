@@ -20,7 +20,7 @@ ENV IMAGE_NAME="private-ca" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     EASYRSA_HOME="/opt/easy-rsa" \
-    EASYRSA_INSTALL_KIT="EasyRSA-3.2.1.tgz" \
+    EASYRSA_INSTALL_KIT="EasyRSA-3.2.2.tgz" \
     \
     EASYRSA_REQ_CN="remal.com" \
     EASYRSA_REQ_COUNTRY="HU" \

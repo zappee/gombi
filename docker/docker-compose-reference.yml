@@ -1,7 +1,7 @@
 services:
     # ----- Private Certificate Authority Server -------------------------------
     pki:
-        image: remal-private-ca:0.2.0
+        image: remal-private-ca:0.3.0
         container_name: pki.${DOMAIN_NAME}
         hostname: pki.${DOMAIN_NAME}
         ports:
@@ -15,7 +15,7 @@ services:
 
     # ----- LDAP Directory Server ----------------------------------------------
     ds:
-        image: remal-ds-7.3:0.2.0
+        image: remal-ds-7.3:0.3.0
         container_name: ds.${DOMAIN_NAME}
         hostname: ds.${DOMAIN_NAME}
         depends_on:
@@ -38,7 +38,7 @@ services:
 
     # ----- Access Management Server -------------------------------------------
     forgerock-am:
-        image: remal-am-7.3:0.2.0
+        image: remal-am-7.3:0.3.0
         container_name: am.${DOMAIN_NAME}
         hostname: am.${DOMAIN_NAME}
         depends_on:
@@ -58,7 +58,7 @@ services:
 
     # ----- Hashicorp Vault ----------------------------------------------------
     vault:
-        image: remal-vault:0.2.0
+        image: remal-vault:0.3.0
         container_name: vault.${DOMAIN_NAME}
         hostname: vault.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
@@ -70,7 +70,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul:0.2.0
+        image: remal-consul:0.3.0
         container_name: consul.${DOMAIN_NAME}
         hostname: consul.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
@@ -82,7 +82,7 @@ services:
 
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:
-        image: remal-prometheus:0.2.0
+        image: remal-prometheus:0.3.0
         container_name: prometheus.${DOMAIN_NAME}
         hostname: prometheus.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -95,7 +95,7 @@ services:
 
     # ----- Monitoring: Grafana ------------------------------------------------
     grafana:
-        image: remal-grafana:0.2.0
+        image: remal-grafana:0.3.0
         container_name: grafana.${DOMAIN_NAME}
         hostname: grafana.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -110,7 +110,7 @@ services:
 
     # ----- Services -----------------------------------------------------------
     echo-service:
-        image: remal-java-21-runner:0.2.0
+        image: remal-java-21-runner:0.3.0
         container_name: welcome-service.hello.com
         hostname: welcome-service.hello.com
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -125,7 +125,7 @@ services:
             - $HOME/dev/workspace/java/remal/volumes/service-hello:/jar-to-run
 
     user-service:
-        image: remal-java-21-postgres-runner:0.2.0
+        image: remal-java-21-postgres-runner:0.3.0
         container_name: user-service.hello.com
         hostname: user-service.hello.com
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]

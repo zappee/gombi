@@ -21,19 +21,19 @@
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-REMAL_BINARY_HOME="$HOME/dev/applications/apache-tomcat/webapps/docker-build"
-PROJECT_HOME="$HOME/dev/workspace/java/remal/gombi"
+REMAL_BINARY_HOME="$HOME/Applications/tomcat/apache-tomcat-10.1.33/webapps/docker-build"
+PROJECT_HOME="$HOME/Java/gombi"
 
 BINARIES=(
   "DS-7.3.0.zip;docker/infrastructure/forgerock-ds/bin"
   "AM-7.3.0.war;docker/infrastructure/forgerock-am/bin"
   "AM-SSOConfiguratorTools-5.1.3.18.zip;docker/infrastructure/forgerock-am/bin"
   "apache-tomcat-9.0.71.tar.gz;docker/infrastructure/tomcat-9/bin"
-  "EasyRSA-3.2.1.tgz;docker/infrastructure/easy-rsa-pki/bin"
-  "consul_1.20.1_linux_386.zip;docker/infrastructure/hcp-consul/bin"
-  "vault_1.15.0_linux_386.zip;docker/infrastructure/hcp-vault/bin"
-  "prometheus-3.0.1.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
-  "grafana-enterprise-11.4.0.linux-amd64.tar.gz;docker/monitoring/grafana/bin"
+  "EasyRSA-3.2.2.tgz;docker/infrastructure/easy-rsa-pki/bin"
+  "consul_1.20.2_linux_386.zip;docker/infrastructure/hcp-consul/bin"
+  "vault_1.18.4_linux_386.zip;docker/infrastructure/hcp-vault/bin"
+  "prometheus-3.1.0.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
+  "grafana-enterprise-11.5.1.linux-amd64.tar.gz;docker/monitoring/grafana/bin"
 )
 
 # ----------------------------------------------------------------------------

@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 16/Feb/2025
+#### Docker Images
+* Update `alpine` version from `3.21.0` to `3.21.2` in the `base` image
+* Update `EasyRSA` version from `3.2.1` to `3.2.2` in the `easy-rsa-pki` image
+* Update `Hashicorp Consul` version from `1.20.1` to `1.20.2` in the `hcp-consul` image
+* Update `Hashicorp Vault` version from `1.15.0` to `1.18.4` in the `hcp-vault` image
+* Update `Grafana Enterprise` version from `11.4.0` to `11.5.1` in the `grafana` image
+* Update `Prometheus` version from `3.0.1` to `3.1.0` in the `prometheus` image
+* Fix a build issue in `gombi.sh`
+
+#### Java projects
+* Update dependency: `spring-boot-starter-parent` from version `3.4.1` to `3.4.2`
+* Update dependency: `jakarta.servlet-api` from version `1.18.36` to `1.18.36`
+* Update dependency: `micrometer` from version `1.14.2` to `1.14.3`
+* Update dependency: `spring-boot` from version `3.4.1` to `3.4.2`
+* Update dependency: `spring-kafka` from version `3.3.1` to `3.3.2`
+
 ## [0.2.0] - 15/Feb/2025
 #### Docker Images
 * Add Kafka to the docker stack

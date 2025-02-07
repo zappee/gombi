@@ -25,7 +25,7 @@ ENV IMAGE_NAME="remal-grafana" \
     PROMETHEUS_PORT="9090" \
     PROMETHEUS_PROTOCOL="https" \
     \
-    GRAFANA_INSTALL_KIT="grafana-enterprise-11.4.0.linux-amd64.tar.gz" \
+    GRAFANA_INSTALL_KIT="grafana-enterprise-11.5.1.linux-amd64.tar.gz" \
     GRAFANA_HOME="/opt/grafana" \
     GRAFANA_PROTOCOL="https" \
     GRAFANA_PORT=3000 \
