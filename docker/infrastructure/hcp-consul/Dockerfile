@@ -16,13 +16,13 @@ EXPOSE 8501/tcp
 # environment variables
 ENV IMAGE_NAME="remal-consul" \
     IMAGE_TAG="0.0.1" \
-    IMAGE_DESCRIPTION="HashiCorp Consul 1.18.0" \
+    IMAGE_DESCRIPTION="HashiCorp Consul 1.20" \
     IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
     \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     \
-    CONSUL_INSTALL_KIT="consul_1.20.1_linux_386.zip" \
+    CONSUL_INSTALL_KIT="consul_1.20.2_linux_386.zip" \
     CONSUL_CONFIG_TEMPLATE_DIR="/tmp/consul-config-template" \
     CONSUL_CONFIG_DIR="/tmp/consul-config" \
     CONSUL_DATA_DIR="/tmp/consul-data"
