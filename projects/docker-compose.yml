@@ -120,6 +120,38 @@ services:
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-kafka-consumer:/jar-to-run
 
+    # ----- hazelcast-counter-service-1 ----------------------------------------
+    hazelcast-counter-service-1:
+        image: remal-java-21-runner:0.4.0
+        container_name: hazelcast-counter-service-1.${DOMAIN_NAME}
+        hostname: hazelcast-counter-service-1.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
+        ports:
+            - "14512:22"   # SSH
+            - "14513:8000" # JVM debug
+            - "14514:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+        volumes:
+            - $HOME/Java/gombi/bin/remal-gombi-hazelcast-counter:/jar-to-run
+
+    # ----- hazelcast-counter-service-2 ----------------------------------------
+    hazelcast-counter-service-2:
+        image: remal-java-21-runner:0.4.0
+        container_name: hazelcast-counter-service-2.${DOMAIN_NAME}
+        hostname: hazelcast-counter-service-2.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
+        ports:
+            - "14522:22"   # SSH
+            - "14523:8000" # JVM debug
+            - "14524:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+        volumes:
+            - $HOME/Java/gombi/bin/remal-gombi-hazelcast-counter:/jar-to-run
+
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:
         image: remal-prometheus:0.4.0
@@ -192,3 +224,24 @@ services:
             - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
         depends_on:
             - zookeeper-1
+
+    # ----- Hazelcast ----------------------------------------------------------
+    hazelcast-1:
+        image: remal-hazelcast:0.4.0
+        container_name: hazelcast-1.${DOMAIN_NAME}
+        hostname: hazelcast-1.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
+        ports:
+            - "13072:22"   # SSH
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+
+    hazelcast-2:
+        image: remal-hazelcast:0.4.0
+        container_name: hazelcast-2.${DOMAIN_NAME}
+        hostname: hazelcast-2.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
+        ports:
+            - "13062:22"   # SSH
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}

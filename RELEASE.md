@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 * Image for `Hazelcast Platform 5.5.8`
 
 #### Java projects
-* Add a new project to demonstrate the Hazelcast Cache
+* Add a new project to demonstrate how the Hazelcast Cache works
 
 ## [0.3.0] - 16/Feb/2025
 #### Docker Images

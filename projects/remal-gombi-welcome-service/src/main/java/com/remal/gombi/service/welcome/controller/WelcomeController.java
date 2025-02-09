@@ -12,6 +12,7 @@ package com.remal.gombi.service.welcome.controller;
 import com.remal.gombi.commons.monitoring.MethodStatistics;
 import com.remal.gombi.service.welcome.service.TemplateService;
 import com.remal.gombi.service.welcome.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,21 +26,11 @@ import java.util.Objects;
 @Slf4j
 @RestController
 @RequestMapping("/api/welcome")
+@RequiredArgsConstructor
 public class WelcomeController {
 
     private final TemplateService templateService;
     private final UserService userService;
-
-    /**
-     * Constructor with object injections.
-     *
-     * @param userService object to be injected by spring
-     */
-    public WelcomeController(UserService userService,
-                             TemplateService templateService) {
-        this.userService = userService;
-        this.templateService = templateService;
-    }
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
 

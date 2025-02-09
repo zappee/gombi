@@ -150,9 +150,10 @@
 
     <modules>
         <module>remal-gombi-commons</module>
+        <module>remal-gombi-hazelcast-counter</module>
+        <module>remal-gombi-kafka-consumer</module>
+        <module>remal-gombi-kafka-producer</module>
         <module>remal-gombi-user-service</module>
         <module>remal-gombi-welcome-service</module>
-        <module>remal-gombi-kafka-producer</module>
-        <module>remal-gombi-kafka-consumer</module>
     </modules>
 </project>
