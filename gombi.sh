@@ -84,10 +84,11 @@ function demo_start {
   printf "       environment-file: '%s'\n" "$environment_file"
   printf "     docker-compose.yml: '%s'\n" "$docker_compose_file"
 
+  copy_to_volume "remal-gombi-hazelcast-counter"
+  copy_to_volume "remal-gombi-kafka-consumer"
+  copy_to_volume "remal-gombi-kafka-producer"
   copy_to_volume "remal-gombi-user-service"
   copy_to_volume "remal-gombi-welcome-service"
-  copy_to_volume "remal-gombi-kafka-producer"
-  copy_to_volume "remal-gombi-kafka-consumer"
   docker compose --env-file="$environment_file" -f "$docker_compose_file" up
 }
 
