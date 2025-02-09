@@ -1,30 +1,4 @@
 services:
-    # ----- Private Certificate Authority Server -------------------------------
-    pki:
-        image: remal-private-ca:0.4.0
-        container_name: pki.${DOMAIN_NAME}
-        hostname: pki.${DOMAIN_NAME}
-        ports:
-            - "13012:22"   # SSH
-        environment:
-            - EASYRSA_REQ_CN=${DOMAIN_NAME}
-            - EASYRSA_REQ_COUNTRY=${EASYRSA_REQ_COUNTRY}
-            - EASYRSA_REQ_PROVINCE=${EASYRSA_REQ_PROVINCE}
-            - EASYRSA_REQ_CITY=${EASYRSA_REQ_CITY}
-            - EASYRSA_REQ_ORG=${EASYRSA_REQ_ORG}
-
-    # ----- Hashicorp Consul ---------------------------------------------------
-    consul:
-        image: remal-consul:0.4.0
-        container_name: consul.${DOMAIN_NAME}
-        hostname: consul.${DOMAIN_NAME}
-        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
-        ports:
-            - "13062:22"   # SSH
-            - "13063:8501" # Consul web console, HTTPS
-        environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-
     # ----- user-service-1 -----------------------------------------------------
     user-service-1:
         image: remal-java-21-postgres-runner:0.4.0
@@ -152,18 +126,17 @@ services:
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-hazelcast-counter:/jar-to-run
 
-    # ----- Monitoring: Prometheus ---------------------------------------------
-    prometheus:
-        image: remal-prometheus:0.4.0
-        container_name: prometheus.${DOMAIN_NAME}
-        hostname: prometheus.${DOMAIN_NAME}
-        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
+    # ----- Hashicorp Consul ---------------------------------------------------
+    consul:
+        image: remal-consul:0.4.0
+        container_name: consul.${DOMAIN_NAME}
+        hostname: consul.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
         ports:
-            - "13072:22"   # SSH
-            - "13073:9090" # HTTPS
+            - "13102:22"   # SSH
+            - "13103:8501" # Consul web console, HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_HOST=consul.${DOMAIN_NAME}
 
     # ----- Monitoring: Grafana ------------------------------------------------
     grafana:
@@ -172,23 +145,47 @@ services:
         hostname: grafana.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "prometheus.${DOMAIN_NAME}"]
         ports:
-            - "13082:22"   # SSH
-            - "13083:3000" # HTTPS
+            - "13092:22"   # SSH
+            - "13093:3000" # HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - PROMETHEUS_HOST=prometheus.${DOMAIN_NAME}
 
-    # ----- Kafka --------------------------------------------------------------
-    zookeeper-1:
-        image: confluentinc/cp-zookeeper:7.8.0
-        container_name: zookeeper-1.${DOMAIN_NAME}
-        hostname: zookeeper-1.${DOMAIN_NAME}
+    # ----- Monitoring: Prometheus ---------------------------------------------
+    prometheus:
+        image: remal-prometheus:0.4.0
+        container_name: prometheus.${DOMAIN_NAME}
+        hostname: prometheus.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
-            - "13031:2181" # zookeeper's client port
+            - "13082:22"   # SSH
+            - "13083:9090" # HTTPS
         environment:
-            - ZOOKEEPER_CLIENT_PORT=2181
-            - ZOOKEEPER_TICK_TIME=2000
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_HOST=consul.${DOMAIN_NAME}
 
+    # ----- Hazelcast ----------------------------------------------------------
+    hazelcast-1:
+        image: remal-hazelcast:0.4.0
+        container_name: hazelcast-1.${DOMAIN_NAME}
+        hostname: hazelcast-1.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
+        ports:
+            - "13072:22"   # SSH
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+
+    hazelcast-2:
+        image: remal-hazelcast:0.4.0
+        container_name: hazelcast-2.${DOMAIN_NAME}
+        hostname: hazelcast-2.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
+        ports:
+            - "13062:22"   # SSH
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+
+    # ----- Kafka --------------------------------------------------------------
     kafka-1:
         image: confluentinc/cp-kafka:7.8.0
         container_name: kafka-1.${DOMAIN_NAME}
@@ -225,23 +222,26 @@ services:
         depends_on:
             - zookeeper-1
 
-    # ----- Hazelcast ----------------------------------------------------------
-    hazelcast-1:
-        image: remal-hazelcast:0.4.0
-        container_name: hazelcast-1.${DOMAIN_NAME}
-        hostname: hazelcast-1.${DOMAIN_NAME}
-        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
+    zookeeper-1:
+        image: confluentinc/cp-zookeeper:7.8.0
+        container_name: zookeeper-1.${DOMAIN_NAME}
+        hostname: zookeeper-1.${DOMAIN_NAME}
         ports:
-            - "13072:22"   # SSH
+            - "13031:2181" # zookeeper's client port
         environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
+            - ZOOKEEPER_CLIENT_PORT=2181
+            - ZOOKEEPER_TICK_TIME=2000
 
-    hazelcast-2:
-        image: remal-hazelcast:0.4.0
-        container_name: hazelcast-2.${DOMAIN_NAME}
-        hostname: hazelcast-2.${DOMAIN_NAME}
-        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
+    # ----- Private Certificate Authority Server -------------------------------
+    pki:
+        image: remal-private-ca:0.4.0
+        container_name: pki.${DOMAIN_NAME}
+        hostname: pki.${DOMAIN_NAME}
         ports:
-            - "13062:22"   # SSH
+            - "13012:22"   # SSH
         environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
+            - EASYRSA_REQ_CN=${DOMAIN_NAME}
+            - EASYRSA_REQ_COUNTRY=${EASYRSA_REQ_COUNTRY}
+            - EASYRSA_REQ_PROVINCE=${EASYRSA_REQ_PROVINCE}
+            - EASYRSA_REQ_CITY=${EASYRSA_REQ_CITY}
+            - EASYRSA_REQ_ORG=${EASYRSA_REQ_ORG}
