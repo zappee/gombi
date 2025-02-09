@@ -68,9 +68,43 @@
             <th>Ports</th>
             <th>Commands</th>
         </tr>
-        <!-- User service 1 -->
+        <!-- Echo service -->
         <tr class="imagelist-content service-example">
-            <td><span class="imagelist-col-margin">user-service-1</span></td>
+            <td><span class="imagelist-col-margin">echo-service</span></td>
+            <td><span class="imagelist-col-margin">Remal sample echo service</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">14212</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">SSH</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">14213</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">8000</td>
+                        <td class="imagelist-port-info">JVM debug</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">14214</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">8443</td>
+                        <td class="imagelist-port-info">HTTPS</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14214/api/echo" target="_blank">https://localhost:14214/api/echo</a></span>
+                <br>
+                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14214/api/joke" target="_blank">https://localhost:14214/api/joke</a></span>
+                <br>
+                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14214/actuator" target="_blank">https://localhost:14214/actuator</a></span>
+            </td>
+        </tr>
+        <!-- User service -->
+        <tr class="imagelist-content service-example">
+            <td><span class="imagelist-col-margin">user-service</span></td>
             <td><span class="imagelist-col-margin">Remal sample user service</span></td>
             <td>
                 <table>
@@ -106,80 +140,6 @@
                 <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14114/actuator" target="_blank">https://localhost:14114/actuator</a></span>
                 <br>
                 <span class="imagelist-col-margin">JDBC: jdbc:postgresql://localhost:14115/postgres (postgres/password)</span>
-            </td>
-        </tr>
-        <!-- User service 2 -->
-        <tr class="imagelist-content service-example">
-            <td><span class="imagelist-col-margin">user-service-2</span></td>
-            <td><span class="imagelist-col-margin">Remal sample user service</span></td>
-            <td>
-                <table>
-                    <tr>
-                        <td class="imagelist-port-host">14122</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">SSH</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">14123</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">8000</td>
-                        <td class="imagelist-port-info">JVM debug</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">14124</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">8443</td>
-                        <td class="imagelist-port-info">HTTPS</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">14125</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">5432</td>
-                        <td class="imagelist-port-info">Postgres</td>
-                    </tr>
-                </table>
-            </td>
-            <td class="imagelist-command">
-                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14124/api/user/1" target="_blank">https://localhost:14124/api/user/1</a></span>
-                <br>
-                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14124/actuator" target="_blank">https://localhost:14124/actuator</a></span>
-                <br>
-                <span class="imagelist-col-margin">JDBC: jdbc:postgresql://localhost:14125/postgres (postgres/password)</span>
-            </td>
-        </tr>
-        <!-- Echo service -->
-        <tr class="imagelist-content service-example">
-            <td><span class="imagelist-col-margin">echo-service-1</span></td>
-            <td><span class="imagelist-col-margin">Remal sample echo service</span></td>
-            <td>
-                <table>
-                    <tr>
-                        <td class="imagelist-port-host">14212</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">SSH</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">14213</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">8000</td>
-                        <td class="imagelist-port-info">JVM debug</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host">14214</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">8443</td>
-                        <td class="imagelist-port-info">HTTPS</td>
-                    </tr>
-                </table>
-            </td>
-            <td class="imagelist-command">
-                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14214/api/echo" target="_blank">https://localhost:14214/api/echo</a></span>
-                <br>
-                <span class="imagelist-col-margin">Rest: <a href="https://localhost:14214/api/joke" target="_blank">https://localhost:14214/api/joke</a></span>
-                <br>
-                <span class="imagelist-col-margin">Actuator: <a href="https://localhost:14214/actuator" target="_blank">https://localhost:14214/actuator</a></span>
             </td>
         </tr>
         <!-- Grafana -->
@@ -324,10 +284,16 @@
                 <span class="imagelist-col-margin"><a href="https://localhost:13058" target="_blank">https://localhost:13058</a></span>
             </td>
         </tr>
-        <!-- ForgeRock Access Management -->
+        <!-- Hazelcast Platform -->
         <tr class="imagelist-content imagelist-infra">
-            <td><span class="imagelist-col-margin">am-7.3</span></td>
-            <td><span class="imagelist-col-margin">ForgeRock Access Management</span></td>
+            <td><span class="imagelist-col-margin">hazelcast</span></td>
+            <td>
+                <span class="imagelist-col-margin">Hazelcast Platform</span>
+                <br>
+                <span class="imagelist-col-margin">Hazelcast serves improve application speed and manage vast amounts of</span>
+                <br>
+                <span class="imagelist-col-margin">data across clusters. It excels in distributed caching.</span>
+            </td>
             <td>
                 <table>
                     <tr>
@@ -337,13 +303,35 @@
                         <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
-                        <td class="imagelist-port-host">13048</td>
+                        <td class="imagelist-port-host"></td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-info">container up signal</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"></td>
+        </tr>
+        <!-- ForgeRock Access Management -->
+        <tr class="imagelist-content imagelist-infra">
+            <td><span class="imagelist-col-margin">am-7.3</span></td>
+            <td><span class="imagelist-col-margin">ForgeRock Access Management</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">13032</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">22</td>
+                        <td class="imagelist-port-info">SSH</td>
+                    </tr>
+                    <tr>
+                        <td class="imagelist-port-host">13038</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">8080</td>
                         <td class="imagelist-port-info">HTTP</td>
                     </tr>
                     <tr>
-                        <td class="imagelist-port-host">13044</td>
+                        <td class="imagelist-port-host">13034</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">443</td>
                         <td class="imagelist-port-info">HTTPS</td>
@@ -357,9 +345,9 @@
                 </table>
             </td>
             <td class="imagelist-command">
-                <span class="imagelist-col-margin">AM: <a href="https://am.hello.com:13044/openam" target="_blank">https://am.hello.com:13044/openam</a>(amadmin/password)</span>
+                <span class="imagelist-col-margin">AM: <a href="https://am.hello.com:13034/openam" target="_blank">https://am.hello.com:13034/openam</a>(amadmin/password)</span>
                 <br>
-                <span class="imagelist-col-margin">Tomcat: <a href="https://localhost:13044" target="_blank">https://localhost:13044</a></span>
+                <span class="imagelist-col-margin">Tomcat: <a href="https://localhost:13034" target="_blank">https://localhost:13034</a></span>
             </td>
         </tr>
         <!-- ForgeRock Directory Server -->
@@ -369,7 +357,7 @@
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">13012</td>
+                        <td class="imagelist-port-host">13022</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
                         <td class="imagelist-port-info">SSH</td>
@@ -381,13 +369,13 @@
                         <td class="imagelist-port-info">LDAP</td>
                     </tr>
                     <tr>
-                        <td class="imagelist-port-host">13036</td>
+                        <td class="imagelist-port-host">13026</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">636</td>
                         <td class="imagelist-port-info">LDAPS</td>
                     </tr>
                     <tr>
-                        <td class="imagelist-port-host">13034</td>
+                        <td class="imagelist-port-host">13024</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">444</td>
                         <td class="imagelist-port-info">embedded administration connector</td>
@@ -395,7 +383,7 @@
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-docker">1321</td>
                         <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
@@ -403,7 +391,7 @@
             <td class="imagelist-command">
                 <span class="imagelist-col-margin">Apache Directory Studio configuration:</span>
                 <ul>
-                    <li>connection: localhost:13036</li>
+                    <li>connection: localhost:13026</li>
                     <li>encryption: use SSL encryption</li>
                     <li>authentication: used="uid=admin", password="password"</li>
                 </ul>
@@ -438,15 +426,21 @@
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">13022</td>
+                        <td class="imagelist-port-host">12072</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
                         <td class="imagelist-port-info">SSH</td>
                     </tr>
                     <tr>
+                        <td class="imagelist-port-host">12078</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">8080</td>
+                        <td class="imagelist-port-info">HTTP</td>
+                    </tr>
+                    <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-docker">1231</td>
                         <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
@@ -464,7 +458,7 @@
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">13022</td>
+                        <td class="imagelist-port-host">12032</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
                         <td class="imagelist-port-info">SSH</td>
@@ -472,7 +466,7 @@
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-docker">1231</td>
                         <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
@@ -486,7 +480,7 @@
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">13022</td>
+                        <td class="imagelist-port-host">12022</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
                         <td class="imagelist-port-info">SSH</td>
@@ -494,7 +488,7 @@
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-docker">1231</td>
                         <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
@@ -508,7 +502,7 @@
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">13022</td>
+                        <td class="imagelist-port-host">12012</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
                         <td class="imagelist-port-info">SSH</td>
@@ -516,7 +510,7 @@
                     <tr>
                         <td class="imagelist-port-host"></td>
                         <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
+                        <td class="imagelist-port-docker">1231</td>
                         <td class="imagelist-port-info">container up signal</td>
                     </tr>
                 </table>
@@ -527,22 +521,7 @@
         <tr class="imagelist-content imagelist-base">
             <td><span class="imagelist-col-margin">base</span></td>
             <td><span class="imagelist-col-margin">Remal Base Docker image</span></td>
-            <td>
-                <table>
-                    <tr>
-                        <td class="imagelist-port-host">13022</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">22</td>
-                        <td class="imagelist-port-info">SSH</td>
-                    </tr>
-                    <tr>
-                        <td class="imagelist-port-host"></td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">1331</td>
-                        <td class="imagelist-port-info">container up signal</td>
-                    </tr>
-                </table>
-            </td>
+            <td></td>
             <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
         </tr>
     </table>
