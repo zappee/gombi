@@ -81,4 +81,4 @@ RUN set -ue; \
 # final image
 FROM base-${BUILD_TYPE}
 COPY container-scripts/hazelcast-functions.sh /
-COPY config/hazelcast.xml config/hazelcast-client.xml "$HAZELCAST_CONFIG_TEMPLATE_DIR"/
+COPY config/hazelcast.xml "$HAZELCAST_CONFIG_TEMPLATE_DIR"/

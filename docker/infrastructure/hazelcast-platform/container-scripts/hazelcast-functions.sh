@@ -14,9 +14,8 @@
 # It produces the Platform's configuration files.
 # ------------------------------------------------------------------------------
 function setup_hazelcast() {
-  local template_hazelcast_config template_hazelcast_client_config
+  local template_hazelcast_config
   template_hazelcast_config="hazelcast.xml"
-  template_hazelcast_client_config="hazelcast-client.xml"
 
   local fqdn keystore_file keystore_password
   fqdn=$(hostname -f)
@@ -27,22 +26,14 @@ function setup_hazelcast() {
   printf "%s | [DEBUG]                      HAZELCAST_HOME: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$HAZELCAST_HOME"
   printf "%s | [DEBUG]       HAZELCAST_CONFIG_TEMPLATE_DIR: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$HAZELCAST_CONFIG_TEMPLATE_DIR"
   printf "%s | [DEBUG]           template_hazelcast_config: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$template_hazelcast_config"
-  printf "%s | [DEBUG]    template_hazelcast_client_config: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$template_hazelcast_client_config"
   printf "%s | [DEBUG]                                fqdn: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fqdn"
   printf "%s | [DEBUG]                            keystore: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_file"
   printf "%s | [DEBUG]                   keystore password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$keystore_password"
 
-  # hazelcast.xml
   cp -f "$HAZELCAST_CONFIG_TEMPLATE_DIR/$template_hazelcast_config" "$HAZELCAST_HOME/config/"
   sed -i "s|\${HAZELCAST_CLUSTER_NAME}|$HAZELCAST_CLUSTER_NAME|g" "$HAZELCAST_HOME/config/$template_hazelcast_config"
   sed -i "s|\${KEYSTORE_FILE}|$keystore_file|g" "$HAZELCAST_HOME/config/$template_hazelcast_config"
   sed -i "s|\${KEYSTORE_PASSWORD}|$keystore_password|g" "$HAZELCAST_HOME/config/$template_hazelcast_config"
-
-  # hazelcast-client.xml
-  cp -f "$HAZELCAST_CONFIG_TEMPLATE_DIR/$template_hazelcast_client_config" "$HAZELCAST_HOME/config/"
-  sed -i "s|\${HAZELCAST_CLUSTER_NAME}|$HAZELCAST_CLUSTER_NAME|g" "$HAZELCAST_HOME/config/$template_hazelcast_client_config"
-  sed -i "s|\${KEYSTORE_FILE}|$keystore_file|g" "$HAZELCAST_HOME/config/$template_hazelcast_client_config"
-  sed -i "s|\${KEYSTORE_PASSWORD}|$keystore_password|g" "$HAZELCAST_HOME/config/$template_hazelcast_client_config"
 }
 
 # ----------------------------------------------------------------------------
