@@ -10,34 +10,55 @@
 package com.remal.gombi.service.counter.controller;
 
 import com.remal.gombi.commons.monitoring.MethodStatistics;
+import com.remal.gombi.service.counter.configuration.HazelcastDataConfiguration;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 @Slf4j
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/counter")
 public class CounterController {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
 
-    @GetMapping("show")
+    private final HazelcastDataConfiguration hazelcastData;
+
+    @GetMapping("/show/{username}")
     @MethodStatistics
-    public String showCurrentState() {
+    public String showCurrentState(@PathVariable("username") String username) {
         var now = LocalDateTime.now().format(DATE_TIME_FORMATTER);
-        var response = "xxxxx";
-        return now + "<br>" + response;
+        var counters = hazelcastData.counterMap();
+        var counter = counters.get(username);
+        var response = String.format("Value of the counter for user <b>%s</b> is <b>%s</b>.", username, counter);
+
+        return String.format("%s<br>%s", now, response);
     }
 
-    @GetMapping("update")
+    @GetMapping("/update/{username}")
     @MethodStatistics
-    public String updateCurrentState() {
+    public String updateCurrentState(@PathVariable("username") String username) {
         var now = LocalDateTime.now().format(DATE_TIME_FORMATTER);
-        var response = "yyyy";
-        return now + "<br>" + response;
+        var counters = hazelcastData.counterMap();
+        var counter = counters.get(username);
+
+        if (Objects.isNull(counter)) {
+            counter= 1;
+        } else {
+            counter++;
+        }
+
+        var response = String.format("Updating the counter for user <b>%s</b> to <b>%s</b>.", username, counter);
+        counters.put(username, counter);
+
+        return String.format("%s<br>%s", now, response);
     }
 }
