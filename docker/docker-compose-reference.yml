@@ -62,6 +62,7 @@ services:
         entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
         ports:
             - "13042:22"   # SSH
+            - "13043:5701"  # Hazelcast client port
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
 
