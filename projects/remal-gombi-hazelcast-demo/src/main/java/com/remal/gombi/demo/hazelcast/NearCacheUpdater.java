@@ -30,18 +30,19 @@ import java.util.TimerTask;
 public class NearCacheUpdater {
 
     public static void main(String[] args) {
-        HazelcastInstance hazelcastClient = HazelcastConfiguration.getHazelcastInstance();
         String username = "zappee";
+        String key = MapKeyGenerator.getKey(username);
 
+        HazelcastInstance hazelcastClient = HazelcastConfiguration.getHazelcastInstance();
         IMap<String, Integer> nearCache = hazelcastClient.getMap(HazelcastConfiguration.COUNTER_MAP);
-        nearCache.put(MapKeyGenerator.getKey(username), 1);
+        nearCache.put(key, 1);
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                int value = nearCache.get(MapKeyGenerator.getKey(username));
+                int value = nearCache.get(key);
                 value++;
-                nearCache.put(MapKeyGenerator.getKey(username), value);
+                nearCache.put(key, value);
 
                 System.out.printf(
                         "[%s] value in the cache has been updated: {username: \"%s\", new-value: %s}\n",

@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 public class LocalTimeConverter {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("mm:ss");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public static String nowAsString() {
         return FORMATTER.format(LocalTime.now());

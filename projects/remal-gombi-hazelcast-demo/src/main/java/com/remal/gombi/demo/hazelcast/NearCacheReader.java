@@ -31,24 +31,26 @@ import java.util.TimerTask;
 public class NearCacheReader {
 
      public static void main(String[] args) {
+         String username = "zappee";
+         String key = MapKeyGenerator.getKey(username);
+
         HazelcastInstance hazelcastClient = HazelcastConfiguration.getHazelcastInstance();
-        IMap<String, Integer> nearCache = hazelcastClient.getMap(HazelcastConfiguration.COUNTER_MAP);
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                String username = "zappee";
+                // nearCache will never be null
+                IMap<String, Integer> nearCache = hazelcastClient.getMap(HazelcastConfiguration.COUNTER_MAP);
 
-                Integer value = nearCache.get(MapKeyGenerator.getKey(username));
-
+                Integer value = nearCache.get(key);
                 if (Objects.isNull(value)) {
                     System.out.printf(
-                            "[%s] near-cache miss: {username: \"%s\"}%n",
+                            "[%s] near-cache entry miss: {username: \"%s\"}%n",
                             LocalTimeConverter.nowAsString(),
                             username);
                 } else {
                     System.out.printf(
-                            "[%s] near-cache hit: {username: \"%s\", value: %s}%n",
+                            "[%s] near-cache entry hit: {username: \"%s\", value: %s}%n",
                             LocalTimeConverter.nowAsString(),
                             username,
                             value);

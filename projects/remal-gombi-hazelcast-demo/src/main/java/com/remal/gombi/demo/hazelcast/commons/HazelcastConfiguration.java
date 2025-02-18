@@ -28,6 +28,7 @@ public class HazelcastConfiguration {
     /**
      * Hazelcast client configuration.
      *
+     * <PRE>
      * Near-Cache-ID refers to the configuration of the Near-Cache that
      * exists on the client side. The Near-Cache-ID is used to configure
      * a Near Cache that is associated with a specific distributed map.
@@ -38,6 +39,7 @@ public class HazelcastConfiguration {
      * cluster. The Map-ID is used to identify a distributed map within the
      * Hazelcast cluster. It is the key you use to access the distributed
      * data structure.
+     * </PRE>
      *
      * @return Hazelcast client instance
      */
