@@ -25,6 +25,22 @@ public class HazelcastConfiguration {
     private static final String HZ_CLUSTER_ADDRESS_1 = "localhost:13063";
     private static final String HZ_CLUSTER_ADDRESS_2 = "localhost:13073";
 
+    /**
+     * Hazelcast client configuration.
+     *
+     * Near-Cache-ID refers to the configuration of the Near-Cache that
+     * exists on the client side. The Near-Cache-ID is used to configure
+     * a Near Cache that is associated with a specific distributed map.
+     * It is the key you use to identify the Near Cache configuration on
+     * the client side.
+     *
+     * Map-ID refers to the distributed map that exists in the Hazelcast
+     * cluster. The Map-ID is used to identify a distributed map within the
+     * Hazelcast cluster. It is the key you use to access the distributed
+     * data structure.
+     *
+     * @return Hazelcast client instance
+     */
     public static HazelcastInstance getHazelcastInstance() {
         NearCacheConfig nearCacheConfigForCounterMap = new NearCacheConfig(COUNTER_MAP)
                 .setInMemoryFormat(InMemoryFormat.BINARY) // or InMemoryFormat.OBJECT

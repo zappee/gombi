@@ -6,6 +6,15 @@
  *
  *  Description:
  *     Hazelcast Java demo: Near cache writer Java application.
+ *
+ *     The Near Cache ID refers to the identifier of a Near Cache configuration. When
+ *     you create a NearCacheConfig using new NearCacheConfig(id), you are defining a
+ *     caching layer that sits on the client side, allowing for faster access to frequently
+ *     used data.
+ *     The Near Cache ID is used to configure and manage the Near Cache associated with a
+ *     specific distributed map. The Near Cache stores a local copy of the data for quick
+ *     access, reducing the need to fetch data from the distributed map for frequently
+ *     accessed entries.
  */
 package com.remal.gombi.demo.hazelcast;
 
