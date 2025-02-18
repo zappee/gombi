@@ -45,12 +45,12 @@ public class HazelcastConfiguration {
      */
     public static HazelcastInstance getHazelcastInstance() {
         NearCacheConfig nearCacheConfigForCounterMap = new NearCacheConfig(COUNTER_MAP)
-                .setInMemoryFormat(InMemoryFormat.BINARY) // or InMemoryFormat.OBJECT
+                .setInMemoryFormat(InMemoryFormat.BINARY)
+                .setTimeToLiveSeconds(30)
+                .setMaxIdleSeconds(10)
                 .setEvictionConfig(new EvictionConfig()
                         .setEvictionPolicy(EvictionPolicy.LRU)
-                        .setSize(1000))
-                .setTimeToLiveSeconds(30)
-                .setMaxIdleSeconds(10);
+                        .setSize(1000));
 
         ClientConfig clientConfig = new ClientConfig();
         clientConfig.setClusterName(HZ_CLUSTER_NAME);
