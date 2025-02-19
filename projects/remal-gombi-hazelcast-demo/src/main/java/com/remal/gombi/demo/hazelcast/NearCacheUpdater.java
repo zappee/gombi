@@ -52,7 +52,7 @@ public class NearCacheUpdater {
             }
         };
 
-        // Schedule the timer task to run after 1 second
+        // schedule the timer task to run after 1 second
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(task, 0, 1000);
     }

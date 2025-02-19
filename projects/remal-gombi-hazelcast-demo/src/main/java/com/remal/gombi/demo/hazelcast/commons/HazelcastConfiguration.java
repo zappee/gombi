@@ -20,7 +20,7 @@ import com.hazelcast.core.HazelcastInstance;
 public class HazelcastConfiguration {
 
     public static final String NEAR_CACHE_CONFIG_NAME = "counter";
-    public static final String COUNTER_MAP_ID = "counterId";
+    public static final String COUNTER_MAP_ID = "counter";
 
     private static final String HZ_CLUSTER_NAME = "gombi-dev";
     private static final String HZ_CLUSTER_ADDRESS_1 = "localhost:13063";

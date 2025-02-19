@@ -335,6 +335,23 @@
 
     </map>
 
+    <!--
+        Custom map configuration.
+    -->
+    <map name="counter">
+        <in-memory-format>BINARY</in-memory-format>
+        <metadata-policy>CREATE_ON_UPDATE</metadata-policy>
+        <backup-count>1</backup-count>
+        <async-backup-count>0</async-backup-count>
+        <time-to-live-seconds>30</time-to-live-seconds>
+        <max-idle-seconds>10</max-idle-seconds>
+        <eviction eviction-policy="NONE" max-size-policy="PER_NODE" size="0"/>
+        <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
+        <cache-deserialized-values>INDEX-ONLY</cache-deserialized-values>
+        <statistics-enabled>true</statistics-enabled>
+        <per-entry-stats-enabled>false</per-entry-stats-enabled>
+    </map>
+
     <multimap name="default">
         <backup-count>1</backup-count>
         <value-collection-type>SET</value-collection-type>
