@@ -40,7 +40,7 @@ public class NearCacheReader {
             @Override
             public void run() {
                 // nearCache will never be null
-                IMap<String, Integer> nearCache = hazelcastClient.getMap(HazelcastConfiguration.COUNTER_MAP);
+                IMap<String, Integer> nearCache = hazelcastClient.getMap(HazelcastConfiguration.COUNTER_MAP_ID);
 
                 Integer value = nearCache.get(key);
                 if (Objects.isNull(value)) {
@@ -60,6 +60,6 @@ public class NearCacheReader {
 
         // Schedule the timer task to run after 1 second
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(task, 0,1000);
+        timer.scheduleAtFixedRate(task, 0, 1000);
     }
 }

@@ -19,7 +19,8 @@ import com.hazelcast.core.HazelcastInstance;
 
 public class HazelcastConfiguration {
 
-    public static final String COUNTER_MAP = "counter-map";
+    public static final String NEAR_CACHE_CONFIG_NAME = "counter";
+    public static final String COUNTER_MAP_ID = "counterId";
 
     private static final String HZ_CLUSTER_NAME = "gombi-dev";
     private static final String HZ_CLUSTER_ADDRESS_1 = "localhost:13063";
@@ -44,7 +45,7 @@ public class HazelcastConfiguration {
      * @return Hazelcast client instance
      */
     public static HazelcastInstance getHazelcastInstance() {
-        NearCacheConfig nearCacheConfigForCounterMap = new NearCacheConfig(COUNTER_MAP)
+        NearCacheConfig nearCacheConfigForCounterMap = new NearCacheConfig(NEAR_CACHE_CONFIG_NAME)
                 .setInMemoryFormat(InMemoryFormat.BINARY)
                 .setTimeToLiveSeconds(30)
                 .setMaxIdleSeconds(10)

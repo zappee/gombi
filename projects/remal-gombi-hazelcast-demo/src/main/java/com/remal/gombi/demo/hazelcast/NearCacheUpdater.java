@@ -34,7 +34,7 @@ public class NearCacheUpdater {
         String key = MapKeyGenerator.getKey(username);
 
         HazelcastInstance hazelcastClient = HazelcastConfiguration.getHazelcastInstance();
-        IMap<String, Integer> nearCache = hazelcastClient.getMap(HazelcastConfiguration.COUNTER_MAP);
+        IMap<String, Integer> nearCache = hazelcastClient.getMap(HazelcastConfiguration.COUNTER_MAP_ID);
         nearCache.put(key, 1);
 
         TimerTask task = new TimerTask() {
@@ -54,6 +54,6 @@ public class NearCacheUpdater {
 
         // Schedule the timer task to run after 1 second
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(task, 0,1000);
+        timer.scheduleAtFixedRate(task, 0, 1000);
     }
 }
