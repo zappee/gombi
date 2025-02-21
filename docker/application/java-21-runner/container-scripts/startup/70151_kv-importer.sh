@@ -68,7 +68,7 @@ extract_file() {
     # Ignore a specific exit code that appears if there file to extract not found in the ZIP.
     #
     # Exit codes (see the full list here: https://linux.die.net/man/1/unzip):
-    #     9: the specified zipfiles were not found
+    #     9: the specified zip files were not found
     #    11: no matching files were found
     unzip -j "$archive_file" "$fie_to_extract" -d "$target_dir" || (exit "$(($? == 11 ? 0 : $?))")
   fi
@@ -165,7 +165,7 @@ insert_kv() {
         printf "%s | [DEBUG]  inserting \"%s\"=\"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$key" "$value"
 
         local base64_value
-        base64_value=$(printf "%b%s" "$value" | base64)
+        base64_value=$(printf "%s" "$value" | base64)
         printf "%s | [DEBUG]  base64 encoded value: \"%s\"=\"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$value" "$base64_value"
 
         consul kv put -base64 "$key" "$base64_value" 1>/dev/null

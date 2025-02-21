@@ -18,7 +18,7 @@
 <!--
   The default Hazelcast ZIP/TGZ configuration.
 
-  This file differs from hazelcast-default.xml in some settings
+  This file differs from hazelcast-default.xml in some settings,
   and it is used by the scripts in the ZIP/TGZ distribution.
 
   This configuration, compared to hazelcast-default.xml, enables more features.
@@ -52,13 +52,13 @@
     <network>
         <!--
             The preferred port number where the Hazelcast instance will listen. The convention is
-            to use 5701 and it is the default both here and in various tools connecting to
+            to use 5701, and it is the default both here and in various tools connecting to
             Hazelcast. This configuration has the following attributes:
             - port-count:
                 The default value is 100, meaning that Hazelcast will try to bind 100 ports.
                 If you set the value of port as 5701, as members join the cluster, Hazelcast tries
                 to find ports between 5701 and 5801. You can change the port count in cases like
-                having large instances on a single machine or you are willing to have only a few
+                having large instances on a single machine, or you are willing to have only a few
                 ports assigned.
             - auto-increment:
                 Default value is true. If port is set to 5701, Hazelcast will try to find free
@@ -153,7 +153,7 @@
                 -->
                 <self-registration>true</self-registration>
                 <!--
-                    Defines an eureka namespace to not collide with other service registry clients
+                    Defines a eureka namespace to not collide with other service registry clients
                     in eureka-client.properties file. It is optional. Default value is hazelcast.
                 -->
                 <namespace>hazelcast</namespace>
@@ -163,7 +163,7 @@
         </join>
         <!--
             Lets you configure SSL using the SSL context factory. This feature is available
-            only in Hazelcast Enterprise. To be able to use it, encryption should NOT be enabled
+            only in Hazelcast Enterprise. To be able to use it, encryption should NOT be enabled,
             and you should first implement your SSLContextFactory class. Its configuration contains
             the factory class and SSL properties. By default, it is disabled.
 
@@ -284,9 +284,9 @@
         -->
         <time-to-live-seconds>0</time-to-live-seconds>
         <!--
-            Maximum number of seconds for each entry to stay idle in the map. Entries that are
-            idle(not touched) for more than <max-idle-seconds> will get
-            automatically evicted from the map. Entry is touched if get, put or containsKey is called.
+            Maximum number of seconds for each entry to stay idle in the map. Entries that
+            are idle (not touched) for more than <max-idle-seconds> will get automatically
+            evicted from the map. Entry is touched if get, put or containsKey is called.
             Any integer between 0 and Integer.MAX_VALUE. 0 means infinite. Default is 0.
         -->
         <max-idle-seconds>0</max-idle-seconds>
@@ -338,18 +338,56 @@
     <!--
         Custom map configuration.
     -->
-    <map name="counter">
-        <in-memory-format>BINARY</in-memory-format>
-        <metadata-policy>CREATE_ON_UPDATE</metadata-policy>
-        <backup-count>1</backup-count>
-        <async-backup-count>0</async-backup-count>
+    <map name="30-seconds-store">
         <time-to-live-seconds>30</time-to-live-seconds>
-        <max-idle-seconds>10</max-idle-seconds>
-        <eviction eviction-policy="NONE" max-size-policy="PER_NODE" size="0"/>
-        <merge-policy batch-size="100">com.hazelcast.spi.merge.PutIfAbsentMergePolicy</merge-policy>
-        <cache-deserialized-values>INDEX-ONLY</cache-deserialized-values>
-        <statistics-enabled>true</statistics-enabled>
-        <per-entry-stats-enabled>false</per-entry-stats-enabled>
+    </map>
+
+    <map name="1-minute-store">
+        <time-to-live-seconds>60</time-to-live-seconds>
+    </map>
+
+    <map name="90-seconds-store">
+        <time-to-live-seconds>90</time-to-live-seconds>
+    </map>
+
+    <map name="3-minutes-store">
+        <time-to-live-seconds>180</time-to-live-seconds>
+    </map>
+
+    <map name="5-minutes-store">
+        <time-to-live-seconds>300</time-to-live-seconds>
+    </map>
+
+    <map name="10-minutes-store">
+        <time-to-live-seconds>600</time-to-live-seconds>
+    </map>
+
+    <map name="15-minutes-store">
+        <time-to-live-seconds>900</time-to-live-seconds>
+    </map>
+
+    <map name="30-minutes-store">
+        <time-to-live-seconds>1800</time-to-live-seconds>
+    </map>
+
+    <map name="1-hour-store">
+        <time-to-live-seconds>3600</time-to-live-seconds>
+    </map>
+
+    <map name="2-hours-store">
+        <time-to-live-seconds>7200</time-to-live-seconds>
+    </map>
+
+    <map name="5-hours-store">
+        <time-to-live-seconds>18000</time-to-live-seconds>
+    </map>
+
+    <map name="12-hours-store">
+        <time-to-live-seconds>43200</time-to-live-seconds>
+    </map>
+
+    <map name="24-hours-store">
+        <time-to-live-seconds>86400</time-to-live-seconds>
     </map>
 
     <multimap name="default">
@@ -500,12 +538,12 @@
              cluster. The default is 10 seconds. Has no effect on jobs with auto scaling disabled -->
         <scale-up-delay-millis>10000</scale-up-delay-millis>
         <!-- Sets whether Lossless Job Restart is enabled for the node. With
-             Lossless Restart, Jet persists job snapshots to disk automatically
+             Lossless Restart, Jet persists job snapshots to disk automatically,
              and you can restart the whole cluster without losing the jobs and
              their state.
 
              This feature requires Hazelcast Enterprise and is implemented on top of the
-             Hot Restart feature. Therefore you should configure Hot Restart, especially
+             Hot Restart feature. Therefore, you should configure Hot Restart, especially
              the base directory where to store the recovery files.
          -->
         <lossless-restart-enabled>false</lossless-restart-enabled>

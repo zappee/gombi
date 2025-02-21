@@ -20,13 +20,13 @@ import java.util.Map;
 
 @Configuration
 @AllArgsConstructor
-public class HazelcastDataConfiguration {
+public class HazelcastMapsConfiguration {
 
     private final HazelcastInstance hazelcastClient;
     
     @Bean
     public Map<String, Integer> counterMap() {
-        IMap<String, Integer> counters = hazelcastClient.getMap(HazelcastGlobalConfiguration.COUNTER);
+        IMap<String, Integer> counters = hazelcastClient.getMap(HazelcastGlobalConfiguration.COUNTER_MAP_ID);
         counters.addEntryListener(new HazelcastCounterMapListener(), true);
         return counters;
     }

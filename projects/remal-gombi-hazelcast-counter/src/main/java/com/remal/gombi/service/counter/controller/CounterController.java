@@ -10,7 +10,7 @@
 package com.remal.gombi.service.counter.controller;
 
 import com.remal.gombi.commons.monitoring.MethodStatistics;
-import com.remal.gombi.service.counter.configuration.HazelcastDataConfiguration;
+import com.remal.gombi.service.counter.configuration.HazelcastMapsConfiguration;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,13 +30,13 @@ public class CounterController {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyy-MM-dd HH:mm:ss");
 
-    private final HazelcastDataConfiguration hazelcastData;
+    private final HazelcastMapsConfiguration hazelcastMaps;
 
     @GetMapping("/show/{username}")
     @MethodStatistics
     public String showCurrentState(@PathVariable("username") String username) {
         var now = LocalDateTime.now().format(DATE_TIME_FORMATTER);
-        var counters = hazelcastData.counterMap();
+        var counters = hazelcastMaps.counterMap();
         var counter = counters.get(username);
         var response = String.format("Value of the counter for user <b>%s</b> is <b>%s</b>.", username, counter);
 
@@ -47,7 +47,7 @@ public class CounterController {
     @MethodStatistics
     public String updateCurrentState(@PathVariable("username") String username) {
         var now = LocalDateTime.now().format(DATE_TIME_FORMATTER);
-        var counters = hazelcastData.counterMap();
+        var counters = hazelcastMaps.counterMap();
         var counter = counters.get(username);
 
         if (Objects.isNull(counter)) {

@@ -1,6 +1,6 @@
 #!/bin/bash -ue
 # ******************************************************************************
-# Generate a server cert using Remal's Private PKI infrastructure.
+# Generate a server cert using the Private PKI infrastructure.
 #
 # Since:  November 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>

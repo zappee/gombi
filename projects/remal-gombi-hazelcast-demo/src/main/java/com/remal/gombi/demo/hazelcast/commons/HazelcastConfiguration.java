@@ -19,8 +19,9 @@ import com.hazelcast.core.HazelcastInstance;
 
 public class HazelcastConfiguration {
 
-    public static final String NEAR_CACHE_CONFIG_NAME = "counter";
-    public static final String COUNTER_MAP_ID = "counter";
+    public static final String NEAR_CACHE_CONFIG_NAME = "30-seconds-store";
+    public static final String COUNTER_MAP_ID = "30-seconds-store";
+    public static final int TTL_OF_NEAR_CACHE = 30;
 
     private static final String HZ_CLUSTER_NAME = "gombi-dev";
     private static final String HZ_CLUSTER_ADDRESS_1 = "localhost:13063";
@@ -47,8 +48,13 @@ public class HazelcastConfiguration {
     public static HazelcastInstance getHazelcastInstance() {
         NearCacheConfig nearCacheConfigForCounterMap = new NearCacheConfig(NEAR_CACHE_CONFIG_NAME)
                 .setInMemoryFormat(InMemoryFormat.BINARY)
-                .setTimeToLiveSeconds(30)
-                .setMaxIdleSeconds(10)
+                .setTimeToLiveSeconds(TTL_OF_NEAR_CACHE)
+                .setMaxIdleSeconds(0)
+
+                // Expiration means the eviction of expired records.
+                // A record is expired:
+                //    - if it is not touched (accessed/read) for max-idle-seconds
+                //    - time-to-live-seconds passed since it is put to Near Cache
                 .setEvictionConfig(new EvictionConfig()
                         .setEvictionPolicy(EvictionPolicy.LRU)
                         .setSize(1000));

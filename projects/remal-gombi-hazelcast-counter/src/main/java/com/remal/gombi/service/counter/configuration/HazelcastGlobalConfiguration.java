@@ -30,7 +30,7 @@ import java.util.Arrays;
 @Slf4j
 public class HazelcastGlobalConfiguration {
 
-    public static final String COUNTER = "counter";
+    public static final String COUNTER_MAP_ID = "5-minutes-store";
 
     // environment variables
 
@@ -43,7 +43,7 @@ public class HazelcastGlobalConfiguration {
     @Bean
     public HazelcastInstance hazelcastClient() {
         HazelcastInstance client = HazelcastClient.newHazelcastClient(clientConfig());
-        client.getMap(COUNTER).addEntryListener(COUNTER_ENTRY_ADAPTER, true);
+        client.getMap(COUNTER_MAP_ID).addEntryListener(COUNTER_ENTRY_ADAPTER, true);
         return client;
     }
 
@@ -55,7 +55,7 @@ public class HazelcastGlobalConfiguration {
         Arrays.stream(clusterMembers).forEach(memberName ->
                 clientConfig.getNetworkConfig().getAddresses().add(memberName.trim()));
 
-        clientConfig.addNearCacheConfig(shortLivedNearCacheConfig(COUNTER));
+        clientConfig.addNearCacheConfig(shortLivedNearCacheConfig(COUNTER_MAP_ID));
         return clientConfig;
     }
 
@@ -120,10 +120,9 @@ public class HazelcastGlobalConfiguration {
 
         @Override
         public void entryExpired(EntryEvent<String, Integer> event) {
-            log.debug("hazelcast cluster event > entry expired: {map-id: \"{}\", key: \"{}\", value: {}}",
+            log.debug("hazelcast cluster event > entry expired: {map-id: \"{}\", key: \"{}\"}",
                     event.getName(),
-                    event.getKey(),
-                    event.getValue());
+                    event.getKey());
         }
 
         @Override

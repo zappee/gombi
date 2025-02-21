@@ -118,11 +118,10 @@ public class NearCacheReader {
 
         @Override
         public void entryExpired(EntryEvent<String, Integer> event) {
-            System.out.printf("[%s] cluster event | entry expired: {map-id: \"%s\", key: \"%s\", value: %s}\n",
+            System.out.printf("[%s] cluster event | entry expired: {map-id: \"%s\", key: \"%s\"}\n",
                     LocalTimeConverter.nowAsString(),
                     event.getName(),
-                    event.getKey(),
-                    event.getValue());
+                    event.getKey());
         }
 
         @Override
