@@ -15,7 +15,10 @@ import com.hazelcast.config.EvictionConfig;
 import com.hazelcast.config.EvictionPolicy;
 import com.hazelcast.config.InMemoryFormat;
 import com.hazelcast.config.NearCacheConfig;
+import com.hazelcast.core.EntryAdapter;
+import com.hazelcast.core.EntryEvent;
 import com.hazelcast.core.HazelcastInstance;
+import com.hazelcast.map.MapEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +30,7 @@ import java.util.Arrays;
 @Slf4j
 public class HazelcastGlobalConfiguration {
 
-    public static final String COUNTER = "COUNTER";
+    public static final String COUNTER = "counter";
 
     // environment variables
 
@@ -39,7 +42,9 @@ public class HazelcastGlobalConfiguration {
 
     @Bean
     public HazelcastInstance hazelcastClient() {
-        return HazelcastClient.newHazelcastClient(clientConfig());
+        HazelcastInstance client = HazelcastClient.newHazelcastClient(clientConfig());
+        client.getMap(COUNTER).addEntryListener(COUNTER_ENTRY_ADAPTER, true);
+        return client;
     }
 
     private ClientConfig clientConfig() {
@@ -84,7 +89,59 @@ public class HazelcastGlobalConfiguration {
                 // if it is not written to or read from at least every 60 seconds.
                 //
                 // Default value: 0 (disabled)
-                .setMaxIdleSeconds(15);
-
+                .setMaxIdleSeconds(10);
     }
+
+    private static final EntryAdapter<String, Integer> COUNTER_ENTRY_ADAPTER = new EntryAdapter<>() {
+        @Override
+        public void entryAdded(EntryEvent<String, Integer> event) {
+            log.debug("hazelcast cluster event >| a new entry added {map-id: \"{}\", key: \"{}\", value: {}}",
+                    event.getName(),
+                    event.getKey(),
+                    event.getValue());
+        }
+
+        @Override
+        public void entryUpdated(EntryEvent<String, Integer> event) {
+            log.debug("hazelcast cluster event > entry updated {map-id: \"{}\", key: \"{}\", old-value: {}, new-value: {}}",
+                    event.getName(),
+                    event.getKey(),
+                    event.getOldValue(),
+                    event.getValue());
+        }
+
+        @Override
+        public void entryRemoved(EntryEvent<String, Integer> event) {
+            log.debug("hazelcast cluster event > entry removed: {map-id: \"{}\", key: \"{}\", value: {}}",
+                    event.getName(),
+                    event.getKey(),
+                    event.getValue());
+        }
+
+        @Override
+        public void entryExpired(EntryEvent<String, Integer> event) {
+            log.debug("hazelcast cluster event > entry expired: {map-id: \"{}\", key: \"{}\", value: {}}",
+                    event.getName(),
+                    event.getKey(),
+                    event.getValue());
+        }
+
+        @Override
+        public void entryEvicted(EntryEvent<String, Integer> event) {
+            log.debug("hazelcast cluster event > entry evicted: {map-id: \"{}\", key: \"{}\", value: {}}",
+                    event.getName(),
+                    event.getKey(),
+                    event.getValue());
+        }
+
+        @Override
+        public void mapCleared(MapEvent event) {
+            log.debug("hazelcast cluster event > map cleared: {map-id: \"{}\"}", event.getName());
+        }
+
+        @Override
+        public void mapEvicted(MapEvent event) {
+            log.debug("hazelcast cluster event > map evicted: {map-name: \"{}\"}", event.getName());
+        }
+    };
 }
