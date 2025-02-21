@@ -19,6 +19,8 @@ import com.hazelcast.core.EntryAdapter;
 import com.hazelcast.core.EntryEvent;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.map.MapEvent;
+import com.remal.gombi.service.counter.service.MicrometerMeterService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -28,9 +30,12 @@ import java.util.Arrays;
 
 @Configuration
 @Slf4j
+@RequiredArgsConstructor
 public class HazelcastGlobalConfiguration {
 
     public static final String COUNTER_MAP_ID = "5-minutes-store";
+
+    private final MicrometerMeterService meterService;
 
     // environment variables
 
@@ -92,13 +97,14 @@ public class HazelcastGlobalConfiguration {
                 .setMaxIdleSeconds(10);
     }
 
-    private static final EntryAdapter<String, Integer> COUNTER_ENTRY_ADAPTER = new EntryAdapter<>() {
+    private final EntryAdapter<String, Integer> COUNTER_ENTRY_ADAPTER = new EntryAdapter<>() {
         @Override
         public void entryAdded(EntryEvent<String, Integer> event) {
             log.debug("hazelcast cluster event >| a new entry added {map-id: \"{}\", key: \"{}\", value: {}}",
                     event.getName(),
                     event.getKey(),
                     event.getValue());
+            meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
         }
 
         @Override
@@ -108,6 +114,7 @@ public class HazelcastGlobalConfiguration {
                     event.getKey(),
                     event.getOldValue(),
                     event.getValue());
+            meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
         }
 
         @Override
@@ -116,6 +123,7 @@ public class HazelcastGlobalConfiguration {
                     event.getName(),
                     event.getKey(),
                     event.getValue());
+            meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
         }
 
         @Override
@@ -123,6 +131,7 @@ public class HazelcastGlobalConfiguration {
             log.debug("hazelcast cluster event > entry expired: {map-id: \"{}\", key: \"{}\"}",
                     event.getName(),
                     event.getKey());
+            meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
         }
 
         @Override
@@ -131,16 +140,19 @@ public class HazelcastGlobalConfiguration {
                     event.getName(),
                     event.getKey(),
                     event.getValue());
+            meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
         }
 
         @Override
         public void mapCleared(MapEvent event) {
             log.debug("hazelcast cluster event > map cleared: {map-id: \"{}\"}", event.getName());
+            meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
         }
 
         @Override
         public void mapEvicted(MapEvent event) {
             log.debug("hazelcast cluster event > map evicted: {map-name: \"{}\"}", event.getName());
+            meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
         }
     };
 }

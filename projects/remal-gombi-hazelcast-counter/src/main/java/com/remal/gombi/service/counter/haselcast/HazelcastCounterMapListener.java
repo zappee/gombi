@@ -18,9 +18,12 @@ import com.hazelcast.map.listener.EntryRemovedListener;
 import com.hazelcast.map.listener.EntryUpdatedListener;
 import com.hazelcast.map.listener.MapClearedListener;
 import com.hazelcast.map.listener.MapEvictedListener;
+import com.remal.gombi.service.counter.service.MicrometerMeterService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 public class HazelcastCounterMapListener implements
         EntryAddedListener<String, Integer>,
         EntryRemovedListener<String, Integer>,
@@ -30,6 +33,8 @@ public class HazelcastCounterMapListener implements
         MapEvictedListener,
         MapClearedListener {
 
+    private final MicrometerMeterService meterService;
+
     @Override
     public void entryAdded(EntryEvent<String, Integer> event) {
         log.debug(
@@ -37,6 +42,7 @@ public class HazelcastCounterMapListener implements
                 event.getName(),
                 event.getKey(),
                 event.getValue());
+        meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
     }
 
     @Override
@@ -46,6 +52,7 @@ public class HazelcastCounterMapListener implements
                 event.getName(),
                 event.getKey(),
                 event.getValue());
+        meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
     }
 
     @Override
@@ -55,6 +62,7 @@ public class HazelcastCounterMapListener implements
                 event.getName(),
                 event.getKey(),
                 event.getValue());
+        meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
     }
 
     @Override
@@ -64,6 +72,7 @@ public class HazelcastCounterMapListener implements
                 event.getName(),
                 event.getKey(),
                 event.getValue());
+        meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
     }
 
     @Override
@@ -73,6 +82,7 @@ public class HazelcastCounterMapListener implements
                 event.getName(),
                 event.getKey(),
                 event.getValue());
+        meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
     }
 
     @Override
@@ -81,6 +91,7 @@ public class HazelcastCounterMapListener implements
                 "map evicted: {map-alias-name: \"{}\", affected-entries: {}}",
                 event.getName(),
                 event.getNumberOfEntriesAffected());
+        meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
     }
 
     @Override
@@ -89,5 +100,6 @@ public class HazelcastCounterMapListener implements
                 "map cleared: {map-alias-name: \"{}\", affected-entries: {}}",
                 event.getName(),
                 event.getNumberOfEntriesAffected());
+        meterService.registerMapCacheEvent(event.getName(),event.getEventType().name());
     }
 }
