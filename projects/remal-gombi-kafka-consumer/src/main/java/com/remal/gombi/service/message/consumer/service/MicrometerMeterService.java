@@ -28,7 +28,7 @@ public class MicrometerMeterService {
 
     private final CompositeMeterRegistry meterRegistry;
 
-    public void registerReceivedEvent() {
+    public void registerIncomingEvent() {
         getCounter("received", "Total number of received messages from kafka topic.").increment();
     }
 

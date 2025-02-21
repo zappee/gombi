@@ -1,7 +1,7 @@
 services:
     # ----- Private Certificate Authority Server -------------------------------
     pki:
-        image: remal-private-ca:0.3.0
+        image: remal-private-ca:0.4.0
         container_name: pki.${DOMAIN_NAME}
         hostname: pki.${DOMAIN_NAME}
         ports:
@@ -15,15 +15,14 @@ services:
 
     # ----- LDAP Directory Server ----------------------------------------------
     ds:
-        image: remal-ds-7.3:0.3.0
+        image: remal-ds-7.3:0.4.0
         container_name: ds.${DOMAIN_NAME}
         hostname: ds.${DOMAIN_NAME}
-        depends_on:
-            - pki
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
         ports:
-            - "13032:22"   # SSH
-            - "13034:4444" # admin connector port
-            - "13036:636"  # LDAP over SSL
+            - "13022:22"   # SSH
+            - "13024:4444" # admin connector port
+            - "13026:636"  # LDAP over SSL
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - NEW_DS_DEPLOYMENT_KEY=false
@@ -38,15 +37,14 @@ services:
 
     # ----- Access Management Server -------------------------------------------
     forgerock-am:
-        image: remal-am-7.3:0.3.0
+        image: remal-am-7.3:0.4.0
         container_name: am.${DOMAIN_NAME}
         hostname: am.${DOMAIN_NAME}
-        depends_on:
-            - pki
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
         ports:
-            - "13042:22"   # SSH
-            - "13048:8080" # HTTP
-            - "13044:443"  # HTTPS
+            - "13032:22"   # SSH
+            - "13038:8080" # HTTP
+            - "13034:443"  # HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - AM_CONFIG_STORE_HOST=ds.${DOMAIN_NAME}
@@ -56,9 +54,22 @@ services:
         volumes:
             - $HOME/dev/workspace/java/remal/gombi/backups/containers:/opt/openam/backup
 
+    # ----- Hazelcast ----------------------------------------------------------
+    hazelcast:
+        image: remal-hazelcast:0.4.0
+        container_name: hazelcast.${DOMAIN_NAME}
+        hostname: hazelcast.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
+        ports:
+            - "13042:22"   # SSH
+            - "13043:5701"  # Hazelcast client port
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - HAZELCAST_CLUSTER_NAME=gombi-dev
+
     # ----- Hashicorp Vault ----------------------------------------------------
     vault:
-        image: remal-vault:0.3.0
+        image: remal-vault:0.4.0
         container_name: vault.${DOMAIN_NAME}
         hostname: vault.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
@@ -70,7 +81,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul:0.3.0
+        image: remal-consul:0.4.0
         container_name: consul.${DOMAIN_NAME}
         hostname: consul.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
@@ -82,7 +93,7 @@ services:
 
     # ----- Monitoring: Prometheus ---------------------------------------------
     prometheus:
-        image: remal-prometheus:0.3.0
+        image: remal-prometheus:0.4.0
         container_name: prometheus.${DOMAIN_NAME}
         hostname: prometheus.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -95,7 +106,7 @@ services:
 
     # ----- Monitoring: Grafana ------------------------------------------------
     grafana:
-        image: remal-grafana:0.3.0
+        image: remal-grafana:0.4.0
         container_name: grafana.${DOMAIN_NAME}
         hostname: grafana.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -110,7 +121,7 @@ services:
 
     # ----- Services -----------------------------------------------------------
     echo-service:
-        image: remal-java-21-runner:0.3.0
+        image: remal-java-21-runner:0.4.0
         container_name: welcome-service.hello.com
         hostname: welcome-service.hello.com
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -121,11 +132,13 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            - HAZELCAST_CLUSTER_NAME=gombi-dev
+            - HAZELCAST_CLUSTER_MEMBERS=hazelcast-1.hello.com, hazelcast-2.hello.com
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/service-hello:/jar-to-run
 
     user-service:
-        image: remal-java-21-postgres-runner:0.3.0
+        image: remal-java-21-postgres-runner:0.4.0
         container_name: user-service.hello.com
         hostname: user-service.hello.com
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -136,6 +149,8 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            - HAZELCAST_CLUSTER_NAME=gombi-dev
+            - HAZELCAST_CLUSTER_MEMBERS="hazelcast-1.hello.com, hazelcast-2.hello.com"
             - START_DB=true
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run

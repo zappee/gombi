@@ -34,6 +34,7 @@ BINARIES=(
   "vault_1.18.4_linux_386.zip;docker/infrastructure/hcp-vault/bin"
   "prometheus-3.1.0.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
   "grafana-enterprise-11.5.1.linux-amd64.tar.gz;docker/monitoring/grafana/bin"
+  "hazelcast-5.5.0-slim.tar.gz;docker/infrastructure/hazelcast-platform/bin"
 )
 
 # ----------------------------------------------------------------------------

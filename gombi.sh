@@ -30,6 +30,7 @@ LABEL_FORGEROCK_DS="ForgeRock Directory Server;infrastructure/forgerock-ds"
 LABEL_FORGEROCK_AM="ForgeRock Access Management;infrastructure/forgerock-am"
 LABEL_HCP_VAULT="HashiCorp Vault;infrastructure/hcp-vault"
 LABEL_HCP_CONSUL="HashiCorp Consul;infrastructure/hcp-consul"
+LABEL_HAZELCAST_PLATFORM="Hazelcast Platform;infrastructure/hazelcast-platform"
 LABEL_PROMETHEUS="Remal Prometheus;monitoring/prometheus"
 LABEL_GRAFANA="Remal Grafana;monitoring/grafana"
 LABEL_JAVA_21_RUNNER="Remal Java 21 Runner;application/java-21-runner"
@@ -83,10 +84,11 @@ function demo_start {
   printf "       environment-file: '%s'\n" "$environment_file"
   printf "     docker-compose.yml: '%s'\n" "$docker_compose_file"
 
+  copy_to_volume "remal-gombi-hazelcast-counter"
+  copy_to_volume "remal-gombi-kafka-consumer"
+  copy_to_volume "remal-gombi-kafka-producer"
   copy_to_volume "remal-gombi-user-service"
   copy_to_volume "remal-gombi-welcome-service"
-  copy_to_volume "remal-gombi-kafka-producer"
-  copy_to_volume "remal-gombi-kafka-consumer"
   docker compose --env-file="$environment_file" -f "$docker_compose_file" up
 }
 
@@ -257,6 +259,7 @@ function show_help() {
     printf "        %bc4:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_AM")" "$STYLE_DEFAULT"
     printf "        %bc5:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
     printf "        %bc6:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL")" "$STYLE_DEFAULT"
+    printf "        %bc7:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HAZELCAST_PLATFORM")" "$STYLE_DEFAULT"
     printf "      %bd:    build of all %bMonitoring%b images%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PROMETHEUS")" "$STYLE_DEFAULT"
     printf "        %bd2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_GRAFANA")" "$STYLE_DEFAULT"
@@ -349,6 +352,7 @@ if match "$COMMAND" "c3"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_
 if match "$COMMAND" "c4"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
 if match "$COMMAND" "c5"; then docker_image_build "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
 if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
+if match "$COMMAND" "c7"; then docker_image_build "$(get_name "$LABEL_HAZELCAST_PLATFORM")" "$(get_path "$LABEL_HAZELCAST_PLATFORM")"; fi
 if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_PROMETHEUS")" "$(get_path "$LABEL_PROMETHEUS")"; fi
 if match "$COMMAND" "d2"; then docker_image_build "$(get_name "$LABEL_GRAFANA")" "$(get_path "$LABEL_GRAFANA")"; fi
 if match "$COMMAND" "e1"; then docker_image_build "$(get_name "$LABEL_JAVA_21_RUNNER")" "$(get_path "$LABEL_JAVA_21_RUNNER")"; fi

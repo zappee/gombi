@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 21/Feb/2025
+#### Docker Images
+* Image for `Hazelcast Platform 5.5.8`
+
+#### Java projects
+* Add a new project to demonstrate how the Hazelcast Cache works
+
 ## [0.3.0] - 16/Feb/2025
 #### Docker Images
 * Update `alpine` version from `3.21.0` to `3.21.2` in the `base` image

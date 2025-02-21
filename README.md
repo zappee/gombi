@@ -40,7 +40,7 @@ Gombi provides the following services:
   * [Hashicorp Vault](docker/infrastructure/hcp-vault): key/value store
 
 
-* Jave Web Container Images
+* Java Web Container Images
   * [Apache Tomcat 9](docker/infrastructure/tomcat-9)
 
 

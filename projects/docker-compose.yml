@@ -1,33 +1,7 @@
 services:
-    # ----- Private Certificate Authority Server -------------------------------
-    pki:
-        image: remal-private-ca:0.3.0
-        container_name: pki.${DOMAIN_NAME}
-        hostname: pki.${DOMAIN_NAME}
-        ports:
-            - "13012:22"   # SSH
-        environment:
-            - EASYRSA_REQ_CN=${DOMAIN_NAME}
-            - EASYRSA_REQ_COUNTRY=${EASYRSA_REQ_COUNTRY}
-            - EASYRSA_REQ_PROVINCE=${EASYRSA_REQ_PROVINCE}
-            - EASYRSA_REQ_CITY=${EASYRSA_REQ_CITY}
-            - EASYRSA_REQ_ORG=${EASYRSA_REQ_ORG}
-
-    # ----- Hashicorp Consul ---------------------------------------------------
-    consul:
-        image: remal-consul:0.3.0
-        container_name: consul.${DOMAIN_NAME}
-        hostname: consul.${DOMAIN_NAME}
-        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
-        ports:
-            - "13062:22"   # SSH
-            - "13063:8501" # Consul web console, HTTPS
-        environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-
     # ----- user-service-1 -----------------------------------------------------
     user-service-1:
-        image: remal-java-21-postgres-runner:0.3.0
+        image: remal-java-21-postgres-runner:0.4.0
         container_name: user-service-1.${DOMAIN_NAME}
         hostname: user-service-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -48,7 +22,7 @@ services:
 
     # ----- user-service-2 -----------------------------------------------------
     user-service-2:
-        image: remal-java-21-postgres-runner:0.3.0
+        image: remal-java-21-postgres-runner:0.4.0
         container_name: user-service-2.${DOMAIN_NAME}
         hostname: user-service-2.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -69,7 +43,7 @@ services:
 
     # ----- welcome-service-1 --------------------------------------------------
     welcome-service-1:
-        image: remal-java-21-runner:0.3.0
+        image: remal-java-21-runner:0.4.0
         container_name: welcome-service-1.${DOMAIN_NAME}
         hostname: welcome-service-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -85,7 +59,7 @@ services:
 
     # ----- kafka-producer-service-1 -------------------------------------------
     kafka-producer-service-1:
-        image: remal-java-21-runner:0.3.0
+        image: remal-java-21-runner:0.4.0
         container_name: kafka-producer-service-1.${DOMAIN_NAME}
         hostname: kafka-producer-service-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -101,7 +75,7 @@ services:
 
     # ----- kafka-consumer-service-1 -------------------------------------------
     kafka-consumer-service-1:
-        image: remal-java-21-postgres-runner:0.3.0
+        image: remal-java-21-postgres-runner:0.4.0
         container_name: kafka-consumer-service-1.${DOMAIN_NAME}
         hostname: kafka-consumer-service-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -120,43 +94,106 @@ services:
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-kafka-consumer:/jar-to-run
 
-    # ----- Monitoring: Prometheus ---------------------------------------------
-    prometheus:
-        image: remal-prometheus:0.3.0
-        container_name: prometheus.${DOMAIN_NAME}
-        hostname: prometheus.${DOMAIN_NAME}
+    # ----- hazelcast-counter-service-1 ----------------------------------------
+    hazelcast-counter-service-1:
+        image: remal-java-21-runner:0.4.0
+        container_name: hazelcast-counter-service-1.${DOMAIN_NAME}
+        hostname: hazelcast-counter-service-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
-            - "13072:22"   # SSH
-            - "13073:9090" # HTTPS
+            - "14512:22"   # SSH
+            - "14513:8000" # JVM debug
+            - "14514:8443" # HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_HOST=consul.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            - HAZELCAST_CLUSTER_NAME=gombi-dev
+            - HAZELCAST_CLUSTER_MEMBERS=hazelcast-1.${DOMAIN_NAME}, hazelcast-2.${DOMAIN_NAME}
+        volumes:
+            - $HOME/Java/gombi/bin/remal-gombi-hazelcast-counter:/jar-to-run
+
+    # ----- hazelcast-counter-service-2 ----------------------------------------
+    hazelcast-counter-service-2:
+        image: remal-java-21-runner:0.4.0
+        container_name: hazelcast-counter-service-2.${DOMAIN_NAME}
+        hostname: hazelcast-counter-service-2.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
+        ports:
+            - "14522:22"   # SSH
+            - "14523:8000" # JVM debug
+            - "14524:8443" # HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            - HAZELCAST_CLUSTER_NAME=gombi-dev
+            - HAZELCAST_CLUSTER_MEMBERS=hazelcast-1.${DOMAIN_NAME}, hazelcast-2.${DOMAIN_NAME}
+        volumes:
+            - $HOME/Java/gombi/bin/remal-gombi-hazelcast-counter:/jar-to-run
+
+    # ----- Hashicorp Consul ---------------------------------------------------
+    consul:
+        image: remal-consul:0.4.0
+        container_name: consul.${DOMAIN_NAME}
+        hostname: consul.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
+        ports:
+            - "13102:22"   # SSH
+            - "13103:8501" # Consul web console, HTTPS
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
 
     # ----- Monitoring: Grafana ------------------------------------------------
     grafana:
-        image: remal-grafana:0.3.0
+        image: remal-grafana:0.4.0
         container_name: grafana.${DOMAIN_NAME}
         hostname: grafana.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "prometheus.${DOMAIN_NAME}"]
         ports:
-            - "13082:22"   # SSH
-            - "13083:3000" # HTTPS
+            - "13092:22"   # SSH
+            - "13093:3000" # HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - PROMETHEUS_HOST=prometheus.${DOMAIN_NAME}
 
-    # ----- Kafka --------------------------------------------------------------
-    zookeeper-1:
-        image: confluentinc/cp-zookeeper:7.8.0
-        container_name: zookeeper-1.${DOMAIN_NAME}
-        hostname: zookeeper-1.${DOMAIN_NAME}
+    # ----- Monitoring: Prometheus ---------------------------------------------
+    prometheus:
+        image: remal-prometheus:0.4.0
+        container_name: prometheus.${DOMAIN_NAME}
+        hostname: prometheus.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
         ports:
-            - "13031:2181" # zookeeper's client port
+            - "13082:22"   # SSH
+            - "13083:9090" # HTTPS
         environment:
-            - ZOOKEEPER_CLIENT_PORT=2181
-            - ZOOKEEPER_TICK_TIME=2000
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - CONSUL_HOST=consul.${DOMAIN_NAME}
 
+    # ----- Hazelcast ----------------------------------------------------------
+    hazelcast-1:
+        image: remal-hazelcast:0.4.0
+        container_name: hazelcast-1.${DOMAIN_NAME}
+        hostname: hazelcast-1.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
+        ports:
+            - "13072:22"   # SSH
+            - "13073:5701" # Hazelcast client port
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - HAZELCAST_CLUSTER_NAME=gombi-dev
+
+    hazelcast-2:
+        image: remal-hazelcast:0.4.0
+        container_name: hazelcast-2.${DOMAIN_NAME}
+        hostname: hazelcast-2.${DOMAIN_NAME}
+        entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
+        ports:
+            - "13062:22"   # SSH
+            - "13063:5701" # Hazelcast client port
+        environment:
+            - PKI_HOST=pki.${DOMAIN_NAME}
+            - HAZELCAST_CLUSTER_NAME=gombi-dev
+
+    # ----- Kafka --------------------------------------------------------------
     kafka-1:
         image: confluentinc/cp-kafka:7.8.0
         container_name: kafka-1.${DOMAIN_NAME}
@@ -192,3 +229,27 @@ services:
             - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
         depends_on:
             - zookeeper-1
+
+    zookeeper-1:
+        image: confluentinc/cp-zookeeper:7.8.0
+        container_name: zookeeper-1.${DOMAIN_NAME}
+        hostname: zookeeper-1.${DOMAIN_NAME}
+        ports:
+            - "13031:2181" # zookeeper's client port
+        environment:
+            - ZOOKEEPER_CLIENT_PORT=2181
+            - ZOOKEEPER_TICK_TIME=2000
+
+    # ----- Private Certificate Authority Server -------------------------------
+    pki:
+        image: remal-private-ca:0.4.0
+        container_name: pki.${DOMAIN_NAME}
+        hostname: pki.${DOMAIN_NAME}
+        ports:
+            - "13012:22"   # SSH
+        environment:
+            - EASYRSA_REQ_CN=${DOMAIN_NAME}
+            - EASYRSA_REQ_COUNTRY=${EASYRSA_REQ_COUNTRY}
+            - EASYRSA_REQ_PROVINCE=${EASYRSA_REQ_PROVINCE}
+            - EASYRSA_REQ_CITY=${EASYRSA_REQ_CITY}
+            - EASYRSA_REQ_ORG=${EASYRSA_REQ_ORG}

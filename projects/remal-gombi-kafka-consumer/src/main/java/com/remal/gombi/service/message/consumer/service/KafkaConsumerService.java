@@ -77,7 +77,7 @@ public class KafkaConsumerService {
                 groupId,
                 consumerId,
                 payload.toString());
-        meterService.registerReceivedEvent();
+        meterService.registerIncomingEvent();
 
         var eventEntity = eventMapper.toEntity(payload);
         eventEntity.setTopic(topic);
