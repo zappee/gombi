@@ -16,13 +16,26 @@ import com.hazelcast.config.EvictionPolicy;
 import com.hazelcast.config.InMemoryFormat;
 import com.hazelcast.config.NearCacheConfig;
 import com.hazelcast.core.HazelcastInstance;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+
 @Configuration
+@Slf4j
 public class HazelcastGlobalConfiguration {
 
     public static final String COUNTER = "COUNTER";
+
+    // environment variables
+
+    @Value("${HAZELCAST_CLUSTER_NAME}")
+    private String clusterName;
+
+    @Value("${HAZELCAST_CLUSTER_MEMBERS}")
+    private String[] clusterMembers;
 
     @Bean
     public HazelcastInstance hazelcastClient() {
@@ -30,9 +43,13 @@ public class HazelcastGlobalConfiguration {
     }
 
     private ClientConfig clientConfig() {
+        log.debug("creating hazelcast ClientConfig: {cluster-name: \"{}\", members: {}}", clusterName, clusterMembers);
         ClientConfig clientConfig = new ClientConfig();
-        clientConfig.setClusterName("gombi-dev");
-        clientConfig.getNetworkConfig().getAddresses().add("hazelcast-1.hello.com");
+        clientConfig.setClusterName(clusterName);
+
+        Arrays.stream(clusterMembers).forEach(memberName ->
+                clientConfig.getNetworkConfig().getAddresses().add(memberName.trim()));
+
         clientConfig.addNearCacheConfig(shortLivedNearCacheConfig(COUNTER));
         return clientConfig;
     }

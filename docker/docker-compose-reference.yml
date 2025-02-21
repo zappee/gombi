@@ -65,6 +65,7 @@ services:
             - "13043:5701"  # Hazelcast client port
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
+            - HAZELCAST_CLUSTER_NAME=gombi-dev
 
     # ----- Hashicorp Vault ----------------------------------------------------
     vault:
@@ -131,6 +132,8 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            - HAZELCAST_CLUSTER_NAME=gombi-dev
+            - HAZELCAST_CLUSTER_MEMBERS=hazelcast-1.hello.com, hazelcast-2.hello.com
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/service-hello:/jar-to-run
 
@@ -146,6 +149,8 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            - HAZELCAST_CLUSTER_NAME=gombi-dev
+            - HAZELCAST_CLUSTER_MEMBERS="hazelcast-1.hello.com, hazelcast-2.hello.com"
             - START_DB=true
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
