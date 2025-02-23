@@ -35,6 +35,7 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <micrometer.version>1.14.3</micrometer.version>
+        <picocli.version>4.7.6</picocli.version>
         <postgresql.version>42.7.5</postgresql.version>
         <spring-boot.version>3.4.2</spring-boot.version>
         <spring-cloud-starter-consul.version>4.2.0</spring-cloud-starter-consul.version>
@@ -67,6 +68,12 @@
                 <groupId>org.springframework.kafka</groupId>
                 <artifactId>spring-kafka</artifactId>
                 <version>${spring-kafka.version}</version>
+            </dependency>
+            <!-- spring picocli: build rich command line applications  -->
+            <dependency>
+                <groupId>info.picocli</groupId>
+                <artifactId>picocli-spring-boot-starter</artifactId>
+                <version>${picocli.version}</version>
             </dependency>
             <!-- remal dependencies -->
             <dependency>
@@ -160,6 +167,7 @@
         <module>remal-gombi-hazelcast-counter</module>
         <module>remal-gombi-hazelcast-demo</module>
         <module>remal-gombi-kafka-consumer</module>
+        <module>remal-gombi-kafka-player</module>
         <module>remal-gombi-kafka-producer</module>
         <module>remal-gombi-user-service</module>
         <module>remal-gombi-welcome-service</module>
