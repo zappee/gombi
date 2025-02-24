@@ -69,12 +69,6 @@
                 <artifactId>spring-kafka</artifactId>
                 <version>${spring-kafka.version}</version>
             </dependency>
-            <!-- spring picocli: build rich command line applications  -->
-            <dependency>
-                <groupId>info.picocli</groupId>
-                <artifactId>picocli-spring-boot-starter</artifactId>
-                <version>${picocli.version}</version>
-            </dependency>
             <!-- remal dependencies -->
             <dependency>
                 <groupId>com.remal.gombi</groupId>
@@ -118,6 +112,12 @@
                 <groupId>com.hazelcast</groupId>
                 <artifactId>hazelcast</artifactId>
                 <version>${hazelcast.version}</version>
+            </dependency>
+            <!-- picocli: build rich command line applications  -->
+            <dependency>
+                <groupId>info.picocli</groupId>
+                <artifactId>picocli</artifactId>
+                <version>${picocli.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

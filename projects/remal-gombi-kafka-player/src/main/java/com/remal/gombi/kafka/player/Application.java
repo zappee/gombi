@@ -5,17 +5,17 @@
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
  *  Description:
- *     Spring application entry point.
+ *     Application entry point.
  */
 package com.remal.gombi.kafka.player;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.remal.gombi.kafka.player.picocli.command.PlayCommand;
+import picocli.CommandLine;
 
-@SpringBootApplication
-public class Application {
+class Application {
 
-    public static void main(String[] args) {
-        System.exit(SpringApplication.exit(SpringApplication.run(Application.class, args)));
+    public static void main(String... args) {
+        int exitCode = new CommandLine(new PlayCommand()).execute(args);
+        System.exit(exitCode);
     }
 }
