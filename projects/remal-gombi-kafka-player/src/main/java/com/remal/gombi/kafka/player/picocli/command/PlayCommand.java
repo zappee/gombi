@@ -32,6 +32,7 @@ public class PlayCommand implements  Callable<Integer> {
     @CommandLine.Option(
             names = {"-H", "--db-host"},
             description = "Hostname of the database server",
+            paramLabel = "",
             required = true
             /*defaultValue = "localhost"*/)
     private String dbHost;
