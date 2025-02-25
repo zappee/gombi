@@ -30,8 +30,13 @@ class Application {
      * <PRE>
      * By default, the following simple code can be used to start the picocli
      * command-line application:
-     *    int exitCode = new CommandLine(new PlayCommand()).execute(args);
-     *    System.exit(exitCode);
+     *
+     * {@code
+     *    public static void main(String... args) {
+     *        int exitCode = new CommandLine(new PlayCommand()).execute(args);
+     *        System.exit(exitCode);
+     *    }
+     * }
      *
      * But as we would like to hide the param labels we need to use this complex
      * code here.
