@@ -15,7 +15,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(
         name = "play", mixinStandardHelpOptions = true,
-        version = {},
+        usageHelpWidth = 100,
         header = {
                 "@|bold,yellow ______ _______ _______ _______|@",
                 "@|bold,yellow |_____/ |______ |  |  | |_____| ||@",
@@ -31,15 +31,14 @@ public class PlayCommand implements  Callable<Integer> {
 
     @CommandLine.Option(
             names = {"-H", "--db-host"},
-            description = "Hostname of the database server",
-            paramLabel = "",
-            required = true
-            /*defaultValue = "localhost"*/)
+            description = "Hostname of the database server. Default: ${DEFAULT-VALUE}",
+            required = true,
+            defaultValue = "localhost")
     private String dbHost;
 
     @CommandLine.Option(
             names = {"-P", "--db-port"},
-            description = "Number of the port where the database server listens for requests.",
+            description = "Number of the port where the database server listens for requests. Default: ${DEFAULT-VALUE}",
             required = true,
             defaultValue = "5432")
     private int dbPort;
