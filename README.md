@@ -17,9 +17,9 @@ Gombi provides the following services:
 
 [Link to the tutorial video](https://drive.google.com/drive/folders/1ZHCeUBk9DjFfe5kVyQJyuRHimpODr5Cf?usp=sharing)
 
-![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy.png)
-
 ## 3) Docker Images
+![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy.png)
+* 
 * Base Image:
   * [Remal Base](docker/base/base): based on Alpine
 
