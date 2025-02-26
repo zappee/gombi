@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>remal-gombi-hazelcast-demo</artifactId>
-	<version>0.4.0</version>
+	<version>0.5.0</version>
 	<name>gombi-hazelcast-demo</name>
 	<description>Demo project for demonstrating Hazelcast Near-Cache</description>
 
 	<parent>
 		<groupId>com.remal.gombi</groupId>
 		<artifactId>gombi</artifactId>
-		<version>0.4.0</version>
+		<version>0.5.0</version>
 	</parent>
 
 	<dependencies>
