@@ -13,9 +13,13 @@ Gombi provides the following services:
 - _Data Analytics & Visualization platforms_: to search, analyze and visualize the machine-generated data and events gathered from the applications, sensors, devices etc.
 - _Java 11, 17 and 21 containers as a service (CaaS)_: run Spring Boot applications/microservices
 
+## 2) Tutorial video
+
+[Link to the tutorial video](https://drive.google.com/drive/folders/1ZHCeUBk9DjFfe5kVyQJyuRHimpODr5Cf?usp=sharing)
+
 ![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy.png)
 
-## 2) Docker Images
+## 3) Docker Images
 * Base Image:
   * [Remal Base](docker/base/base): based on Alpine
 
@@ -54,29 +58,29 @@ Gombi provides the following services:
   * [OpenJDK-21 Runner with Postgres Database Server](docker/application/java-21-postgres-runner)
 
 
-## 3) Build and start
-### 3.1) Build the Docker images
+## 4) Build and start
+### 4.1) Build the Docker images
 1. Start a `Tomcat`.
 2. Download the installation files from [here](https://drive.google.com/drive/u/0/folders/1RUkp1vwSX0aTdlQ2zgyOUKQexHovHY77) and copy them under the `$TOMCAT_HOME/webapps/docker-build/` directory.
 3. Use the `./update-binaries.sh 1` command to copy the installation files into the image build directories.
 4. Build the Docker images using the `./gombi.sh abcdeu` command.
 
-### 3.2) Build the Java projects
+### 4.2) Build the Java projects
     ~~~
     $ cd gombi/projects
     $ mvn clean package 
     ~~~
 
-## 3.3) Start the sample docker stack
+### 4.3) Start the sample docker stack
     ~~~
     $ cd gombi/projects
     $ ./gombi.sh i1
     ~~~
 
-## 4) Contributions welcome
+## 5) Contributions welcome
 Please help to improve this project. You can open a bug report, or send a new pull request.
 
-## 5) Thank you for buying me a coffee
+## 6) Thank you for buying me a coffee
 
 |                                                                                                                                                         |
 |:-------------------------------------------------------------------------------------------------------------------------------------------------------:|
@@ -84,7 +88,7 @@ Please help to improve this project. You can open a bug report, or send a new pu
 | [**PayPal, EUR**](https://www.paypal.com/donate/?hosted_button_id=VT6RPK363U5CA)<br><br>![PayPal, EUR](docs/donation/paypal/paypal-eur.png)<br><br><br> |
 | [**PayPal, USD**](https://www.paypal.com/donate/?hosted_button_id=U5JFBSZ23YGP4)<br><br>![PayPal, USD](docs/donation/paypal/paypal-usd.png)<br><br><br> |
 
-## 6) License and Copyright
+## 7) License and Copyright
 Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
 ## Appendix 1) Reference Dockerfile
