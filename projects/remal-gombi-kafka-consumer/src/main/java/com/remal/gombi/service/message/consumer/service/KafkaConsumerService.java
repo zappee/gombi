@@ -9,6 +9,10 @@
  */
 package com.remal.gombi.service.message.consumer.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.remal.gombi.commons.exception.FailureToProcessException;
 import com.remal.gombi.commons.model.Event;
 import com.remal.gombi.service.message.consumer.mapper.EventMapper;
@@ -28,13 +32,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class KafkaConsumerService {
 
-    @Getter
-    @Value("${kafka.topic.name}")
-    private String topicName;
-
+    private final ObjectMapper jsonMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
     private final EventRepository eventRepository;
     private final EventMapper eventMapper;
     private final MicrometerMeterService meterService;
+
+    @Getter
+    @Value("${kafka.topic.name}")
+    private String topicName;
 
     @KafkaListener(
             // Think of it as the name of the bean, used only internally by Spring.
@@ -68,7 +73,7 @@ public class KafkaConsumerService {
         var partition = data.partition();
         var groupId = consumer.groupMetadata().groupId();
         var consumerId = consumer.groupMetadata().memberId();
-        var payload = data.value();
+        var incomingMessage = data.value();
 
         log.debug(
                 "receiving a message from kafka: {topic: \"{}\", partition: {}, consumer-group: \"{}\", consumer-id-in-the-group:  \"{}\", payload: {}}",
@@ -76,21 +81,30 @@ public class KafkaConsumerService {
                 partition,
                 groupId,
                 consumerId,
-                payload.toString());
+                incomingMessage.toString());
         meterService.registerIncomingEvent();
 
-        var eventEntity = eventMapper.toEntity(payload);
+        var eventEntity = eventMapper.toEntity(incomingMessage);
         eventEntity.setTopic(topic);
         eventEntity.setPartition(partition);
         eventEntity.setGroupId(groupId);
+        eventEntity.setPayload(eventToJson(incomingMessage));
 
         eventRepository.save(eventEntity);
 
         // a deliberately thrown error for testing purposes
-        if (payload.getUserId().equals("error")) {
-            throw new FailureToProcessException(payload, topic, "A deliberately thrown error for testing purposes.");
+        if (incomingMessage.getUserId().equals("error")) {
+            throw new FailureToProcessException(incomingMessage, topic, "A deliberately thrown error for testing purposes.");
         }
 
         meterService.registerProcessedEvent();
+     }
+
+     private String eventToJson(Event event) {
+         try {
+             return jsonMapper.writeValueAsString(event);
+         } catch (JsonProcessingException e) {
+             throw new FailureToProcessException("An error has occurred while trying to convert a com.remal.gombi.commons.model.Event object to JSON.", e);
+         }
      }
 }

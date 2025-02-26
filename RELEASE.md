@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.0] - 26/Feb/2025
+#### Java projects
+* Add a new tool that can be used to reinject messages to Kafka topic.
+
 ## [0.4.0] - 21/Feb/2025
 #### Docker Images
 * Image for `Hazelcast Platform 5.5.8`
