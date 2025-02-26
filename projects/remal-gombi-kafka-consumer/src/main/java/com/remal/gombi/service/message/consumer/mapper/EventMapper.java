@@ -21,5 +21,6 @@ public interface EventMapper {
     @Mapping(target = "topic", ignore = true)
     @Mapping(target = "partition", ignore = true)
     @Mapping(target = "groupId", ignore = true)
+    @Mapping(target = "payload", ignore = true)
     EventEntity toEntity(Event pojo);
 }

@@ -33,4 +33,15 @@ public class FailureToProcessException extends RuntimeException {
                 errorMessage));
         log.error(getMessage());
     }
+
+    /**
+     * Constructor.
+     *
+     * @param message the detail message
+     * @param exception the cause
+     */
+    public FailureToProcessException(String message, Exception exception) {
+        super(message, exception);
+        log.error(getMessage());
+    }
 }

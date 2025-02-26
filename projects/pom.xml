@@ -31,6 +31,7 @@
 
         <hazelcast.version>5.5.0</hazelcast.version>
         <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
+        <kafka-clients.version>3.9.0</kafka-clients.version>
         <lombok.version>1.18.36</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
@@ -68,6 +69,12 @@
                 <groupId>org.springframework.kafka</groupId>
                 <artifactId>spring-kafka</artifactId>
                 <version>${spring-kafka.version}</version>
+            </dependency>
+            <!-- java kafka library -->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka-clients.version}</version>
             </dependency>
             <!-- remal dependencies -->
             <dependency>

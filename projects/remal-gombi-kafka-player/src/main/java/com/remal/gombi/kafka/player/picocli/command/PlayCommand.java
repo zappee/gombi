@@ -9,13 +9,19 @@
  */
 package com.remal.gombi.kafka.player.picocli.command;
 
+import com.remal.gombi.kafka.player.picocli.param.KafkaConnectionGroup;
+import com.remal.gombi.kafka.player.picocli.param.SqlConnectionGroup;
+import com.remal.gombi.kafka.player.sql.SqlExecutor;
 import picocli.CommandLine;
+import picocli.CommandLine.ArgGroup;
+import picocli.CommandLine.Command;
 
 import java.util.concurrent.Callable;
 
-@CommandLine.Command(
+@Command(
         name = "play", mixinStandardHelpOptions = true,
         usageHelpWidth = 100,
+        sortOptions = false,
         header = {
                 "@|bold,yellow ______ _______ _______ _______|@",
                 "@|bold,yellow |_____/ |______ |  |  | |_____| ||@",
@@ -26,26 +32,40 @@ import java.util.concurrent.Callable;
                 "@|yellow :: remal-kafka-player :: 0.4.0 ::|@",
                 "@|yellow Copyright (c) 2020-2025 REMAL SOFTWARE and Arnold Somogyi All rights reserved|@",
                 "%n"},
-        description = "Re-inject saved messages to a Kafka topic.%n")
+        description = "Re-inject saved messages to a Kafka topic.%n",
+
+        parameterListHeading = "General options:%n",
+        exitCodeListHeading = "%nExit codes:%n",
+        exitCodeList = {
+                "0:Successful program execution.",
+                "1:An unexpected error appeared while executing the tool."},
+        footerHeading = "%nPlease report issues at arnold.somogyi@gmail.com.",
+        footer = "%nDocumentation, source code: https://github.com/zappee/gombi%n")
 public class PlayCommand implements  Callable<Integer> {
 
-    @CommandLine.Option(
-            names = {"-H", "--db-host"},
-            description = "Hostname of the database server. Default: ${DEFAULT-VALUE}",
-            required = true,
-            defaultValue = "localhost")
-    private String dbHost;
+    @CommandLine.Option(names = {"-q", "--quiet"},
+            description = "In this mode nothing will be printed to the output.")
+    private boolean quiet;
 
-    @CommandLine.Option(
-            names = {"-P", "--db-port"},
-            description = "Number of the port where the database server listens for requests. Default: ${DEFAULT-VALUE}",
-            required = true,
-            defaultValue = "5432")
-    private int dbPort;
+    @CommandLine.Option(names = {"-d", "--dry-run"},
+            description = "Displays only the selected messages, but does not send them to the Kafka topic.")
+    private boolean dryRun;
+
+    @ArgGroup(
+            exclusive = false,
+            multiplicity = "1",
+            heading = "%nDatabase connection parameters:%n")
+    private SqlConnectionGroup sqlParams;
+
+    @ArgGroup(
+            exclusive = false,
+            multiplicity = "1",
+            heading = "%nKafka connection parameters:%n")
+    private KafkaConnectionGroup kafkaParams;
 
     @Override
-    public Integer call() throws Exception { // your business logic goes here...
-        System.out.println("Connecting to " + dbHost + ":" + dbPort);
-        return 0;
+    public Integer call() throws Exception {
+        SqlExecutor executor = new SqlExecutor(quiet, dryRun, sqlParams, kafkaParams);
+        return executor.execute() ;
     }
 }
