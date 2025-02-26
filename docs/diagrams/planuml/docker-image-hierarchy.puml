@@ -47,6 +47,14 @@
   }
 </style>
 
+skinparam ArrowThickness 2
+skinparam ArrowColor #607D8B
+
+skinparam titleFontSize 26
+skinparam titleFontColor #607D8B
+skinparam titleBackgroundColor #FFFFFF
+skinparam titleFontStyle bold
+
 title **Remal Docker image hierarchy**
 
 sprite $EXTERNAL_IMAGE jar:archimate/meaning
