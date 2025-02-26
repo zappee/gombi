@@ -70,10 +70,9 @@ rectangle "ForgeRock Access Management"  as am              <<$INFRA_IMAGE>>    
 rectangle "Hashicorp Vault"              as vault           <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
 rectangle "Hashicorp Consul"             as consul          <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
 rectangle "Hashicorp Consul"             as consul          <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
-rectangle "Java-21 Runner"               as java_runner_21  <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
-rectangle "Java-21 Runner + PostgreSQL"  as java_runner_21p <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
-rectangle "Examples"                     as examples        <<$APP_IMAGE>>      <<STYLE_APP>>
-rectangle "User Service"                 as user_service    <<$APP_IMAGE>>      <<STYLE_APP>>
+rectangle "Java-21 Runner"               as java_runner_21  <<$CORE_IMAGE>>     <<STYLE_CORE>>
+rectangle "Java-21 Runner + PostgreSQL"  as java_runner_21p <<$CORE_IMAGE>>     <<STYLE_CORE>>
+rectangle "Hazelcast"                    as hazelcast       <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
 rectangle "Prometheus"                   as prometheus      <<$MONITOR_IMAGE>>  <<STYLE_MONITOR>>
 rectangle "Grafana"                      as grafana         <<$MONITOR_IMAGE>>  <<STYLE_MONITOR>>
 
@@ -88,10 +87,9 @@ base ------> grafana
 java11 --> tomcat9
 java17 --> ds
 java21 --> consul
+java21 --> hazelcast
 tomcat9 --> am
 consul --> java_runner_21
 java_runner_21 --> java_runner_21p
-java_runner_21 ---> examples
-java_runner_21 ---> user_service
 
 @enduml
