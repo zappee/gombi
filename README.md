@@ -14,12 +14,11 @@ Gombi provides the following services:
 - _Java 11, 17 and 21 containers as a service (CaaS)_: run Spring Boot applications/microservices
 
 ## 2) Tutorial video
-
 [Link to the tutorial video](https://drive.google.com/drive/folders/1ZHCeUBk9DjFfe5kVyQJyuRHimpODr5Cf?usp=sharing)
 
 ## 3) Docker Images
 ![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy.png)
-* 
+ 
 * Base Image:
   * [Remal Base](docker/base/base): based on Alpine
 
