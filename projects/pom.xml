@@ -32,12 +32,14 @@
         <hazelcast.version>5.5.0</hazelcast.version>
         <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
         <kafka-clients.version>3.9.0</kafka-clients.version>
+        <logback-classic.version>1.5.16</logback-classic.version>
         <lombok.version>1.18.36</lombok.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <micrometer.version>1.14.3</micrometer.version>
         <picocli.version>4.7.6</picocli.version>
         <postgresql.version>42.7.5</postgresql.version>
+        <slf4j-api.version>2.0.16</slf4j-api.version>
         <spring-boot.version>3.4.2</spring-boot.version>
         <spring-cloud-starter-consul.version>4.2.0</spring-cloud-starter-consul.version>
         <spring-kafka.version>3.3.2</spring-kafka.version>
@@ -70,11 +72,27 @@
                 <artifactId>spring-kafka</artifactId>
                 <version>${spring-kafka.version}</version>
             </dependency>
-            <!-- java kafka library -->
+            <!-- java's kafka library and its log dependencies: slf4j must be updated -->
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
                 <version>${kafka-clients.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback-classic.version}</version>
             </dependency>
             <!-- remal dependencies -->
             <dependency>

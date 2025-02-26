@@ -50,9 +50,8 @@ public class SqlExecutor {
         var password = getPassword(sqlParams);
         var query = sqlParams.getSqlCommand();
 
-        System.out.println(" "); // the logWriter sometimes does not work and it solves that issue
-        logWriter.printf("Connecting to %s using \"%s\" for username...\n", jdbcUrl, username);
-        logWriter.printf("Query to execute: \"%s\"\n\n", query);
+        logWriter.printf("\nConnecting to %s using \"%s\" for username...\n", jdbcUrl, username);
+        logWriter.printf("Query to execute: \"%s\"\n", query);
 
         if (!dryRun) {
             logWriter.printf("Connecting to Kafka using \"%s\"...\n", kafkaSender.getBootstrapServers());
