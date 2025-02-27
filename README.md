@@ -51,7 +51,7 @@ The platform is best suited for building microservices with Java and Spring Boot
 ## 3) Docker Image Hierarchy
 ![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy-transparent.png)
 
-## 4) Build and start
+## 4) Quick start
 ### 4.1) Build the Docker images
 1. Start a `Tomcat`.
 2. Download the installation files from [here](https://drive.google.com/drive/u/0/folders/1RUkp1vwSX0aTdlQ2zgyOUKQexHovHY77) and copy them under the `$TOMCAT_HOME/webapps/docker-build/` directory.
