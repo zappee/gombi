@@ -5,7 +5,7 @@ The Remal-Gombi is an open source development platform that provides a ready for
 
 The Gombi Platform that developers use to build applications can also be used in a production environment without modification. It is fully horizontally scalable, uses secure communication channels between the building boxes and provides a full Private Certificate Authority server to issue, renew and revoke server certificates signed by the organisation's root CA.
 
-It also supports advanced real-time monitoring capabilities with time and counter-based metrics that can be used by the operations team or managers to measure/present SLAs. Fully customisable charts can easily show the frequency of service calls (e.g. REST endpoints) or the serving time of requests for any service in the Platform.
+It also supports advanced real-time monitoring capabilities with time and counter based metrics that can be used by the operations team or managers to measure/present SLAs. Fully customisable charts can easily show the frequency of service calls (e.g. REST endpoints) or the serving time of requests for any service in the Platform.
 
 The services provided by the Gombi Platform support rapid development for start-ups, small and medium-sized companies. With the Gombi Platform, IT teams can quickly deliver the IT solutions what the business needs, and later, as the business evolves, the services and building blocks can be easily improved and replaced with zero downtime.
 
@@ -46,7 +46,7 @@ The platform is best suited for building microservices with Java and Spring Boot
 
 
 ## 2) Tutorial
-* [Link to the tutorial video](https://drive.google.com/file/d/1_V37KuARKPh2fwdiWna4jrLr58SEfhM1/view?usp=drive_link)
+* [Link to the tutorial video](https://drive.google.com/file/d/1JJcXCW-_vE4cCeXGuW4TdU7or0hvg2k4/view?usp=drive_link)
 
 ## 3) Docker Image Hierarchy
 ![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy-transparent.png)
