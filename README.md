@@ -46,7 +46,7 @@ The platform is best suited for building microservices with Java and Spring Boot
 
 
 ## 2) Tutorial
-* [Link to the tutorial video](https://drive.google.com/file/d/1JJcXCW-_vE4cCeXGuW4TdU7or0hvg2k4/view?usp=drive_link)
+* [Link to the tutorial video](https://drive.google.com/file/d/1q9H2fmrHc6hpfTNSCqZziffRhqKOsJhd/view?usp=drive_link)
 
 ## 3) Docker Image Hierarchy
 ![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy-transparent.png)
