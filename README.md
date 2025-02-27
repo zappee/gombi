@@ -1,13 +1,13 @@
 # Remal Gombi Platform
 
 ## 1) Overview
-The Remal-Gombi is an open source development platform that provides a ready for use development environment fits best for Spring Boot development and supports Java 23.
+The Remal-Gombi is an open source development platform that provides a ready-for-use development environment best fits best for Spring Boot development and supports Java 23.
 
 The Gombi Platform that developers use to build applications can also be used in a production environment without modification. It is fully horizontally scalable, uses secure communication channels between the building boxes and provides a full Private Certificate Authority server to issue, renew and revoke server certificates signed by the organisation's root CA.
 
-It also supports advanced real-time monitoring capabilities with time and counter based metrics that can be used by the operations team or managers to measure/present SLAs. Fully customisable charts can easily show the frequency of service calls (e.g. REST endpoints) or the serving time of requests for any service in the Platform.
+It also supports advanced real-time monitoring capabilities with time- and counter-based metrics that can be used by the operation teams or managers to measure/present SLAs. Fully customisable charts can easily show the frequency of service calls (e.g. REST endpoints) or the serving time of requests for any service in the Platform.
 
-The services provided by the Gombi Platform support rapid development for start-ups, small and medium-sized companies. With the Gombi Platform, IT teams can quickly deliver the IT solutions what the business needs, and later, as the business evolves, the services and building blocks can be easily improved and replaced with zero downtime.
+The services provided by the Gombi Platform support rapid development for start-ups, small and medium-sized companies. With the Gombi Platform, IT teams can quickly deliver the IT solutions that what the business needs, and later, as the business evolves, the services and building blocks can be easily improved and replaced with zero downtime.
 
 The platform is best suited for building microservices with Java and Spring Boot.
 
@@ -15,7 +15,7 @@ The platform is best suited for building microservices with Java and Spring Boot
 * Java Runtime Environment with pre-configured Docker containers with Java 11, 17, 21 and 23
 
 
-* Java runtime environments containers with embedded database server supporting the Database per Service design pattern
+* Java runtime environment containers with embedded database server supporting the 'Database per Service' design pattern
 
 
 * Platform-wide Private Certificate Authority (PKI) server
@@ -36,14 +36,13 @@ The platform is best suited for building microservices with Java and Spring Boot
 * High performance distributed LDAP server
 
 
-* Open source Access Management solution supporting authentication and authorisation such as OAUTH, SSO, federation, self-registration via Google, Facebook, Twitter, Github, etc.
+* Open source Access Management solution supporting authentication and authorisation such as OAUTH, SSO, federation, self-registration via Google, Facebook, Twitter, GitHub, etc.
 
 
-* Collect and view events that occur across the Gombi Platform, such as user clicks, service call details, user request response times.
+* Collect and display events that occur across the Gombi Platform, such as user clicks, service call details, user request and response times.
 
 
-* Kafka topic message streams monitoring.
-
+* Monitoring of Kafka topic message streams
 
 ## 2) Tutorial
 * [Link to the tutorial video](https://drive.google.com/file/d/1q9H2fmrHc6hpfTNSCqZziffRhqKOsJhd/view?usp=drive_link)
@@ -59,19 +58,18 @@ The platform is best suited for building microservices with Java and Spring Boot
 4. Build the Docker images using the `./gombi.sh abcdeu` command.
 
 ### 4.2) Build the Java projects
-    ~~~
+
     $ cd gombi/projects
     $ mvn clean package 
-    ~~~
+
 
 ### 4.3) Start the sample docker stack
-    ~~~
+
     $ cd gombi/projects
     $ ./gombi.sh i1
-    ~~~
 
-## 5) Contributions welcome
-Please help to improve this project.
+## 5) Contributions are welcome
+Please help improve this project.
 
 You can open a bug report or submit a new pull request with new features, fixes or improvements.
 
