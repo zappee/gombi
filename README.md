@@ -11,7 +11,7 @@ The services provided by the Gombi Platform support rapid development for start-
 
 The platform is best suited for building microservices with Java and Spring Boot.
 
-**The Platform offers**
+**The Platform offers:**
 * Java Runtime Environment with pre-configured Docker containers with Java 11, 17, 21 and 23
 
 
