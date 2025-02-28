@@ -39,7 +39,7 @@ The platform is best suited for building microservices with Java and Spring Boot
 * Open source Access Management solution supporting authentication and authorisation such as OAUTH, SSO, federation, self-registration via Google, Facebook, Twitter, GitHub, etc.
 
 
-* Collect and display events that occur across the Gombi Platform, such as user clicks, service call details, user request and response times.
+* Collect and display events that occur across the Gombi Platform, such as user clicks, service call details, user request and response times
 
 
 * Monitoring of Kafka topic message streams
