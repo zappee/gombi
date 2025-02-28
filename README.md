@@ -24,7 +24,7 @@ The platform is best suited for building microservices with Java and Spring Boot
 * Distributed Service Registry with codeless, automated service registration
 
 
-* A distributed Key-Value store supporting centralised application configuration management and real-time service configuration
+* A distributed Key-Value store supporting centralised application configuration management and real-time configuration
 
 
 * Distributed cache service through three different topologies as embedded cache, client-server cache and near-cache
