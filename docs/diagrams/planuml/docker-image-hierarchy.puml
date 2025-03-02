@@ -12,40 +12,48 @@
   .STYLE_EXTERNAL {
     RoundCorner 20
     LineThickness 2
-    LineColor DarkRed
-    BackgroundColor Salmon
+    LineColor #FF6F00
+    BackgroundColor #FFD740
   }
   .STYLE_BASE {
     RoundCorner 20
     LineThickness 2
-    LineColor Green
-    BackgroundColor GreenYellow
+    LineColor #33691E
+    BackgroundColor #CCFF90
   }
   .STYLE_CORE {
     RoundCorner 20
     LineThickness 2
-    LineColor Chocolate
-    BackgroundColor Gold
+    LineColor #33691E
+    BackgroundColor #76FF03
   }
   .STYLE_INFRA {
     RoundCorner 20
     LineThickness 2
-    LineColor SteelBlue
-    BackgroundColor Turquoise
+    LineColor #006064
+    BackgroundColor #84FFFF
   }
   .STYLE_APP {
     RoundCorner 20
     LineThickness 2
-    LineColor Purple
-    BackgroundColor HotPink
+    LineColor #006064
+    BackgroundColor #00E5FF
   }
   .STYLE_MONITOR {
     RoundCorner 20
     LineThickness 2
-    LineColor Sienna
-    BackgroundColor Bisque
+    LineColor #880E4F
+    BackgroundColor #FF80AB
   }
 </style>
+
+skinparam ArrowThickness 2
+skinparam ArrowColor #607D8B
+
+skinparam titleFontSize 26
+skinparam titleFontColor #607D8B
+skinparam titleBackgroundColor #FFFFFF
+skinparam titleFontStyle bold
 
 title **Remal Docker image hierarchy**
 
@@ -70,10 +78,9 @@ rectangle "ForgeRock Access Management"  as am              <<$INFRA_IMAGE>>    
 rectangle "Hashicorp Vault"              as vault           <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
 rectangle "Hashicorp Consul"             as consul          <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
 rectangle "Hashicorp Consul"             as consul          <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
-rectangle "Java-21 Runner"               as java_runner_21  <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
-rectangle "Java-21 Runner + PostgreSQL"  as java_runner_21p <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
-rectangle "Examples"                     as examples        <<$APP_IMAGE>>      <<STYLE_APP>>
-rectangle "User Service"                 as user_service    <<$APP_IMAGE>>      <<STYLE_APP>>
+rectangle "Java-21 Runner"               as java_runner_21  <<$APP_IMAGE>>      <<STYLE_APP>>
+rectangle "Java-21 Runner + PostgreSQL"  as java_runner_21p <<$APP_IMAGE>>      <<STYLE_APP>>
+rectangle "Hazelcast"                    as hazelcast       <<$INFRA_IMAGE>>    <<STYLE_INFRA>>
 rectangle "Prometheus"                   as prometheus      <<$MONITOR_IMAGE>>  <<STYLE_MONITOR>>
 rectangle "Grafana"                      as grafana         <<$MONITOR_IMAGE>>  <<STYLE_MONITOR>>
 
@@ -88,10 +95,9 @@ base ------> grafana
 java11 --> tomcat9
 java17 --> ds
 java21 --> consul
+java21 --> hazelcast
 tomcat9 --> am
 consul --> java_runner_21
 java_runner_21 --> java_runner_21p
-java_runner_21 ---> examples
-java_runner_21 ---> user_service
 
 @enduml
