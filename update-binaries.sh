@@ -21,7 +21,7 @@
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-REMAL_BINARY_HOME="$HOME/Applications/tomcat/apache-tomcat-10.1.33/webapps/docker-build"
+REMAL_BINARY_HOME="$HOME/Downloads/apache-tomcat-9.0.100/webapps/docker-build"
 PROJECT_HOME="$HOME/Java/gombi"
 
 BINARIES=(
@@ -58,6 +58,8 @@ function show_usage() {
   printf "   1: copy the binaries from the source to the target directories\n"
   printf "   default: 0\n\n"
   printf "%s" "$COLOR_DEFAULT"
+  printf "REMAL_BINARY_HOME: %s\n" "$REMAL_BINARY_HOME"
+  printf "PROJECT_HOME     : %s\n\n" "$PROJECT_HOME"
 }
 
 # ----------------------------------------------------------------------------
