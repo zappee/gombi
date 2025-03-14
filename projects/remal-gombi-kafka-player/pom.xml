@@ -4,14 +4,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>remal-gombi-kafka-player</artifactId>
-	<version>0.5.0</version>
+	<version>0.6.0</version>
 	<name>gombi-kafka-player</name>
 	<description>Kafka player command line tool</description>
 
 	<parent>
 		<groupId>com.remal.gombi</groupId>
 		<artifactId>gombi</artifactId>
-		<version>0.5.0</version>
+		<version>0.6.0</version>
 	</parent>
 
 	<dependencies>

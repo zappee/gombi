@@ -8644,7 +8644,7 @@ available via HTTP.&lt;/content>
   <property name="kdenlive:docproperties.rendertcoverlay">0</property>
   <property name="kdenlive:docproperties.rendertctype">-1</property>
   <property name="kdenlive:docproperties.rendertwopass">0</property>
-  <property name="kdenlive:docproperties.renderurl">remal-gombi-0.5.0.mp4</property>
+  <property name="kdenlive:docproperties.renderurl">remal-gombi-0.6.0.mp4</property>
   <property name="kdenlive:docproperties.seekOffset">7500</property>
   <property name="kdenlive:docproperties.sessionid">{dfbf0e16-bef0-4cd1-b54e-f4367876c252}</property>
   <property name="kdenlive:docproperties.uuid">{ef5bd0fb-d293-4a83-a997-eea662af5c75}</property>
