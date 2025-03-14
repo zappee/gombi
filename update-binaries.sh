@@ -1,6 +1,6 @@
 #!/bin/bash -ue
 # ******************************************************************************
-# Remal 3rd party file copier.
+# File copier for Remal Gombi project.
 #
 # The install binary files are big so we keep these files out of the source code
 # repository. In the Git repo we only keep zero length marker files as
@@ -16,7 +16,7 @@
 #    1:    copy the binaries from the source to the target directories
 #    default: 0
 #
-# Since:  February, 2024
+# Since:  February 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved

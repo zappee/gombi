@@ -35,6 +35,7 @@ LABEL_PROMETHEUS="Remal Prometheus;monitoring/prometheus"
 LABEL_GRAFANA="Remal Grafana;monitoring/grafana"
 LABEL_JAVA_21_RUNNER="Remal Java 21 Runner;application/java-21-runner"
 LABEL_JAVA_21_POSTGRES_RUNNER="Remal Java 21 with Postgres Runner;application/java-21-postgres-runner"
+LABEL_JAVA_21_OMNI_RUNNER="Remal Java-21 OMNI Runner;application/java-21-omni-runner"
 
 COLOR_GREEN="\e[38;5;118m"
 COLOR_YELLOW="\e[38;5;226m"
@@ -266,6 +267,7 @@ function show_help() {
     printf "      %be:    build of all %bApplication%b images%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %be1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21_RUNNER")" "$STYLE_DEFAULT"
     printf "        %be2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21_POSTGRES_RUNNER")" "$STYLE_DEFAULT"
+    printf "        %be3:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21_OMNI_RUNNER")" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bstart a Docker environment%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bi1:   start the 'Demo' Docker stack%b\n" "$COLOR_GREEN" "$STYLE_DEFAULT"
@@ -357,6 +359,7 @@ if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_PROMETHEUS
 if match "$COMMAND" "d2"; then docker_image_build "$(get_name "$LABEL_GRAFANA")" "$(get_path "$LABEL_GRAFANA")"; fi
 if match "$COMMAND" "e1"; then docker_image_build "$(get_name "$LABEL_JAVA_21_RUNNER")" "$(get_path "$LABEL_JAVA_21_RUNNER")"; fi
 if match "$COMMAND" "e2"; then docker_image_build "$(get_name "$LABEL_JAVA_21_POSTGRES_RUNNER")" "$(get_path "$LABEL_JAVA_21_POSTGRES_RUNNER")"; fi
+if match "$COMMAND" "e3"; then docker_image_build "$(get_name "$LABEL_JAVA_21_OMNI_RUNNER")" "$(get_path "$LABEL_JAVA_21_OMNI_RUNNER")"; fi
 
 # command executors
 if match "$COMMAND" "u";  then docker_image_show; fi
