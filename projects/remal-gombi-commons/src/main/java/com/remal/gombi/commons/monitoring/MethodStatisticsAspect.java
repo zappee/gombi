@@ -95,7 +95,7 @@ public class MethodStatisticsAspect {
             if (annotationParams.countMethodCalls()) {
                 registerMethodCall(fullQualifiedMethodName, ProceedStatus.error);
             }
-            throw new Throwable(t);
+            throw t;
         } finally {
             if (annotationParams.executionTimeStatistic()) {
                 if (endInNano == -1) {

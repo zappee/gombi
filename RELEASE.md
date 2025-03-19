@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 * New Java image: remal-java-21-omni-runner
 * Improve the documentation
 
+#### Java projects
+* Fix an exception handling problem in the `@MethodStatistics` annotation. Spring's `@ControllerAdvice` annotation did not work properly with custom exception classes. 
+
 ## [0.5.0] - 26/Feb/2025
 #### Java projects
 * Add a new tool that can be used to reinject messages to Kafka topic.
