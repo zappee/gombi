@@ -73,7 +73,7 @@ public class MethodStatisticsAspect {
             Object o = joinPoint.proceed();
 
             // log the result of the call
-            if (annotationParams.countMethodCalls()) {
+            if (annotationParams.recordMethodCalls()) {
                 registerMethodCall(fullQualifiedMethodName, ProceedStatus.ok);
             }
 
@@ -92,12 +92,12 @@ public class MethodStatisticsAspect {
             return o;
 
         } catch(Throwable t) {
-            if (annotationParams.countMethodCalls()) {
+            if (annotationParams.recordMethodCalls()) {
                 registerMethodCall(fullQualifiedMethodName, ProceedStatus.error);
             }
             throw t;
         } finally {
-            if (annotationParams.executionTimeStatistic()) {
+            if (annotationParams.recordExecutionTime()) {
                 if (endInNano == -1) {
                     // an unexpected exception has appeared during the method call
                     endInNano = System.nanoTime() - startInNano;
