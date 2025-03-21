@@ -45,7 +45,7 @@ The platform is best suited for building microservices with Java and Spring Boot
 * Monitoring of Kafka topic message streams
 
 ## 2) Tutorial
-* [Link to the tutorial video](https://drive.google.com/file/d/1eLeY6UWqOGg-wn7_8ZzhEKcth-eEgsOI/view?usp=drive_link)
+* [Link to the tutorial video](https://drive.google.com/file/d/1RTlJVBeyPWOlRDXzabKj6cQI9jzSnEJW/view?usp=drive_link)
 
 ## 3) Docker Image Hierarchy
 ![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy-transparent.png)

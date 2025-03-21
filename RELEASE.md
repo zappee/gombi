@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.0] - 16/Mar/2025
+## [0.6.0] - ??/??/2025
 #### Docker Images
 * New Java image: remal-java-21-omni-runner
 * Improve the documentation
