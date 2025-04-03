@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 #### Java projects
 * Fix an exception handling problem in the `@MethodStatistics` annotation. Spring's `@ControllerAdvice` annotation did not work properly with custom exception classes. 
+* Update Java dependencies
 
 ## [0.5.0] - 26/Feb/2025
 #### Java projects
