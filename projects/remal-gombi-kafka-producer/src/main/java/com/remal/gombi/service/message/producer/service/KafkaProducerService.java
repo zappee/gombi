@@ -61,7 +61,7 @@ public class KafkaProducerService {
                                 result.getRecordMetadata().offset(),
                                 result.getProducerRecord().key(),
                                 result.getProducerRecord().value());
-                        meterService.registerSentEvent();
+                        meterService.registerSentMessage();
                     } else {
                         // If Spring is unable to deliver the message to the kafka topic within the time specified
                         // in 'delivery.timeout.ms' (ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG), Spring
@@ -75,7 +75,7 @@ public class KafkaProducerService {
                                 cause.getMessage(),
                                 isRetryable,
                                 ex);
-                        meterService.registerDroppedEvent();
+                        meterService.registerUnprocessedMessage();
                     }});
     }
 }

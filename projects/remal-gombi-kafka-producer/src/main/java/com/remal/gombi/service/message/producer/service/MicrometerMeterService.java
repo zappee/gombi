@@ -32,12 +32,12 @@ public class MicrometerMeterService {
         getCounter("to_be_sent", "Total number of the messages to be sent to kafka topic.").increment();
     }
 
-    public void registerSentEvent() {
+    public void registerSentMessage() {
         getCounter("sent", "Total number of the sent messages.").increment();
     }
 
-    public void registerDroppedEvent() {
-        getCounter("dropped", "Total number of dropped messages.").increment();
+    public void registerUnprocessedMessage() {
+        getCounter("dropped", "Total number of unprocessed messages.").increment();
     }
 
     private Counter getCounter(String status, String description) {
