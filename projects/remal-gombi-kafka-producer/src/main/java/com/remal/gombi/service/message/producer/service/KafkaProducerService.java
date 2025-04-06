@@ -5,7 +5,7 @@
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
  *  Description:
- *     Spring REST endpoint.
+ *     Kafka massage producer.
  */
 package com.remal.gombi.service.message.producer.service;
 
