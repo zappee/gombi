@@ -38,7 +38,7 @@ public class KafkaProducerService {
      */
     public void send(Event event) {
         log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", topicName, event);
-        meterService.registerToBeSentEvent();
+        meterService.registerSentMessage();
 
         // Why are all producer messages sent to one partition?
         // If you are not specifying any custom partition it will use the default partitioner
@@ -61,7 +61,7 @@ public class KafkaProducerService {
                                 result.getRecordMetadata().offset(),
                                 result.getProducerRecord().key(),
                                 result.getProducerRecord().value());
-                        meterService.registerSentMessage();
+                        meterService.registerProcessedMessage();
                     } else {
                         // If Spring is unable to deliver the message to the kafka topic within the time specified
                         // in 'delivery.timeout.ms' (ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG), Spring

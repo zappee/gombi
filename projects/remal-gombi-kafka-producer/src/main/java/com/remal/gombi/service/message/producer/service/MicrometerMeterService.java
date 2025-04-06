@@ -28,12 +28,12 @@ public class MicrometerMeterService {
 
     private final CompositeMeterRegistry meterRegistry;
 
-    public void registerToBeSentEvent() {
-        getCounter("to_be_sent", "Total number of the messages to be sent to kafka topic.").increment();
+    public void registerSentMessage() {
+        getCounter("to_be_sent", "Total number of the sent messages to kafka topic.").increment();
     }
 
-    public void registerSentMessage() {
-        getCounter("sent", "Total number of the sent messages.").increment();
+    public void registerProcessedMessage() {
+        getCounter("sent", "Total number of the processed messages.").increment();
     }
 
     public void registerUnprocessedMessage() {
