@@ -36,7 +36,7 @@ public class KafkaProducerService {
      *
      * @param event the message to send
      */
-    public void onSend(Event event) {
+    public void send(Event event) {
         log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", topicName, event);
         meterService.registerToBeSentEvent();
 

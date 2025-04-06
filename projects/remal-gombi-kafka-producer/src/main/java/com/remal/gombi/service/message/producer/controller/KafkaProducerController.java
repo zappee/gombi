@@ -54,7 +54,7 @@ public class KafkaProducerController {
                 .userId(usedId)
                 .payload(String.format("{\"index\": \"%s\"}", usedId))
                 .build();
-        kafkaProducer.onSend(event);
+        kafkaProducer.send(event);
         return String.format("A new message has been sent to the <b>%s</b> kafka topic. User-id: <b>%s</b>",
                 topicName, usedId);
     }
@@ -93,7 +93,7 @@ public class KafkaProducerController {
                     .userId(String.valueOf(user.id))
                     .payload(String.format("{\"name\": \"%s\", index: %s}", user.name, user.counter.incrementAndGet()))
                     .build();
-            kafkaProducer.onSend(event);
+            kafkaProducer.send(event);
         });
         return String.format("<b>%s</b> messages has been sent to the <b>%s</b> kafka topic.",
                 numberOfMessages, topicName);
@@ -108,7 +108,7 @@ public class KafkaProducerController {
     @PostMapping("/send")
     @MethodStatistics
     public String sendCustomMessage(@RequestBody Event event) {
-        kafkaProducer.onSend(event);
+        kafkaProducer.send(event);
         return "A message has been sent to the <b>" + topicName + "</b> Kafka topic.";
     }
 }
