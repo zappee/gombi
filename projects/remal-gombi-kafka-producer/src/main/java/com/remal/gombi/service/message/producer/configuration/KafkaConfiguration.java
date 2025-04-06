@@ -123,7 +123,7 @@ public class KafkaConfiguration {
         // needed. These producers will not be closed by destroy() or reset().
         factory.setProducerPerThread(producerPerThread);
 
-        // Use it with the @Transactional annotation on the onSend method.
+        // Use it with the @Transactional annotation on the 'send' method.
         //factory.setTransactionIdPrefix(transactionIdPrefix);
 
 
