@@ -33,7 +33,7 @@ public class MicrometerMeterService {
     }
 
     public void registerSentEvent() {
-        getCounter("sent", "Total number of the messages sent.").increment();
+        getCounter("sent", "Total number of the sent messages.").increment();
     }
 
     public void registerDroppedEvent() {
