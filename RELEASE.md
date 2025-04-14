@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 * New Java image: remal-java-21-omni-runner
 * Improve the documentation
 * Improve Kafka configuration to avoid `Replication factor: 3 larger than available brokers: 2.` error.
-If you have three or more nodes, you can use the default settings, otherwise you need to customize Kafka. Since we are using two nodes, we need to use custom settings: `KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR` and `KAFKA_TRANSACTION_STATE_LOG_MIN_ISR`
+If you have three or more nodes, you can use the default settings, otherwise you need to customize Kafka. See more details: `KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR` and `KAFKA_TRANSACTION_STATE_LOG_MIN_ISR`
 
 #### Java projects
 * Fix an exception handling problem in the `@MethodStatistics` annotation. Spring's `@ControllerAdvice` annotation did not work properly with custom exception classes. 
