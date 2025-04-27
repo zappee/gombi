@@ -5,7 +5,7 @@
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
  *  Description:
- *     Spring REST endpoint.
+ *     Kafka message consumer.
  */
 package com.remal.gombi.service.message.consumer.service;
 
