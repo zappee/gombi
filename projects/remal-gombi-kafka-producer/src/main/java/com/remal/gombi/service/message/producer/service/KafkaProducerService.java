@@ -41,15 +41,15 @@ public class KafkaProducerService {
         meterService.registerSentMessage();
 
         // Why are all producer messages sent to one partition?
-        // If you are not specifying any custom partition it will use the default partitioner
+        // If you are not specifying any custom partition, it will use the default partitioner
         // as per the below rule:
         //
         //   1) If a partition is specified in the record, use it that partition to publish.
         //
-        //   2) If no partition is specified but a key is present choose a partition based on
+        //   2) If no partition is specified but a key is present, choose a partition based on
         //      a hash of the key
         //
-        //   3) If no partition or key is present choose a partition in a round-robin fashion
+        //   3) If no partition or key is present, choose a partition in a round-robin fashion
         ProducerRecord<String, Event> record = new ProducerRecord<>(topicName, event.getUserId(), event);
         kafkaTemplate.send(record).
                 whenComplete((result, ex) -> {
