@@ -6,9 +6,10 @@
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Usage: generate-cert.sh <cert-type> <domain> [san]
-#    cert-type: server, client, serverClient, e.g. pki.hello.com
+#    cert-type: server, client, serverClient
 #
-#    domain:    name of the host machine where the certificate will be used
+#    domain:    Name of the host machine where the certificate will be used,
+#               for example pki.hello.com
 #
 #    san:       Subject Alternative Name of the certificate, optional
 #               e.g. "DNS:pki.hello.com,DNS:localhost,IP:127.0.0.1"
