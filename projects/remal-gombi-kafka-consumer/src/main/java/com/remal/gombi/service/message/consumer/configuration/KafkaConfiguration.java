@@ -5,7 +5,7 @@
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
  *  Description:
- *     Kafka producer configuration.
+ *     Kafka consumer configuration.
  */
 package com.remal.gombi.service.message.consumer.configuration;
 

@@ -5,7 +5,7 @@
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
  *  Description:
- *     Kafka error handler.
+ *     Kafka consumer error handler.
  */
 package com.remal.gombi.service.message.consumer.error;
 
