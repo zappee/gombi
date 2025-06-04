@@ -13,10 +13,14 @@ All notable changes to this project will be documented in this file.
 * Improve the documentation
 * Improve Kafka configuration to avoid `Replication factor: 3 larger than available brokers: 2.` error.
 If you have three or more nodes, you can use the default settings, otherwise you need to customize Kafka. See more details: `KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR` and `KAFKA_TRANSACTION_STATE_LOG_MIN_ISR`
+* Change Kafka image from `confluentinc/cp-kafka` to `docker.io/apache/kafka:4.0.0`
+* Running Kafka without ZooKeeper in KRaft mode because Kafka is removing ZooKeeper
+* Remove `zookeeper`container as we use Kafka 4.0.0 without ZooKeeper in KRaft mode
 
 #### Java projects
 * Fix an exception handling problem in the `@MethodStatistics` annotation. Spring's `@ControllerAdvice` annotation did not work properly with custom exception classes. 
 * Update Java dependencies
+* Change Kafka bootstrap address in `remal-gombi-kafka-consumer` and `remal-gombi-kafka-producer` because we use Kafka 4.0.0 in KRaft mode from now
 
 ## [0.5.0] - 26/Feb/2025
 #### Java projects

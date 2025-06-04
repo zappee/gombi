@@ -1,5 +1,5 @@
 services:
-    # ----- user-service-1 -----------------------------------------------------
+    # ----- user-services -------------------------------------------------------------------------
     user-service-1:
         image: remal-java-21-postgres-runner:0.6.0
         container_name: user-service-1.${DOMAIN_NAME}
@@ -20,7 +20,6 @@ services:
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-user-service:/jar-to-run
 
-    # ----- user-service-2 -----------------------------------------------------
     user-service-2:
         image: remal-java-21-postgres-runner:0.6.0
         container_name: user-service-2.${DOMAIN_NAME}
@@ -41,7 +40,7 @@ services:
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-user-service:/jar-to-run
 
-    # ----- welcome-service-1 --------------------------------------------------
+    # ----- welcome-services ----------------------------------------------------------------------
     welcome-service-1:
         image: remal-java-21-runner:0.6.0
         container_name: welcome-service-1.${DOMAIN_NAME}
@@ -57,7 +56,7 @@ services:
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-welcome-service:/jar-to-run
 
-    # ----- kafka-producer-service-1 -------------------------------------------
+    # ----- kafka-producer-services ---------------------------------------------------------------
     kafka-producer-service-1:
         image: remal-java-21-runner:0.6.0
         container_name: kafka-producer-service-1.${DOMAIN_NAME}
@@ -72,8 +71,17 @@ services:
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-kafka-producer:/jar-to-run
+        depends_on:
+            kafka-4:
+                condition: service_healthy
+            kafka-5:
+                condition: service_healthy
+            kafka-6:
+                condition: service_healthy
+            kafka-7:
+                condition: service_healthy
 
-    # ----- kafka-consumer-service-1 -------------------------------------------
+    # ----- kafka-consumer-services ---------------------------------------------------------------
     kafka-consumer-service-1:
         image: remal-java-21-postgres-runner:0.6.0
         container_name: kafka-consumer-service-1.${DOMAIN_NAME}
@@ -93,8 +101,17 @@ services:
             - DB_APP_PASSWORD=password
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-kafka-consumer:/jar-to-run
+        depends_on:
+            kafka-4:
+                condition: service_healthy
+            kafka-5:
+                condition: service_healthy
+            kafka-6:
+                condition: service_healthy
+            kafka-7:
+                condition: service_healthy
 
-    # ----- hazelcast-counter-service-1 ----------------------------------------
+    # ----- hazelcast-counter-services ------------------------------------------------------------
     hazelcast-counter-service-1:
         image: remal-java-21-runner:0.6.0
         container_name: hazelcast-counter-service-1.${DOMAIN_NAME}
@@ -112,7 +129,6 @@ services:
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-hazelcast-counter:/jar-to-run
 
-    # ----- hazelcast-counter-service-2 ----------------------------------------
     hazelcast-counter-service-2:
         image: remal-java-21-runner:0.6.0
         container_name: hazelcast-counter-service-2.${DOMAIN_NAME}
@@ -130,7 +146,7 @@ services:
         volumes:
             - $HOME/Java/gombi/bin/remal-gombi-hazelcast-counter:/jar-to-run
 
-    # ----- Hashicorp Consul ---------------------------------------------------
+    # ----- Hashicorp Consul ----------------------------------------------------------------------
     consul:
         image: remal-consul:0.6.0
         container_name: consul.${DOMAIN_NAME}
@@ -142,7 +158,7 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
 
-    # ----- Monitoring: Grafana ------------------------------------------------
+    # ----- Grafana monitoring --------------------------------------------------------------------
     grafana:
         image: remal-grafana:0.6.0
         container_name: grafana.${DOMAIN_NAME}
@@ -155,7 +171,7 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - PROMETHEUS_HOST=prometheus.${DOMAIN_NAME}
 
-    # ----- Monitoring: Prometheus ---------------------------------------------
+    # ----- Prometheus monitoring -----------------------------------------------------------------
     prometheus:
         image: remal-prometheus:0.6.0
         container_name: prometheus.${DOMAIN_NAME}
@@ -168,7 +184,7 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_HOST=consul.${DOMAIN_NAME}
 
-    # ----- Hazelcast ----------------------------------------------------------
+    # ----- Hazelcast -----------------------------------------------------------------------------
     hazelcast-1:
         image: remal-hazelcast:0.6.0
         container_name: hazelcast-1.${DOMAIN_NAME}
@@ -193,66 +209,280 @@ services:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - HAZELCAST_CLUSTER_NAME=gombi-dev
 
-    # ----- Kafka --------------------------------------------------------------
+    # ----- Kafka ---------------------------------------------------------------------------------
+    #          When you operate Apache Kafka® in KRaft mode, you must set the process.roles
+    #          property. This property specifies whether the server acts as a controller, broker,
+    #          or both, although currently both is not supported for production workloads. In KRaft
+    #          mode, specific Kafka servers are selected to be controllers, storing metadata for
+    #          the cluster in the metadata log, and other servers are selected to be brokers. The
+    #          servers selected to be controllers will participate in the metadata quorum. Each
+    #          controller is either an active or a hot standby for the current active controller.
+    #
+    #          In a production environment, the controller quorum will be deployed on multiple
+    #          nodes. This is called an ensemble. An ensemble is a set of 2n + 1 controllers where
+    #          n is any number greater than 0. The odd number of controllers allows the controller
+    #          quorum to perform majority elections for leadership. At any given time, there can be
+    #          up to n failed servers in an ensemble and cluster will keep quorum. For example,
+    #          with three controllers, the cluster can tolerate one controller failure. If at any
+    #          time, quorum is lost, the cluster will go down. For production, you should have
+    #          typically 3 or 5 controllers, but at least 3.
+
+    # ----- Kafka controllers -----
     kafka-1:
-        image: confluentinc/cp-kafka:7.8.0
+        image: docker.io/apache/kafka:4.0.0
+        restart: unless-stopped
         container_name: kafka-1.${DOMAIN_NAME}
         hostname: kafka-1.${DOMAIN_NAME}
-        ports:
-            - "13053:9093" # kafka's client port
         environment:
-            - CLUSTER_ID=cluster-1
-            - KAFKA_BROKER_ID=1
-            - KAFKA_ZOOKEEPER_CONNECT=zookeeper-1.${DOMAIN_NAME}:2181
-            - KAFKA_LISTENERS=INTERNAL://kafka-1.${DOMAIN_NAME}:9092,EXTERNAL://kafka-1.${DOMAIN_NAME}:9093
-            - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka-1.${DOMAIN_NAME}:9092,EXTERNAL://localhost:13053
-            - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
-            - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
-            - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-            - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
-            - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
-
-        depends_on:
-            - zookeeper-1
+            KAFKA_CLUSTER_ID: ${KAFKA_CLUSTER_ID}
+            KAFKA_NODE_ID: 1
+            KAFKA_PROCESS_ROLES: controller
+            KAFKA_LISTENERS: CONTROLLER://:9093
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+            KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
+            KAFKA_JMX_PORT: 9997
+        healthcheck:
+            test: /opt/kafka/bin/kafka-cluster.sh list-endpoints --bootstrap-controller localhost:9093
+            interval: 60s
+            timeout: 10s
+            retries: 3
+            start_period: 1s
+            start_interval: 1s
 
     kafka-2:
-        image: confluentinc/cp-kafka:7.8.0
+        image: docker.io/apache/kafka:4.0.0
+        restart: unless-stopped
         container_name: kafka-2.${DOMAIN_NAME}
         hostname: kafka-2.${DOMAIN_NAME}
-        ports:
-            - "13043:9093" # kafka's client port
         environment:
-            - CLUSTER_ID=cluster-1
-            - KAFKA_BROKER_ID=2
-            - KAFKA_ZOOKEEPER_CONNECT=zookeeper-1.${DOMAIN_NAME}:2181
-            - KAFKA_LISTENERS=INTERNAL://kafka-2.${DOMAIN_NAME}:9092,EXTERNAL://kafka-2.${DOMAIN_NAME}:9093
-            - KAFKA_ADVERTISED_LISTENERS=INTERNAL://kafka-2.${DOMAIN_NAME}:9092,EXTERNAL://localhost:13043
-            - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
-            - KAFKA_INTER_BROKER_LISTENER_NAME=INTERNAL
-            - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-            - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
-            - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+            KAFKA_CLUSTER_ID: ${KAFKA_CLUSTER_ID}
+            KAFKA_NODE_ID: 2
+            KAFKA_PROCESS_ROLES: controller
+            KAFKA_LISTENERS: CONTROLLER://:9093
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+            KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
+            KAFKA_JMX_PORT: 9997
+        healthcheck:
+            test: /opt/kafka/bin/kafka-cluster.sh list-endpoints --bootstrap-controller localhost:9093
+            interval: 60s
+            timeout: 10s
+            retries: 3
+            start_period: 1s
+            start_interval: 1s
 
+    kafka-3:
+        image: docker.io/apache/kafka:4.0.0
+        restart: unless-stopped
+        container_name: kafka-3.${DOMAIN_NAME}
+        hostname: kafka-3.${DOMAIN_NAME}
+        environment:
+            KAFKA_CLUSTER_ID: ${KAFKA_CLUSTER_ID}
+            KAFKA_NODE_ID: 3
+            KAFKA_PROCESS_ROLES: controller
+            KAFKA_LISTENERS: CONTROLLER://:9093
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+            KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
+            KAFKA_JMX_PORT: 9997
+        healthcheck:
+            test: /opt/kafka/bin/kafka-cluster.sh list-endpoints --bootstrap-controller localhost:9093
+            interval: 60s
+            timeout: 10s
+            retries: 3
+            start_period: 1s
+            start_interval: 1s
+
+    # ----- Kafka brokers -----
+    kafka-4:
+        image: docker.io/apache/kafka:4.0.0
+        restart: unless-stopped
+        container_name: kafka-4.${DOMAIN_NAME}
+        hostname: kafka-4.${DOMAIN_NAME}
+        environment:
+            KAFKA_CLUSTER_ID: ${KAFKA_CLUSTER_ID}
+            KAFKA_NODE_ID: 4
+            KAFKA_PROCESS_ROLES: broker
+            KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094
+            KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-4.${DOMAIN_NAME}:9092,EXTERNAL://${KAFKA_EXTERNAL_IP}:${KAFKA_BROKER_1_PORT}
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+            KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+            KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
+            KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+            KAFKA_LISTENER_NAME_EXTERNAL_PLAIN_SASL_JAAS_CONFIG: |
+                org.apache.kafka.common.security.plain.PlainLoginModule required \
+                username="${KAFKA_USERNAME}" \
+                password="${KAFKA_PASSWORD}" \
+                user_${KAFKA_USERNAME}="${KAFKA_PASSWORD}";
+            KAFKA_JMX_PORT: 9997
+        ports:
+            - ${KAFKA_BROKER_1_PORT}:9094/tcp
+        healthcheck:
+            test: /opt/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+            interval: 60s
+            timeout: 10s
+            retries: 3
+            start_period: 1s
+            start_interval: 1s
         depends_on:
-            - zookeeper-1
+            kafka-1:
+                condition: service_healthy
+            kafka-2:
+                condition: service_healthy
+            kafka-3:
+                condition: service_healthy
 
-    zookeeper-1:
-        image: confluentinc/cp-zookeeper:7.8.0
-        container_name: zookeeper-1.${DOMAIN_NAME}
-        hostname: zookeeper-1.${DOMAIN_NAME}
-        ports:
-            - "13031:2181" # zookeeper's client port
+    kafka-5:
+        image: docker.io/apache/kafka:4.0.0
+        restart: unless-stopped
+        container_name: kafka-5.${DOMAIN_NAME}
+        hostname: kafka-5.${DOMAIN_NAME}
         environment:
-            - ZOOKEEPER_CLIENT_PORT=2181
-            - ZOOKEEPER_TICK_TIME=2000
+            KAFKA_CLUSTER_ID: ${KAFKA_CLUSTER_ID}
+            KAFKA_NODE_ID: 5
+            KAFKA_PROCESS_ROLES: broker
+            KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094
+            KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-5:9092,EXTERNAL://${KAFKA_EXTERNAL_IP}:${KAFKA_BROKER_2_PORT}
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+            KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+            KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
+            KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+            KAFKA_LISTENER_NAME_EXTERNAL_PLAIN_SASL_JAAS_CONFIG: |
+                org.apache.kafka.common.security.plain.PlainLoginModule required \
+                username="${KAFKA_USERNAME}" \
+                password="${KAFKA_PASSWORD}" \
+                user_${KAFKA_USERNAME}="${KAFKA_PASSWORD}";
+            KAFKA_JMX_PORT: 9997
+        ports:
+            - ${KAFKA_BROKER_2_PORT}:9094/tcp
+        healthcheck:
+            test: /opt/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+            interval: 60s
+            timeout: 10s
+            retries: 3
+            start_period: 1s
+            start_interval: 1s
+        depends_on:
+            kafka-1:
+                condition: service_healthy
+            kafka-2:
+                condition: service_healthy
+            kafka-3:
+                condition: service_healthy
 
-    # ----- Private Certificate Authority Server -------------------------------
+    kafka-6:
+        image: docker.io/apache/kafka:4.0.0
+        restart: unless-stopped
+        container_name: kafka-6.${DOMAIN_NAME}
+        hostname: kafka-6.${DOMAIN_NAME}
+        environment:
+            KAFKA_CLUSTER_ID: ${KAFKA_CLUSTER_ID}
+            KAFKA_NODE_ID: 6
+            KAFKA_PROCESS_ROLES: broker
+            KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094
+            KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-6:9092,EXTERNAL://${KAFKA_EXTERNAL_IP}:${KAFKA_BROKER_3_PORT}
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+            KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+            KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
+            KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+            KAFKA_LISTENER_NAME_EXTERNAL_PLAIN_SASL_JAAS_CONFIG: |
+                org.apache.kafka.common.security.plain.PlainLoginModule required \
+                username="${KAFKA_USERNAME}" \
+                password="${KAFKA_PASSWORD}" \
+                user_${KAFKA_USERNAME}="${KAFKA_PASSWORD}";
+            KAFKA_JMX_PORT: 9997
+        ports:
+            - ${KAFKA_BROKER_3_PORT}:9094/tcp
+        healthcheck:
+            test: /opt/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+            interval: 60s
+            timeout: 10s
+            retries: 3
+            start_period: 1s
+            start_interval: 1s
+        depends_on:
+            kafka-1:
+                condition: service_healthy
+            kafka-2:
+                condition: service_healthy
+            kafka-3:
+                condition: service_healthy
+
+    kafka-7:
+        image: docker.io/apache/kafka:4.0.0
+        restart: unless-stopped
+        container_name: kafka-7.${DOMAIN_NAME}
+        hostname: kafka-7.${DOMAIN_NAME}
+        environment:
+            KAFKA_CLUSTER_ID: ${KAFKA_CLUSTER_ID}
+            KAFKA_NODE_ID: 7
+            KAFKA_PROCESS_ROLES: broker
+            KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094
+            KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-7:9092,EXTERNAL://${KAFKA_EXTERNAL_IP}:${KAFKA_BROKER_4_PORT}
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+            KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+            KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
+            KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+            KAFKA_LISTENER_NAME_EXTERNAL_PLAIN_SASL_JAAS_CONFIG: |
+                org.apache.kafka.common.security.plain.PlainLoginModule required \
+                username="${KAFKA_USERNAME}" \
+                password="${KAFKA_PASSWORD}" \
+                user_${KAFKA_USERNAME}="${KAFKA_PASSWORD}";
+            KAFKA_JMX_PORT: 9997
+        ports:
+            - ${KAFKA_BROKER_4_PORT}:9094/tcp
+        healthcheck:
+            test: /opt/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+            interval: 60s
+            timeout: 10s
+            retries: 3
+            start_period: 1s
+            start_interval: 1s
+        depends_on:
+            kafka-1:
+                condition: service_healthy
+            kafka-2:
+                condition: service_healthy
+            kafka-3:
+                condition: service_healthy
+
+    # ----- Kafka UI -----
+    kafka-ui:
+        image: ghcr.io/kafbat/kafka-ui:v1.2.0
+        restart: unless-stopped
+        container_name: kafka-ui.${DOMAIN_NAME}
+        hostname: kafka-ui.${DOMAIN_NAME}
+        read_only: true
+        environment:
+            KAFKA_CLUSTERS_0_NAME: ${KAFKA_CLUSTER_NAME}
+            KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-4.${DOMAIN_NAME}:9092,kafka-5.${DOMAIN_NAME}:9092,kafka-6.${DOMAIN_NAME}:9092,kafka-7.${DOMAIN_NAME}:9092
+            KAFKA_CLUSTERS_0_METRICS_PORT: 9997
+            KAFKA_CLUSTERS_0_METRICS_TYPE: JMX
+            DYNAMIC_CONFIG_ENABLED: true
+        ports:
+            - "25280:8080"
+        depends_on:
+            kafka-4:
+                condition: service_healthy
+            kafka-5:
+                condition: service_healthy
+            kafka-6:
+                condition: service_healthy
+            kafka-7:
+                condition: service_healthy
+
+    # ----- Private Certificate Authority Server --------------------------------------------------
     pki:
         image: remal-private-ca:0.6.0
         container_name: pki.${DOMAIN_NAME}
         hostname: pki.${DOMAIN_NAME}
         ports:
-            - "13012:22"   # SSH
+            - "12012:22"   # SSH
         environment:
             - EASYRSA_REQ_CN=${DOMAIN_NAME}
             - EASYRSA_REQ_COUNTRY=${EASYRSA_REQ_COUNTRY}

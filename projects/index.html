@@ -8,12 +8,14 @@
         table { padding: 5px; }
         .title { color: #9C27B0; text-transform: uppercase; font-weight: bold; font-size: x-large; line-height: 3; text-align: center; }
 
-        .type-service { background-color: #E1BEE7; }
-        .type-registry { background-color: #CE93D8; }
-        .type-monitoring { background-color: #B39DDB; }
-        .type-messaging { background-color: #E6EE9C; }
-        .type-cache { background-color: #FFCDD2; }
-        .type-pki { background-color: #90CAF9; }
+        .type-service { background-color: #FFE082; }
+        .type-registry { background-color: #D1C4E9; }
+        .type-monitoring { background-color: #81D4FA; }
+        .type-messaging-controller { background-color: #E6EE9C; }
+        .type-messaging-broker { background-color: #D4E157; }
+        .type-messaging-tool { background-color: #C0CA33; }
+        .type-cache { background-color: #FFCC80; }
+        .type-pki { background-color: #F48FB1; }
 
         .imagelist-header { color: #BA68C8; text-transform: lowercase; font-size: small; margin-top: 20px; }
         .imagelist-col-margin { margin-left: 5px; margin-right: 5px; }
@@ -331,7 +333,7 @@
             </td>
         </tr>
 
-        <!-- HashiCorp Consul -->
+        <!-- consul -->
         <tr class="imagelist-content type-registry">
             <td><span class="imagelist-col-margin">consul</span></td>
             <td>
@@ -372,7 +374,7 @@
             </td>
         </tr>
 
-        <!-- Grafana -->
+        <!-- grafana -->
         <tr class="imagelist-content type-monitoring">
             <td><span class="imagelist-col-margin">grafana</span></td>
             <td>
@@ -407,7 +409,7 @@
             </td>
         </tr>
 
-        <!-- Prometheus -->
+        <!-- prometheus -->
         <tr class="imagelist-content type-monitoring">
             <td><span class="imagelist-col-margin">prometheus</span></td>
             <td>
@@ -511,16 +513,16 @@
         </tr>
 
         <!-- kafka-1 -->
-        <tr class="imagelist-content type-messaging">
+        <tr class="imagelist-content type-messaging-controller">
             <td><span class="imagelist-col-margin">kafka-1</span></td>
             <td><span class="imagelist-col-margin">Kafka is a high-performance data pipeline and streaming application.</span></td>
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">13053</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">9093</td>
-                        <td class="imagelist-port-info">Kafka's client port</td>
+                        <td class="imagelist-port-host">controller</td>
+                        <td></td>
+                        <td class="imagelist-port-docker"></td>
+                        <td class="imagelist-port-info"></td>
                     </tr>
                 </table>
             </td>
@@ -528,37 +530,148 @@
         </tr>
 
         <!-- kafka-2 -->
-        <tr class="imagelist-content type-messaging">
+        <tr class="imagelist-content type-messaging-controller">
             <td><span class="imagelist-col-margin">kafka-2</span></td>
             <td><span class="imagelist-col-margin">Kafka is a high-performance data pipeline and streaming application.</span></td>
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">13043</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">9093</td>
-                        <td class="imagelist-port-info">Kafka's client port</td>
+                        <td class="imagelist-port-host">controller</td>
+                        <td></td>
+                        <td class="imagelist-port-docker"></td>
+                        <td class="imagelist-port-info"></td>
                     </tr>
                 </table>
             </td>
             <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
         </tr>
 
-        <!-- zookeeper-1 -->
-        <tr class="imagelist-content type-messaging">
-            <td><span class="imagelist-col-margin">zookeeper-1</span></td>
-            <td><span class="imagelist-col-margin">Zookeeper used by Kafka</span></td>
+        <!-- kafka-3 -->
+        <tr class="imagelist-content type-messaging-controller">
+            <td><span class="imagelist-col-margin">kafka-3</span></td>
+            <td><span class="imagelist-col-margin">Kafka is a high-performance data pipeline and streaming application.</span></td>
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">13031</td>
-                        <td>:</td>
-                        <td class="imagelist-port-docker">2181</td>
-                        <td class="imagelist-port-info">Zookeeper's client port</td>
+                        <td class="imagelist-port-host">controller</td>
+                        <td></td>
+                        <td class="imagelist-port-docker"></td>
+                        <td class="imagelist-port-info"></td>
                     </tr>
                 </table>
             </td>
             <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+
+        <!-- kafka-4 -->
+        <tr class="imagelist-content type-messaging-broker">
+            <td><span class="imagelist-col-margin">kafka-4</span></td>
+            <td><span class="imagelist-col-margin">Kafka is a high-performance data pipeline and streaming application.</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">broker</td>
+                        <td></td>
+                        <td class="imagelist-port-docker"></td>
+                        <td class="imagelist-port-info"></td>
+                    </tr>
+                   <tr>
+                        <td class="imagelist-port-host">25111</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">9094</td>
+                        <td class="imagelist-port-info">kafka client's port</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+
+        <!-- kafka-5 -->
+        <tr class="imagelist-content type-messaging-broker">
+            <td><span class="imagelist-col-margin">kafka-5</span></td>
+            <td><span class="imagelist-col-margin">Kafka is a high-performance data pipeline and streaming application.</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">broker</td>
+                        <td></td>
+                        <td class="imagelist-port-docker"></td>
+                        <td class="imagelist-port-info"></td>
+                    </tr>
+                   <tr>
+                        <td class="imagelist-port-host">25121</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">9094</td>
+                        <td class="imagelist-port-info">kafka client's port</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+
+        <!-- kafka-6 -->
+        <tr class="imagelist-content type-messaging-broker">
+            <td><span class="imagelist-col-margin">kafka-6</span></td>
+            <td><span class="imagelist-col-margin">Kafka is a high-performance data pipeline and streaming application.</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">broker</td>
+                        <td></td>
+                        <td class="imagelist-port-docker"></td>
+                        <td class="imagelist-port-info"></td>
+                    </tr>
+                   <tr>
+                        <td class="imagelist-port-host">25131</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">9094</td>
+                        <td class="imagelist-port-info">kafka client's port</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+
+        <!-- kafka-7 -->
+        <tr class="imagelist-content type-messaging-broker">
+            <td><span class="imagelist-col-margin">kafka-7</span></td>
+            <td><span class="imagelist-col-margin">Kafka is a high-performance data pipeline and streaming application.</span></td>
+            <td>
+                <table>
+                    <tr>
+                        <td class="imagelist-port-host">broker</td>
+                        <td></td>
+                        <td class="imagelist-port-docker"></td>
+                        <td class="imagelist-port-info"></td>
+                    </tr>
+                   <tr>
+                        <td class="imagelist-port-host">25141</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">9094</td>
+                        <td class="imagelist-port-info">kafka client's port</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command"><span class="imagelist-col-margin"></span></td>
+        </tr>
+
+        <!-- kafka-ui -->
+        <tr class="imagelist-content type-messaging-tool">
+            <td><span class="imagelist-col-margin">kafka-ui</span></td>
+            <td><span class="imagelist-col-margin">Versatile, fast and lightweight web UI for managing Apache Kafka® clusters.</span></td>
+            <td>
+                <table>
+                   <tr>
+                        <td class="imagelist-port-host">25280</td>
+                        <td>:</td>
+                        <td class="imagelist-port-docker">8080</td>
+                        <td class="imagelist-port-info">HTTP port</td>
+                    </tr>
+                </table>
+            </td>
+            <td class="imagelist-command">
+                <span class="imagelist-col-margin"><a href="http://localhost:25280" target="_blank">http://localhost:25280</a></span>
+            </td>
         </tr>
 
         <!-- PKI server -->
@@ -568,7 +681,7 @@
             <td>
                 <table>
                     <tr>
-                        <td class="imagelist-port-host">13012</td>
+                        <td class="imagelist-port-host">12012</td>
                         <td>:</td>
                         <td class="imagelist-port-docker">22</td>
                         <td class="imagelist-port-info">SSH</td>
