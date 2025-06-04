@@ -20,7 +20,7 @@ If you have three or more nodes, you can use the default settings, otherwise you
 #### Java projects
 * Fix an exception handling problem in the `@MethodStatistics` annotation. Spring's `@ControllerAdvice` annotation did not work properly with custom exception classes. 
 * Update Java dependencies
-* Change Kafka bootstrap address in `remal-gombi-kafka-consumer` and `remal-gombi-kafka-producer` because we use Kafka 4.0.0 in KRaft mode from now
+* Change Kafka bootstrap address in `remal-gombi-kafka-consumer` and `remal-gombi-kafka-producer` projects because we use Kafka 4.0.0 in KRaft mode from now
 
 ## [0.5.0] - 26/Feb/2025
 #### Java projects
