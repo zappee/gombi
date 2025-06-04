@@ -27,7 +27,7 @@ public class KafkaConsumerController {
 
     @GetMapping("/events")
     @MethodStatistics
-    public String showReceivedEvents() {
+    public String showReceivedMessages() {
         var count = eventRepository.countById();
 
         StringBuilder sb = new StringBuilder()
