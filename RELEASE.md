@@ -2,9 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.0] - ??/??/2025
+## [0.6.0] - 13/Jun/2025
 #### Docker Images
-* New Java image: remal-java-21-omni-runner
+* Update `alpine` version from `3.21.2` to `3.22.0` in the `base` image
+* Update `Hashicorp Consul` version from `1.20.2` to `1.21.1` in the `hcp-consul` image
+* Update `Hashicorp Vault` version from `1.18.4` to `1.19.5` in the `hcp-vault` image
+* Update `Grafana Enterprise` version from `11.5.1` to `12.0.1` in the `grafana` image
+* Update `Prometheus` version from `3.1.0` to `3.4.1` in the `prometheus` image
+* New Java image: remal-java-21-omni-runner. This is a large Docker image with additional Unix tools and packages.
 * Improve the documentation
 * Improve Kafka configuration to avoid `Replication factor: 3 larger than available brokers: 2.` error.
 If you have three or more nodes, you can use the default settings, otherwise you need to customize Kafka. See more details: `KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR` and `KAFKA_TRANSACTION_STATE_LOG_MIN_ISR`

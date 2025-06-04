@@ -1,6 +1,6 @@
 # Remal Image: Java 21 Omni Runner
 
-Ultimate Java-21 runner image for Spring Boot
+Ultimate Java-21 runner image for Spring Boot applications.
 
 Details:
 * PostgreSQL database server
