@@ -27,6 +27,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -93,7 +95,7 @@ public class KafkaConsumerService {
         eventRepository.save(eventEntity);
 
         // a deliberately thrown error for testing purposes
-        if (incomingMessage.getUserId().equals("error")) {
+        if (Objects.nonNull(incomingMessage.getUserId()) && incomingMessage.getUserId().equals("error")) {
             throw new FailureToProcessException(incomingMessage, topic, "A deliberately thrown error for testing purposes.");
         }
 
