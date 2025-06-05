@@ -13,6 +13,7 @@ import com.remal.gombi.commons.model.Event;
 import com.remal.gombi.commons.monitoring.MethodStatistics;
 import com.remal.gombi.service.message.producer.service.KafkaProducerService;
 import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,16 +30,13 @@ import java.util.stream.IntStream;
 @Slf4j
 @RestController
 @RequestMapping("/api/kafka")
+@RequiredArgsConstructor
 public class KafkaProducerController {
 
     private final KafkaProducerService kafkaProducer;
 
     @Value("${kafka.topic.name}")
     private String topicName;
-
-    public KafkaProducerController(KafkaProducerService kafkaProducer) {
-        this.kafkaProducer = kafkaProducer;
-    }
 
     /**
      *  Sends a new message to the Kafka queue with the given user-id.
