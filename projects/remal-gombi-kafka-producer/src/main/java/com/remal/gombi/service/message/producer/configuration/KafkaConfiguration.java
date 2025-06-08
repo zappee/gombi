@@ -81,13 +81,13 @@ public class KafkaConfiguration {
 
     // topic configuration starts from here
 
-    @Value("${kafka.topic.name:topic1}")
+    @Value("${kafka.producer.topic.name:topic1}")
     private String topicName;
 
-    @Value("${kafka.topic.partitions:1}")
+    @Value("${kafka.producer.topic.partitions:1}")
     private int topicPartitions;
 
-    @Value("${kafka.topic.replicas:1}")
+    @Value("${kafka.producer.topic.replicas:1}")
     private int topicReplicas;
 
     /**

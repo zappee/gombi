@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaProducerService {
 
-    @Value("${kafka.topic.name}")
+    @Value("${kafka.producer.topic.name}")
     private String topicName;
 
     private final KafkaTemplate<String, Event> kafkaTemplate;

@@ -40,7 +40,7 @@ public class KafkaConsumerService {
     private final MicrometerMeterService meterService;
 
     @Getter
-    @Value("${kafka.topic.name}")
+    @Value("${kafka.consumer.topic.name}")
     private String topicName;
 
     @KafkaListener(
@@ -58,9 +58,9 @@ public class KafkaConsumerService {
             clientIdPrefix = "${FQDN}",
 
             // Used by kafka broker to uniquely identify a consumer group.
-            groupId = "${kafka.topic.name}-${random.uuid}",
+            groupId = "${kafka.consumer.topic.name}-${random.uuid}",
 
-            topics = "${kafka.topic.name}",
+            topics = "${kafka.consumer.topic.name}",
             containerFactory = "containerFactory")
 
     // The trick here is giving transactionManager as the value for the @Transactional annotation because

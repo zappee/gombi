@@ -35,7 +35,7 @@ public class KafkaProducerController {
 
     private final KafkaProducerService kafkaProducer;
 
-    @Value("${kafka.topic.name}")
+    @Value("${kafka.producer.topic.name}")
     private String topicName;
 
     /**
