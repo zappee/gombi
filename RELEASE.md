@@ -22,6 +22,7 @@ If you have three or more nodes, you can use the default settings, otherwise you
 * Update Java dependencies
 * Change Kafka bootstrap address in `remal-gombi-kafka-consumer` and `remal-gombi-kafka-producer` projects because we use Kafka 4.0.0 in KRaft mode from now
 * Improve the documentation: add some nice Prometheus diagram
+* Improve code quality
 
 ## [0.5.0] - 26/Feb/2025
 #### Java projects
