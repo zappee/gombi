@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.0] - 13/Jun/2025
+## [0.6.0] - 08/Jun/2025
 #### Docker Images
 * Update `alpine` version from `3.21.2` to `3.22.0` in the `base` image
 * Update `Hashicorp Consul` version from `1.20.2` to `1.21.1` in the `hcp-consul` image
@@ -21,6 +21,7 @@ If you have three or more nodes, you can use the default settings, otherwise you
 * Fix an exception handling problem in the `@MethodStatistics` annotation. Spring's `@ControllerAdvice` annotation did not work properly with custom exception classes. 
 * Update Java dependencies
 * Change Kafka bootstrap address in `remal-gombi-kafka-consumer` and `remal-gombi-kafka-producer` projects because we use Kafka 4.0.0 in KRaft mode from now
+* Improve the documentation: add some nice Prometheus diagram
 
 ## [0.5.0] - 26/Feb/2025
 #### Java projects
