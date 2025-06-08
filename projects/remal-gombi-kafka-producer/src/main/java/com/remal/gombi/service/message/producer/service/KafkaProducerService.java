@@ -5,7 +5,7 @@
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
  *  Description:
- *     Spring REST endpoint.
+ *     Kafka massage producer.
  */
 package com.remal.gombi.service.message.producer.service;
 
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaProducerService {
 
-    @Value("${kafka.topic.name}")
+    @Value("${kafka.producer.topic.name}")
     private String topicName;
 
     private final KafkaTemplate<String, Event> kafkaTemplate;
@@ -36,20 +36,20 @@ public class KafkaProducerService {
      *
      * @param event the message to send
      */
-    public void onSend(Event event) {
+    public void send(Event event) {
         log.debug("sending message to kafka: {topic: \"{}\", payload: {}}", topicName, event);
-        meterService.registerToBeSentEvent();
+        meterService.registerSentMessage();
 
         // Why are all producer messages sent to one partition?
-        // If you are not specifying any custom partition it will use the default partitioner
+        // If you are not specifying any custom partition, it will use the default partitioner
         // as per the below rule:
         //
         //   1) If a partition is specified in the record, use it that partition to publish.
         //
-        //   2) If no partition is specified but a key is present choose a partition based on
+        //   2) If no partition is specified but a key is present, choose a partition based on
         //      a hash of the key
         //
-        //   3) If no partition or key is present choose a partition in a round-robin fashion
+        //   3) If no partition or key is present, choose a partition in a round-robin fashion
         ProducerRecord<String, Event> record = new ProducerRecord<>(topicName, event.getUserId(), event);
         kafkaTemplate.send(record).
                 whenComplete((result, ex) -> {
@@ -61,7 +61,7 @@ public class KafkaProducerService {
                                 result.getRecordMetadata().offset(),
                                 result.getProducerRecord().key(),
                                 result.getProducerRecord().value());
-                        meterService.registerSentEvent();
+                        meterService.registerProcessedMessage();
                     } else {
                         // If Spring is unable to deliver the message to the kafka topic within the time specified
                         // in 'delivery.timeout.ms' (ProducerConfig.DELIVERY_TIMEOUT_MS_CONFIG), Spring
@@ -75,7 +75,7 @@ public class KafkaProducerService {
                                 cause.getMessage(),
                                 isRetryable,
                                 ex);
-                        meterService.registerDroppedEvent();
+                        meterService.registerUnprocessedMessage();
                     }});
     }
 }

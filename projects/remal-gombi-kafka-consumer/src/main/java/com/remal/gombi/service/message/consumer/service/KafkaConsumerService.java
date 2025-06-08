@@ -5,7 +5,7 @@
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
  *  Description:
- *     Spring REST endpoint.
+ *     Kafka message consumer.
  */
 package com.remal.gombi.service.message.consumer.service;
 
@@ -27,6 +27,8 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -38,7 +40,7 @@ public class KafkaConsumerService {
     private final MicrometerMeterService meterService;
 
     @Getter
-    @Value("${kafka.topic.name}")
+    @Value("${kafka.consumer.topic.name}")
     private String topicName;
 
     @KafkaListener(
@@ -56,9 +58,9 @@ public class KafkaConsumerService {
             clientIdPrefix = "${FQDN}",
 
             // Used by kafka broker to uniquely identify a consumer group.
-            groupId = "${kafka.topic.name}-${random.uuid}",
+            groupId = "${kafka.consumer.topic.name}-${random.uuid}",
 
-            topics = "${kafka.topic.name}",
+            topics = "${kafka.consumer.topic.name}",
             containerFactory = "containerFactory")
 
     // The trick here is giving transactionManager as the value for the @Transactional annotation because
@@ -93,7 +95,7 @@ public class KafkaConsumerService {
         eventRepository.save(eventEntity);
 
         // a deliberately thrown error for testing purposes
-        if (incomingMessage.getUserId().equals("error")) {
+        if (Objects.nonNull(incomingMessage.getUserId()) && incomingMessage.getUserId().equals("error")) {
             throw new FailureToProcessException(incomingMessage, topic, "A deliberately thrown error for testing purposes.");
         }
 

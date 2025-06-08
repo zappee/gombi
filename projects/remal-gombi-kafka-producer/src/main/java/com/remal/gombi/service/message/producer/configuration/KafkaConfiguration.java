@@ -81,13 +81,13 @@ public class KafkaConfiguration {
 
     // topic configuration starts from here
 
-    @Value("${kafka.topic.name:topic1}")
+    @Value("${kafka.producer.topic.name:topic1}")
     private String topicName;
 
-    @Value("${kafka.topic.partitions:1}")
+    @Value("${kafka.producer.topic.partitions:1}")
     private int topicPartitions;
 
-    @Value("${kafka.topic.replicas:1}")
+    @Value("${kafka.producer.topic.replicas:1}")
     private int topicReplicas;
 
     /**
@@ -123,7 +123,7 @@ public class KafkaConfiguration {
         // needed. These producers will not be closed by destroy() or reset().
         factory.setProducerPerThread(producerPerThread);
 
-        // Use it with the @Transactional annotation on the onSend method.
+        // Use it with the @Transactional annotation on the 'send' method.
         //factory.setTransactionIdPrefix(transactionIdPrefix);
 
 

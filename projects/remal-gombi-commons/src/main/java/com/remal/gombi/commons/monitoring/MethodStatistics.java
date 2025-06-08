@@ -18,6 +18,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface MethodStatistics {
     boolean logToLogfile() default true;
-    boolean executionTimeStatistic() default true;
-    boolean countMethodCalls() default true;
+    boolean recordExecutionTime() default true;
+    boolean recordMethodCalls() default true;
 }

@@ -44,11 +44,14 @@ The platform is best suited for building microservices with Java and Spring Boot
 
 * Monitoring of Kafka topic message streams
 
+
 ## 2) Tutorial
-* [Link to the tutorial video](https://drive.google.com/file/d/1eLeY6UWqOGg-wn7_8ZzhEKcth-eEgsOI/view?usp=drive_link)
+* [Link to the tutorial video](https://drive.google.com/file/d/1RTlJVBeyPWOlRDXzabKj6cQI9jzSnEJW/view?usp=drive_link)
+
 
 ## 3) Docker Image Hierarchy
 ![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy-transparent.png)
+
 
 ## 4) Quick start
 ### 4.1) Build the Docker images
@@ -68,12 +71,33 @@ The platform is best suited for building microservices with Java and Spring Boot
     $ cd gombi/projects
     $ ./gombi.sh i1
 
+
+## 5) Monitoring
+#### Total number of REST endpoint calls
+
+  ![total number of REST endpoint calls, chart](docs/screenshots/total-number-of-rest-calls-graph.png)
+
+  ![total number of REST endpoint calls, table](docs/screenshots/total-number-of-rest-calls-table.png)
+
+#### Serving time of REST calls
+  ![serving time of REST calls, chart](docs/screenshots/execution-time-of-rest-calls-graph.png)
+
+  ![serving time of REST calls, table](docs/screenshots/execution-time-of-rest-calls-table.png)
+
+#### Kafka consumed messages
+
+  ![Kafka consumed messages, chart](docs/screenshots/kafka-consumer-incoming-graph.png)
+
+  ![Kafka consumed messages, table](docs/screenshots/kafka-consumer-incoming-table.png)
+
+
 ## 5) Contributions are welcome
 Please help improve this project.
 
 You can open a bug report or submit a new pull request with new features, fixes or improvements.
 
-## 6) Thank you for buying me a coffee
+
+## 7) Thank you for buying me a coffee
 * **Wise, EUR/USD**:
 
    ![Wise, EUR/USD](docs/donation/wisetag.png)

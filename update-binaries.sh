@@ -1,6 +1,6 @@
 #!/bin/bash -ue
 # ******************************************************************************
-# Remal 3rd party file copier.
+# File copier for Remal Gombi project.
 #
 # The install binary files are big so we keep these files out of the source code
 # repository. In the Git repo we only keep zero length marker files as
@@ -16,12 +16,12 @@
 #    1:    copy the binaries from the source to the target directories
 #    default: 0
 #
-# Since:  February, 2024
+# Since:  February 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-REMAL_BINARY_HOME="$HOME/Downloads/apache-tomcat-9.0.100/webapps/docker-build"
+REMAL_BINARY_HOME="$HOME/Applications/tomcat/apache-tomcat-10.1.33/webapps/docker-build"
 PROJECT_HOME="$HOME/Java/gombi"
 
 BINARIES=(
@@ -30,10 +30,10 @@ BINARIES=(
   "AM-SSOConfiguratorTools-5.1.3.18.zip;docker/infrastructure/forgerock-am/bin"
   "apache-tomcat-9.0.71.tar.gz;docker/infrastructure/tomcat-9/bin"
   "EasyRSA-3.2.2.tgz;docker/infrastructure/easy-rsa-pki/bin"
-  "consul_1.20.2_linux_386.zip;docker/infrastructure/hcp-consul/bin"
-  "vault_1.18.4_linux_386.zip;docker/infrastructure/hcp-vault/bin"
-  "prometheus-3.1.0.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
-  "grafana-enterprise-11.5.1.linux-amd64.tar.gz;docker/monitoring/grafana/bin"
+  "consul_1.21.1_linux_386.zip;docker/infrastructure/hcp-consul/bin"
+  "vault_1.19.5_linux_386.zip;docker/infrastructure/hcp-vault/bin"
+  "prometheus-3.4.1.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
+  "grafana-enterprise-12.0.1.linux-amd64.tar.gz;docker/monitoring/grafana/bin"
   "hazelcast-5.5.0-slim.tar.gz;docker/infrastructure/hazelcast-platform/bin"
 )
 
