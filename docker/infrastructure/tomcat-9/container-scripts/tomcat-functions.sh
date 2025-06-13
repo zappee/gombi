@@ -12,9 +12,9 @@
 # ------------------------------------------------------------------------------
 # Get a value from a properties file.
 #
-# arguments:
-#    arg-1: properties file
-#    arg-2: key
+# Parameters:
+#    param 1: properties file
+#    param 2: key
 # ------------------------------------------------------------------------------
 function get_value {
   local properties_file key value

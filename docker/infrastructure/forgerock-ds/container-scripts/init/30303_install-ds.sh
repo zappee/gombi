@@ -39,9 +39,9 @@ function generate_ds_deployment_key() {
 # deployment key and deployment password. The master key sits in a PKCS#12
 # keystore.
 #
-# Arguments
-#    arg 1:  keystore file
-#    arg 2:  keystore password
+# Parameters:
+#    param 1: keystore file
+#    param 2: keystore password
 # ------------------------------------------------------------------------------
 function generate_ds_master_key() {
   local alias keystore_file keystore_password

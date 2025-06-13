@@ -12,8 +12,8 @@
 # Usage:
 #    ./update-binaries.sh [0|1]
 # Arguments:
-#    0:    overwrites the binary files with zero length marker files
-#    1:    copy the binaries from the source to the target directories
+#    0: overwrites the binary files with zero length marker files
+#    1: copy the binaries from the source to the target directories
 #    default: 0
 #
 # Since:  February 2024

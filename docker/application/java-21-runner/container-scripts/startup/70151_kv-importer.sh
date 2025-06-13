@@ -15,8 +15,8 @@
 # Checks if the provided files exist or not.
 # If the files doe not exist then it exits from the script.
 #
-# Arguments
-#    arg 1:  path to the file that must exists
+# Parameters:
+#    param 1: path to the file that must exists
 # ------------------------------------------------------------------------------
 file_exists() {
   local file_to_check
@@ -34,9 +34,8 @@ file_exists() {
 # ------------------------------------------------------------------------------
 # Clean up the temporary files.
 #
-# Arguments:
-#    arg 1:  the workspace directory
-
+# Parameters:
+#    param 1: the workspace directory
 # ------------------------------------------------------------------------------
 cleanup_workspace() {
   local workspace_home
@@ -49,10 +48,10 @@ cleanup_workspace() {
 # ------------------------------------------------------------------------------
 # Unpack the given file from the ZIP.
 #
-# Arguments:
-#    arg 1:  source zip file
-#    arg 2:  target directory to extract the file
-#    arg 3:  the file to extract from the ZIP
+# Parameters:
+#    param 1: source zip file
+#    param 2: target directory to extract the file
+#    param 3: the file to extract from the ZIP
 # ------------------------------------------------------------------------------
 extract_file() {
   local archive_file target_dir fie_to_extract
@@ -85,9 +84,9 @@ extract_file() {
 #       - application.properties: spring.application.name=welcome-service
 #    then the full path of the key is config/welcome-service/app.hello
 #
-# Arguments
-#    arg 1: property file
-#    arg 2: variable to hold the return value
+# Parameters:
+#    param 1: property file
+#    param 2: variable to hold the return value
 # ------------------------------------------------------------------------------
 get_kv_context() {
   local properties_file application_name config_name key_context
@@ -110,9 +109,9 @@ get_kv_context() {
 # ------------------------------------------------------------------------------
 # Get the first JAR file from the given directory.
 #
-# Arguments:
-#    arg 1:  the directory
-#    return: the firs *.jar file from the directory
+# Parameters:
+#    param 1: the directory
+#    return:  the firs *.jar file from the directory
 # ------------------------------------------------------------------------------
 get_first_jar() {
   local jars_home
@@ -147,9 +146,9 @@ get_first_jar() {
 # ------------------------------------------------------------------------------
 # Inserts the missing KV pairs into the Hashicorp Consul.
 #
-# Arguments
-#    arg 1:  path to the *.properties file
-#    arg 2:  the key context in the KV store
+# Parameters:
+#    param 1: path to the *.properties file
+#    param 2: the key context in the KV store
 # ------------------------------------------------------------------------------
 insert_kv() {
   local properties_file key_context

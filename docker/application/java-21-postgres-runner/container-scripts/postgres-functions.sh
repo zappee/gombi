@@ -13,10 +13,10 @@
 # Create a new database and a new user. It can be used by the Java application
 # running in the container.
 #
-# Arguments:
-#    arg 1: database name
-#    arg 2: username
-#    arg 3: password for the user
+# Parameters:
+#    param 1: database name
+#    param 2: username
+#    param 3: password for the user
 # ------------------------------------------------------------------------------
 function create_database_and_user() {
   local database user password
@@ -48,9 +48,9 @@ function postgres_configuration() {
 # ------------------------------------------------------------------------------
 # Set the password for the given user.
 #
-# Arguments:
-#    arg 1: username
-#    arg 2: password for the user
+# Parameters:
+#    param 1: username
+#    param 2: password for the user
 # ------------------------------------------------------------------------------
 function set_database_password() {
   local user password
@@ -67,8 +67,8 @@ function set_database_password() {
 # ------------------------------------------------------------------------------
 # Start the Postgres Database Server and wait for the full server start-up.
 #
-# Arguments
-#    arg 1:  'true' to start the server
+# Parameters:
+#    param 1: 'true' to start the server
 # ------------------------------------------------------------------------------
 function start_postgres() {
   local signal

@@ -45,8 +45,8 @@ STYLE_DEFAULT="\033[0m"
 # ------------------------------------------------------------------------------
 # Copy artifact to a Docker Volume.
 #
-# Arguments:
-#    arg 1: project name
+# Parameters:
+#    param 1: project name
 # ------------------------------------------------------------------------------
 function copy_to_volume {
   local project source_dir target_dir
@@ -72,8 +72,8 @@ function copy_to_volume {
 # ------------------------------------------------------------------------------
 # Deploy a docker container and run it in the background.
 #
-# Arguments:
-#    arg 1: relative directory that points to the image source code
+# Parameters:
+#    param 1: relative directory that points to the image source code
 # ------------------------------------------------------------------------------
 function demo_start {
   local dir environment_file docker_compose_file
@@ -147,9 +147,9 @@ function docker_container_show {
 # ------------------------------------------------------------------------------
 # Calls the external Docker build script for building the Docker image.
 #
-# Arguments:
-#    arg 1: task description string
-#    arg 2: relative directory that points to the image source code
+# Parameters:
+#    param 1: task description string
+#    param 2: relative directory that points to the image source code
 # ------------------------------------------------------------------------------
 function docker_image_build {
   local title dir
@@ -179,8 +179,8 @@ function docker_image_show {
 # ------------------------------------------------------------------------------
 # Split string by delimiter and get N-th element, the name.
 #
-# Arguments:
-#    arg 1: string to split
+# Parameters:
+#    param 1: string to split
 # ------------------------------------------------------------------------------
 function get_name {
   local string
@@ -191,8 +191,8 @@ function get_name {
 # ------------------------------------------------------------------------------
 # Split string by delimiter and get N-th element, the path.
 #
-# Arguments:
-#    arg 1: string to split
+# Parameters:
+#    param 1: string to split
 # ------------------------------------------------------------------------------
 function get_path {
   local string
@@ -203,9 +203,9 @@ function get_path {
 # ------------------------------------------------------------------------------
 # Show the execution time of the script.
 #
-# Arguments:
-#    arg 1: start time
-#    arg 2: command line arguments
+# Parameters:
+#    param 1: start time
+#    param 2: command line arguments
 # ------------------------------------------------------------------------------
 function show_execution_time() {
   local start execution_time
@@ -286,9 +286,9 @@ function show_help() {
 # ------------------------------------------------------------------------------
 # Check whether the given task can be executed or not.
 #
-# Arguments:
-#    arg 1: task list from the command line
-#    arg 2: id of the task to be validated
+# Parameters:
+#    param 1: task list from the command line
+#    param 2: id of the task to be validated
 # ------------------------------------------------------------------------------
 function match {
   local args id group regexp
@@ -310,9 +310,9 @@ function match {
 #    * A task is invalid if it contains only letter, e.g "a".
 #    * A task is valid if it contains letter and a belonging number, e.g "a1".
 #
-# Arguments:
-#    arg 1: task list from the command line
-#    arg 2: id of the task to be validated
+# Parameters:
+#    param 1: task list from the command line
+#    param 2: id of the task to be validated
 # ------------------------------------------------------------------------------
 function is_task_invalid {
   local args id regexp
