@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Functions that helps to manage Grafana Consul.
 #
-# Since : April 2024
+# Since:  April 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved

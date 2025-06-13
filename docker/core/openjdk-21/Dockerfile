@@ -1,7 +1,7 @@
 # ******************************************************************************
 # Remal OpenJDK 21 Docker image build file.
 #
-# Since : March 2024
+# Since:  March 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved

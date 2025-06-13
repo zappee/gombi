@@ -10,7 +10,7 @@
 #
 #   2) Run the script using ./remal.sh
 #
-# Since : January 2023
+# Since:  January 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved

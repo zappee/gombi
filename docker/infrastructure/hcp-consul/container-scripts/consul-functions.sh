@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Functions that helps to manage HashiCorp Consul.
 #
-# Since : October 2023
+# Since:  October 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved

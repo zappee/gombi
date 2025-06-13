@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Environment file to define variables used during the Docker image build.
 #
-# Since : October 2023
+# Since:  October 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved

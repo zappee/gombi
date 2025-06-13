@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Remal Certificate generator.
 #
-# Since : March, 2023
+# Since:  March 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Usage: generate-cert.sh <cert-type> <domain> [san]

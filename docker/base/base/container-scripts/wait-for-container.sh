@@ -12,7 +12,7 @@
 #            entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
 #            ...
 #
-# Since : February, 2025
+# Since:  February 2025
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
