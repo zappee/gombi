@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.1] - 13/Jun/2025
+#### Docker Images
+* Improve documentation
+* Fix `ENV` and `ARG` related build issues in Dockerfiles
+
 ## [0.6.0] - 08/Jun/2025
 #### Docker Images
 * Update `alpine` version from `3.21.2` to `3.22.0` in the `base` image
