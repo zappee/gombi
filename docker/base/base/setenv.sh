@@ -7,10 +7,7 @@
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-export IMAGE_NAME="remal-base"
-export IMAGE_DESCRIPTION="Remal Base Docker image"
-export IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
 export IMAGE_FROM="alpine:3.22.0"
-export BUILD_TYPE="${1:-fat}"
-export PUSH_IMAGE="${2:-false}"
-export DOMAIN_NAME=${3:-hello.com}
+export IMAGE_NAME="remal-base"
+export IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>"
+export IMAGE_DESCRIPTION="Remal Base Docker image"

@@ -6,7 +6,7 @@
 #
 #  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-ARG IMAGE_FROM="not-set"
+ARG IMAGE_FROM="unknown"
 ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
@@ -16,14 +16,19 @@ EXPOSE 636/tcp
 EXPOSE 4444/tcp
 EXPOSE 1331/tcp
 
+ARG IMAGE_NAME="N/A"
+ARG IMAGE_TAG="N/A"
+ARG IMAGE_AUTHOR="N/A"
+ARG IMAGE_DESCRIPTION="N/A"
+
 # build time variables
 ARG DS_HOME="/opt/opendj"
 
 # environment variables
-ENV IMAGE_NAME="ds-7.3" \
-    IMAGE_TAG="0.0.1" \
-    IMAGE_DESCRIPTION="ForgeRock Directory Server 7.3.0" \
-    IMAGE_AUTHOR="Arnold Somogyi <arnold.somogyi@gmail.com>" \
+ENV IMAGE_NAME="$IMAGE_NAME" \
+    IMAGE_TAG="$IMAGE_TAG" \
+    IMAGE_AUTHOR="$IMAGE_AUTHOR" \
+    IMAGE_DESCRIPTION="$IMAGE_DESCRIPTION" \
     \
     AM_IDENTITY_STORE_NAME="am-identity-store" \
     AM_CONFIG_STORE_NAME="am-config" \
@@ -49,11 +54,11 @@ ENV IMAGE_NAME="ds-7.3" \
     LDAPS_PORT=636
 
 # set image metadata
-LABEL "com.remal.image.vendor"="Remal" \
-      "com.remal.image.name"="${IMAGE_NAME}" \
-      "com.remal.image.version"="${IMAGE_TAG}" \
-      "com.remal.image.description"="${IMAGE_DESCRIPTION}" \
-      "com.remal.image.author"="${IMAGE_AUTHOR}"
+LABEL "com.remal.image.name"="$IMAGE_NAME" \
+      "com.remal.image.tag"="$IMAGE_TAG" \
+      "com.remal.image.author"="$IMAGE_AUTHOR" \
+      "com.remal.image.description"="$IMAGE_DESCRIPTION" \
+      "com.remal.image.vendor"="Remal"
 
 
 # fat image
