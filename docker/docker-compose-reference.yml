@@ -146,6 +146,7 @@ services:
             - "14112:22"   # SSH
             - "14113:8000" # JVM debug
             - "14114:8443" # HTTPS
+            - "14115:5432" # Postgres
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
