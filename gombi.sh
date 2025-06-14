@@ -10,14 +10,22 @@
 #
 #   2) Run the script using ./remal.sh
 #
-# Since : January 2023
+# Accepted values:
+#    BUILD_TYPE:       slim | fat
+#    PUSH_IMAGE:       true | false
+#    ENVIRONMENT_FILE; .env.hello.com | .env.remal.com
+#
+# Since:  January 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
-WORKSPACE="${REMAL_HOME:-$(pwd)}"
 BUILD_TYPE="slim"
+IMAGE_TAG="0.6.0"
+PUSH_IMAGE="false"
 ENVIRONMENT_FILE=".env.hello.com"
+
+WORKSPACE="${REMAL_HOME:-$(pwd)}"
 COMMAND="${1:-}"
 
 LABEL_BASE="Base;base/base"
@@ -45,8 +53,8 @@ STYLE_DEFAULT="\033[0m"
 # ------------------------------------------------------------------------------
 # Copy artifact to a Docker Volume.
 #
-# Arguments:
-#    arg 1: project name
+# Parameters:
+#    param 1: project name
 # ------------------------------------------------------------------------------
 function copy_to_volume {
   local project source_dir target_dir
@@ -54,9 +62,11 @@ function copy_to_volume {
   source_dir="$WORKSPACE/projects/$project/target/"
   target_dir="$WORKSPACE/bin/$project"
 
-  printf "\n%b> coping artifact to a Docker shared volume...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
+  printf "coping artifact to a Docker shared volume...\n"
   printf "     source: '%s'\n" "$source_dir$project-*.jar"
   printf "     target: '%s'\n" "$target_dir"
+  printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
 
   # to ensure this never expands to /*
   rm -rf "${target_dir:?}/"*
@@ -72,18 +82,20 @@ function copy_to_volume {
 # ------------------------------------------------------------------------------
 # Deploy a docker container and run it in the background.
 #
-# Arguments:
-#    arg 1: relative directory that points to the image source code
+# Parameters:
+#    param 1: relative directory that points to the image source code
 # ------------------------------------------------------------------------------
 function demo_start {
-  local dir environment_file docker_compose_file
-  dir="$1"
-  environment_file="$WORKSPACE/$dir/$ENVIRONMENT_FILE"
-  docker_compose_file="$WORKSPACE/$dir/docker-compose.yml"
+  local relative_path_to_src environment_file docker_compose_file
+  relative_path_to_src="$1"
+  environment_file="$WORKSPACE/$relative_path_to_src/$ENVIRONMENT_FILE"
+  docker_compose_file="$WORKSPACE/$relative_path_to_src/docker-compose.yml"
 
-  printf "\n%b> starting the '%s' docker stack...%b\n" "$COLOR_YELLOW" "Demo" "$STYLE_DEFAULT"
+  printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
+  printf "starting the '%s' docker stack...\n" "Demo"
   printf "       environment-file: '%s'\n" "$environment_file"
   printf "     docker-compose.yml: '%s'\n" "$docker_compose_file"
+  printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
 
   copy_to_volume "remal-gombi-hazelcast-counter"
   copy_to_volume "remal-gombi-kafka-consumer"
@@ -97,7 +109,9 @@ function demo_start {
 # Show the logs of running Docker containers.
 # ------------------------------------------------------------------------------
 function docker_container_logs {
-  printf "%b> showing the containers' logs...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
+  printf "showing the containers' logs...\n"
+  printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
 
   local running_containers_number
   running_containers_number="$(docker ps -q --filter "label=com.remal.image.vendor=Remal" | wc -l)"
@@ -113,7 +127,9 @@ function docker_container_logs {
 # Stop and remove of all the running Remal Docker containers.
 # ------------------------------------------------------------------------------
 function docker_container_remove {
-  printf "%b> stopping and removing all the Remal Docker containers...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
+  printf "stopping and removing all the Remal Docker containers...\n"
+  printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
 
   local running_containers_number
   running_containers_number="$(docker ps -aq --filter "label=com.remal.image.vendor=Remal" | wc -l)"
@@ -129,7 +145,9 @@ function docker_container_remove {
 # Show the running docker containers' details.
 # ------------------------------------------------------------------------------
 function docker_container_show {
-  printf "%b> running/terminated Remal Docker containers%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
+  printf "running/terminated Remal Docker containers\n"
+  printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
 
   local running_containers_number
   running_containers_number="$(docker ps -aq --filter "label=com.remal.image.vendor=Remal" | wc -l)"
@@ -138,7 +156,7 @@ function docker_container_show {
     printf "no running container\n"
   else
     docker container ls \
-      -a \
+      --all \
       --filter "label=com.remal.image.vendor=Remal" \
       --format "{{.ID}}\t{{.Names}}\t{{.Image}}\t{{.CreatedAt}}\t{{.Status}}" | sort -k 2
   fi
@@ -147,24 +165,29 @@ function docker_container_show {
 # ------------------------------------------------------------------------------
 # Calls the external Docker build script for building the Docker image.
 #
-# Arguments:
-#    arg 1: task description string
-#    arg 2: relative directory that points to the image source code
+# Parameters:
+#    param 1: task description string
+#    param 2: relative directory that points to the image source code
 # ------------------------------------------------------------------------------
 function docker_image_build {
-  local title dir
-  title="$1"
-  dir="$2"
+  local title="$1"
+  local relative_path_to_src="$2"
 
-  printf "\n%b> building '%s' docker image...%b\n" "$COLOR_YELLOW" "$title" "$STYLE_DEFAULT"
-  docker/build.sh "$dir"
+  printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
+  printf "building '%s' docker image...%b\n" "$title"
+  printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
+
+  docker/build.sh "$relative_path_to_src" "$BUILD_TYPE" "$IMAGE_TAG" "$PUSH_IMAGE"
 }
 
 # ------------------------------------------------------------------------------
 # Remove all the Remal Docker images.
 # ------------------------------------------------------------------------------
 function docker_image_remove {
-  printf "%b> removing all the Remal Docker images...%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
+  printf "removing all the Remal Docker images...\n"
+  printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
+
   docker image rm $(docker image ls --filter "label=com.remal.image.vendor=Remal" -q) || true
 }
 
@@ -172,15 +195,18 @@ function docker_image_remove {
 # Show of all Remal Docker images.
 # ------------------------------------------------------------------------------
 function docker_image_show {
-  printf "%b> Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
+  printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
+  printf "Remal Docker images%b\n"
+  printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
+
   docker images --filter "label=com.remal.image.vendor=Remal" --format "{{.Size}}\t{{.Repository}}:{{.Tag}}\t\t{{.CreatedSince}}\t{{.ID}}" | sort -k 2
 }
 
 # ------------------------------------------------------------------------------
 # Split string by delimiter and get N-th element, the name.
 #
-# Arguments:
-#    arg 1: string to split
+# Parameters:
+#    param 1: string to split
 # ------------------------------------------------------------------------------
 function get_name {
   local string
@@ -191,8 +217,8 @@ function get_name {
 # ------------------------------------------------------------------------------
 # Split string by delimiter and get N-th element, the path.
 #
-# Arguments:
-#    arg 1: string to split
+# Parameters:
+#    param 1: string to split
 # ------------------------------------------------------------------------------
 function get_path {
   local string
@@ -203,9 +229,9 @@ function get_path {
 # ------------------------------------------------------------------------------
 # Show the execution time of the script.
 #
-# Arguments:
-#    arg 1: start time
-#    arg 2: command line arguments
+# Parameters:
+#    param 1: start time
+#    param 2: command line arguments
 # ------------------------------------------------------------------------------
 function show_execution_time() {
   local start execution_time
@@ -286,9 +312,9 @@ function show_help() {
 # ------------------------------------------------------------------------------
 # Check whether the given task can be executed or not.
 #
-# Arguments:
-#    arg 1: task list from the command line
-#    arg 2: id of the task to be validated
+# Parameters:
+#    param 1: task list from the command line
+#    param 2: id of the task to be validated
 # ------------------------------------------------------------------------------
 function match {
   local args id group regexp
@@ -310,9 +336,9 @@ function match {
 #    * A task is invalid if it contains only letter, e.g "a".
 #    * A task is valid if it contains letter and a belonging number, e.g "a1".
 #
-# Arguments:
-#    arg 1: task list from the command line
-#    arg 2: id of the task to be validated
+# Parameters:
+#    param 1: task list from the command line
+#    param 2: id of the task to be validated
 # ------------------------------------------------------------------------------
 function is_task_invalid {
   local args id regexp

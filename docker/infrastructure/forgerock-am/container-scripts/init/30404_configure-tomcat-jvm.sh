@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Apache Tomcat JVM configuration script.
 #
-# Since : Oct, 2023
+# Since:  Oct 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved

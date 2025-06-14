@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Shared, common bash functions.
 #
-# Since : April, 2023
+# Since:  April 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
@@ -11,12 +11,12 @@
 # ------------------------------------------------------------------------------
 # Copy file(s) from a remote machine to localhost.
 #
-# Arguments
-#    arg 1:  remote host
-#    arg 2:  user on the remote host
-#    arg 3:  password for the connecting user
-#    arg 4:  path to the file on the remote machine
-#    arg 5:  directory on the local machine where the file will be copied
+# Parameters:
+#    param 1: remote host
+#    param 2: user on the remote host
+#    param 3: password for the connecting user
+#    param 4: path to the file on the remote machine
+#    param 5: directory on the local machine where the file will be copied
 # ------------------------------------------------------------------------------
 function copy_from_remote_machine() {
   local remote_host remote_user remote_password remote_path local_path
@@ -37,9 +37,9 @@ function copy_from_remote_machine() {
 # ------------------------------------------------------------------------------
 # Decrypt the encrypted private key.
 #
-# Arguments
-#    arg 1:  the hostname of the machine that determine which private key will
-#            be decrypted
+# Parameters:
+#    param 1: the hostname of the machine that determine which private key will
+#             be decrypted
 # ------------------------------------------------------------------------------
 function decrypt_private_key() {
   local host_name keystore_pass
@@ -89,11 +89,11 @@ function fqdn_to_ldap_dn() {
 # This method generates a certificate for the server using the our Private
 # Certificate Authority infrastructure.
 #
-# Arguments
-#    arg 1:  certificate type: server, client, serverClient
-#    arg 2:  domain for which the certificate is generated
-#    arg 3:  generate the certificate with SAN
-#            e.g. "DNS:pki.hello.com,DNS:pki.dc1.hello.com"
+# Parameters:
+#    param 1: certificate type: server, client, serverClient
+#    param 2: domain for which the certificate is generated
+#    param 3: generate the certificate with SAN,
+#             e.g. "DNS:pki.hello.com,DNS:pki.dc1.hello.com"
 # ------------------------------------------------------------------------------
 function generate_certificate() {
   local cert_type domain san
@@ -117,9 +117,9 @@ function generate_certificate() {
 # ------------------------------------------------------------------------------
 # Get the latest file that fits to the given pattern.
 #
-# Arguments
-#    arg 1:  directory to check
-#    arg 2:  filename pattern
+# Parameters:
+#    param 1: directory to check
+#    param 2: filename pattern
 # ------------------------------------------------------------------------------
 get_latest_file() {
   local directory pattern
@@ -131,10 +131,10 @@ get_latest_file() {
 # ------------------------------------------------------------------------------
 # Read value from a property file.
 #
-# Arguments
-#    arg 1:  property file
-#    arg 2:  key
-#    return: the value of the key
+# Parameters:
+#    param 1: property file
+#    param 2: key
+#    return:  the value of the key
 # ------------------------------------------------------------------------------
 get_value() {
   printf "%s" "$(grep -w "^$2" "$1" | cut -d'=' -f2)"
@@ -143,11 +143,11 @@ get_value() {
 # ------------------------------------------------------------------------------
 # Import a certificate into an existing keystore.
 #
-# Arguments
-#    arg 1: alias name in the keystore
-#    arg 2: certificate to be imported
-#    arg 3: the keystore
-#    arg 4: the keystore password
+# Parameters:
+#    param 1: alias name in the keystore
+#    param 2: certificate to be imported
+#    param 3: the keystore
+#    param 4: the keystore password
 # ------------------------------------------------------------------------------
 function import_to_keystore() {
   local alias certificate keystore storepass
@@ -169,8 +169,8 @@ function import_to_keystore() {
 # ------------------------------------------------------------------------------
 # Log the execution of a bash script.
 #
-# Arguments
-#    arg 1: path to the bash script
+# Parameters:
+#    param 1: path to the bash script
 # ------------------------------------------------------------------------------
 log_start() {
   local script_file="$1"
@@ -180,8 +180,8 @@ log_start() {
 # ------------------------------------------------------------------------------
 # Log the execution of a bash script.
 #
-# Arguments
-#    arg 1: path to the bash script
+# Parameters:
+#    param 1: path to the bash script
 # ------------------------------------------------------------------------------
 log_end() {
   local script_file="$1"
@@ -264,8 +264,8 @@ function is_first_startup() {
 # ------------------------------------------------------------------------------
 # Wait for the given container to be up and ready to serve requests.
 #
-# Arguments
-#    arg 1: the container's hostname or IP address
+# Parameters:
+#    param 1: the container's hostname or IP address
 # ------------------------------------------------------------------------------
 wait_for_container() {
   local domain
@@ -284,9 +284,9 @@ wait_for_container() {
 # WARNING: This method only scans  new contents in the file and the previous
 #          lines are completely ignored!
 #
-# Arguments
-#    arg 1: the file to be monitored
-#    arg 1: the expected content
+# Parameters:
+#    param 1: the file to be monitored
+#    param 1: the expected content
 # ------------------------------------------------------------------------------
 wait_until_content_found() {
   local file_to_monitor required_string pid

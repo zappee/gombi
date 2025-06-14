@@ -2,7 +2,7 @@
 # ******************************************************************************
 #  ForgeRock Directory Server installation script.
 #
-#  Since : May, 2023
+#  Since:  May 2023
 #  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 #  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
@@ -39,9 +39,9 @@ function generate_ds_deployment_key() {
 # deployment key and deployment password. The master key sits in a PKCS#12
 # keystore.
 #
-# Arguments
-#    arg 1:  keystore file
-#    arg 2:  keystore password
+# Parameters:
+#    param 1: keystore file
+#    param 2: keystore password
 # ------------------------------------------------------------------------------
 function generate_ds_master_key() {
   local alias keystore_file keystore_password

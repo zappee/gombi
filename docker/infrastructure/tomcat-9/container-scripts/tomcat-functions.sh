@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Functions that helps to manage Apache Tomcat Server.
 #
-# Since : July, 2023
+# Since:  July 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
@@ -12,9 +12,9 @@
 # ------------------------------------------------------------------------------
 # Get a value from a properties file.
 #
-# arguments:
-#    arg-1: properties file
-#    arg-2: key
+# Parameters:
+#    param 1: properties file
+#    param 2: key
 # ------------------------------------------------------------------------------
 function get_value {
   local properties_file key value

@@ -2,7 +2,7 @@
 # ******************************************************************************
 # Functions that helps to manage ForgeRock Directory Server.
 #
-# Since : January, 2023
+# Since:  January 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
@@ -31,8 +31,8 @@ function backup_ds_config() {
 # ------------------------------------------------------------------------------
 # Backup LDAP data.
 #
-# Arguments
-#    arg 1:  backend name, for example: 'am-config', 'am-identity-store'
+# Parameters:
+#    param 1: backend name, for example: 'am-config', 'am-identity-store'
 # ------------------------------------------------------------------------------
 function backup_ds_data() {
   printf "%s | [INFO]  backing up ForgeRock Directory Server LDAP database...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
@@ -132,9 +132,9 @@ function restore_ds_config() {
 # ------------------------------------------------------------------------------
 # Restore LDAP data from a backup file.
 #
-# Arguments
-#    arg 1:  backup file
-#    arg 2:  backend name, for example: 'am-config', 'am-identity-store'
+# Parameters:
+#    param 1: backup file
+#    param 2: backend name, for example: 'am-config', 'am-identity-store'
 # ------------------------------------------------------------------------------
 function restore_ds_data() {
   local backup_from backend_name fqdn backup_file

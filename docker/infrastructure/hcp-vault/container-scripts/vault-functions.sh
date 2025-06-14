@@ -21,8 +21,8 @@ function get_vault_root_token() {
 # ----------------------------------------------------------------------------
 # Get the root token value.
 #
-#  Arguments:
-#     arg 1: the number of the key to retrieve
+#  Parameters:
+#     param 1: the number of the key to retrieve
 # ------------------------------------------------------------------------------
 function get_vault_unseal_key() {
   local key_id key
@@ -89,8 +89,8 @@ function stop_vault() {
 # Vault starts in a sealed state. It cannot perform operations until it is
 # unsealed.
 #
-#  Arguments:
-#     arg 1: unseal key
+#  Parameters:
+#     param 1: unseal key
 # ------------------------------------------------------------------------------
 function unseal_vault() {
   local unseal_key
