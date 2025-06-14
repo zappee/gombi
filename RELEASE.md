@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 #### Docker Images
 * Improve documentation
 * Fix `ENV` and `ARG` related build issues in Dockerfiles
+* Update `EasyRSA` version from `3.2.2` to `3.2.3`
 
 ## [0.6.0] - 08/Jun/2025
 #### Docker Images

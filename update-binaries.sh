@@ -29,7 +29,7 @@ BINARIES=(
   "AM-7.3.0.war;docker/infrastructure/forgerock-am/bin"
   "AM-SSOConfiguratorTools-5.1.3.18.zip;docker/infrastructure/forgerock-am/bin"
   "apache-tomcat-9.0.71.tar.gz;docker/infrastructure/tomcat-9/bin"
-  "EasyRSA-3.2.2.tgz;docker/infrastructure/easy-rsa-pki/bin"
+  "EasyRSA-3.2.3.tgz;docker/infrastructure/easy-rsa-pki/bin"
   "consul_1.21.1_linux_386.zip;docker/infrastructure/hcp-consul/bin"
   "vault_1.19.5_linux_386.zip;docker/infrastructure/hcp-vault/bin"
   "prometheus-3.4.1.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
