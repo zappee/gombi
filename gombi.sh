@@ -21,7 +21,7 @@
 # Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 BUILD_TYPE="slim"
-IMAGE_TAG="0.6.0"
+IMAGE_TAG="0.6.1"
 PUSH_IMAGE="false"
 ENVIRONMENT_FILE=".env.hello.com"
 
@@ -174,7 +174,7 @@ function docker_image_build {
   local relative_path_to_src="$2"
 
   printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
-  printf "building '%s' docker image...%b\n" "$title"
+  printf "building '%s' docker image...\n" "$title"
   printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
 
   docker/build.sh "$relative_path_to_src" "$BUILD_TYPE" "$IMAGE_TAG" "$PUSH_IMAGE"
@@ -196,7 +196,7 @@ function docker_image_remove {
 # ------------------------------------------------------------------------------
 function docker_image_show {
   printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
-  printf "Remal Docker images%b\n"
+  printf "Remal Docker images\n"
   printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
 
   docker images --filter "label=com.remal.image.vendor=Remal" --format "{{.Size}}\t{{.Repository}}:{{.Tag}}\t\t{{.CreatedSince}}\t{{.ID}}" | sort -k 2

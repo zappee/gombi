@@ -16,11 +16,11 @@
     <parent>
         <groupId>com.remal.gombi</groupId>
         <artifactId>gombi</artifactId>
-        <version>0.6.0</version>
+        <version>0.6.1</version>
     </parent>
 
     <artifactId>remal-gombi-user-service</artifactId>
-    <version>0.6.0</version>
+    <version>0.6.1</version>
     <name>gombi-user-service</name>
     <description>Service that manages user data.</description>
 
