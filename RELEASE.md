@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 * Improve documentation
 * Fix `ENV` and `ARG` related build issues in Dockerfiles
 * Update `EasyRSA` version from `3.2.2` to `3.2.3`
+* Improvement in Postgres log configuration. The new config stops Postgres logging endlessly empty statements like `[postgres] [127.0.0.1(45942)] [application] [default_db] LOG:  statement:`
 
 ## [0.6.0] - 08/Jun/2025
 #### Docker Images
