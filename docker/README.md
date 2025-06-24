@@ -70,15 +70,6 @@ $ docker-compose stop --timeout 120
 ## 5) License and Copyright
 Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
-## 2) Annex 1) Image versioning
-Subsequent releases of the same image must be assigned numerical identifiers consisting of three numbers separated by periods.
-
-The versioning of the Remal Docker images is the following: `remal-<image>:x:y:z`
-
-* The first number, called the major number, is increased when there are significant improvements or changes in functionality.
-* The second number, called the minor number, is incremented when there are minor feature changes or notable fixes. For example, `remal-openjdk-11:0.2.0` indicates that minor changes were made to the earlier version, `remal-openjdk-11:0.1.0`.
-* The third number, if it exists, is called the revision number and is added or increased when minor bugs are eliminated. The 7 in `remal-openjdk-11:0.2.7` shows that bug fixes were made to the previous version.
-
 ## Annex 1) Build slim Docker images
 Does the Docker Image size matter?
 
@@ -104,67 +95,33 @@ The Remal slim image build process will download the files on-the-fly from your 
 3. Copy the files and install packages from the `bin/` folder of each image source code into the web server directory.
 4. Then start the build using the `slim` parameter, for example `./remal.sh ab`
 
-## Annex 2) `init` and `startup` script naming convention
-The files under the `init` and `startup` directories must be unique and the filenames must start with a number prefix, for example `010_start-tomcat.sh`
-The prefix determines the execution order of the scripts.
-If the filenames are not unique then during the Docker image build the files can be overridden accidentally.
+## Annex 2) Troubleshooting
+### BusyBox
 
-There are four different kind of Remal images:
-* `Base` image: used as a parent image, contains common functions and tools
-* `Core`: Runtime environments like Java
-* `Infrastructure`: servers like Active Directory, Tomcat, Database
-* `Application`: application and REST services
+* Replace `wget` and `curl` with GNU version
+  * `apk --no-cache add curl`
+  * `apk --no-cache add wget`
 
-File prefix ranges:
+### Java debug
+* How to attach `VisualVM` to the Java process running in a Docker container
+  * At first, you should run you Java application with these JVM parameters:
+    ```
+    -Dcom.sun.management.jmxremote
+    -Dcom.sun.management.jmxremote.port=8686
+    -Dcom.sun.management.jmxremote.local.only=false
+    -Dcom.sun.management.jmxremote.authenticate=false
+    -Dcom.sun.management.jmxremote.ssl=false
+    ```
+  * Then you should expose port for docker: `EXPOSE 8686`
+  * Also specify port binding with docker run command: `docker run --publish 8686:8686 ...`
+  * After that, you can connect with `JConsole`/`VisualVM` to local port 8686.
 
-| image type     | range       |
-|----------------|-------------|
-| Application    | 7000 - 7999 |
-| Monitoring     | 4000 - 4999 |
-| Infrastructure | 3000 - 3999 |
-| Core           | 2000 - 2999 |
-| Base           | 1000 - 1999 |
-
-
-Images and its types:
-
-| image                   | type           | range         |
-|-------------------------|----------------|---------------|
-| java-21-postgres-runner | Application    | 70200 - 70299 |
-| java-21-runner          | Application    | 70100 - 70199 |
-| grafana                 | Monitoring     | 40200 - 40299 |
-| prometheus              | Monitoring     | 40100 - 40199 |
-| hcp-consul              | Infrastructure | 30600 - 30699 |
-| hcp-vault               | Infrastructure | 30500 - 30599 |
-| forgerock-am            | Infrastructure | 30400 - 30499 |
-| forgerock-ds            | Infrastructure | 30300 - 30399 |
-| tomcat-9                | Infrastructure | 30200 - 30299 |
-| easy-rsa-pki            | Infrastructure | 30100 - 30199 |
-| openjdk-21              | Core           | 20300 - 20399 |
-| openjdk-17              | Core           | 20200 - 20299 |
-| openjdk-11              | Core           | 20100 - 20199 |
-| base                    | Base           | 10000 - 19999 |
-
-## Annex 3) Troubleshooting
-**SSH**
-* Get rid of the `REMOTE HOST IDENTIFICATION HAS CHANGED` warning that appears while connecting to a container using SSH.
-  
-  Disable SSH localhost checking specifically for localhost by setting `NoHostAuthenticationForLocalhost` to `yes` in your `~/.ssh/config` as follows:
-  ~~~
-  NoHostAuthenticationForLocalhost yes
-  ~~~
-
-* Connect to a container Docker network and run a command:
-  ~~~
-  sshpass -p password ssh -oStrictHostKeyChecking=no root@pki.remal.com "ls -all"
-  ~~~
-
-**Network**
+### Network
 * List of the opened port
   * Connect to the container with SSH and install nmap: `apk add nmap` or `yum install nmap`
   * Run the port-scan with `nmap -p- <host>`, e.g. `nmap ds.remal.com`
 
-**PKI**
+### PKI
 * Lists entries in a keystore: `keytool -list -v -keystore <keystore-file> -storepass <changeit>`
 * Test HTTPS connection: `curl https://user-service.hello.com:8443/actuator/health`
 * How to check Subject Alternative Names for an SSL/TLS certificate?
@@ -176,53 +133,18 @@ Images and its types:
   $ openssl s_client -connect website.example:443 </dev/null | openssl x509 -noout -ext subjectAltName
   ~~~
 
-**BusyBox**
-
-* Replace `wget` and `curl` with GNU version
-  * `apk --no-cache add curl`
-  * `apk --no-cache add wget`
-
-**Run JAR in the container**
-  * `kill -9 $(pidof java) && /docker.startup/40151_run-jars.sh`
-
-## Annex 4) Useful bash aliases
-~~~
-alias li="docker image ls | (sed -u 1q; sort -n -k1)"
-alias lir='docker image ls *remal* | sort'
-alias lc="docker container ls -a"
-alias cs='docker container stop $(docker container ls -a -q)'
-alias rmc='if [[ $(docker container ls -a -q) ]]; then docker rm --force $(docker container ls -a -q); else printf "there is no container to remove\n"; fi'
-alias rmi='docker volume rm $(docker volume ls -qf dangling=true) ; docker rmi $(docker image ls -qf dangling=true)'
-~~~
-
-## Annex 5) Docker commands
-* Deploying a broken image:
-  ~~~
-  $ docker run -p 8022:22 --name <id> <image-name>:<version> tail -f /dev/null
-  $ docker exec -it <id> /bin/bash
-  ~~~
-
-* Start an exited container:
-  1. Find your stopped container id
-     ~~~
-     $ docker ps -a
-     ~~~
-  2. Commit the stopped container (this command saves modified container state into a new image):
-     ~~~
-     $ docker commit <CONTAINER-ID> test_image
-     ~~~
-  3. Start it with a different entry point:
-     ~~~
-     $ docker run -it --entrypoint=/bin/sh test_image
-     ~~~
-
-* Connect to a container using SSH:
-  ~~~
-  $ ssh -p <ssh-port> root@localhost
-  ~~~
-  Use `password` as a password.
+### SSH
+* Get rid of the `REMOTE HOST IDENTIFICATION HAS CHANGED` warning that appears while connecting to a container using SSH.
   
-  Example: `sshpass -p password ssh -oStrictHostKeyChecking=no root@vault.hello.com -p 13042`
+  Disable SSH localhost checking specifically for localhost by setting `NoHostAuthenticationForLocalhost` to `yes` in your `~/.ssh/config` as follows:
+  ~~~
+  NoHostAuthenticationForLocalhost yes
+  ~~~
+
+* Connect to a container Docker network and run a command:
+  ~~~
+  sshpass -p password ssh -oStrictHostKeyChecking=no root@pki.remal.com "ls -all"
+  ~~~
 
 <a href="https://trackgit.com">
   <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
