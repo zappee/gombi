@@ -1,7 +1,7 @@
 services:
     # ----- user-services -------------------------------------------------------------------------
     user-service-1:
-        image: remal-java-21-postgres-runner:0.6.1
+        image: remal-java-21-postgres-runner:0.6.2
         container_name: user-service-1.${DOMAIN_NAME}
         hostname: user-service-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -21,7 +21,7 @@ services:
             - $HOME/Java/gombi/bin/remal-gombi-user-service:/jar-to-run
 
     user-service-2:
-        image: remal-java-21-postgres-runner:0.6.1
+        image: remal-java-21-postgres-runner:0.6.2
         container_name: user-service-2.${DOMAIN_NAME}
         hostname: user-service-2.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -42,7 +42,7 @@ services:
 
     # ----- welcome-services ----------------------------------------------------------------------
     welcome-service-1:
-        image: remal-java-21-runner:0.6.1
+        image: remal-java-21-runner:0.6.2
         container_name: welcome-service-1.${DOMAIN_NAME}
         hostname: welcome-service-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -58,7 +58,7 @@ services:
 
     # ----- kafka-producer-services ---------------------------------------------------------------
     kafka-producer-service-1:
-        image: remal-java-21-runner:0.6.1
+        image: remal-java-21-runner:0.6.2
         container_name: kafka-producer-service-1.${DOMAIN_NAME}
         hostname: kafka-producer-service-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -83,7 +83,7 @@ services:
 
     # ----- kafka-consumer-services ---------------------------------------------------------------
     kafka-consumer-service-1:
-        image: remal-java-21-postgres-runner:0.6.1
+        image: remal-java-21-postgres-runner:0.6.2
         container_name: kafka-consumer-service-1.${DOMAIN_NAME}
         hostname: kafka-consumer-service-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -113,7 +113,7 @@ services:
 
     # ----- hazelcast-counter-services ------------------------------------------------------------
     hazelcast-counter-service-1:
-        image: remal-java-21-runner:0.6.1
+        image: remal-java-21-runner:0.6.2
         container_name: hazelcast-counter-service-1.${DOMAIN_NAME}
         hostname: hazelcast-counter-service-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -130,7 +130,7 @@ services:
             - $HOME/Java/gombi/bin/remal-gombi-hazelcast-counter:/jar-to-run
 
     hazelcast-counter-service-2:
-        image: remal-java-21-runner:0.6.1
+        image: remal-java-21-runner:0.6.2
         container_name: hazelcast-counter-service-2.${DOMAIN_NAME}
         hostname: hazelcast-counter-service-2.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -148,7 +148,7 @@ services:
 
     # ----- Hashicorp Consul ----------------------------------------------------------------------
     consul:
-        image: remal-consul:0.6.1
+        image: remal-consul:0.6.2
         container_name: consul.${DOMAIN_NAME}
         hostname: consul.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
@@ -160,7 +160,7 @@ services:
 
     # ----- Grafana monitoring --------------------------------------------------------------------
     grafana:
-        image: remal-grafana:0.6.1
+        image: remal-grafana:0.6.2
         container_name: grafana.${DOMAIN_NAME}
         hostname: grafana.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "prometheus.${DOMAIN_NAME}"]
@@ -173,7 +173,7 @@ services:
 
     # ----- Prometheus monitoring -----------------------------------------------------------------
     prometheus:
-        image: remal-prometheus:0.6.1
+        image: remal-prometheus:0.6.2
         container_name: prometheus.${DOMAIN_NAME}
         hostname: prometheus.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -186,7 +186,7 @@ services:
 
     # ----- Hazelcast -----------------------------------------------------------------------------
     hazelcast-1:
-        image: remal-hazelcast:0.6.1
+        image: remal-hazelcast:0.6.2
         container_name: hazelcast-1.${DOMAIN_NAME}
         hostname: hazelcast-1.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
@@ -198,7 +198,7 @@ services:
             - HAZELCAST_CLUSTER_NAME=gombi-dev
 
     hazelcast-2:
-        image: remal-hazelcast:0.6.1
+        image: remal-hazelcast:0.6.2
         container_name: hazelcast-2.${DOMAIN_NAME}
         hostname: hazelcast-2.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
@@ -478,7 +478,7 @@ services:
 
     # ----- Private Certificate Authority Server --------------------------------------------------
     pki:
-        image: remal-private-ca:0.6.1
+        image: remal-private-ca:0.6.2
         container_name: pki.${DOMAIN_NAME}
         hostname: pki.${DOMAIN_NAME}
         ports:
