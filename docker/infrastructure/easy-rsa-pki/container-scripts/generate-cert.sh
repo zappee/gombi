@@ -54,14 +54,38 @@ function show_context() {
 }
 
 # ------------------------------------------------------------------------------
+# This function verifies whether a certificate has been issued for the
+# specified server.
+#
+# Parameters:
+#    param 1: domain name of the server
+# ------------------------------------------------------------------------------
+function revoke_existing_certificate() {
+  local domain="$1"
+
+  printf "%s | [DEBUG] checking for the existence of the \"%s\" certificate...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain"
+  if ./easyrsa verify-cert "$domain"; then
+    printf "%s | [DEBUG] the certificate for \"%s\" server has already been issued\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain"
+    printf "%s | [INFO]  revoking the certificate for \"%s\" domain...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain"
+    ./easyrsa --batch --passin="pass:$EASYRSA_PASS" revoke-issued "$domain"
+  else
+    printf "%s | [INFO]  the certificate for \"%s\" server has not been issued, continue\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain"
+  fi
+}
+
+# ------------------------------------------------------------------------------
 # Step 1) Generates a certificate request and a private key for the given
 # domain.
+#
+# Parameters:
+#    param 1: domain name of the server
+#    param 2: the A Subject Alternative Name (SAN) for the certificate to be
+#             issued
 # ------------------------------------------------------------------------------
 function generate_cert_req_and_key() {
-  local domain san work_dir
-  domain="$1"
-  san="${2:-}"
-  work_dir=${PWD}
+  local domain="$1"
+  local san="${2:-}"
+  local work_dir=${PWD}
 
   printf "%s | [INFO ] generating a certificate request and key...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   printf "%s | [DEBUG]    EASYRSA_HOME: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$EASYRSA_HOME"
@@ -71,6 +95,8 @@ function generate_cert_req_and_key() {
   printf "%s | [DEBUG]        work_dir: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$work_dir"
 
   cd "$EASYRSA_HOME" || { println "invalid path: %s" "$EASYRSA_HOME"; exit 1; }
+
+  revoke_existing_certificate "$domain"
 
   if [[ -z "${san-}"  ]]; then
     printf "%s | [DEBUG] generating a certificate request...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
@@ -89,6 +115,10 @@ function generate_cert_req_and_key() {
 
 # ------------------------------------------------------------------------------
 # Step 2) Signs the certificate request.
+#
+# Parameters:
+#    param 1: certificate type, accepted values are server, client, serverClient
+#    param 2: domain name of the server
 # ------------------------------------------------------------------------------
 function signing_cert_req() {
   local cert_type domain work_dir
@@ -109,6 +139,9 @@ function signing_cert_req() {
 
 # ------------------------------------------------------------------------------
 # Create a new PKCS#12 keystore and import the certificate into it.
+#
+# Parameters:
+#    param 1: domain name of the server
 # ------------------------------------------------------------------------------
 function export_to_keystore() {
   local domain

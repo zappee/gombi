@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.2] - not released yet
+#### Docker Images
+* When a Docker container is stopped and removed, then the certificate for that particular server remains in the PKI environment.
+  This causes an issue when the container is started again.
+
 ## [0.6.1] - 13/Jun/2025
 #### Docker Images
 * Improve documentation
