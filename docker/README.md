@@ -120,6 +120,7 @@ The Remal slim image build process will download the files on-the-fly from your 
 * List of the opened port
   * Connect to the container with SSH and install nmap: `apk add nmap` or `yum install nmap`
   * Run the port-scan with `nmap -p- <host>`, e.g. `nmap ds.remal.com`
+  * Check if port is open or closed: `nc -w 5 -z <host> <port>`
 
 ### PKI
 * Lists entries in a keystore: `keytool -list -v -keystore <keystore-file> -storepass <changeit>`
