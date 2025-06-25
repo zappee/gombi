@@ -104,17 +104,18 @@ The Remal slim image build process will download the files on-the-fly from your 
 
 ### Java debug
 * How to attach `VisualVM` to the Java process running in a Docker container
-  * At first, you should run you Java application with these JVM parameters:
+  * At first, you should run your Java application with these JVM parameters:
     ```
-    -Dcom.sun.management.jmxremote
-    -Dcom.sun.management.jmxremote.port=8686
-    -Dcom.sun.management.jmxremote.local.only=false
+    -Dcom.sun.management.jmxremote=true
+    -Dcom.sun.management.jmxremote.port=9997
+    -Dcom.sun.management.jmxremote.rmi.port=9997
     -Dcom.sun.management.jmxremote.authenticate=false
     -Dcom.sun.management.jmxremote.ssl=false
+    -Djava.rmi.server.hostname=0.0.0.0
     ```
-  * Then you should expose port for docker: `EXPOSE 8686`
-  * Also specify port binding with docker run command: `docker run --publish 8686:8686 ...`
-  * After that, you can connect with `JConsole`/`VisualVM` to local port 8686.
+  * Then you should expose port for docker: `EXPOSE 9997`
+  * Also specify port binding with docker run command: `docker run --publish 9997:9997 ...`
+  * After that, you can connect with `JConsole`/`VisualVM` to local port 9997.
 
 ### Network
 * List of the opened port
