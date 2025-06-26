@@ -102,8 +102,8 @@ The Remal slim image build process will download the files on-the-fly from your 
   * `apk --no-cache add curl`
   * `apk --no-cache add wget`
 
-### Java debug
-* How to attach `VisualVM` to the Java process running in a Docker container
+### JVM
++ **JVM debug**: How to attach `VisualVM` to the Java process running in a Docker container
   * At first, you should run your Java application with these JVM parameters:
     ```
     -Dcom.sun.management.jmxremote=true
@@ -116,6 +116,51 @@ The Remal slim image build process will download the files on-the-fly from your 
   * Then you should expose port for docker: `EXPOSE 9997`
   * Also specify port binding with docker run command: `docker run --publish 9997:9997 ...`
   * After that, you can connect with `JConsole`/`VisualVM` to local port 9997.
+
+* **Optimizing JVM memory in Docker containers**
+
+  By default, the JVM automatically allocates some memory depending on the system memory.
+  Even if it is running inside a Docker container, JVM will try to allocate some portion of the total system memory.
+  But Docker containers can be limited to use a maximum amount of the memory, and any container using more memory will be killed.
+  This poses a risk to our container.
+  
+  What if a container has less memory than the JVM’s allocated memory?
+  Docker will kill the container immediately.
+  We can configure the JVM to use minimun and maximum memory with `-Mxm` and `-Mxs` options.
+  In this case, the JVM will not use more memory than the maximum.
+  This seemingly solves our problem.
+  If we set the maximum memory for both the container and the JVM, we will be safe.
+
+  However, if we want to change the container's memory allocation someday, we will also need to change the JVM options too.
+
+  The setting below avoids hardcoding memory limits for the JVM.
+  You only need to worry about the container's memory, and the JVM will adjust its memory allocation automatically.
+
+  + Configure JVM memory limits:
+      ```
+      -XX:+UseContainerSupport
+      -XX:MaxRAMPercentage=75.0
+      -XX:+UseG1GC
+      -XX:MaxGCPauseMillis=100
+      -XX:+ParallelRefProcEnabled
+      -XX:+UseStringDeduplication
+      -XX:+HeapDumpOnOutOfMemoryError
+      -XX:+ExitOnOutOfMemoryError
+      -XX:HeapDumpPath=/heap-dump
+      ```
+
+* Configure container memory limits:
+    ```
+    services:
+      service-container:
+        image: ...
+        ...
+        deploy:
+          resources:
+            limits:
+              memory: 384M
+    ```
+
 
 ### Network
 * List of the opened port

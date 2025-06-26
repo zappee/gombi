@@ -18,7 +18,7 @@ GET https://localhost:14314/api/kafka/send-one
 ### send multiple message to Kafka topic
 GET https://localhost:14314/api/kafka/send-multiple
 
-### send a custom message to Kafka topic
+### send a message to Kafka topic
 POST https://localhost:14314/api/kafka/send
 Content-Type: application/json
 

@@ -2,16 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.2] - not released yet
+## [0.6.2] - 03/Jul/2025
 #### Docker Images
 * When a Docker container is stopped and removed, then the certificate for that particular server remains in the PKI environment.
   This causes an issue when the container is started again.
+* New directories in the `Java-21` images to share logfiles betweeen the container and the host machine: `logs/heap-dump` and `logs/application`.
+* Limit the memory usage of Docker containers and JVMs.
 * Improvement in the main docker documentation.
 
 ## [0.6.1] - 13/Jun/2025
 #### Docker Images
 * Improve documentation
-* Fix `ENV` and `ARG` related build issues in Dockerfiles
+* Fix `ENV` and `ARG` related build issues in the Dockerfiles.
 * Update `EasyRSA` version from `3.2.2` to `3.2.3`
 * Improvement in Postgres log configuration. The new config stops Postgres logging endlessly empty statements like `[postgres] [127.0.0.1(45942)] [application] [default_db] LOG:  statement:`
 

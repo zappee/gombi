@@ -40,5 +40,10 @@ RUN set -ue; \
 	javac -version; \
     printf "export %s=\"%s\"\n" "JAVA_HOME" "$JAVA_HOME" >> /etc/profile
 
+# create some directories to share logs betweeen the container and the host machine
+RUN set -ue; \
+	mkdir -p /logs; \
+    mkdir -p /heap-dump
+
 ONBUILD COPY container-scripts/init/* /docker.init/
 ONBUILD COPY container-scripts/startup/* /docker.startup/
