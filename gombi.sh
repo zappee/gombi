@@ -71,12 +71,12 @@ function init_docker_volume {
 
   printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
   printf "initializing a Docker shared volume...\n"
-  printf "     java project:   '%s'\n" "$java_project"
-  printf "     container name: '%s'\n" "$container_name"
-  printf "     copy jars from: '%s'\n" "$jar_source_dir"
-  printf "     copy jars to:   '%s'\n" "$jar_dir"
-  printf "     logs dir:       '%s'\n" "$logs_dir"
-  printf "     heap dump dir:  '%s'\n" "$heap_dump_dir"
+  printf "     java project:   \"%s\"\n" "$java_project"
+  printf "     container name: \"%s\"\n" "$container_name"
+  printf "     copy jars from: \"%s\"\n" "$jar_source_dir"
+  printf "     copy jars to:   \"%s\"\n" "$jar_dir"
+  printf "     logs dir:       \"%s\"\n" "$logs_dir"
+  printf "     heap dump dir:  \"%s\"\n" "$heap_dump_dir"
   printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
 
   rm -rf "${volume_home:?}/"* # to ensure this never expands to /*
