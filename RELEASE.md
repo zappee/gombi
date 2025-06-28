@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file.
 * Limit the memory usage of Docker containers and JVMs.
 * Improvement in the main docker documentation.
 
+#### Known issues
+* Overwriting the `PKI_HOST` environment variable in the Dockerfile has no effect. Probably the same issue occurs with the other variables.
+
 ## [0.6.1] - 13/Jun/2025
 #### Docker Images
 * Improve documentation
