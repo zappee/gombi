@@ -115,6 +115,40 @@ You can open a bug report or submit a new pull request with new features, fixes 
 ## 7) License and Copyright
 Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
+
+## Appendix 1) Keep database primary keys in sync when using `Database per Service` architecture
+
+### Context:
+Let’s imagine you are developing an application using the microservice architecture pattern.
+Services need to persist data in some kind of database. For example, the Customer Service stores information about customers and the Order service stores information about orders.
+
+### Problem:
+Let's say we have a high load on customer service, so we start 10 service instances.
+So we have 10 microservices, and each has its own database, and all the services are behind a load balancer.
+Now a client wants to create a customer, load balancer sends the request to service instance 9/10, and the customer is created.
+The next request comes from the same client who wants to confirm that the customer has been created and view their details.
+This request arrived to instance 3/10.
+
+### Challenges
+* How can you ensure that service 3/10 syncs the newly created customer with the database of service 9/10?
+* How do you initialize (fill in data) the empty database of a new service instance that has just started from scratch?
+* How can the primary keys (PK) in the database be kept in sync between separated service instances in case of errors, repairs, and rollbacks while using sequences to generate the PKs?
+* How to separate `get data` and `modify/update data` operations? 
+
+![Database per service pattern](docs/diagrams/images/database-per-service-pattern.png)
+
+### Solution:
+
+[Link to the tutorial video](.....)
+
+You should be familiar with the following design patterns:
+* Database per service design pattern
+* Command Query Responsibility Segregation design pattern (CQRS)
+* Generating Unique, URL friendly IDs in distributed systems using Nano ID
+
+![Customer registration](docs/diagrams/images/customer-registration.png)
+
+
 <a href="https://trackgit.com">
   <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
 </a>
