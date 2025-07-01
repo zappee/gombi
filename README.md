@@ -116,7 +116,7 @@ You can open a bug report or submit a new pull request with new features, fixes 
 Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
 
-## Appendix 1) Keep database primary keys in sync when using `Database per Service` architecture
+## Appendix 1) Keep database primary keys in sync when using the `Database per Service` architecture
 
 ### Context:
 Let’s imagine you are developing an application using the microservice architecture pattern.
@@ -125,15 +125,16 @@ Services need to persist data in some kind of database. For example, the Custome
 ### Problem:
 Let's say we have a high load on customer service, so we start 10 service instances.
 So we have 10 microservices, and each has its own database, and all the services are behind a load balancer.
-Now a client wants to create a customer, load balancer sends the request to service instance 9/10, and the customer is created.
+Now a client wants to persist a customer.
+Load balancer sends the request to service instance 9/10, and the customer is created.
 The next request comes from the same client who wants to confirm that the customer has been created and view their details.
 This request arrived to instance 3/10.
 
 ### Challenges
-* How can you ensure that service 3/10 syncs the newly created customer with the database of service 9/10?
-* How do you initialize (fill in data) the empty database of a new service instance that has just started from scratch?
-* How can the primary keys (PK) in the database be kept in sync between separated service instances in case of errors, repairs, and rollbacks while using sequences to generate the PKs?
-* How to separate `get data` and `modify/update data` operations? 
+* How to ensure that service 3/10 syncs the newly created customer with the database of service 9/10.
+* How to initialize (fill in with data) the empty database of a new service instance that has just started?
+* How to keep in sync the primary keys (PK) in the databases between the separated service instances in case of errors and rollbacks while using sequences to generate the PKs?
+* How to separate the `get data` and the `modify/update data` operations?
 
 ![Database per service pattern](docs/diagrams/images/database-per-service-pattern.png)
 
