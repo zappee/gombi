@@ -134,7 +134,7 @@ This request arrived to instance 3/10.
 * How to ensure that service 3/10 syncs the newly created customer with the database of service 9/10.
 * How to initialize (fill in with data) the empty database of a new service instance that has just started?
 * How to keep in sync the primary keys (PK) in the databases between the separated service instances in case of errors and rollbacks while using sequences to generate the PKs?
-* How to separate the `get data` and the `modify/update data` operations?
+* How to separate the `get data` and the `insert/update data` operations?
 
 ![Database per service pattern](docs/diagrams/images/database-per-service-pattern.png)
 
