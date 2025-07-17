@@ -100,17 +100,17 @@ You can open a bug report or submit a new pull request with new features, fixes 
 ## 7) Thank you for buying me a coffee
 * **Wise, EUR/USD**:
 
-   ![Wise, EUR/USD](docs/donation/wisetag.png)
+   ![Wise, EUR/USD](docs/buy-me-a-coffee/wisetag.png)
 
 
 * [**PayPal, EUR**](https://www.paypal.com/donate/?hosted_button_id=VT6RPK363U5CA):
 
-  ![PayPal, EUR](docs/donation/paypal-eur.png)
+  ![PayPal, EUR](docs/buy-me-a-coffee/paypal-eur.png)
 
 
 * [**PayPal, USD**](https://www.paypal.com/donate/?hosted_button_id=U5JFBSZ23YGP4):
 
-  ![PayPal, USD](docs/donation/paypal-usd.png)
+  ![PayPal, USD](docs/buy-me-a-coffee/paypal-usd.png)
 
 ## 7) License and Copyright
 Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
@@ -140,7 +140,7 @@ This request arrived to instance 3/10.
 
 ### Solution:
 
-[Link to the tutorial video](.....)
+[Link to the tutorial video]()
 
 You should be familiar with the following design patterns:
 * Database per service design pattern
