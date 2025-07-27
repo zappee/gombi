@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 * New directories in the `Java-21` images to share logfiles betweeen the container and the host machine: `logs/heap-dump` and `logs/application`.
 * Limit the memory usage of Docker containers and JVMs.
 * Improvement in the main docker documentation.
+* Fixing a Kafka configuration issue in the `docker-compose.yml` that prevented to connect an external Kafka tool to the cluster using the external Docker ports.
 
 #### Known issues
 * Overwriting the `PKI_HOST` environment variable in the Dockerfile has no effect. Probably the same issue occurs with the other variables.
