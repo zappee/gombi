@@ -12,8 +12,10 @@ package com.remal.gombi.service.message.consumer;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan({"com.remal.gombi.service.message.consumer", "com.remal.gombi.commons.spring"})
 public class Application {
 
     public static void main(String[] args) {

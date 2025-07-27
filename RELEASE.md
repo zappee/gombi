@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.2] - 03/Jul/2025
+## [0.6.2] - xx/Aug/2025
 #### Docker Images
 * When a Docker container is stopped and removed, then the certificate for that particular server remains in the PKI environment.
   This causes an issue when the container is started again.
@@ -10,7 +10,9 @@ All notable changes to this project will be documented in this file.
 * Limit the memory usage of Docker containers and JVMs.
 * Improvement in the main docker documentation.
 * Fixing a Kafka configuration issue in the `docker-compose.yml` that prevented to connect an external Kafka tool to the cluster using the external Docker ports.
-
+#### Java projects
+* Simplify the creation of the Kafka producer and consumer Spring Beans.
+* Simplify the creation of the Kafka topics during the startup.
 #### Known issues
 * Overwriting the `PKI_HOST` environment variable in the Dockerfile has no effect. Probably the same issue occurs with the other variables.
 

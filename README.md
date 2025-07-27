@@ -115,6 +115,9 @@ You can open a bug report or submit a new pull request with new features, fixes 
 ## 7) License and Copyright
 Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
 
+## Appendix 2) Service registry screenshot
+![Service registry](docs/diagrams/images/database-per-service-pattern.png)
+
 
 ## Appendix 1) Keep database primary keys in sync when using the `Database per Service` architecture
 
@@ -136,7 +139,7 @@ This request arrived to instance 3/10.
 * How to keep in sync the primary keys (PK) in the databases between the separated service instances in case of errors and rollbacks while using sequences to generate the PKs?
 * How to separate the `get data` and the `insert/update data` operations?
 
-![Database per service pattern](docs/diagrams/images/database-per-service-pattern.png)
+![Database per service pattern](docs/diagrams/images/service-registry.png)
 
 ### Solution:
 

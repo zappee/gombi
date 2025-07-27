@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class MicrometerMeterService {
 
     @Getter
-    @Value("${kafka.producer.topic.name}")
+    @Value("${kafka.topic.incoming.name}")
     private String topicName;
 
     private final CompositeMeterRegistry meterRegistry;

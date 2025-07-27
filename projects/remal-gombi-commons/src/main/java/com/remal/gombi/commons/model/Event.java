@@ -31,7 +31,7 @@ public class Event {
     private String sourceSystem;
 
     /**
-     * Identifier that identify the user who initialized the event.
+     * Identifier for the user who initialized the event.
      */
     private String userId;
 
@@ -41,7 +41,7 @@ public class Event {
     private String payload;
 
     /**
-     * The creation time of the event in UTC zone.
+     * The creation time of the event in the UTC zone.
      */
     @Builder.Default
     private LocalDateTime createdInUtc = LocalDateTime.now(ZoneOffset.UTC);
