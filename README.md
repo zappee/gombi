@@ -124,7 +124,7 @@ Services need to persist data in some kind of database. For example, the Custome
 
 ### Problem:
 Let's say we have a high load on customer service, so we start 10 service instances.
-So we have 10 microservices, and each has its own database, and all the services are behind a load balancer.
+So we have 10 microservices, and each has its own database, and all the REST GET services are behind a load balancer (or service registry).
 Now a client wants to persist a customer.
 Load balancer sends the request to service instance 9/10, and the customer is created.
 The next request comes from the same client who wants to confirm that the customer has been created and view their details.
