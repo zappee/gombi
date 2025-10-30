@@ -143,7 +143,7 @@ This request arrived to instance 3/10.
 
 ### Solution:
 
-[Link to the tutorial video]()
+[Link to the tutorial video](https://www.youtube.com/watch?v=EM9Z9gI8jMg)
 
 You should be familiar with the following design patterns:
 * Database per service design pattern
