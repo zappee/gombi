@@ -113,7 +113,7 @@ You can open a bug report or submit a new pull request with new features, fixes 
   ![PayPal, USD](docs/buy-me-a-coffee/paypal-usd.png)
 
 ## 7) License and Copyright
-Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
+Copyright (c) 2020-2026 Remal Software, Arnold Somogyi. All rights reserved.
 
 ## Appendix 1) Service registry screenshot
 ![Service registry](docs/diagrams/images/service-registry.png)

@@ -68,7 +68,7 @@ $ docker-compose stop --timeout 120
 ~~~
 
 ## 5) License and Copyright
-Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
+Copyright (c) 2020-2026 Remal Software, Arnold Somogyi. All rights reserved.
 
 ## Annex 1) Build slim Docker images
 Does the Docker Image size matter?

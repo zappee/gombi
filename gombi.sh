@@ -18,7 +18,7 @@
 # Since:  January 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 BUILD_TYPE="slim"
 IMAGE_TAG="0.6.2"
@@ -320,7 +320,7 @@ function show_help() {
     printf "      %by:    remove of all Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "\n"
     printf "Contact: arnold.somogyi@gmail.com\n"
-    printf "Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved\n"
+    printf "Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved\n"
   fi
 }
 

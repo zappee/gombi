@@ -10,7 +10,7 @@
 #    - 54327: used to discover Hazelcast members
 #    - 34500: hazelcast outbound-port
 #
-# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM="unknown"
 ARG BUILD_TYPE="fat"
