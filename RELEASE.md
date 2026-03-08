@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.2] - xx/Aug/2025
+## [0.6.2] - xx/Mar/2026
 #### General
 * Update the copyright text.
 #### Docker Images
@@ -12,6 +12,8 @@ All notable changes to this project will be documented in this file.
 * Limit the memory usage of Docker containers and JVMs.
 * Improvement in the main docker documentation.
 * Fixing a Kafka configuration issue in the `docker-compose.yml` that prevented to connect an external Kafka tool to the cluster using the external Docker ports.
+* [#27](https://github.com/zappee/gombi/issues/27): If the database has already been created, skip the creation during the first startup.
+* [#29](https://github.com/zappee/gombi/issues/29): Persistent Prstgres data store using a Docker volume.
 #### Java projects
 * Simplify the creation of the Kafka producer and consumer Spring Beans.
 * Simplify the creation of the Kafka topics during the startup.

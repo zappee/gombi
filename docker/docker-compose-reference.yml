@@ -155,3 +155,8 @@ services:
             - START_DB=true
         volumes:
             - $HOME/dev/workspace/java/remal/volumes/service-user:/jar-to-run
+            - user-service-data:/var/lib/postgresql/data
+
+volumes:
+    user-service-data:
+        driver: local

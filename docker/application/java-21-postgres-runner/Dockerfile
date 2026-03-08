@@ -66,14 +66,8 @@ RUN set -ue; \
     mkdir /run/postgresql; \
     chown postgres:postgres /run/postgresql/
 
-# configure postgres
-USER postgres:postgres
-RUN set -ue; \
-    mkdir "$POSTGRES_DATA"; \
-    initdb -D "$POSTGRES_DATA"
-COPY --chown=postgres:postgres config/*.conf $POSTGRES_DATA/
-
-USER root:root
+# copy files
+COPY --chown=postgres:postgres config/*.conf /tmp/
 COPY container-scripts/init/* /docker.init/
 COPY container-scripts/startup/* /docker.startup/
 COPY container-scripts/postgres-functions.sh /

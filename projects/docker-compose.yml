@@ -35,6 +35,7 @@ services:
             - $HOME/Java/gombi/volumes/user-service-1/jar-to-run:/jar-to-run
             - $HOME/Java/gombi/volumes/user-service-1/logs:/logs
             - $HOME/Java/gombi/volumes/user-service-1/heap-dump:/heap-dump
+            - user-service-1-data:/var/lib/postgresql/data
 
     user-service-2:
         image: remal-java-21-postgres-runner:0.6.2
@@ -71,6 +72,7 @@ services:
             - $HOME/Java/gombi/volumes/user-service-2/jar-to-run:/jar-to-run
             - $HOME/Java/gombi/volumes/user-service-2/logs:/logs
             - $HOME/Java/gombi/volumes/user-service-2/heap-dump:/heap-dump
+            - user-service-2-data:/var/lib/postgresql/data
 
     # ----- welcome-services ----------------------------------------------------------------------
     welcome-service-1:
@@ -637,3 +639,10 @@ services:
             resources:
                 limits:
                     memory: 64M
+
+volumes:
+    user-service-1-data:
+        driver: local
+
+    user-service-2-data:
+        driver: local
