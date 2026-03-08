@@ -27,7 +27,7 @@ ENV IMAGE_NAME="$IMAGE_NAME" \
     PKI_HOST="pki.remal.com" \
     KEYSTORE_HOME="/tmp" \
     \
-    VAULT_INSTALL_KIT="vault_1.19.5_linux_386.zip" \
+    VAULT_INSTALL_KIT="vault_1.21.4_linux_386.zip" \
     VAULT_CONFIG_FILE="/etc/vault.hcl" \
     VAULT_INIT_LOG="/var/log/vault-tokens.txt" \
     VAULT_FILE_STORE="/opt/vault/data" \

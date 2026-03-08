@@ -363,7 +363,7 @@ services:
 
     # ----- Kafka controllers -----
     kafka-1:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-1.${DOMAIN_NAME}
         hostname: kafka-1.${DOMAIN_NAME}
@@ -389,7 +389,7 @@ services:
                     memory: 384M
 
     kafka-2:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-2.${DOMAIN_NAME}
         hostname: kafka-2.${DOMAIN_NAME}
@@ -415,7 +415,7 @@ services:
                     memory: 384M
 
     kafka-3:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-3.${DOMAIN_NAME}
         hostname: kafka-3.${DOMAIN_NAME}
@@ -442,7 +442,7 @@ services:
 
     # ----- Kafka brokers -----
     kafka-4:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-4.${DOMAIN_NAME}
         hostname: kafka-4.${DOMAIN_NAME}
@@ -480,7 +480,7 @@ services:
                     memory: 384M
 
     kafka-5:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-5.${DOMAIN_NAME}
         hostname: kafka-5.${DOMAIN_NAME}
@@ -518,7 +518,7 @@ services:
                     memory: 384M
 
     kafka-6:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-6.${DOMAIN_NAME}
         hostname: kafka-6.${DOMAIN_NAME}
@@ -556,7 +556,7 @@ services:
                     memory: 384M
 
     kafka-7:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-7.${DOMAIN_NAME}
         hostname: kafka-7.${DOMAIN_NAME}
@@ -595,7 +595,7 @@ services:
 
     # ----- Kafka UI -----
     kafka-ui:
-        image: ghcr.io/kafbat/kafka-ui:v1.2.0
+        image: ghcr.io/kafbat/kafka-ui:v1.4.2
         restart: unless-stopped
         container_name: kafka-ui.${DOMAIN_NAME}
         hostname: kafka-ui.${DOMAIN_NAME}

@@ -2,13 +2,8 @@
 # ******************************************************************************
 # Remal Docker Image build file.
 #
-# Usage:
-#    1) Set the REMAL_HOME environment variable.
-#       It must point to the project directory. If the variable is not set then
-#       the current directory is used as a home directory.
-#       Example: export REMAL_HOME="$HOME/Java/gombi"
-#
-#   2) Run the script using ./remal.sh
+# Usage: $ ./remal.sh
+#        $ ./remal.sh <command>
 #
 # Accepted values:
 #    BUILD_TYPE:       slim | fat
@@ -285,7 +280,6 @@ function show_help() {
     printf "      %s vl:   start the Docker stack and show the containers' log\n\n" "$script"
     printf "   %bEnvironment:%b\n" "$STYLE_BOLD" "$STYLE_DEFAULT"
     printf "      BUILD_TYPE: %s\n" "$BUILD_TYPE"
-    printf "      REMAL_HOME: %s\n" ""
     printf "      WORKSPACE : %s\n\n" "$WORKSPACE"
     printf "   %bTasks%b:\n" "$STYLE_BOLD" "$STYLE_DEFAULT"
     printf "      %ba:    build the %bBase%b image%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"

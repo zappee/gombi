@@ -40,13 +40,25 @@ $ ./remal.sh abcdi
 Before to use the script, do not forget to set the `REMAL_HOME` environment variable properly. It must point to the root directory of this project.
 The default value of the variable is set to the directory from where you are executing the build script.
 
-### 3.3) Start the development environment
-Once the build is done you can start the servers locally and show the application logs by using the same script:
+### 3.3) Start any container
 ~~~
-s remal.sh s
+# run the image
+$ docker run --rm --name tmp-container -it IMAGE_NAME[:TAG] bash
+
+# run the image with an empty entrypoint
+$ ocker run --rm --name tmp-container --entrypoint "" IMAGE_NAME[:TAG]  tail -f /dev/null
+
+# start an interactive shell inside it 
+$ docker exec -it tmp-container bash
 ~~~
 
-### 3.4) Setting Up Certificate Authorities (CA) in Firefox 
+### 3.4) Start the development environment
+Once the build is done you can start the servers locally and show the application logs by using the same script:
+~~~
+s remal.sh <command>
+~~~
+
+### 3.5) Setting Up Certificate Authorities (CA) in Firefox 
 How to get Firefox to trust all self-signed certificates you use locally to serve your development sites over https and not complain about them?
 You can add the root CA to your web browser.
 The root CA locates in the CA server, the Docker container name is `pki.remal.com`.
@@ -57,7 +69,7 @@ The root CA locates in the CA server, the Docker container name is `pki.remal.co
 
 ![step 3](infrastructure/easy-rsa-pki/docs/firefox-setting-up-ca-step-3.png)
 
-### 3.5) Stop the development environment
+### 3.6) Stop the development environment
 Docker can back up the current configuration of the running servers before the whole environment will be stopped.
 By default, the `docker compose stop` command attempts to stop a container by sending a `SIGTERM` to the running containers.
 Then, it waits for a default timeout of 10 seconds. After the timeout, a `SIGKILL` is sent to the containers to forcefully kill it.

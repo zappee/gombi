@@ -85,7 +85,7 @@ function revoke_existing_certificate() {
 function generate_cert_req_and_key() {
   local domain="$1"
   local san="${2:-}"
-  local work_dir=${PWD}
+  local work_dir=$PWD
 
   printf "%s | [INFO ] generating a certificate request and key...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   printf "%s | [DEBUG]    EASYRSA_HOME: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$EASYRSA_HOME"
@@ -121,14 +121,14 @@ function generate_cert_req_and_key() {
 #    param 2: domain name of the server
 # ------------------------------------------------------------------------------
 function signing_cert_req() {
-  local cert_type domain work_dir
-  cert_type="$1"
-  domain="$2"
-  work_dir=${PWD}
+  local cert_type="$1"
+  local domain="$2"
+  local work_dir=$PWD
 
   printf "%s | [INFO ] signing the certificate request...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   printf "%s | [DEBUG]    cert_type: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$cert_type"
   printf "%s | [DEBUG]       domain: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain"
+  printf "%s | [DEBUG]     work_dir: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$work_dir"
 
   cd "$EASYRSA_HOME" || { println "invalid path: %s" "$EASYRSA_HOME"; exit 1; }
   while ! ./easyrsa --copy-ext --batch --passin="pass:$EASYRSA_PASS" sign-req "$cert_type" "$domain"; do
@@ -144,8 +144,8 @@ function signing_cert_req() {
 #    param 1: domain name of the server
 # ------------------------------------------------------------------------------
 function export_to_keystore() {
-  local domain
-  domain="$1"
+  local domain="$1"
+  local work_dir=$PWD
 
   printf "%s | [INFO ] creating a new PKCS#12 keystore and import the \"%s\" certificate into it...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$domain"
   cd "$EASYRSA_HOME" || { println "invalid path: %s" "$EASYRSA_HOME"; exit 1; }

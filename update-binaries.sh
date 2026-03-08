@@ -29,12 +29,12 @@ BINARIES=(
   "AM-7.3.0.war;docker/infrastructure/forgerock-am/bin"
   "AM-SSOConfiguratorTools-5.1.3.18.zip;docker/infrastructure/forgerock-am/bin"
   "apache-tomcat-9.0.71.tar.gz;docker/infrastructure/tomcat-9/bin"
-  "EasyRSA-3.2.3.tgz;docker/infrastructure/easy-rsa-pki/bin"
-  "consul_1.21.1_linux_386.zip;docker/infrastructure/hcp-consul/bin"
-  "vault_1.19.5_linux_386.zip;docker/infrastructure/hcp-vault/bin"
-  "prometheus-3.4.1.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
-  "grafana-enterprise-12.0.1.linux-amd64.tar.gz;docker/monitoring/grafana/bin"
-  "hazelcast-5.5.0-slim.tar.gz;docker/infrastructure/hazelcast-platform/bin"
+  "EasyRSA-3.2.5.tgz;docker/infrastructure/easy-rsa-pki/bin"
+  "consul_1.22.5_linux_386.zip;docker/infrastructure/hcp-consul/bin"
+  "vault_1.21.4_linux_386.zip;docker/infrastructure/hcp-vault/bin"
+  "prometheus-3.10.0.linux-amd64.tar.gz;docker/monitoring/prometheus/bin"
+  "grafana-enterprise_12.4.0_22325204712_linux_amd64.tar.gz;docker/monitoring/grafana/bin"
+  "hazelcast-5.6.0-slim.tar.gz;docker/infrastructure/hazelcast-platform/bin"
 )
 
 # ----------------------------------------------------------------------------
