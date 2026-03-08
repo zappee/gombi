@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 * Fixing a Kafka configuration issue in the `docker-compose.yml` that prevented to connect an external Kafka tool to the cluster using the external Docker ports.
 * [#26](https://github.com/zappee/gombi/issues/26): Update the binaries used in the images.
 * [#27](https://github.com/zappee/gombi/issues/27): If the database has already been created, skip the creation during the first startup.
+* [#28](https://github.com/zappee/gombi/issues/28): Fix this issue: /etc/profile: line 27: export: -u: invalid option.
 * [#29](https://github.com/zappee/gombi/issues/29): Persistent Postgres data store using a Docker volume.
 #### Java projects
 * Simplify the creation of the Kafka producer and consumer Spring Beans.

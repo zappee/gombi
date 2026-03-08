@@ -38,7 +38,7 @@ RUN set -ue; \
 	apk add --no-cache java-cacerts openjdk17-jdk; \
 	java -version; \
 	javac -version; \
-    printf "export %s=\"%s\"\n" "JAVA_HOME" "$JAVA_HOME" >> /etc/profile \
+    printf "export %s=\"%s\"\n" "JAVA_HOME" "$JAVA_HOME" >> /etc/profile
 
 # create some directories to share logs betweeen the container and the host machine
 RUN set -ue; \
