@@ -46,7 +46,7 @@ The default value of the variable is set to the directory from where you are exe
 $ docker run --rm --name tmp-container -it IMAGE_NAME[:TAG] bash
 
 # run the image with an empty entrypoint
-$ ocker run --rm --name tmp-container --entrypoint "" IMAGE_NAME[:TAG]  tail -f /dev/null
+$ docker run --rm --name tmp-container --entrypoint "" IMAGE_NAME[:TAG]  tail -f /dev/null
 
 # start an interactive shell inside it 
 $ docker exec -it tmp-container bash
