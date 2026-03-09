@@ -46,7 +46,7 @@ function init_database() {
     set -e
 
     if [ $exit_code -eq 0 ]; then
-      printf "%s | [INFO]  The Postgres database has already been initialised, so this step will be skipped\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+      printf "%s | [INFO]  the Postgres database has already been initialised\n" "$(date +"%Y-%m-%d %H:%M:%S")"
     else
       # step 1
       printf "%s | [INFO]  --> 1/4: initializing the Postgres database...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
