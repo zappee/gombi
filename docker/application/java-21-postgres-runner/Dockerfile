@@ -70,4 +70,4 @@ RUN set -ue; \
 COPY --chown=postgres:postgres config/*.conf /tmp/
 COPY container-scripts/init/* /docker.init/
 COPY container-scripts/startup/* /docker.startup/
-COPY container-scripts/postgres-functions.sh /
+COPY container-scripts/*.sh /

@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.2] - xx/Mar/2026
+## [0.6.2] - 09/Mar/2026
 #### General
 * Update the copyright text.
 #### Docker Images
@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 * [#27](https://github.com/zappee/gombi/issues/27): If the database has already been created, skip the creation during the first startup.
 * [#28](https://github.com/zappee/gombi/issues/28): Fix this issue: /etc/profile: line 27: export: -u: invalid option.
 * [#29](https://github.com/zappee/gombi/issues/29): Persistent Postgres data store using a Docker volume.
+* [#31](https://github.com/zappee/gombi/issues/31): Make sure you shut down the Postgres server properly before stopping the container.
 #### Java projects
 * Simplify the creation of the Kafka producer and consumer Spring Beans.
 * Simplify the creation of the Kafka topics during the startup.

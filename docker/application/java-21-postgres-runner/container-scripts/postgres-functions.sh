@@ -38,41 +38,38 @@ function create_database_and_user() {
 # Initialize the database.
 # ------------------------------------------------------------------------------
 function init_database() {
-    printf "%s | [INFO]  initializing the Postgres database...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [INFO]  initializing the Postgres database...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG]    POSTGRES_DATA: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_DATA"
 
-    set +e
-    pg_controldata "$POSTGRES_DATA"
-    local exit_code=$?
-    set -e
+  set +e
+  pg_controldata "$POSTGRES_DATA"
+  local exit_code=$?
+  set -e
 
-    if [ $exit_code -eq 0 ]; then
-      printf "%s | [INFO]  the Postgres database has already been initialised\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-    else
-      # step 1
-      printf "%s | [INFO]  --> 1/4: initializing the Postgres database...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-      printf "%s | [DEBUG] postgres-data: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_DATA"
-      chown postgres:postgres -R "$POSTGRES_DATA"
-      /bin/su -c "initdb -D $POSTGRES_DATA" - postgres
+  chown postgres:postgres -R "$POSTGRES_DATA"
 
-      # step 2
-      printf "%s | [INFO]  --> 2/4: updating the Postgres database configuration...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-      printf "%s | [DEBUG] postgres-data: \"%s\", postgres-config: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_LOG_DIR" "$POSTGRES_CONFIG"
-      mv /tmp/pg_hba.conf "$POSTGRES_DATA"
-      mv /tmp/postgresql.conf "$POSTGRES_DATA"
-      sed -i "s|\${POSTGRES_LOG_DIR}|$POSTGRES_LOG_DIR|g" "$POSTGRES_CONFIG"
+  if [ $exit_code -eq 0 ]; then
+    printf "%s | [INFO]  the Postgres database has already been initialised\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  else
+    # step 1
+    printf "%s | [INFO]  --> 1/3: initializing the Postgres database...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+    printf "%s | [DEBUG] postgres-data: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_DATA"
+    /bin/su -c "initdb -D $POSTGRES_DATA" - postgres
 
-      # step 3
-      printf "%s | [INFO]  --> 3/4: setting up the default database password...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-      printf "%s | [DEBUG] admin-user: \"%s\", admin-password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$DB_ADMIN_USER" "$DB_ADMIN_PASSWORD"
-      start_postgres "true"
-      set_database_password "$DB_ADMIN_USER" "$DB_ADMIN_PASSWORD"
+    # step 2
+    printf "%s | [INFO]  --> 2/3: updating the Postgres database configuration...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+    printf "%s | [DEBUG] postgres-data: \"%s\", postgres-config: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_LOG_DIR" "$POSTGRES_CONFIG"
+    mv /tmp/pg_hba.conf "$POSTGRES_DATA"
+    mv /tmp/postgresql.conf "$POSTGRES_DATA"
+    sed -i "s|\${POSTGRES_LOG_DIR}|$POSTGRES_LOG_DIR|g" "$POSTGRES_CONFIG"
 
-      # step 4
-      printf "%s | [INFO]  --> 4/4: creating a database for the application...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-      printf "%s | [DEBUG] database: \"%s\", user: \"%s\", password: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$DB_APP_DATABASE" "$DB_APP_USER" "$DB_APP_PASSWORD"
-      create_database_and_user "$DB_APP_DATABASE" "$DB_APP_USER" "$DB_APP_PASSWORD"
-      stop_postgres
-    fi
+    # step 3
+    printf "%s | [INFO]  --> 3/3: updating databases...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+    start_postgres "true"
+    set_database_password "$DB_ADMIN_USER" "$DB_ADMIN_PASSWORD"
+    create_database_and_user "$DB_APP_DATABASE" "$DB_APP_USER" "$DB_APP_PASSWORD"
+    stop_postgres
+  fi
 }
 
 # ------------------------------------------------------------------------------
@@ -109,20 +106,20 @@ function start_postgres() {
     postgres_log="$POSTGRES_LOG_DIR/postgresql.log"
 
     printf "%s | [INFO]  starting the Postgres database server...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-    printf "%s | [DEBUG]     POSTGRES_DATA: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_DATA"
-    printf "%s | [DEBUG]    start postgres: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$signal"
-    printf "%s | [DEBUG]      postgres_log: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$postgres_log"
+    printf "%s | [DEBUG]    POSTGRES_DATA: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_DATA"
+    printf "%s | [DEBUG]            start: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$signal"
+    printf "%s | [DEBUG]     postgres_log: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$postgres_log"
 
-    pkill -f "$postgres_log" || true # exit code must be zero always
+    pkill -f "$postgres_log" || true
     rm -f "$postgres_log"
     /bin/su -c "pg_ctl start -D $POSTGRES_DATA" - postgres
     tail -n +1 -F "$postgres_log" &
 
     wait_until_content_found "$postgres_log" "database system is ready"
-    printf "%s | [INFO]  Postgres Database server has been started successfully\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+    printf "%s | [INFO]  the database server has been started successfully\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   else
-    printf "%s | [DEBUG] skipping the startup of the Postgres database server...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-    printf "%s | [DEBUG] to start the Postgres database server, use 'START_DB=true' in the 'docker-compose.yml' file\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+    printf "%s | [DEBUG] skipping the startup of the database server...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+    printf "%s | [DEBUG] for start the database server use 'START_DB=true' in the 'docker-compose.yml' file\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   fi
 }
 
