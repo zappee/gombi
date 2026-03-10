@@ -69,7 +69,7 @@ fs.inotify.max_user_watches = 524288
 
     | Name, shorthand | Default | Description                                | Example                           |
     |-----------------|---------|--------------------------------------------|-----------------------------------|
-    | --time , -t     |  10     | Seconds to wait for stop before killing it | `docker stop -t 60 <containerId>` |
+    | --timeout, -t   |  10     | Seconds to wait for stop before killing it | `docker stop -t 60 <containerId>` |
 
   Start the container:
   ~~~
@@ -81,7 +81,7 @@ fs.inotify.max_user_watches = 524288
   ~~~
   Stop the container:
   ~~~
-  $ docker stop --time 60 ds.remal.com
+  $ docker stop --timeout 60 ds.remal.com
   ~~~
 
     * **Restore:**
