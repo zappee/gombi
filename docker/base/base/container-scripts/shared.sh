@@ -240,7 +240,7 @@ function shutdown_trap() {
     log_start "$script_file"
     . /shutdown-actions.sh
     elapsed=$(($(date +%s) - start))
-    printf "%s | [INFO]  execution time: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$(date -d@$elapsed -u +%H\ hour\ %M\ day\ %S\ sec)"
+    printf "%s | [INFO]  shutdown took %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$(date -d@$elapsed -u +%H\ hour\ %M\ day\ %S\ sec)"
     log_end "$script_file"
   else
     printf "%s | [WARN]  script \"%s\" not exist, ignoring it\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$script_file"

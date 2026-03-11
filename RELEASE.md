@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 * [#29](https://github.com/zappee/gombi/issues/29): Persistent Postgres data store using a Docker volume.
 * [#30](https://github.com/zappee/gombi/issues/30): Docker container does not start after `docker stop` and `docker start`.
 * [#31](https://github.com/zappee/gombi/issues/31): Make sure you shut down the Postgres server properly before stopping the container.
+* [#32](https://github.com/zappee/gombi/issues/32): The `shutdown_trap()` bash function in `shared.sh` script always shows zero execution time.
 #### Java projects
 * Simplify the creation of the Kafka producer and consumer Spring Beans.
 * Simplify the creation of the Kafka topics during the startup.
