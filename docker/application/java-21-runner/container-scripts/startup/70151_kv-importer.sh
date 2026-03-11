@@ -62,13 +62,17 @@ extract_file() {
   if [ -z "$archive_file" ]; then
     printf "%s | [WARN]  there is nothing to unpack\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   else
-    printf "%s | [DEBUG] unpacking the \"%s\" file from \"%s\" to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fie_to_extract" "$archive_file" "$target_dir"
+    # Executing "docker stop" then "docker start" can cause an issue the extracted files from the previous run.
+    # Therefore, it is best to reset the directory before each run.
+    printf "%s | [DEBUG] removing the previous content from the \"%s\" directory...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "${target_dir}"
+    rm -rf "${target_dir:?}"/*
 
     # Ignore a specific exit code that appears if there file to extract not found in the ZIP.
     #
     # Exit codes (see the full list here: https://linux.die.net/man/1/unzip):
     #     9: the specified zip files were not found
     #    11: no matching files were found
+    printf "%s | [DEBUG] unpacking the \"%s\" file from \"%s\" to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fie_to_extract" "$archive_file" "$target_dir"
     unzip -j "$archive_file" "$fie_to_extract" -d "$target_dir" || (exit "$(($? == 11 ? 0 : $?))")
   fi
 }
