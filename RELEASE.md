@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.2] - 09/Mar/2026
+## [0.6.2] - 11/Mar/2026
 #### General
 * Update the copyright text.
 #### Docker Images
