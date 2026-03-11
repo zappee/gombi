@@ -11,14 +11,31 @@ services:
             - "14114:8443" # HTTPS
             - "14115:5432" # Postgres
         environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-            - START_DB=true
-            - DB_APP_DATABASE=default_db
-            - DB_APP_USER=application
-            - DB_APP_PASSWORD=password
+            PKI_HOST: pki.${DOMAIN_NAME}
+            CONSUL_SERVER_HOSTNAME: consul.${DOMAIN_NAME}
+            START_DB: true
+            DB_APP_DATABASE: default_db
+            DB_APP_USER: application
+            DB_APP_PASSWORD: password
+            JAVA_OPTS: >
+                -XX:+UseContainerSupport
+                -XX:MaxRAMPercentage=75.0
+                -XX:+UseG1GC
+                -XX:MaxGCPauseMillis=100
+                -XX:+ParallelRefProcEnabled
+                -XX:+UseStringDeduplication
+                -XX:+HeapDumpOnOutOfMemoryError
+                -XX:+ExitOnOutOfMemoryError
+                -XX:HeapDumpPath=/heap-dump
+        deploy:
+            resources:
+                limits:
+                    memory: 384M
         volumes:
-            - $HOME/Java/gombi/bin/remal-gombi-user-service:/jar-to-run
+            - $HOME/Java/gombi/volumes/user-service-1/jar-to-run:/jar-to-run
+            - $HOME/Java/gombi/volumes/user-service-1/logs:/logs
+            - $HOME/Java/gombi/volumes/user-service-1/heap-dump:/heap-dump
+            - user-service-1-data:/var/lib/postgresql/data
 
     user-service-2:
         image: remal-java-21-postgres-runner:0.6.2
@@ -31,14 +48,31 @@ services:
             - "14124:8443" # HTTPS
             - "14125:5432" # Postgres
         environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-            - START_DB=true
-            - DB_APP_DATABASE=default_db
-            - DB_APP_USER=application
-            - DB_APP_PASSWORD=password
+            PKI_HOST: pki.${DOMAIN_NAME}
+            CONSUL_SERVER_HOSTNAME: consul.${DOMAIN_NAME}
+            START_DB: true
+            DB_APP_DATABASE: default_db
+            DB_APP_USER: application
+            DB_APP_PASSWORD: password
+            JAVA_OPTS: >
+                -XX:+UseContainerSupport
+                -XX:MaxRAMPercentage=75.0
+                -XX:+UseG1GC
+                -XX:MaxGCPauseMillis=100
+                -XX:+ParallelRefProcEnabled
+                -XX:+UseStringDeduplication
+                -XX:+HeapDumpOnOutOfMemoryError
+                -XX:+ExitOnOutOfMemoryError
+                -XX:HeapDumpPath=/heap-dump
+        deploy:
+            resources:
+                limits:
+                    memory: 384M
         volumes:
-            - $HOME/Java/gombi/bin/remal-gombi-user-service:/jar-to-run
+            - $HOME/Java/gombi/volumes/user-service-2/jar-to-run:/jar-to-run
+            - $HOME/Java/gombi/volumes/user-service-2/logs:/logs
+            - $HOME/Java/gombi/volumes/user-service-2/heap-dump:/heap-dump
+            - user-service-2-data:/var/lib/postgresql/data
 
     # ----- welcome-services ----------------------------------------------------------------------
     welcome-service-1:
@@ -51,10 +85,26 @@ services:
             - "14213:8000" # JVM debug
             - "14214:8443" # HTTPS
         environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            PKI_HOST: pki.${DOMAIN_NAME}
+            CONSUL_SERVER_HOSTNAME: consul.${DOMAIN_NAME}
+            JAVA_OPTS: >
+                -XX:+UseContainerSupport
+                -XX:MaxRAMPercentage=75.0
+                -XX:+UseG1GC
+                -XX:MaxGCPauseMillis=100
+                -XX:+ParallelRefProcEnabled
+                -XX:+UseStringDeduplication
+                -XX:+HeapDumpOnOutOfMemoryError
+                -XX:+ExitOnOutOfMemoryError
+                -XX:HeapDumpPath=/heap-dump
+        deploy:
+            resources:
+                limits:
+                    memory: 256M
         volumes:
-            - $HOME/Java/gombi/bin/remal-gombi-welcome-service:/jar-to-run
+            - $HOME/Java/gombi/volumes/welcome-service-1/jar-to-run:/jar-to-run
+            - $HOME/Java/gombi/volumes/welcome-service-1/logs:/logs
+            - $HOME/Java/gombi/volumes/welcome-service-1/heap-dump:/heap-dump
 
     # ----- kafka-producer-services ---------------------------------------------------------------
     kafka-producer-service-1:
@@ -67,10 +117,26 @@ services:
             - "14313:8000" # JVM debug
             - "14314:8443" # HTTPS
         environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
+            PKI_HOST: pki.${DOMAIN_NAME}
+            CONSUL_SERVER_HOSTNAME: consul.${DOMAIN_NAME}
+            JAVA_OPTS: >
+                -XX:+UseContainerSupport
+                -XX:MaxRAMPercentage=75.0
+                -XX:+UseG1GC
+                -XX:MaxGCPauseMillis=100
+                -XX:+ParallelRefProcEnabled
+                -XX:+UseStringDeduplication
+                -XX:+HeapDumpOnOutOfMemoryError
+                -XX:+ExitOnOutOfMemoryError
+                -XX:HeapDumpPath=/heap-dump
+        deploy:
+            resources:
+                limits:
+                    memory: 256M
         volumes:
-            - $HOME/Java/gombi/bin/remal-gombi-kafka-producer:/jar-to-run
+                - $HOME/Java/gombi/volumes/kafka-producer-service-1/jar-to-run:/jar-to-run
+                - $HOME/Java/gombi/volumes/kafka-producer-service-1/logs:/logs
+                - $HOME/Java/gombi/volumes/kafka-producer-service-1/heap-dump:/heap-dump
         depends_on:
             kafka-4:
                 condition: service_healthy
@@ -93,14 +159,30 @@ services:
             - "14414:8443" # HTTPS
             - "14415:5432" # Postgres
         environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-            - START_DB=true
-            - DB_APP_DATABASE=default_db
-            - DB_APP_USER=application
-            - DB_APP_PASSWORD=password
+            PKI_HOST: pki.${DOMAIN_NAME}
+            CONSUL_SERVER_HOSTNAME: consul.${DOMAIN_NAME}
+            START_DB: true
+            DB_APP_DATABASE: default_db
+            DB_APP_USER: application
+            DB_APP_PASSWORD: password
+            JAVA_OPTS: >
+                -XX:+UseContainerSupport
+                -XX:MaxRAMPercentage=75.0
+                -XX:+UseG1GC
+                -XX:MaxGCPauseMillis=100
+                -XX:+ParallelRefProcEnabled
+                -XX:+UseStringDeduplication
+                -XX:+HeapDumpOnOutOfMemoryError
+                -XX:+ExitOnOutOfMemoryError
+                -XX:HeapDumpPath=/heap-dump
+        deploy:
+            resources:
+                limits:
+                    memory: 384M
         volumes:
-            - $HOME/Java/gombi/bin/remal-gombi-kafka-consumer:/jar-to-run
+            - $HOME/Java/gombi/volumes/kafka-consumer-service-1/jar-to-run:/jar-to-run
+            - $HOME/Java/gombi/volumes/kafka-consumer-service-1/logs:/logs
+            - $HOME/Java/gombi/volumes/kafka-consumer-service-1/heap-dump:/heap-dump
         depends_on:
             kafka-4:
                 condition: service_healthy
@@ -122,12 +204,28 @@ services:
             - "14513:8000" # JVM debug
             - "14514:8443" # HTTPS
         environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-            - HAZELCAST_CLUSTER_NAME=gombi-dev
-            - HAZELCAST_CLUSTER_MEMBERS=hazelcast-1.${DOMAIN_NAME}, hazelcast-2.${DOMAIN_NAME}
+            PKI_HOST: pki.${DOMAIN_NAME}
+            CONSUL_SERVER_HOSTNAME: consul.${DOMAIN_NAME}
+            HAZELCAST_CLUSTER_NAME: gombi-dev
+            HAZELCAST_CLUSTER_MEMBERS: hazelcast-1.${DOMAIN_NAME}, hazelcast-2.${DOMAIN_NAME}
+            JAVA_OPTS: >
+                -XX:+UseContainerSupport
+                -XX:MaxRAMPercentage=75.0
+                -XX:+UseG1GC
+                -XX:MaxGCPauseMillis=100
+                -XX:+ParallelRefProcEnabled
+                -XX:+UseStringDeduplication
+                -XX:+HeapDumpOnOutOfMemoryError
+                -XX:+ExitOnOutOfMemoryError
+                -XX:HeapDumpPath=/heap-dump
+        deploy:
+            resources:
+                limits:
+                    memory: 256M
         volumes:
-            - $HOME/Java/gombi/bin/remal-gombi-hazelcast-counter:/jar-to-run
+            - $HOME/Java/gombi/volumes/hazelcast-counter-service-1/jar-to-run:/jar-to-run
+            - $HOME/Java/gombi/volumes/hazelcast-counter-service-1/logs:/logs
+            - $HOME/Java/gombi/volumes/hazelcast-counter-service-1/heap-dump:/heap-dump
 
     hazelcast-counter-service-2:
         image: remal-java-21-runner:0.6.2
@@ -139,12 +237,28 @@ services:
             - "14523:8000" # JVM debug
             - "14524:8443" # HTTPS
         environment:
-            - PKI_HOST=pki.${DOMAIN_NAME}
-            - CONSUL_SERVER_HOSTNAME=consul.${DOMAIN_NAME}
-            - HAZELCAST_CLUSTER_NAME=gombi-dev
-            - HAZELCAST_CLUSTER_MEMBERS=hazelcast-1.${DOMAIN_NAME}, hazelcast-2.${DOMAIN_NAME}
+            PKI_HOST: pki.${DOMAIN_NAME}
+            CONSUL_SERVER_HOSTNAME: consul.${DOMAIN_NAME}
+            HAZELCAST_CLUSTER_NAME: gombi-dev
+            HAZELCAST_CLUSTER_MEMBERS: hazelcast-1.${DOMAIN_NAME}, hazelcast-2.${DOMAIN_NAME}
+            JAVA_OPTS: >
+                -XX:+UseContainerSupport
+                -XX:MaxRAMPercentage=75.0
+                -XX:+UseG1GC
+                -XX:MaxGCPauseMillis=100
+                -XX:+ParallelRefProcEnabled
+                -XX:+UseStringDeduplication
+                -XX:+HeapDumpOnOutOfMemoryError
+                -XX:+ExitOnOutOfMemoryError
+                -XX:HeapDumpPath=/heap-dump
+        deploy:
+            resources:
+                limits:
+                    memory: 256M
         volumes:
-            - $HOME/Java/gombi/bin/remal-gombi-hazelcast-counter:/jar-to-run
+            - $HOME/Java/gombi/volumes/hazelcast-counter-service-2/jar-to-run:/jar-to-run
+            - $HOME/Java/gombi/volumes/hazelcast-counter-service-2/logs:/logs
+            - $HOME/Java/gombi/volumes/hazelcast-counter-service-2/heap-dump:/heap-dump
 
     # ----- Hashicorp Consul ----------------------------------------------------------------------
     consul:
@@ -157,6 +271,10 @@ services:
             - "13103:8501" # Consul web console, HTTPS
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
+        deploy:
+            resources:
+                limits:
+                    memory: 128M
 
     # ----- Grafana monitoring --------------------------------------------------------------------
     grafana:
@@ -170,6 +288,10 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - PROMETHEUS_HOST=prometheus.${DOMAIN_NAME}
+        deploy:
+            resources:
+                limits:
+                    memory: 128M
 
     # ----- Prometheus monitoring -----------------------------------------------------------------
     prometheus:
@@ -183,6 +305,10 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - CONSUL_HOST=consul.${DOMAIN_NAME}
+        deploy:
+            resources:
+                limits:
+                    memory: 128M
 
     # ----- Hazelcast -----------------------------------------------------------------------------
     hazelcast-1:
@@ -196,6 +322,10 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - HAZELCAST_CLUSTER_NAME=gombi-dev
+        deploy:
+            resources:
+                limits:
+                    memory: 256M
 
     hazelcast-2:
         image: remal-hazelcast:0.6.2
@@ -208,6 +338,10 @@ services:
         environment:
             - PKI_HOST=pki.${DOMAIN_NAME}
             - HAZELCAST_CLUSTER_NAME=gombi-dev
+        deploy:
+            resources:
+                limits:
+                    memory: 256M
 
     # ----- Kafka ---------------------------------------------------------------------------------
     #          When you operate Apache Kafka® in KRaft mode, you must set the process.roles
@@ -229,7 +363,7 @@ services:
 
     # ----- Kafka controllers -----
     kafka-1:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-1.${DOMAIN_NAME}
         hostname: kafka-1.${DOMAIN_NAME}
@@ -249,9 +383,13 @@ services:
             retries: 3
             start_period: 1s
             start_interval: 1s
+        deploy:
+            resources:
+                limits:
+                    memory: 384M
 
     kafka-2:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-2.${DOMAIN_NAME}
         hostname: kafka-2.${DOMAIN_NAME}
@@ -271,9 +409,13 @@ services:
             retries: 3
             start_period: 1s
             start_interval: 1s
+        deploy:
+            resources:
+                limits:
+                    memory: 384M
 
     kafka-3:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-3.${DOMAIN_NAME}
         hostname: kafka-3.${DOMAIN_NAME}
@@ -293,10 +435,14 @@ services:
             retries: 3
             start_period: 1s
             start_interval: 1s
+        deploy:
+            resources:
+                limits:
+                    memory: 384M
 
     # ----- Kafka brokers -----
     kafka-4:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-4.${DOMAIN_NAME}
         hostname: kafka-4.${DOMAIN_NAME}
@@ -306,16 +452,11 @@ services:
             KAFKA_PROCESS_ROLES: broker
             KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094
             KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-4.${DOMAIN_NAME}:9092,EXTERNAL://${KAFKA_EXTERNAL_IP}:${KAFKA_BROKER_1_PORT}
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
             KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
             KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
             KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
-            KAFKA_LISTENER_NAME_EXTERNAL_PLAIN_SASL_JAAS_CONFIG: |
-                org.apache.kafka.common.security.plain.PlainLoginModule required \
-                username="${KAFKA_USERNAME}" \
-                password="${KAFKA_PASSWORD}" \
-                user_${KAFKA_USERNAME}="${KAFKA_PASSWORD}";
             KAFKA_JMX_PORT: 9997
         ports:
             - ${KAFKA_BROKER_1_PORT}:9094/tcp
@@ -333,9 +474,13 @@ services:
                 condition: service_healthy
             kafka-3:
                 condition: service_healthy
+        deploy:
+            resources:
+                limits:
+                    memory: 384M
 
     kafka-5:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-5.${DOMAIN_NAME}
         hostname: kafka-5.${DOMAIN_NAME}
@@ -345,16 +490,11 @@ services:
             KAFKA_PROCESS_ROLES: broker
             KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094
             KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-5.${DOMAIN_NAME}:9092,EXTERNAL://${KAFKA_EXTERNAL_IP}:${KAFKA_BROKER_2_PORT}
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
             KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
             KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
             KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
-            KAFKA_LISTENER_NAME_EXTERNAL_PLAIN_SASL_JAAS_CONFIG: |
-                org.apache.kafka.common.security.plain.PlainLoginModule required \
-                username="${KAFKA_USERNAME}" \
-                password="${KAFKA_PASSWORD}" \
-                user_${KAFKA_USERNAME}="${KAFKA_PASSWORD}";
             KAFKA_JMX_PORT: 9997
         ports:
             - ${KAFKA_BROKER_2_PORT}:9094/tcp
@@ -372,9 +512,13 @@ services:
                 condition: service_healthy
             kafka-3:
                 condition: service_healthy
+        deploy:
+            resources:
+                limits:
+                    memory: 384M
 
     kafka-6:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-6.${DOMAIN_NAME}
         hostname: kafka-6.${DOMAIN_NAME}
@@ -384,16 +528,11 @@ services:
             KAFKA_PROCESS_ROLES: broker
             KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094
             KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-6.${DOMAIN_NAME}:9092,EXTERNAL://${KAFKA_EXTERNAL_IP}:${KAFKA_BROKER_3_PORT}
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
             KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
             KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
             KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
-            KAFKA_LISTENER_NAME_EXTERNAL_PLAIN_SASL_JAAS_CONFIG: |
-                org.apache.kafka.common.security.plain.PlainLoginModule required \
-                username="${KAFKA_USERNAME}" \
-                password="${KAFKA_PASSWORD}" \
-                user_${KAFKA_USERNAME}="${KAFKA_PASSWORD}";
             KAFKA_JMX_PORT: 9997
         ports:
             - ${KAFKA_BROKER_3_PORT}:9094/tcp
@@ -411,9 +550,13 @@ services:
                 condition: service_healthy
             kafka-3:
                 condition: service_healthy
+        deploy:
+            resources:
+                limits:
+                    memory: 384M
 
     kafka-7:
-        image: docker.io/apache/kafka:4.0.0
+        image: docker.io/apache/kafka:4.1.1
         restart: unless-stopped
         container_name: kafka-7.${DOMAIN_NAME}
         hostname: kafka-7.${DOMAIN_NAME}
@@ -423,16 +566,11 @@ services:
             KAFKA_PROCESS_ROLES: broker
             KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094
             KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka-7.${DOMAIN_NAME}:9092,EXTERNAL://${KAFKA_EXTERNAL_IP}:${KAFKA_BROKER_4_PORT}
-            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:SASL_PLAINTEXT
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT
             KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
             KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
             KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka-1.${DOMAIN_NAME}:9093,2@kafka-2.${DOMAIN_NAME}:9093,3@kafka-3.${DOMAIN_NAME}:9093
             KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
-            KAFKA_LISTENER_NAME_EXTERNAL_PLAIN_SASL_JAAS_CONFIG: |
-                org.apache.kafka.common.security.plain.PlainLoginModule required \
-                username="${KAFKA_USERNAME}" \
-                password="${KAFKA_PASSWORD}" \
-                user_${KAFKA_USERNAME}="${KAFKA_PASSWORD}";
             KAFKA_JMX_PORT: 9997
         ports:
             - ${KAFKA_BROKER_4_PORT}:9094/tcp
@@ -450,10 +588,14 @@ services:
                 condition: service_healthy
             kafka-3:
                 condition: service_healthy
+        deploy:
+            resources:
+                limits:
+                    memory: 384M
 
     # ----- Kafka UI -----
     kafka-ui:
-        image: ghcr.io/kafbat/kafka-ui:v1.2.0
+        image: ghcr.io/kafbat/kafka-ui:v1.4.2
         restart: unless-stopped
         container_name: kafka-ui.${DOMAIN_NAME}
         hostname: kafka-ui.${DOMAIN_NAME}
@@ -475,6 +617,10 @@ services:
                 condition: service_healthy
             kafka-7:
                 condition: service_healthy
+        deploy:
+            resources:
+                limits:
+                    memory: 256M
 
     # ----- Private Certificate Authority Server --------------------------------------------------
     pki:
@@ -489,3 +635,14 @@ services:
             - EASYRSA_REQ_PROVINCE=${EASYRSA_REQ_PROVINCE}
             - EASYRSA_REQ_CITY=${EASYRSA_REQ_CITY}
             - EASYRSA_REQ_ORG=${EASYRSA_REQ_ORG}
+        deploy:
+            resources:
+                limits:
+                    memory: 64M
+
+volumes:
+    user-service-1-data:
+        driver: local
+
+    user-service-2-data:
+        driver: local

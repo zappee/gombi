@@ -46,7 +46,7 @@ The platform is best suited for building microservices with Java and Spring Boot
 
 
 ## 2) Tutorial
-* [Link to the tutorial video](https://youtu.be/sO2GivADjsY)
+* [Link to the tutorial video](https://www.youtube.com/watch?v=sO2GivADjsY)
 
 
 ## 3) Docker Image Hierarchy
@@ -100,20 +100,58 @@ You can open a bug report or submit a new pull request with new features, fixes 
 ## 7) Thank you for buying me a coffee
 * **Wise, EUR/USD**:
 
-   ![Wise, EUR/USD](docs/donation/wisetag.png)
+   ![Wise, EUR/USD](docs/buy-me-a-coffee/wisetag.png)
 
 
 * [**PayPal, EUR**](https://www.paypal.com/donate/?hosted_button_id=VT6RPK363U5CA):
 
-  ![PayPal, EUR](docs/donation/paypal-eur.png)
+  ![PayPal, EUR](docs/buy-me-a-coffee/paypal-eur.png)
 
 
 * [**PayPal, USD**](https://www.paypal.com/donate/?hosted_button_id=U5JFBSZ23YGP4):
 
-  ![PayPal, USD](docs/donation/paypal-usd.png)
+  ![PayPal, USD](docs/buy-me-a-coffee/paypal-usd.png)
 
 ## 7) License and Copyright
-Copyright (c) 2020-2025 Remal Software, Arnold Somogyi. All rights reserved.
+Copyright (c) 2020-2026 Remal Software, Arnold Somogyi. All rights reserved.
+
+## Appendix 1) Service registry screenshot
+![Service registry](docs/diagrams/images/service-registry.png)
+
+
+## Appendix 2) Keep database primary keys in sync when using the `Database per Service` architecture
+
+### Context:
+Let’s imagine you are developing an application using the microservice architecture pattern.
+Services need to persist data in some kind of database. For example, the Customer Service stores information about customers and the Order service stores information about orders.
+
+### Problem:
+Let's say we have a high load on customer service, so we start 10 service instances.
+So we have 10 microservices, and each has its own database, and all the REST GET services are behind a load balancer (or service registry).
+Now a client wants to persist a customer.
+Load balancer sends the request to service instance 9/10, and the customer is created.
+The next request comes from the same client who wants to confirm that the customer has been created and view their details.
+This request arrived to instance 3/10.
+
+### Challenges
+* How to ensure that service 3/10 syncs the newly created customer with the database of service 9/10.
+* How to initialize (fill in with data) the empty database of a new service instance that has just started?
+* How to keep in sync the primary keys (PK) in the databases between the separated service instances in case of errors and rollbacks while using sequences to generate the PKs?
+* How to separate the `get data` and the `insert/update data` operations?
+
+![Database per service pattern](docs/diagrams/images/database-per-service-pattern.png)
+
+### Solution:
+
+[Link to the tutorial video](https://www.youtube.com/watch?v=EM9Z9gI8jMg)
+
+You should be familiar with the following design patterns:
+* Database per service design pattern
+* Command Query Responsibility Segregation design pattern (CQRS)
+* Generating Unique, URL friendly IDs in distributed systems using Nano ID
+
+![Customer registration](docs/diagrams/images/customer-registration.png)
+
 
 <a href="https://trackgit.com">
   <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />

@@ -7,7 +7,7 @@
 # Since:  March 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 . /shared.sh
 
@@ -46,30 +46,46 @@ cleanup_workspace() {
 }
 
 # ------------------------------------------------------------------------------
-# Unpack the given file from the ZIP.
+# Unpack the given file(s) from the ZIP.
 #
 # Parameters:
 #    param 1: source zip file
 #    param 2: target directory to extract the file
-#    param 3: the file to extract from the ZIP
+#    param 3: file-1 to extract from the ZIP
+#    param 4: file-2 to extract from the ZIP
 # ------------------------------------------------------------------------------
 extract_file() {
-  local archive_file target_dir fie_to_extract
+  local archive_file target_dir fie_to_extract_1 fie_to_extract_2
   archive_file="$1"
   target_dir="$2"
-  fie_to_extract="$3"
+  fie_to_extract_1="${3:-}"
+  fie_to_extract_2="${4:-}"
+
+  printf "%s | [INFO]  extracting files from an archived content...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG]        archive file: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$archive_file"
+  printf "%s | [DEBUG]          target dir: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$target_dir"
+  printf "%s | [DEBUG]    fie-1 to extract: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fie_to_extract_1"
+  printf "%s | [DEBUG]    fie-2 to extract: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fie_to_extract_2"
 
   if [ -z "$archive_file" ]; then
     printf "%s | [WARN]  there is nothing to unpack\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   else
-    printf "%s | [DEBUG] unpacking the \"%s\" file from \"%s\" to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fie_to_extract" "$archive_file" "$target_dir"
+    # Executing "docker stop" then "docker start" can cause an issue the extracted files from the previous run.
+    # Therefore, it is best to reset the directory before each run.
+    printf "%s | [DEBUG] removing the previous content from the \"%s\" directory...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "${target_dir}"
+    rm -rf "${target_dir:?}"/*
 
-    # Ignore a specific exit code that appears if there file to extract not found in the ZIP.
-    #
+    # Ignore a specific exit code that appears if the file to extract not found in the ZIP.
     # Exit codes (see the full list here: https://linux.die.net/man/1/unzip):
     #     9: the specified zip files were not found
     #    11: no matching files were found
-    unzip -j "$archive_file" "$fie_to_extract" -d "$target_dir" || (exit "$(($? == 11 ? 0 : $?))")
+    if [[ -z "${fie_to_extract_2-}"  ]]; then
+      printf "%s | [DEBUG] unpacking the \"%s\" file from \"%s\" to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fie_to_extract_1" "$fie_to_extract_2" "$archive_file" "$target_dir"
+      unzip -j "$archive_file" "$fie_to_extract_1" -d "$target_dir" || (exit "$(($? == 11 ? 0 : $?))")
+    else
+      printf "%s | [DEBUG] unpacking the \"%s\" and \"%s\" files from \"%s\" to \"%s\"...\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$fie_to_extract_1" "$fie_to_extract_2" "$archive_file" "$target_dir"
+      unzip -j "$archive_file" "$fie_to_extract_1" "$fie_to_extract_2" -d "$target_dir" || (exit "$(($? == 11 ? 0 : $?))")
+    fi
   fi
 }
 
@@ -188,7 +204,7 @@ get_first_jar "$JAR_HOME" JAR_FILE
 extract_file "$JAR_FILE" "$UNPACK_DIR" "$PATH_TO_PROP_FILE/$APP_PROP_FILE"
 file_exists "$UNPACK_DIR/$APP_PROP_FILE"
 
-extract_file "$JAR_FILE" "$UNPACK_DIR" "$PATH_TO_PROP_FILE/$KV_PROP_FILE"
+extract_file "$JAR_FILE" "$UNPACK_DIR" "$PATH_TO_PROP_FILE/$APP_PROP_FILE" "$PATH_TO_PROP_FILE/$KV_PROP_FILE"
 file_exists "$UNPACK_DIR/$KV_PROP_FILE"
 
 get_kv_context "$UNPACK_DIR/$APP_PROP_FILE" CONTEXT

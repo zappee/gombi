@@ -5,7 +5,7 @@
 # Since:  March 2025
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 export IMAGE_FROM="remal-java-21-postgres-runner:$1"
 export IMAGE_NAME="remal-java-21-omni-runner"

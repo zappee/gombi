@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+ *  Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
  *
  *  Since:  February 2025
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 public class MicrometerMeterService {
 
     @Getter
-    @Value("${kafka.consumer.topic.name}")
+    @Value("${kafka.topic.incoming.name}")
     private String topicName;
 
     private final CompositeMeterRegistry meterRegistry;

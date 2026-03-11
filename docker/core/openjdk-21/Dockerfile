@@ -4,7 +4,7 @@
 # Since:  March 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM="unknown"
 FROM ${IMAGE_FROM}
@@ -39,6 +39,11 @@ RUN set -ue; \
 	java -version; \
 	javac -version; \
     printf "export %s=\"%s\"\n" "JAVA_HOME" "$JAVA_HOME" >> /etc/profile
+
+# create some directories to share logs betweeen the container and the host machine
+RUN set -ue; \
+	mkdir -p /logs; \
+    mkdir -p /heap-dump
 
 ONBUILD COPY container-scripts/init/* /docker.init/
 ONBUILD COPY container-scripts/startup/* /docker.startup/

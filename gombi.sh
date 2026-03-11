@@ -2,13 +2,8 @@
 # ******************************************************************************
 # Remal Docker Image build file.
 #
-# Usage:
-#    1) Set the REMAL_HOME environment variable.
-#       It must point to the project directory. If the variable is not set then
-#       the current directory is used as a home directory.
-#       Example: export REMAL_HOME="$HOME/Java/gombi"
-#
-#   2) Run the script using ./remal.sh
+# Usage: $ ./remal.sh
+#        $ ./remal.sh <command>
 #
 # Accepted values:
 #    BUILD_TYPE:       slim | fat
@@ -18,7 +13,7 @@
 # Since:  January 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 BUILD_TYPE="slim"
 IMAGE_TAG="0.6.2"
@@ -51,32 +46,45 @@ STYLE_BOLD="\033[1m"
 STYLE_DEFAULT="\033[0m"
 
 # ------------------------------------------------------------------------------
-# Copy artifact to a Docker Volume.
+# Initialize a directory used for sharing files between the container and the
+# host machine.
 #
 # Parameters:
-#    param 1: project name
+#    param 1: java project name
+#    param 2: docker container name
 # ------------------------------------------------------------------------------
-function copy_to_volume {
-  local project source_dir target_dir
-  project="$1"
-  source_dir="$WORKSPACE/projects/$project/target/"
-  target_dir="$WORKSPACE/bin/$project"
+function init_docker_volume {
+  local java_project="$1"
+  local container_name="$2"
+
+  local jar_source_dir="$WORKSPACE/projects/$java_project/target/"
+
+  local volume_home="$WORKSPACE/volumes/$container_name"
+  local jar_dir="$volume_home/jar-to-run"
+  local logs_dir="$volume_home/logs"
+  local heap_dump_dir="$volume_home/heap-dump"
 
   printf -- "\n%b------------------------------------------------------------------------\n" "$COLOR_YELLOW"
-  printf "coping artifact to a Docker shared volume...\n"
-  printf "     source: '%s'\n" "$source_dir$project-*.jar"
-  printf "     target: '%s'\n" "$target_dir"
+  printf "initializing a Docker shared volume...\n"
+  printf "     java project:   \"%s\"\n" "$java_project"
+  printf "     container name: \"%s\"\n" "$container_name"
+  printf "     copy jars from: \"%s\"\n" "$jar_source_dir"
+  printf "     copy jars to:   \"%s\"\n" "$jar_dir"
+  printf "     logs dir:       \"%s\"\n" "$logs_dir"
+  printf "     heap dump dir:  \"%s\"\n" "$heap_dump_dir"
   printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
 
-  # to ensure this never expands to /*
-  rm -rf "${target_dir:?}/"*
-  mkdir -p "$target_dir"
+  rm -rf "${volume_home:?}/"* # to ensure this never expands to /*
+  mkdir -p "$jar_dir"
+  mkdir -p "$logs_dir"
+  mkdir -p "$heap_dump_dir"
+
   rsync --archive \
         --include '*.jar' \
         --exclude '**' \
         --verbose \
-        "$source_dir" \
-        "$target_dir"
+        "$jar_source_dir" \
+        "$jar_dir"
 }
 
 # ------------------------------------------------------------------------------
@@ -97,11 +105,13 @@ function demo_start {
   printf "     docker-compose.yml: '%s'\n" "$docker_compose_file"
   printf -- "------------------------------------------------------------------------%b\n" "$STYLE_DEFAULT"
 
-  copy_to_volume "remal-gombi-hazelcast-counter"
-  copy_to_volume "remal-gombi-kafka-consumer"
-  copy_to_volume "remal-gombi-kafka-producer"
-  copy_to_volume "remal-gombi-user-service"
-  copy_to_volume "remal-gombi-welcome-service"
+  init_docker_volume "remal-gombi-user-service" "user-service-1"
+  init_docker_volume "remal-gombi-user-service" "user-service-2"
+  init_docker_volume "remal-gombi-welcome-service" "welcome-service-1"
+  init_docker_volume "remal-gombi-kafka-producer" "kafka-producer-service-1"
+  init_docker_volume "remal-gombi-kafka-consumer" "kafka-consumer-service-1"
+  init_docker_volume "remal-gombi-hazelcast-counter" "hazelcast-counter-service-1"
+  init_docker_volume "remal-gombi-hazelcast-counter" "hazelcast-counter-service-2"
   docker compose --env-file="$environment_file" -f "$docker_compose_file" up
 }
 
@@ -270,7 +280,6 @@ function show_help() {
     printf "      %s vl:   start the Docker stack and show the containers' log\n\n" "$script"
     printf "   %bEnvironment:%b\n" "$STYLE_BOLD" "$STYLE_DEFAULT"
     printf "      BUILD_TYPE: %s\n" "$BUILD_TYPE"
-    printf "      REMAL_HOME: %s\n" ""
     printf "      WORKSPACE : %s\n\n" "$WORKSPACE"
     printf "   %bTasks%b:\n" "$STYLE_BOLD" "$STYLE_DEFAULT"
     printf "      %ba:    build the %bBase%b image%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
@@ -305,7 +314,7 @@ function show_help() {
     printf "      %by:    remove of all Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "\n"
     printf "Contact: arnold.somogyi@gmail.com\n"
-    printf "Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved\n"
+    printf "Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved\n"
   fi
 }
 

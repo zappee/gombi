@@ -2,15 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.2] - not released yet
+## [0.6.2] - 11/Mar/2026
+#### General
+* Update the copyright text.
 #### Docker Images
 * When a Docker container is stopped and removed, then the certificate for that particular server remains in the PKI environment.
   This causes an issue when the container is started again.
+* New directories in the `Java-21` images to share logfiles betweeen the container and the host machine: `logs/heap-dump` and `logs/application`.
+* Limit the memory usage of Docker containers and JVMs.
+* Improvement in the main docker documentation.
+* Fixing a Kafka configuration issue in the `docker-compose.yml` that prevented to connect an external Kafka tool to the cluster using the external Docker ports.
+* [#26](https://github.com/zappee/gombi/issues/26): Update the binaries used in the images.
+* [#27](https://github.com/zappee/gombi/issues/27): If the database has already been created, skip the creation during the first startup.
+* [#28](https://github.com/zappee/gombi/issues/28): Fix this issue: /etc/profile: line 27: export: -u: invalid option.
+* [#29](https://github.com/zappee/gombi/issues/29): Persistent Postgres data store using a Docker volume.
+* [#30](https://github.com/zappee/gombi/issues/30): Docker container does not start after `docker stop` and `docker start`.
+* [#31](https://github.com/zappee/gombi/issues/31): Make sure you shut down the Postgres server properly before stopping the container.
+* [#32](https://github.com/zappee/gombi/issues/32): The `shutdown_trap()` bash function in `shared.sh` script always shows zero execution time.
+#### Java projects
+* Simplify the creation of the Kafka producer and consumer Spring Beans.
+* Simplify the creation of the Kafka topics during the startup.
+#### Known issues
+* Overwriting the `PKI_HOST` environment variable in the Dockerfile has no effect. Probably the same issue occurs with the other variables.
 
 ## [0.6.1] - 13/Jun/2025
 #### Docker Images
 * Improve documentation
-* Fix `ENV` and `ARG` related build issues in Dockerfiles
+* Fix `ENV` and `ARG` related build issues in the Dockerfiles.
 * Update `EasyRSA` version from `3.2.2` to `3.2.3`
 * Improvement in Postgres log configuration. The new config stops Postgres logging endlessly empty statements like `[postgres] [127.0.0.1(45942)] [application] [default_db] LOG:  statement:`
 

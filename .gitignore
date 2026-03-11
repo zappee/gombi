@@ -3,7 +3,7 @@
 target/
 
 # custom project files
-bin/**
+volumes/**
 
 # intellij idea specific
 *.iml

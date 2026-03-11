@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+ *  Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
  *
  *  Since:  January 2025
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -40,7 +40,7 @@ public class KafkaConsumerService {
     private final MicrometerMeterService meterService;
 
     @Getter
-    @Value("${kafka.consumer.topic.name}")
+    @Value("${kafka.topic.incoming.name}")
     private String topicName;
 
     @KafkaListener(
@@ -58,9 +58,9 @@ public class KafkaConsumerService {
             clientIdPrefix = "${FQDN}",
 
             // Used by kafka broker to uniquely identify a consumer group.
-            groupId = "${kafka.consumer.topic.name}-${random.uuid}",
+            groupId = "${kafka.topic.incoming.name}-${random.uuid}",
 
-            topics = "${kafka.consumer.topic.name}",
+            topics = "${kafka.topic.incoming.name}",
             containerFactory = "containerFactory")
 
     // The trick here is giving transactionManager as the value for the @Transactional annotation because

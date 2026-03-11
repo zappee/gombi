@@ -1,34 +1,23 @@
 /*
- *  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+ * Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
  *
- *  Since:  January 2025
- *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+ * Since:  July 2025
+ * Author: Arnold Somogyi <arnold.somogyi@gmail.com>
  *
- *  Description:
- *     Kafka consumer configuration.
+ * Description:
+ *    Kafka consumer configuration.
  */
-package com.remal.gombi.service.message.consumer.configuration;
+package com.remal.gombi.commons.spring.kafka;
 
 import com.remal.gombi.commons.converter.InstantConverter;
-import com.remal.gombi.commons.exception.FailureToProcessException;
+import com.remal.gombi.commons.exception.KafkaConsumerException;
 import com.remal.gombi.commons.model.Event;
-import com.remal.gombi.service.message.consumer.error.KafkaConsumerErrorHandler;
-import com.remal.gombi.service.message.consumer.service.MicrometerMeterService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
@@ -38,60 +27,30 @@ import org.springframework.util.backoff.FixedBackOff;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @Slf4j
-@Configuration
-@RequiredArgsConstructor
-@EnableKafka
-public class KafkaConfiguration {
+public abstract class KafkaConsumerConfiguration {
 
-    private final MicrometerMeterService meterService;
+    protected abstract String getBootstrapServers();
 
-    // producer configuration starts from here
+    protected abstract String getAutoOffsetReset();
 
-    @Value("${kafka.consumer.auto.offset.reset:latest}")
-    private String consumerAutoOffsetReset;
+    protected abstract boolean isBatchListener();
 
-    @Value("${kafka.consumer.batch.listener:false}")
-    private boolean consumerBatchListener;
+    protected abstract Long getBackoffInterval();
 
-    @Value(value = "${kafka.consumer.backoff.interval:5000}")
-    private Long consumerBackoffInterval;
+    protected abstract Long getBackoffMaxAttempts();
 
-    @Value(value = "${kafka.consumer.backoff.max.attempts:9}")
-    private Long consumerBackoffMaxAttempts;
+    protected abstract int getConcurrency();
 
-    @Value("${kafka.consumer.bootstrap.servers:kafka-1.hello.com:9092, kafka-2.hello.com:9092}")
-    private String consumerBootstrapServers;
+    protected abstract boolean isEnableAutoCommit();
 
-    @Value("${kafka.consumer.concurrency:1}")
-    private int consumerConcurrency;
+    protected abstract String getIsolationLevel();
 
-    @Value("${kafka.consumer.enable.auto.commit:true}")
-    private boolean consumerEnableAutoCommit;
+    protected abstract boolean isLogContainerConfig();
 
-    @Value("${kafka.consumer.isolation.level:read_uncommitted}")
-    private String consumerIsolationLevel;
+    protected abstract boolean isMissingTopicsFatal();
 
-    @Value("${kafka.consumer.log.container.config:false}")
-    private boolean consumerLogContainerConfig;
-
-    @Value("${kafka.consumer.missing.topics.fatal:true}")
-    private boolean consumerMissingTopicsFatal;
-
-    @Value("${kafka.consumer.poll.timeout:5000}")
-    private Long consumerPollTimeout;
-
-    // topic configuration starts from here
-
-    @Value("${kafka.consumer.topic.name:topic1}")
-    private String topicName;
-
-    @Value("${kafka.consumer.topic.partitions:1}")
-    private int topicPartitions;
-
-    @Value("${kafka.consumer.topic.replicas:1}")
-    private int topicReplicas;
+    protected abstract Long getPollTimeout();
 
     /**
      * <PRE>
@@ -105,26 +64,25 @@ public class KafkaConfiguration {
      *    configs.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
      * </PRE>
      *
-     * @return configured ConsumerFactory bean
+     * @return the ConsumerFactory bean
      */
-    @Bean
-    public ConsumerFactory<String, Event> consumerFactory() {
+    protected ConsumerFactory<String, Event> consumerFactory() {
         log.debug("initializing ConsumerFactory: {"
                         + "auto.offset.reset: \"{}\", batch.listener: {}, bootstrap.servers: \"{}\", "
                         + "concurrency: {}, enable.auto.commit: {}, log.container.config: {}, "
                         + "missing.topics.fatal: {}, poll.timeout: {}, isolation.level: \"{}\", "
                         + "backoff.interval: {}, backoff.max.attempts: {}}...",
-                consumerAutoOffsetReset,
-                consumerBatchListener,
-                consumerBootstrapServers,
-                consumerConcurrency,
-                consumerEnableAutoCommit,
-                consumerLogContainerConfig,
-                consumerMissingTopicsFatal,
-                consumerPollTimeout,
-                consumerIsolationLevel,
-                consumerBackoffInterval,
-                consumerBackoffMaxAttempts);
+                getAutoOffsetReset(),
+                isBatchListener(),
+                getBootstrapServers(),
+                getConcurrency(),
+                isEnableAutoCommit(),
+                isLogContainerConfig(),
+                isMissingTopicsFatal(),
+                getPollTimeout(),
+                getIsolationLevel(),
+                getBackoffInterval(),
+                getBackoffMaxAttempts());
 
         return new DefaultKafkaConsumerFactory<>(
                 consumerConfiguration(),
@@ -152,15 +110,14 @@ public class KafkaConfiguration {
      *    - Strict message ordering is critical
      * </PRE>
      *
-     * @return kafka listener container factory
+     * @return the kafka listener container factory
      */
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Event> containerFactory() {
+    protected ConcurrentKafkaListenerContainerFactory<String, Event> containerFactory() {
         log.debug("initializing a ConcurrentKafkaListenerContainerFactory...");
         ConcurrentKafkaListenerContainerFactory<String, Event> factory = new ConcurrentKafkaListenerContainerFactory<>();
 
         // Set to true if this endpoint should create a batch listener.
-        factory.setBatchListener(consumerBatchListener);
+        factory.setBatchListener(isBatchListener());
 
         // The maximum number of concurrent KafkaMessageListenerContainers running.
         // Use cases:
@@ -168,7 +125,7 @@ public class KafkaConfiguration {
         //      only one consumer thread, all the partitions are read by the same consumer thread.
         //
         //    - You have a topic with three partitions and setConcurrency(3) is used: Spring creates
-        //      three Java consumer threads and each unique thread connects to a specific partition.
+        //      three Java consumer threads, and each unique thread connects to a specific partition.
         //
         //    - You have a topic with three partitions and setConcurrency(4) is used: Spring creates
         //      three Java consumer threads, connected to the three partitions. One Java thread is idle.
@@ -178,80 +135,44 @@ public class KafkaConfiguration {
         // If you want to process the incoming data sequentially, then you
         //    1) need to have only one partition per topic
         //    2) use the Hashing-Key technique
-        factory.setConcurrency(consumerConcurrency);
+        factory.setConcurrency(getConcurrency());
 
         // There are several ack modes available:
         //
         //    (1) AckMode.RECORD: In this after-processing mode, the consumer sends an acknowledgment for each
         //                        message it processes.
         //
-        //    (2) AckMode.BATCH:  In this manual mode, the consumer sends an acknowledgment for a batch of messages,
-        //                        rather than for each message.
+        //    (2) AckMode.BATCH: In this manual mode, the consumer sends an acknowledgment for a batch of messages,
+        //                       rather than for each message.
         //
-        //    (3) AckMode.COUNT:  In this manual mode, the consumer sends an acknowledgment after it has processed
-        //                        a specific number of messages.
+        //    (3) AckMode.COUNT: In this manual mode, the consumer sends an acknowledgment after it has processed
+        //                       a specific number of messages.
         //
         //    (4) AckMode.MANUAL: In this manual mode, the consumer doesn’t send an acknowledgment for the
         //                        messages it processes.
         //
-        //    (5) AckMode.TIME:   In this manual mode, the consumer sends an acknowledgment after a certain amount
-        //                        of time has passed.
+        //    (5) AckMode.TIME: In this manual mode, the consumer sends an acknowledgment after a certain amount
+        //                      of time has passed.
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.RECORD);
 
-        // When true and INFO logging is enabled each listener container writes a log
+        // When true and INFO logging is enabled, each listener container writes a log
         // message summarizing its configuration properties.
-        factory.getContainerProperties().setLogContainerConfig(consumerLogContainerConfig);
+        factory.getContainerProperties().setLogContainerConfig(isLogContainerConfig());
 
-        // Set to false to allow the container to start even if any of the configured topics are not present
+        // Set it to "false" allowing the container to start even if any of the configured topics are not present
         // on the broker. Default true;
-        factory.getContainerProperties().setMissingTopicsFatal(consumerMissingTopicsFatal);
+        factory.getContainerProperties().setMissingTopicsFatal(isMissingTopicsFatal());
 
         // Specify a ConsumerFactory to use.
         factory.setConsumerFactory(consumerFactory());
 
         // Set the max time to block in the consumer waiting for records.
-        factory.getContainerProperties().setPollTimeout(consumerPollTimeout);
+        factory.getContainerProperties().setPollTimeout(getPollTimeout());
 
         // Container error Handlers.
         factory.setCommonErrorHandler(errorHandler());
 
         return factory;
-    }
-
-    /**
-     * When using Spring Boot, a KafkaAdmin bean is automatically registered so
-     * you only need the NewTopic @Beans. But if you use NewTopic and custom
-     * producer config, you need to use that custom config for KafkaAdmin as
-     * well.
-     *
-     * @return custom KafkaAdmin instance
-     */
-    @Bean
-    public KafkaAdmin admin() {
-        log.debug("initializing a KafkaAdmin: {bootstrap.servers: \"{}\"}...", consumerBootstrapServers);
-        Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, consumerBootstrapServers);
-        return new KafkaAdmin(configs);
-    }
-
-    /**
-     * Topic creation.
-     *
-     * @return the created new topic
-     */
-    @Bean
-    public NewTopic topic() {
-        log.debug(
-                "creating a new kafka topic: {name: \"{}\", partitions: {}, replicas: {}}",
-                topicName,
-                topicPartitions,
-                topicReplicas);
-
-        return TopicBuilder
-                .name(topicName)
-                .partitions(topicPartitions)
-                .replicas(topicReplicas)
-                .build();
     }
 
     private Map<String, Object> consumerConfiguration() {
@@ -269,31 +190,32 @@ public class KafkaConfiguration {
         //    - anything else: throw exception to the consumer.
         //
         // Note that altering partition numbers while setting this config to latest may cause message delivery
-        // loss since producers could start to send messages to newly added partitions (i.e. no initial offsets
+        // loss since producers could start to send messages to newly added partitions (i.e., no initial offsets
         // exist yet) before consumers reset their offsets.
-        configs.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        configs.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, getAutoOffsetReset());
 
         // default: null
-        configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, consumerBootstrapServers);
+        configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, getBootstrapServers());
 
         // default: true
         //
-        // If true the consumer’s offset will be periodically committed in the background.
-        configs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+        // If true, the consumer’s offset will be periodically committed in the background.
+        configs.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, isEnableAutoCommit());
 
         // Consumer should only read committed messages. If the transaction is not successful, kafka message
         // will not be marked as committed and this message will not be visible to consumers. So if the
         // transaction fails to complete, the consumer will not receive that event.
-        configs.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, consumerIsolationLevel);
+        configs.put(ConsumerConfig.ISOLATION_LEVEL_CONFIG, getIsolationLevel());
 
         return configs;
     }
 
     private DefaultErrorHandler errorHandler() {
-        BackOff fixedBackOff = new FixedBackOff(consumerBackoffInterval, consumerBackoffMaxAttempts);
+        BackOff fixedBackOff = new FixedBackOff(getBackoffInterval(), getBackoffMaxAttempts());
 
         DefaultErrorHandler errorHandler = new KafkaConsumerErrorHandler((consumerRecord, e) -> {
             // logic to execute when all the retry attempts are exhausted
+            registerKafkaErrorEvent();
             log.error("Error occurred while processing an incoming message. This message will be dropped: "
                             + "{topic: \"{}\", partition: {}, offset: {}, timestamp: {}, key: \"{}\", value: \"{}\"}",
                     consumerRecord.topic(),
@@ -303,11 +225,12 @@ public class KafkaConfiguration {
                     consumerRecord.key().toString(),
                     consumerRecord.value().toString(),
                     e.getCause());
-            meterService.registerDroppedEvent();
-        }, fixedBackOff, meterService);
+        }, fixedBackOff);
 
-        errorHandler.addRetryableExceptions(FailureToProcessException.class);
+        errorHandler.addRetryableExceptions(KafkaConsumerException.class);
         errorHandler.addNotRetryableExceptions(NullPointerException.class);
         return errorHandler;
     }
+
+    protected abstract void registerKafkaErrorEvent();
 }

@@ -4,7 +4,7 @@
 # Since:  April 2024
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM="unknown"
 ARG BUILD_TYPE="fat"
@@ -28,7 +28,7 @@ ENV IMAGE_NAME="$IMAGE_NAME" \
     KEYSTORE_HOME="/tmp" \
     CONSUL_HOST="consul.hello.com" \
     \
-    PROMETHEUS_INSTALL_KIT="prometheus-3.4.1.linux-amd64.tar.gz" \
+    PROMETHEUS_INSTALL_KIT="prometheus-3.10.0.linux-amd64.tar.gz" \
     PROMETHEUS_HOME="/opt/prometheus" \
     PROMETHEUS_CONFIG="/opt/prometheus/prometheus.yml" \
     PROMETHEUS_WEB_CONFIG="/opt/prometheus/web-config.yml" \

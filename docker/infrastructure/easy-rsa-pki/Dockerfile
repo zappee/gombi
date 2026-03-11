@@ -4,7 +4,7 @@
 # Since:  March 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM="unknown"
 ARG BUILD_TYPE="fat"
@@ -25,7 +25,7 @@ ENV IMAGE_NAME="$IMAGE_NAME" \
     IMAGE_DESCRIPTION="$IMAGE_DESCRIPTION" \
     \
     EASYRSA_HOME="/opt/easy-rsa" \
-    EASYRSA_INSTALL_KIT="EasyRSA-3.2.3.tgz" \
+    EASYRSA_INSTALL_KIT="EasyRSA-3.2.5.tgz" \
     \
     EASYRSA_REQ_CN="remal.com" \
     EASYRSA_REQ_COUNTRY="HU" \

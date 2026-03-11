@@ -5,7 +5,7 @@
 # Since:  April 2023
 # Author: Arnold Somogyi <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
 # ******************************************************************************
 
 # ------------------------------------------------------------------------------
@@ -221,7 +221,7 @@ function show_ready_message() {
   printf "%s | [DEBUG] | '_ \ / _\` / __|  | '_ \ / _ \/ _ \ '_ \   / __| __/ _\` | \'__| __/ _ \/ _\` |\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   printf "%s | [DEBUG] | | | | (_| \__ \  | |_) |  __/  __/ | | |  \__ \ || (_| | |  | ||  __/ (_| |\n" "$(date +"%Y-%m-%d %H:%M:%S")"
   printf "%s | [DEBUG] |_| |_|\__,_|___/  |_.__/ \___|\___|_| |_|  |___/\__\__,_|_|   \__\___|\__,_|\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-  printf "%s | [DEBUG] © 2025 Remal Software. All rights reserved.\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+  printf "%s | [DEBUG] Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved\n" "$(date +"%Y-%m-%d %H:%M:%S")"
 }
 
 # ------------------------------------------------------------------------------
@@ -240,7 +240,7 @@ function shutdown_trap() {
     log_start "$script_file"
     . /shutdown-actions.sh
     elapsed=$(($(date +%s) - start))
-    printf "%s | [INFO]  execution time: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$(date -d@$elapsed -u +%H\ hour\ %M\ day\ %S\ sec)"
+    printf "%s | [INFO]  shutdown took %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$(date -d@$elapsed -u +%H\ hour\ %M\ day\ %S\ sec)"
     log_end "$script_file"
   else
     printf "%s | [WARN]  script \"%s\" not exist, ignoring it\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$script_file"

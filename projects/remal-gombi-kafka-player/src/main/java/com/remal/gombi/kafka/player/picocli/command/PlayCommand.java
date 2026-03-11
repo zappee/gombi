@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+ *  Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
  *
  *  Since:  February 2025
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -30,7 +30,7 @@ import java.util.concurrent.Callable;
                 "@|bold,yellow |______ |     | |______    |    |  |  | |_____| |_____/ |______|@",
                 "@|bold,yellow ______| |_____| |          |    |__|__| |     | |    \\_ |______|@%n",
                 "@|yellow :: remal-kafka-player :: 0.6.2 ::|@",
-                "@|yellow Copyright (c) 2020-2025 REMAL SOFTWARE and Arnold Somogyi All rights reserved|@",
+                "@|yellow Copyright (c) 2020-2026 REMAL SOFTWARE and Arnold Somogyi All rights reserved|@",
                 "%n"},
         description = "Re-inject saved messages to a Kafka topic.%n",
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+ *  Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
  *
  *  Since:  January 2025
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaProducerService {
 
-    @Value("${kafka.producer.topic.name}")
+    @Value("${kafka.topic.incoming.name}")
     private String topicName;
 
     private final KafkaTemplate<String, Event> kafkaTemplate;

@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2020-2025 Remal Software and Arnold Somogyi All rights reserved
+ *  Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
  *
  *  Since:  February 2024
  *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
@@ -13,9 +13,11 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
+@ComponentScan({"com.remal.gombi.service.welcome", "com.remal.gombi.commons.spring"})
 public class Application {
 
     public static void main(String[] args) {
