@@ -2,7 +2,7 @@
 # Remal Hazelcast Platform Docker image build file.
 #
 # Since:  August 2024
-# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
 #
 # Hazelcast ports:
 #    -  5555: hazelcast public address of a member
@@ -10,7 +10,7 @@
 #    - 54327: used to discover Hazelcast members
 #    - 34500: hazelcast outbound-port
 #
-# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM="unknown"
 ARG BUILD_TYPE="fat"

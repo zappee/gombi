@@ -3,9 +3,9 @@
 # This script restore the Postgres database Docker volumes.
 #
 # Since:  March 2026
-# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
 # ******************************************************************************
 BACKUP_HOME=$HOME/backup
 
