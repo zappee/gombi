@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 ## [0.6.3] - dd/mm/2026
 #### Docker Images
 * [#34](https://github.com/zappee/gombi/issues/34): Prometheus should automatically pull the hostnames to be monitored from Consul.
+* [#35](https://github.com/zappee/gombi/issues/35): Add image for Java 25 LTS.
 
 ## [0.6.2] - 11/Mar/2026
 #### General
