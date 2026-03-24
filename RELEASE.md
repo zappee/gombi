@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 * [#34](https://github.com/zappee/gombi/issues/34): Prometheus should automatically pull the hostnames to be monitored from Consul.
 * [#35](https://github.com/zappee/gombi/issues/35): Create a new `Java 25 LTS` image.
 * [#36](https://github.com/zappee/gombi/issues/36): Create a new `Java 25 Runner` image.
+* [#37](https://github.com/zappee/gombi/issues/37): Create a new` Java 25 Postgres 18 Runner` image.
 
 ## [0.6.2] - 11/Mar/2026
 #### General
