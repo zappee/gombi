@@ -1,5 +1,6 @@
 global:
   scrape_interval: 5s
+  scrape_timeout: 5s
   evaluation_interval: 5s
 
 # collecting the URLs to monitor from the service-registry
@@ -9,6 +10,7 @@ scrape_configs:
     consul_sd_configs:
       - server: "${CONSUL_HOST}:8500"
         scheme: "http"
+        services: []
     relabel_configs:
       - source_labels: [__meta_consul_service_port] # exclude the consul node itself
         regex: "8300"

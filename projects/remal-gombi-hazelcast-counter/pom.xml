@@ -16,11 +16,10 @@
     <parent>
         <groupId>com.remal.gombi</groupId>
         <artifactId>gombi</artifactId>
-        <version>0.6.2</version>
+        <version>0.6.3</version>
     </parent>
 
     <artifactId>remal-gombi-hazelcast-counter</artifactId>
-    <version>0.6.2</version>
     <name>gombi-hazelcast-counter</name>
     <description>Service that demonstrates the usage of the Hazelcast distributed cache.</description>
 
