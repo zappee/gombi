@@ -3,6 +3,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [0.7.0] - dd/mm/2026
+#### Deprecated
+* `gombi/projects`: The dependencies used in the example Java projects and code are outdated and must be updated. Unfortunately, I am the only maintainer of this project at the moment, and I do not have time to update the Java examples.
 #### Docker Images
 * [#34](https://github.com/zappee/gombi/issues/34): Prometheus should automatically pull the hostnames to be monitored from Consul.
 * [#35](https://github.com/zappee/gombi/issues/35): Create a new `Java 25 LTS` image.
