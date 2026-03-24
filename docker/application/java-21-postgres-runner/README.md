@@ -7,7 +7,7 @@
     ```
     services:
         user-service:
-            image: remal-java-21-postgres-runner:0.6.3
+            image: remal-java-21-postgres-runner:0.7.0
             ...
             volumes:
                 - user-service-data:/var/lib/postgresql/data
