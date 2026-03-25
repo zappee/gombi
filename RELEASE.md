@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.7.0] - dd/mm/2026
+## [0.7.0] - 25/Mar/2026
 #### Deprecated
 * `gombi/projects`: The dependencies used in the example Java projects and code are outdated and must be updated. Unfortunately, I am the only maintainer of this project at the moment, and I do not have time to update the Java examples.
 #### Docker Images
