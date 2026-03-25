@@ -3,9 +3,9 @@
 # Functions that helps to manage Postgres SQL database server.
 #
 # Since:  March 2026
-# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
 # ******************************************************************************
 . /shared.sh
 
@@ -57,8 +57,10 @@ function init_database() {
     /bin/su -c "initdb -D $POSTGRES_DATA" - postgres
 
     # step 2
-    printf "%s | [INFO]  --> 2/3: updating the Postgres database configuration...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
-    printf "%s | [DEBUG] postgres-data: \"%s\", postgres-config: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_LOG_DIR" "$POSTGRES_CONFIG"
+    printf "%s | [INFO]  --> 2/3: updating the database configuration...\n" "$(date +"%Y-%m-%d %H:%M:%S")"
+    printf "%s | [DEBUG]          POSTGRES_DATA:    %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_DATA"
+    printf "%s | [DEBUG]          POSTGRES_LOG_DIR: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_LOG_DIR"
+    printf "%s | [DEBUG]          POSTGRES_CONFIG:  %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$POSTGRES_CONFIG"
     mv /tmp/pg_hba.conf "$POSTGRES_DATA"
     mv /tmp/postgresql.conf "$POSTGRES_DATA"
     sed -i "s|\${POSTGRES_LOG_DIR}|$POSTGRES_LOG_DIR|g" "$POSTGRES_CONFIG"
