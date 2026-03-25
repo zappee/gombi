@@ -1,13 +1,16 @@
 #!/bin/bash -ue
 # ******************************************************************************
-# Environment file to define variables used during the Docker image build.
+# Adding the ca.cert to Alpine linux truststore.
 #
-# Since:  February 2024
+# Since:  March 2026
 # Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
 # ******************************************************************************
-export IMAGE_FROM="remal-consul-for-java-21:$1"
-export IMAGE_NAME="remal-java-21-runner"
-export IMAGE_AUTHOR="Arnold SOMOGYI <arnold.somogyi@gmail.com>"
-export IMAGE_DESCRIPTION="Remal Java 21 Runner"
+. /shared.sh
+log_start "$0"
+
+cp /tmp/ca.crt /usr/local/share/ca-certificates/
+cat /usr/local/share/ca-certificates/ca.crt >> /etc/ssl/certs/ca-certificates.crt
+
+log_end "$0"

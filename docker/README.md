@@ -205,6 +205,26 @@ The Remal slim image build process will download the files on-the-fly from your 
   sshpass -p password ssh -oStrictHostKeyChecking=no root@pki.remal.com "ls -all"
   ~~~
 
-<a href="https://trackgit.com">
-  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
-</a>
+## Annex 3) Numbering of Docker container scripts
+#### base
+* 10000: base
+
+#### infrastructure
+* 30100: Easy RSA
+* 30200: Tomcat
+* 30300: OpenDS
+* 30400: OpenAM
+* 30500: Vault
+* 30600: Consul for Java 21
+* 30700: Consul for Java 25
+* 30800: Hazelcast
+
+#### monitoring
+* 40100: Prometheus
+* 40200: Grafana
+
+#### application
+* 70100: Java 21 runner
+* 70200: Java 21 + Postgres
+* 70300: Java 25 runner
+* 70400: Java 25 + Postgres

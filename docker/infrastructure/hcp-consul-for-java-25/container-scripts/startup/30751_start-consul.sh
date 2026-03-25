@@ -1,13 +1,18 @@
 #!/bin/bash -ue
 # ******************************************************************************
-# Environment file to define variables used during the Docker image build.
+# HashiCorp Consul startup script.
 #
 # Since:  March 2026
 # Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
 # ******************************************************************************
-export IMAGE_FROM="remal-consul-for-java-25:$1"
-export IMAGE_NAME="remal-java-25-runner"
-export IMAGE_AUTHOR="Arnold SOMOGYI <arnold.somogyi@gmail.com>"
-export IMAGE_DESCRIPTION="Remal Java 25 Runner"
+. /shared.sh
+. /consul-functions.sh
+
+# ------------------------------------------------------------------------------
+# Main program starts here.
+# ------------------------------------------------------------------------------
+log_start "$0"
+start_consul
+log_end "$0"

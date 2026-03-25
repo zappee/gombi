@@ -33,7 +33,8 @@ LABEL_TOMCAT_9="Apache Tomcat 9;infrastructure/tomcat-9"
 LABEL_FORGEROCK_DS="ForgeRock Directory Server;infrastructure/forgerock-ds"
 LABEL_FORGEROCK_AM="ForgeRock Access Management;infrastructure/forgerock-am"
 LABEL_HCP_VAULT="HashiCorp Vault;infrastructure/hcp-vault"
-LABEL_HCP_CONSUL="HashiCorp Consul;infrastructure/hcp-consul"
+LABEL_HCP_CONSUL_21="HashiCorp Consul for Java 21;infrastructure/hcp-consul-for-java-21"
+LABEL_HCP_CONSUL_25="HashiCorp Consul for Java 25;infrastructure/hcp-consul-for-java-25"
 LABEL_HAZELCAST_PLATFORM="Hazelcast Platform;infrastructure/hazelcast-platform"
 LABEL_PROMETHEUS="Remal Prometheus;monitoring/prometheus"
 LABEL_GRAFANA="Remal Grafana;monitoring/grafana"
@@ -298,8 +299,9 @@ function show_help() {
     printf "        %bc3:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_DS")" "$STYLE_DEFAULT"
     printf "        %bc4:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_AM")" "$STYLE_DEFAULT"
     printf "        %bc5:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
-    printf "        %bc6:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL")" "$STYLE_DEFAULT"
-    printf "        %bc7:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HAZELCAST_PLATFORM")" "$STYLE_DEFAULT"
+    printf "        %bc6:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL_21")" "$STYLE_DEFAULT"
+    printf "        %bc7:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL_25")" "$STYLE_DEFAULT"
+    printf "        %bc8:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HAZELCAST_PLATFORM")" "$STYLE_DEFAULT"
     printf "      %bd:    build of all %bMonitoring%b images%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PROMETHEUS")" "$STYLE_DEFAULT"
     printf "        %bd2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_GRAFANA")" "$STYLE_DEFAULT"
@@ -395,8 +397,9 @@ if match "$COMMAND" "c2"; then docker_image_build "$(get_name "$LABEL_TOMCAT_9")
 if match "$COMMAND" "c3"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_DS")" "$(get_path "$LABEL_FORGEROCK_DS")"; fi
 if match "$COMMAND" "c4"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
 if match "$COMMAND" "c5"; then docker_image_build "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
-if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
-if match "$COMMAND" "c7"; then docker_image_build "$(get_name "$LABEL_HAZELCAST_PLATFORM")" "$(get_path "$LABEL_HAZELCAST_PLATFORM")"; fi
+if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL_21")" "$(get_path "$LABEL_HCP_CONSUL_21")"; fi
+if match "$COMMAND" "c7"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL_25")" "$(get_path "$LABEL_HCP_CONSUL_25")"; fi
+if match "$COMMAND" "c8"; then docker_image_build "$(get_name "$LABEL_HAZELCAST_PLATFORM")" "$(get_path "$LABEL_HAZELCAST_PLATFORM")"; fi
 if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_PROMETHEUS")" "$(get_path "$LABEL_PROMETHEUS")"; fi
 if match "$COMMAND" "d2"; then docker_image_build "$(get_name "$LABEL_GRAFANA")" "$(get_path "$LABEL_GRAFANA")"; fi
 if match "$COMMAND" "e1"; then docker_image_build "$(get_name "$LABEL_JAVA_21_RUNNER")" "$(get_path "$LABEL_JAVA_21_RUNNER")"; fi

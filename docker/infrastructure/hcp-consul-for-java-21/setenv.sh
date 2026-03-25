@@ -2,12 +2,12 @@
 # ******************************************************************************
 # Environment file to define variables used during the Docker image build.
 #
-# Since:  February 2024
+# Since:  October 2023
 # Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
 #
 # Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
 # ******************************************************************************
-export IMAGE_FROM="remal-consul-for-java-21:$1"
-export IMAGE_NAME="remal-java-21-runner"
+export IMAGE_FROM="remal-openjdk-21:$1"
+export IMAGE_NAME="remal-consul-for-java-21"
 export IMAGE_AUTHOR="Arnold SOMOGYI <arnold.somogyi@gmail.com>"
-export IMAGE_DESCRIPTION="Remal Java 21 Runner"
+export IMAGE_DESCRIPTION="HashiCorp Consul for Java 21"

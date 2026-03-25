@@ -81,7 +81,7 @@ services:
 
     # ----- Hashicorp Consul ---------------------------------------------------
     consul:
-        image: remal-consul:0.7.0
+        image: remal-consul-for-java-25:0.7.0
         container_name: consul.${DOMAIN_NAME}
         hostname: consul.${DOMAIN_NAME}
         entrypoint: ["/wait-for-container.sh", "pki.${DOMAIN_NAME}"]
@@ -121,7 +121,7 @@ services:
 
     # ----- Services -----------------------------------------------------------
     echo-service:
-        image: remal-java-21-runner:0.7.0
+        image: remal-java-25-runner:0.7.0
         container_name: welcome-service.hello.com
         hostname: welcome-service.hello.com
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
@@ -138,7 +138,7 @@ services:
             - $HOME/dev/workspace/java/remal/volumes/service-hello:/jar-to-run
 
     user-service:
-        image: remal-java-21-postgres-runner:0.7.0
+        image: remal-java-25-postgres-runner:0.7.0
         container_name: user-service.hello.com
         hostname: user-service.hello.com
         entrypoint: ["/wait-for-container.sh", "consul.${DOMAIN_NAME}"]
