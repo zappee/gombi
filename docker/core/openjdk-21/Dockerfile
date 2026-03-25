@@ -22,7 +22,6 @@ ENV IMAGE_NAME="$IMAGE_NAME" \
     IMAGE_TAG="$IMAGE_TAG" \
     IMAGE_AUTHOR="$IMAGE_AUTHOR" \
     IMAGE_DESCRIPTION="$IMAGE_DESCRIPTION" \
-    \
     JAVA_HOME="/usr/lib/jvm/java-21-openjdk"
 
 # set image metadata
