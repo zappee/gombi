@@ -1,8 +1,8 @@
 /*
- * Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
+ * Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
  *
  * Since:  Jun 2025
- * Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+ * Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
  *
  * Description:
  *    Processing incoming Kafka message error.

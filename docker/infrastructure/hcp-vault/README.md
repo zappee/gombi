@@ -6,7 +6,7 @@ version: '3'
 services:
     # ----- Private Certificate Authority Server -------------------------------
     pki:
-        image: remal-private-ca:0.6.2
+        image: remal-private-ca:0.7.0
         container_name: pki
         hostname: pki.hello.com
         ports:
@@ -20,7 +20,7 @@ services:
 
     # ----- Hashirorp Vault service --------------------------------------------
     vault:
-        image: remal-vault:0.6.2
+        image: remal-vault:0.7.0
         container_name: vault
         hostname: vault.hello.com
         depends_on:
@@ -47,6 +47,5 @@ tail -f /var/log/vault-audit.log | while read -r line; do
 done
 ```
 
-<a href="https://trackgit.com">
-  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
-</a>
+## License and Copyright
+Copyright (c) 2020-2026 Remal Software, Arnold SOMOGYI. All rights reserved.

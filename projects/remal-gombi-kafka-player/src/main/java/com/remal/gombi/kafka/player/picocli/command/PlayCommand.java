@@ -1,8 +1,8 @@
 /*
- *  Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
+ *  Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
  *
  *  Since:  February 2025
- *  Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+ *  Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
  *
  *  Description:
  *     Picocli command.
@@ -29,8 +29,8 @@ import java.util.concurrent.Callable;
                 "@|bold,yellow _______  _____  _______ _______ _  _  _ _______  ______ _______|@",
                 "@|bold,yellow |______ |     | |______    |    |  |  | |_____| |_____/ |______|@",
                 "@|bold,yellow ______| |_____| |          |    |__|__| |     | |    \\_ |______|@%n",
-                "@|yellow :: remal-kafka-player :: 0.6.2 ::|@",
-                "@|yellow Copyright (c) 2020-2026 REMAL SOFTWARE and Arnold Somogyi All rights reserved|@",
+                "@|yellow :: remal-kafka-player :: 0.7.0 ::|@",
+                "@|yellow Copyright (c) 2020-2026 REMAL SOFTWARE and Arnold SOMOGYI All rights reserved|@",
                 "%n"},
         description = "Re-inject saved messages to a Kafka topic.%n",
 

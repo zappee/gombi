@@ -2,9 +2,9 @@
 # Remal OpenJDK 17 Docker image build file.
 #
 # Since:  January 2023
-# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
 # ******************************************************************************
 ARG IMAGE_FROM="unknown"
 FROM ${IMAGE_FROM}
@@ -22,7 +22,6 @@ ENV IMAGE_NAME="$IMAGE_NAME" \
     IMAGE_TAG="$IMAGE_TAG" \
     IMAGE_AUTHOR="$IMAGE_AUTHOR" \
     IMAGE_DESCRIPTION="$IMAGE_DESCRIPTION" \
-    \
     JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
 
 # set image metadata

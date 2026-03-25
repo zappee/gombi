@@ -50,7 +50,7 @@ The platform is best suited for building microservices with Java and Spring Boot
 
 
 ## 3) Docker Image Hierarchy
-![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy-transparent.png)
+![docker image hierarchy](docs/diagrams/images/docker-image-hierarchy.png)
 
 
 ## 4) Quick start
@@ -113,7 +113,7 @@ You can open a bug report or submit a new pull request with new features, fixes 
   ![PayPal, USD](docs/buy-me-a-coffee/paypal-usd.png)
 
 ## 7) License and Copyright
-Copyright (c) 2020-2026 Remal Software, Arnold Somogyi. All rights reserved.
+Copyright (c) 2020-2026 Remal Software, Arnold SOMOGYI. All rights reserved.
 
 ## Appendix 1) Service registry screenshot
 ![Service registry](docs/diagrams/images/service-registry.png)
@@ -151,8 +151,3 @@ You should be familiar with the following design patterns:
 * Generating Unique, URL friendly IDs in distributed systems using Nano ID
 
 ![Customer registration](docs/diagrams/images/customer-registration.png)
-
-
-<a href="https://trackgit.com">
-  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
-</a>

@@ -9,9 +9,9 @@
 # database server will be started before the Java application.
 #
 # Since:  February 2024
-# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
 # ******************************************************************************
 . /shared.sh
 

@@ -11,12 +11,12 @@
 #    ENVIRONMENT_FILE; .env.hello.com | .env.remal.com
 #
 # Since:  January 2023
-# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
 # ******************************************************************************
 BUILD_TYPE="slim"
-IMAGE_TAG="0.6.2"
+IMAGE_TAG="0.7.0"
 PUSH_IMAGE="false"
 ENVIRONMENT_FILE=".env.hello.com"
 
@@ -27,18 +27,22 @@ LABEL_BASE="Base;base/base"
 LABEL_JAVA_11="OpenJDK 11;core/openjdk-11"
 LABEL_JAVA_17="OpenJDK 17;core/openjdk-17"
 LABEL_JAVA_21="OpenJDK 21;core/openjdk-21"
+LABEL_JAVA_25="OpenJDK 25;core/openjdk-25"
 LABEL_PKI="PKI Private Certificate Authority (CA);infrastructure/easy-rsa-pki"
 LABEL_TOMCAT_9="Apache Tomcat 9;infrastructure/tomcat-9"
 LABEL_FORGEROCK_DS="ForgeRock Directory Server;infrastructure/forgerock-ds"
 LABEL_FORGEROCK_AM="ForgeRock Access Management;infrastructure/forgerock-am"
 LABEL_HCP_VAULT="HashiCorp Vault;infrastructure/hcp-vault"
-LABEL_HCP_CONSUL="HashiCorp Consul;infrastructure/hcp-consul"
+LABEL_HCP_CONSUL_21="HashiCorp Consul for Java 21;infrastructure/hcp-consul-for-java-21"
+LABEL_HCP_CONSUL_25="HashiCorp Consul for Java 25;infrastructure/hcp-consul-for-java-25"
 LABEL_HAZELCAST_PLATFORM="Hazelcast Platform;infrastructure/hazelcast-platform"
 LABEL_PROMETHEUS="Remal Prometheus;monitoring/prometheus"
 LABEL_GRAFANA="Remal Grafana;monitoring/grafana"
 LABEL_JAVA_21_RUNNER="Remal Java 21 Runner;application/java-21-runner"
 LABEL_JAVA_21_POSTGRES_RUNNER="Remal Java 21 with Postgres Runner;application/java-21-postgres-runner"
 LABEL_JAVA_21_OMNI_RUNNER="Remal Java-21 OMNI Runner;application/java-21-omni-runner"
+LABEL_JAVA_25_RUNNER="Remal Java 25 Runner;application/java-25-runner"
+LABEL_JAVA_25_POSTGRES_RUNNER="Remal Java 25 with Postgres Runner;application/java-25-postgres-runner"
 
 COLOR_GREEN="\e[38;5;118m"
 COLOR_YELLOW="\e[38;5;226m"
@@ -288,14 +292,16 @@ function show_help() {
     printf "        %bb1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_11")" "$STYLE_DEFAULT"
     printf "        %bb2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_17")" "$STYLE_DEFAULT"
     printf "        %bb3:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21")" "$STYLE_DEFAULT"
+    printf "        %bb4:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_25")" "$STYLE_DEFAULT"
     printf "      %bc:    build of all %bInfrastructure%b images%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bc1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PKI")" "$STYLE_DEFAULT"
     printf "        %bc2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_TOMCAT_9")" "$STYLE_DEFAULT"
     printf "        %bc3:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_DS")" "$STYLE_DEFAULT"
     printf "        %bc4:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_FORGEROCK_AM")" "$STYLE_DEFAULT"
     printf "        %bc5:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_VAULT")" "$STYLE_DEFAULT"
-    printf "        %bc6:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL")" "$STYLE_DEFAULT"
-    printf "        %bc7:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HAZELCAST_PLATFORM")" "$STYLE_DEFAULT"
+    printf "        %bc6:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL_21")" "$STYLE_DEFAULT"
+    printf "        %bc7:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HCP_CONSUL_25")" "$STYLE_DEFAULT"
+    printf "        %bc8:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_HAZELCAST_PLATFORM")" "$STYLE_DEFAULT"
     printf "      %bd:    build of all %bMonitoring%b images%b\n" "$COLOR_YELLOW" "$STYLE_BOLD" "$STYLE_DEFAULT$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bd1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_PROMETHEUS")" "$STYLE_DEFAULT"
     printf "        %bd2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_GRAFANA")" "$STYLE_DEFAULT"
@@ -303,6 +309,8 @@ function show_help() {
     printf "        %be1:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21_RUNNER")" "$STYLE_DEFAULT"
     printf "        %be2:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21_POSTGRES_RUNNER")" "$STYLE_DEFAULT"
     printf "        %be3:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_21_OMNI_RUNNER")" "$STYLE_DEFAULT"
+    printf "        %be4:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_25_RUNNER")" "$STYLE_DEFAULT"
+    printf "        %be5:   build %s image%b\n" "$COLOR_GREEN" "$(get_name "$LABEL_JAVA_25_POSTGRES_RUNNER")" "$STYLE_DEFAULT"
     printf "      ------------------------------------------------------------\n"
     printf "      %bstart a Docker environment%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "        %bi1:   start the 'Demo' Docker stack%b\n" "$COLOR_GREEN" "$STYLE_DEFAULT"
@@ -314,7 +322,7 @@ function show_help() {
     printf "      %by:    remove of all Remal Docker images%b\n" "$COLOR_YELLOW" "$STYLE_DEFAULT"
     printf "\n"
     printf "Contact: arnold.somogyi@gmail.com\n"
-    printf "Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved\n"
+    printf "Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved\n"
   fi
 }
 
@@ -383,18 +391,22 @@ if match "$COMMAND" "a1"; then docker_image_build "$(get_name "$LABEL_BASE")" "$
 if match "$COMMAND" "b1"; then docker_image_build "$(get_name "$LABEL_JAVA_11")" "$(get_path "$LABEL_JAVA_11")"; fi
 if match "$COMMAND" "b2"; then docker_image_build "$(get_name "$LABEL_JAVA_17")" "$(get_path "$LABEL_JAVA_17")"; fi
 if match "$COMMAND" "b3"; then docker_image_build "$(get_name "$LABEL_JAVA_21")" "$(get_path "$LABEL_JAVA_21")"; fi
+if match "$COMMAND" "b4"; then docker_image_build "$(get_name "$LABEL_JAVA_25")" "$(get_path "$LABEL_JAVA_25")"; fi
 if match "$COMMAND" "c1"; then docker_image_build "$(get_name "$LABEL_PKI")" "$(get_path "$LABEL_PKI")"; fi
 if match "$COMMAND" "c2"; then docker_image_build "$(get_name "$LABEL_TOMCAT_9")" "$(get_path "$LABEL_TOMCAT_9")"; fi
 if match "$COMMAND" "c3"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_DS")" "$(get_path "$LABEL_FORGEROCK_DS")"; fi
 if match "$COMMAND" "c4"; then docker_image_build "$(get_name "$LABEL_FORGEROCK_AM")" "$(get_path "$LABEL_FORGEROCK_AM")"; fi
 if match "$COMMAND" "c5"; then docker_image_build "$(get_name "$LABEL_HCP_VAULT")" "$(get_path "$LABEL_HCP_VAULT")"; fi
-if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL")" "$(get_path "$LABEL_HCP_CONSUL")"; fi
-if match "$COMMAND" "c7"; then docker_image_build "$(get_name "$LABEL_HAZELCAST_PLATFORM")" "$(get_path "$LABEL_HAZELCAST_PLATFORM")"; fi
+if match "$COMMAND" "c6"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL_21")" "$(get_path "$LABEL_HCP_CONSUL_21")"; fi
+if match "$COMMAND" "c7"; then docker_image_build "$(get_name "$LABEL_HCP_CONSUL_25")" "$(get_path "$LABEL_HCP_CONSUL_25")"; fi
+if match "$COMMAND" "c8"; then docker_image_build "$(get_name "$LABEL_HAZELCAST_PLATFORM")" "$(get_path "$LABEL_HAZELCAST_PLATFORM")"; fi
 if match "$COMMAND" "d1"; then docker_image_build "$(get_name "$LABEL_PROMETHEUS")" "$(get_path "$LABEL_PROMETHEUS")"; fi
 if match "$COMMAND" "d2"; then docker_image_build "$(get_name "$LABEL_GRAFANA")" "$(get_path "$LABEL_GRAFANA")"; fi
 if match "$COMMAND" "e1"; then docker_image_build "$(get_name "$LABEL_JAVA_21_RUNNER")" "$(get_path "$LABEL_JAVA_21_RUNNER")"; fi
 if match "$COMMAND" "e2"; then docker_image_build "$(get_name "$LABEL_JAVA_21_POSTGRES_RUNNER")" "$(get_path "$LABEL_JAVA_21_POSTGRES_RUNNER")"; fi
 if match "$COMMAND" "e3"; then docker_image_build "$(get_name "$LABEL_JAVA_21_OMNI_RUNNER")" "$(get_path "$LABEL_JAVA_21_OMNI_RUNNER")"; fi
+if match "$COMMAND" "e4"; then docker_image_build "$(get_name "$LABEL_JAVA_25_RUNNER")" "$(get_path "$LABEL_JAVA_25_RUNNER")"; fi
+if match "$COMMAND" "e5"; then docker_image_build "$(get_name "$LABEL_JAVA_25_POSTGRES_RUNNER")" "$(get_path "$LABEL_JAVA_25_POSTGRES_RUNNER")"; fi
 
 # command executors
 if match "$COMMAND" "u";  then docker_image_show; fi

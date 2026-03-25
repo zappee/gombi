@@ -7,7 +7,7 @@
     ```
     services:
         user-service:
-            image: remal-java-21-postgres-runner:0.6.2
+            image: remal-java-21-postgres-runner:0.7.0
             ...
             volumes:
                 - user-service-data:/var/lib/postgresql/data
@@ -71,6 +71,5 @@
 | List databases                      | `SELECT datname FROM pg_database`  |
 | List Users                          | `SELECT * FROM pg_catalog.pg_user` |
 
-<a href="https://trackgit.com">
-  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
-</a>
+## License and Copyright
+Copyright (c) 2020-2026 Remal Software, Arnold SOMOGYI. All rights reserved.

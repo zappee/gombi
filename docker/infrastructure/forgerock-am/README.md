@@ -27,7 +27,7 @@ Access Management admin user:
     ~~~~
 
 ## 4) License and Copyright
-Copyright (c) 2020-2026 Remal Software, Arnold Somogyi. All rights reserved.
+Copyright (c) 2020-2026 Remal Software, Arnold SOMOGYI. All rights reserved.
 
 ## Annex 1) Manual installation of ForgeRock Access Management
 Open the AM web console in a web browser: [https://am.hello.com:13024/openam](https://am.hello.com:13024/openam), then follow the instructions.
@@ -64,7 +64,3 @@ Open the AM web console in a web browser: [https://am.hello.com:13024/openam](ht
   * root suffix: `ou=am-identity,dc=hello,dc=com`
   * login ID: `uid=am-identity-bind-account,ou=admins,ou=am-identity,dc=hello,dc=com`
   * password: `password`
-
-<a href="https://trackgit.com">
-  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
-</a>

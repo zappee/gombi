@@ -23,7 +23,7 @@ This image is an official Remal Docker image, used as a base image of the subseq
 | JAVA_OPTIONS | `-Xms512m -Xmx512m -XX:+UseParallelGC` | Server startup configuration. |
 
 ## 5) License and Copyright
-Copyright (c) 2020-2026 Remal Software, Arnold Somogyi. All rights reserved.
+Copyright (c) 2020-2026 Remal Software, Arnold SOMOGYI. All rights reserved.
 
 ## Annex 1) Access log customization
 The configured `localhost_access_log.YYYY-MM-DD.txt` logfile pattern layout configuration:
@@ -53,7 +53,3 @@ Sample log:
 [07/Feb/2023:22:28:29 +0000], 172.17.0.1, -, "GET /tomcat.css HTTP/1.1", 200, 5542, "http://localhost:13080/", "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0", 9, 9
 [07/Feb/2023:22:28:29 +0000], 172.17.0.1, -, "GET /bg-nav.png HTTP/1.1", 200, 1401, "http://localhost:13080/tomcat.css", "Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101 Firefox/102.0", 2, 1
 ~~~
-
-<a href="https://trackgit.com">
-  <img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/lcfhkdub7k2lpj33n2cl" alt="trackgit-views" />
-</a>

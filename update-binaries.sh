@@ -17,9 +17,9 @@
 #    default: 0
 #
 # Since:  February 2024
-# Author: Arnold Somogyi <arnold.somogyi@gmail.com>
+# Author: Arnold SOMOGYI <arnold.somogyi@gmail.com>
 #
-# Copyright (c) 2020-2026 Remal Software and Arnold Somogyi All rights reserved
+# Copyright (c) 2020-2026 Remal Software and Arnold SOMOGYI All rights reserved
 # ******************************************************************************
 REMAL_BINARY_HOME="$HOME/Applications/tomcat/apache-tomcat-10.1.33/webapps/docker-build"
 PROJECT_HOME="$HOME/Java/gombi"
