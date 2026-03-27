@@ -11,9 +11,20 @@ ARG IMAGE_FROM="unknown"
 ARG BUILD_TYPE="fat"
 FROM ${IMAGE_FROM} AS base
 
+# port 22: SSH
 EXPOSE 22/tcp
-EXPOSE 3000/tcp
+
+# port 5432: Postgres
 EXPOSE 5432/tcp
+
+# port 8000: JVM debug
+EXPOSE 8000/tcp
+
+# port 8443: HTTPS
+EXPOSE 8443/tcp
+
+# port 8500: HashiCorp Consul
+EXPOSE 8500/tcp
 
 ARG IMAGE_NAME="N/A"
 ARG IMAGE_TAG="N/A"
