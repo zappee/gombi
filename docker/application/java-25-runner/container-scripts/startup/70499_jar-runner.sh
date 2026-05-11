@@ -34,15 +34,16 @@ show_ambiguous_jars_error() {
 # Executable Jar runner.
 # ------------------------------------------------------------------------------
 jar_runner() {
-  local jar_files jar_file
+  local jar_files jar_file jvm_app_name
   jar_files=("$JAR_HOME"/*.jar)
   jar_file="${jar_files[0]}"
+  jvm_app_name="${jar_file##*/}"
 
   local jvm_params
   if [[ "${JAVA_DEBUG^^}" == "TRUE" && -n "$JAVA_DEBUG_PORT" ]]; then
-    jvm_params="$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$JAVA_DEBUG_PORT"
+    jvm_params="-Dapp.name=$jvm_app_name $JAVA_OPTS -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:$JAVA_DEBUG_PORT"
   else
-    jvm_params="$JAVA_OPTS"
+    jvm_params="-Dapp.name=$jvm_app_name $JAVA_OPTS"
   fi
 
   local health_check_cmd
@@ -54,6 +55,7 @@ jar_runner() {
   printf "%s | [DEBUG]                    JVM options: \"%s\"\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$jvm_params"
   printf "%s | [DEBUG]                       JAR home: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$JAR_HOME"
   printf "%s | [DEBUG]                       JAR file: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$jar_file"
+  printf "%s | [DEBUG]         JVM app.name parameter: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$jvm_app_name"
   printf "%s | [DEBUG]               health-check URI: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$HEALTH_CHECK_URI"
   printf "%s | [DEBUG]    expected health-check state: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "$EXPECTED_HEALTH_CHECK_STATE"
   printf "%s | [DEBUG]           health-check command: %s\n" "$(date +"%Y-%m-%d %H:%M:%S")" "${health_check_cmd[*]}"
