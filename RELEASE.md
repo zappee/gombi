@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.1] - 27/Aug/2026
+#### Docker Images
+* [#39](https://github.com/zappee/gombi/issues/39): Add a new JVM parameter to the Java Runner Images to help identify the running Java process by name.
+* [#40](https://github.com/zappee/gombi/issues/40): Fix the `No such file or directory` issue that appeared in `update-binaries.sh` after the Java 25 feature was added.
+
 ## [0.7.0] - 25/Mar/2026
 #### Deprecated
 * `gombi/projects`: The dependencies used in the example Java projects and code are outdated and must be updated. Unfortunately, I am the only maintainer of this project at the moment, and I do not have time to update the Java examples.
